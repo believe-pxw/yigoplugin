@@ -1,0 +1,25 @@
+{
+  parserClass="com.github.believepxw.yigo.dsl.parser.YigoParser"
+  psiClassPrefix="Yigo"
+  psiImplPackage="com.github.believepxw.yigo.dsl.psi.impl"
+  elementTypeHolderClass="com.github.believepxw.yigo.dsl.psi.YigoTypes"
+}
+
+file ::= statement*
+
+statement ::= var_decl | expr SEMICOLON
+
+var_decl ::= VAR IDENTIFIER SEMICOLON
+
+expr ::= macro_call
+       | func_call
+       | string
+       | math_expr
+       | reference
+
+macro_call ::= MACRO IDENTIFIER LPAREN args? RPAREN
+func_call ::= IDENTIFIER LPAREN args? RPAREN
+reference ::= FULL_IDENT
+string ::= STRING
+args ::= expr (COMMA expr)*
+math_expr ::= expr (PLUS | MINUS | MUL | DIV) expr

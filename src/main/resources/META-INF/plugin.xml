@@ -5,14 +5,18 @@
     <vendor>believe-pxw</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+    <depends>com.intellij.modules.xml</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.believepxw.yigo.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
+        <!--<toolWindow factoryClass="com.github.believepxw.yigo.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>-->
+        <psi.referenceContributor language="XML"
+                                  implementation="com.github.believepxw.yigo.CDataReferenceContributor"/>
     </extensions>
 
     <applicationListeners>
-        <listener class="com.github.believepxw.yigo.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
+        <!--<listener class="com.github.believepxw.yigo.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>-->
     </applicationListeners>
 </idea-plugin>
