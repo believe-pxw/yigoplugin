@@ -16,6 +16,7 @@
                                   <!--implementation="com.github.believepxw.yigo.CDataReferenceContributor"/>-->
         <multiHostInjector implementation="com.github.believepxw.yigo.MyLanguageXmlInjector"/>
         <lang.parserDefinition language="MyLanguage" implementationClass="example.MyLanguageParserDefinition"/>
+        <psi.referenceContributor implementation="example.MyLanguageReferenceContributor"/>
 
         <!--<fileType
                 name="MyLanguage File"

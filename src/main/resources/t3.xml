@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Form Key="PM_Strategy" Caption="维护策略" FormType="Dict" FormulaCaption="IIF(GetEntryPara('TCode')=='IP11Z','维护周期集','维护策略')" Version="42">
+    <DataObject Key="PM_Strategy" Caption="维护策略" PrimaryTableKey="EPM_Strategy" SecondaryType="Dict" PrimaryType="Entity" Version="1">
+        <OnRowDelete>
+            <![CDATA[Macro_DeleteRow_ButtonClickTrg();DeleteRow();Macro_DeleteRow_ButtonClickTrg2();]]>
+        </OnRowDelete>
+    </DataObject>
+    <MacroCollection>
+        <Macro Key="Macro_DeleteRow_ButtonClickTrg">
+            <![CDATA[com.bokesoft.erp.pm.function.StrategiesFormula.checkHasUsedStrategiesPackage(Dtl_OID,IsCycleSet)]]>
+        </Macro>
+        <Macro Key="Macro_DeleteRow_ButtonClickTrg2">
+            <![CDATA[com.bokesoft.erp.pm.function.StrategiesFormula.setMinUnitID()]]>
+        </Macro>
+        <Macro Key="Macro_SchedulingIndicator_Formula">
+            <![CDATA[com.bokesoft.erp.pm.function.StrategiesFormula.getSchedulingIndicatorComboListValue()]]>
+        </Macro>
+    </MacroCollection>
+</Form>
