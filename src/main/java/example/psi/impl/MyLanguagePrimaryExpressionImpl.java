@@ -29,6 +29,12 @@ public class MyLanguagePrimaryExpressionImpl extends ASTWrapperPsiElement implem
 
   @Override
   @Nullable
+  public MyLanguageBooleanConstant getBooleanConstant() {
+    return findChildByClass(MyLanguageBooleanConstant.class);
+  }
+
+  @Override
+  @Nullable
   public MyLanguageConstant getConstant() {
     return findChildByClass(MyLanguageConstant.class);
   }

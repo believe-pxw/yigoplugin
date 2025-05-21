@@ -35,6 +35,12 @@ public class MyLanguageFunctionCallImpl extends ASTWrapperPsiElement implements 
 
   @Override
   @Nullable
+  public MyLanguageIifFunctionCall getIifFunctionCall() {
+    return findChildByClass(MyLanguageIifFunctionCall.class);
+  }
+
+  @Override
+  @Nullable
   public MyLanguageJavaMethodCall getJavaMethodCall() {
     return findChildByClass(MyLanguageJavaMethodCall.class);
   }

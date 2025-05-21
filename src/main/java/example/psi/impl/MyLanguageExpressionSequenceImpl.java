@@ -11,14 +11,14 @@ import static example.psi.MyLanguageTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import example.psi.*;
 
-public class MyLanguageConstantImpl extends ASTWrapperPsiElement implements MyLanguageConstant {
+public class MyLanguageExpressionSequenceImpl extends ASTWrapperPsiElement implements MyLanguageExpressionSequence {
 
-  public MyLanguageConstantImpl(@NotNull ASTNode node) {
+  public MyLanguageExpressionSequenceImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MyLanguageVisitor visitor) {
-    visitor.visitConstant(this);
+    visitor.visitExpressionSequence(this);
   }
 
   @Override
@@ -28,27 +28,9 @@ public class MyLanguageConstantImpl extends ASTWrapperPsiElement implements MyLa
   }
 
   @Override
-  @Nullable
-  public PsiElement getBraceQuotedString() {
-    return findChildByType(BRACE_QUOTED_STRING);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getDoubleQuotedString() {
-    return findChildByType(DOUBLE_QUOTED_STRING);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getNumber() {
-    return findChildByType(NUMBER);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getSingleQuotedString() {
-    return findChildByType(SINGLE_QUOTED_STRING);
+  @NotNull
+  public List<MyLanguageExpressionStatement> getExpressionStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MyLanguageExpressionStatement.class);
   }
 
 }

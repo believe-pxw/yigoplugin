@@ -11,11 +11,23 @@ public class MyLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitBlockStatement(@NotNull MyLanguageBlockStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitBooleanConstant(@NotNull MyLanguageBooleanConstant o) {
+    visitPsiElement(o);
+  }
+
   public void visitConstant(@NotNull MyLanguageConstant o) {
     visitPsiElement(o);
   }
 
   public void visitExpression(@NotNull MyLanguageExpression o) {
+    visitPsiElement(o);
+  }
+
+  public void visitExpressionSequence(@NotNull MyLanguageExpressionSequence o) {
     visitPsiElement(o);
   }
 
@@ -28,6 +40,10 @@ public class MyLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitIfStatement(@NotNull MyLanguageIfStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitIifFunctionCall(@NotNull MyLanguageIifFunctionCall o) {
     visitPsiElement(o);
   }
 

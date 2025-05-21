@@ -31,7 +31,7 @@ JAVA_PATH_IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*(\.[a-zA-Z_][a-zA-Z0-9_]*)+
 SINGLE_QUOTED_STRING='[^']*'
 DOUBLE_QUOTED_STRING=\"[^\"]*\"
 BRACE_QUOTED_STRING=\{[^\}]*\}
-NUMBER_LITERAL=[0-9]+
+NUMBER=[0-9]+
 
 %%
 <YYINITIAL> {
@@ -42,8 +42,9 @@ NUMBER_LITERAL=[0-9]+
   "while"                      { return WHILE_KEYWORD; }
   "var"                        { return VAR_KEYWORD; }
   "parent"                     { return PARENT_KEYWORD; }
-  "true"                       { return BOOLEAN_TRUE; }
-  "false"                      { return BOOLEAN_FALSE; }
+  "true"                       { return TRUE_KEYWORD; }
+  "false"                      { return FALSE_KEYWORD; }
+  "IIF"                        { return IIF_KEYWORD; }
   "+"                          { return PLUS; }
   "-"                          { return MINUS; }
   "*"                          { return MUL; }
@@ -64,6 +65,8 @@ NUMBER_LITERAL=[0-9]+
   ")"                          { return RPAREN; }
   ";"                          { return SEMICOLON; }
   ","                          { return COMMA; }
+  "{"                          { return LBRACE; }
+  "}"                          { return RBRACE; }
 
   {IDENTIFIER}                 { return IDENTIFIER; }
   {MACRO_IDENTIFIER}           { return MACRO_IDENTIFIER; }
@@ -71,7 +74,7 @@ NUMBER_LITERAL=[0-9]+
   {SINGLE_QUOTED_STRING}       { return SINGLE_QUOTED_STRING; }
   {DOUBLE_QUOTED_STRING}       { return DOUBLE_QUOTED_STRING; }
   {BRACE_QUOTED_STRING}        { return BRACE_QUOTED_STRING; }
-  {NUMBER_LITERAL}             { return NUMBER_LITERAL; }
+  {NUMBER}                     { return NUMBER; }
 
 }
 

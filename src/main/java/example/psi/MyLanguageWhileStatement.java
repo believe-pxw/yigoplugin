@@ -7,11 +7,14 @@ import com.intellij.psi.PsiElement;
 
 public interface MyLanguageWhileStatement extends PsiElement {
 
+  @Nullable
+  MyLanguageBlockStatement getBlockStatement();
+
   @NotNull
   MyLanguageExpression getExpression();
 
   @Nullable
-  MyLanguageExpressionStatement getExpressionStatement();
+  MyLanguageExpressionSequence getExpressionSequence();
 
   @Nullable
   MyLanguageIfStatement getIfStatement();

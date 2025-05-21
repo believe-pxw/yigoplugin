@@ -114,18 +114,56 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // unary_expression ((LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT) unary_expression)*
+  // LBRACE statement* RBRACE
+  public static boolean block_statement(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "block_statement")) return false;
+    if (!nextTokenIs(b, LBRACE)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LBRACE);
+    r = r && block_statement_1(b, l + 1);
+    r = r && consumeToken(b, RBRACE);
+    exit_section_(b, m, BLOCK_STATEMENT, r);
+    return r;
+  }
+
+  // statement*
+  private static boolean block_statement_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "block_statement_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!statement(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "block_statement_1", c)) break;
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
+  // TRUE_KEYWORD | FALSE_KEYWORD
+  public static boolean boolean_constant(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "boolean_constant")) return false;
+    if (!nextTokenIs(b, "<boolean constant>", FALSE_KEYWORD, TRUE_KEYWORD)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, BOOLEAN_CONSTANT, "<boolean constant>");
+    r = consumeToken(b, TRUE_KEYWORD);
+    if (!r) r = consumeToken(b, FALSE_KEYWORD);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // additive_expression ((LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT) additive_expression)*
   static boolean comparison_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "comparison_expression")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = unary_expression(b, l + 1);
+    r = additive_expression(b, l + 1);
     r = r && comparison_expression_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // ((LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT) unary_expression)*
+  // ((LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT) additive_expression)*
   private static boolean comparison_expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "comparison_expression_1")) return false;
     while (true) {
@@ -136,13 +174,13 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // (LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT) unary_expression
+  // (LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT) additive_expression
   private static boolean comparison_expression_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "comparison_expression_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = comparison_expression_1_0_0(b, l + 1);
-    r = r && unary_expression(b, l + 1);
+    r = r && additive_expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -162,7 +200,10 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // SINGLE_QUOTED_STRING | DOUBLE_QUOTED_STRING | BRACE_QUOTED_STRING | NUMBER_LITERAL | BOOLEAN_TRUE | BOOLEAN_FALSE
+  // SINGLE_QUOTED_STRING
+  //   | DOUBLE_QUOTED_STRING
+  //   | BRACE_QUOTED_STRING
+  //   | NUMBER
   public static boolean constant(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "constant")) return false;
     boolean r;
@@ -170,9 +211,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, SINGLE_QUOTED_STRING);
     if (!r) r = consumeToken(b, DOUBLE_QUOTED_STRING);
     if (!r) r = consumeToken(b, BRACE_QUOTED_STRING);
-    if (!r) r = consumeToken(b, NUMBER_LITERAL);
-    if (!r) r = consumeToken(b, BOOLEAN_TRUE);
-    if (!r) r = consumeToken(b, BOOLEAN_FALSE);
+    if (!r) r = consumeToken(b, NUMBER);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -189,26 +228,52 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // expression SEMICOLON?
+  // expression_statement (SEMICOLON expression_statement)*
+  public static boolean expression_sequence(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "expression_sequence")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, EXPRESSION_SEQUENCE, "<expression sequence>");
+    r = expression_statement(b, l + 1);
+    r = r && expression_sequence_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // (SEMICOLON expression_statement)*
+  private static boolean expression_sequence_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "expression_sequence_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!expression_sequence_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "expression_sequence_1", c)) break;
+    }
+    return true;
+  }
+
+  // SEMICOLON expression_statement
+  private static boolean expression_sequence_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "expression_sequence_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SEMICOLON);
+    r = r && expression_statement(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // expression
   public static boolean expression_statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "expression_statement")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, EXPRESSION_STATEMENT, "<expression statement>");
     r = expression(b, l + 1);
-    r = r && expression_statement_1(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // SEMICOLON?
-  private static boolean expression_statement_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "expression_statement_1")) return false;
-    consumeToken(b, SEMICOLON);
-    return true;
-  }
-
   /* ********************************************************** */
-  // (MACRO_IDENTIFIER | IDENTIFIER | java_method_call | parent_call) LPAREN argument_list? RPAREN
+  // (MACRO_IDENTIFIER | IDENTIFIER | java_method_call | parent_call | iif_function_call) LPAREN argument_list? RPAREN
   public static boolean function_call(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_call")) return false;
     boolean r;
@@ -221,7 +286,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // MACRO_IDENTIFIER | IDENTIFIER | java_method_call | parent_call
+  // MACRO_IDENTIFIER | IDENTIFIER | java_method_call | parent_call | iif_function_call
   private static boolean function_call_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_call_0")) return false;
     boolean r;
@@ -229,6 +294,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, IDENTIFIER);
     if (!r) r = java_method_call(b, l + 1);
     if (!r) r = parent_call(b, l + 1);
+    if (!r) r = iif_function_call(b, l + 1);
     return r;
   }
 
@@ -240,7 +306,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IF_KEYWORD LPAREN expression RPAREN statement (ELSE_KEYWORD statement)?
+  // IF_KEYWORD LPAREN expression RPAREN statement_block (ELSE_KEYWORD statement_block)?
   public static boolean if_statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "if_statement")) return false;
     if (!nextTokenIs(b, IF_KEYWORD)) return false;
@@ -249,27 +315,39 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     r = consumeTokens(b, 0, IF_KEYWORD, LPAREN);
     r = r && expression(b, l + 1);
     r = r && consumeToken(b, RPAREN);
-    r = r && statement(b, l + 1);
+    r = r && statement_block(b, l + 1);
     r = r && if_statement_5(b, l + 1);
     exit_section_(b, m, IF_STATEMENT, r);
     return r;
   }
 
-  // (ELSE_KEYWORD statement)?
+  // (ELSE_KEYWORD statement_block)?
   private static boolean if_statement_5(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "if_statement_5")) return false;
     if_statement_5_0(b, l + 1);
     return true;
   }
 
-  // ELSE_KEYWORD statement
+  // ELSE_KEYWORD statement_block
   private static boolean if_statement_5_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "if_statement_5_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, ELSE_KEYWORD);
-    r = r && statement(b, l + 1);
+    r = r && statement_block(b, l + 1);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // IIF_KEYWORD
+  public static boolean iif_function_call(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "iif_function_call")) return false;
+    if (!nextTokenIs(b, IIF_KEYWORD)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IIF_KEYWORD);
+    exit_section_(b, m, IIF_FUNCTION_CALL, r);
     return r;
   }
 
@@ -354,18 +432,18 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // primary_expression ((MUL | DIV) primary_expression)*
+  // unary_expression ((MUL | DIV) unary_expression)*
   static boolean multiplicative_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "multiplicative_expression")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = primary_expression(b, l + 1);
+    r = unary_expression(b, l + 1);
     r = r && multiplicative_expression_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // ((MUL | DIV) primary_expression)*
+  // ((MUL | DIV) unary_expression)*
   private static boolean multiplicative_expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "multiplicative_expression_1")) return false;
     while (true) {
@@ -376,13 +454,13 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // (MUL | DIV) primary_expression
+  // (MUL | DIV) unary_expression
   private static boolean multiplicative_expression_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "multiplicative_expression_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = multiplicative_expression_1_0_0(b, l + 1);
-    r = r && primary_expression(b, l + 1);
+    r = r && unary_expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -413,6 +491,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   //   | function_call
   //   | variable_reference
   //   | LPAREN expression RPAREN
+  //   | boolean_constant
   public static boolean primary_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "primary_expression")) return false;
     boolean r;
@@ -421,6 +500,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     if (!r) r = function_call(b, l + 1);
     if (!r) r = variable_reference(b, l + 1);
     if (!r) r = primary_expression_3(b, l + 1);
+    if (!r) r = boolean_constant(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -438,19 +518,19 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // statement*
+  // top_level_statement*
   static boolean root(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "root")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!statement(b, l + 1)) break;
+      if (!top_level_statement(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "root", c)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
-  // (variable_declaration | expression_statement | if_statement | while_statement) (SEMICOLON | <<eof>>)
+  // (variable_declaration | expression_sequence | if_statement | while_statement) SEMICOLON?
   static boolean statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statement")) return false;
     boolean r;
@@ -461,37 +541,72 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // variable_declaration | expression_statement | if_statement | while_statement
+  // variable_declaration | expression_sequence | if_statement | while_statement
   private static boolean statement_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statement_0")) return false;
     boolean r;
     r = variable_declaration(b, l + 1);
-    if (!r) r = expression_statement(b, l + 1);
+    if (!r) r = expression_sequence(b, l + 1);
     if (!r) r = if_statement(b, l + 1);
     if (!r) r = while_statement(b, l + 1);
     return r;
   }
 
-  // SEMICOLON | <<eof>>
+  // SEMICOLON?
   private static boolean statement_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statement_1")) return false;
+    consumeToken(b, SEMICOLON);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // statement | block_statement
+  static boolean statement_block(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "statement_block")) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, SEMICOLON);
-    if (!r) r = eof(b, l + 1);
-    exit_section_(b, m, null, r);
+    r = statement(b, l + 1);
+    if (!r) r = block_statement(b, l + 1);
     return r;
   }
 
   /* ********************************************************** */
-  // NOT_OP unary_expression // Logical NOT
-  //   | additive_expression
+  // (variable_declaration | expression_sequence | if_statement | while_statement) SEMICOLON?
+  static boolean top_level_statement(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "top_level_statement")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = top_level_statement_0(b, l + 1);
+    r = r && top_level_statement_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // variable_declaration | expression_sequence | if_statement | while_statement
+  private static boolean top_level_statement_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "top_level_statement_0")) return false;
+    boolean r;
+    r = variable_declaration(b, l + 1);
+    if (!r) r = expression_sequence(b, l + 1);
+    if (!r) r = if_statement(b, l + 1);
+    if (!r) r = while_statement(b, l + 1);
+    return r;
+  }
+
+  // SEMICOLON?
+  private static boolean top_level_statement_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "top_level_statement_1")) return false;
+    consumeToken(b, SEMICOLON);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // NOT_OP unary_expression | primary_expression
   static boolean unary_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "unary_expression")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = unary_expression_0(b, l + 1);
-    if (!r) r = additive_expression(b, l + 1);
+    if (!r) r = primary_expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -532,7 +647,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // WHILE_KEYWORD LPAREN expression RPAREN statement
+  // WHILE_KEYWORD LPAREN expression RPAREN statement_block
   public static boolean while_statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "while_statement")) return false;
     if (!nextTokenIs(b, WHILE_KEYWORD)) return false;
@@ -541,7 +656,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     r = consumeTokens(b, 0, WHILE_KEYWORD, LPAREN);
     r = r && expression(b, l + 1);
     r = r && consumeToken(b, RPAREN);
-    r = r && statement(b, l + 1);
+    r = r && statement_block(b, l + 1);
     exit_section_(b, m, WHILE_STATEMENT, r);
     return r;
   }

@@ -11,44 +11,20 @@ import static example.psi.MyLanguageTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import example.psi.*;
 
-public class MyLanguageConstantImpl extends ASTWrapperPsiElement implements MyLanguageConstant {
+public class MyLanguageIifFunctionCallImpl extends ASTWrapperPsiElement implements MyLanguageIifFunctionCall {
 
-  public MyLanguageConstantImpl(@NotNull ASTNode node) {
+  public MyLanguageIifFunctionCallImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MyLanguageVisitor visitor) {
-    visitor.visitConstant(this);
+    visitor.visitIifFunctionCall(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof MyLanguageVisitor) accept((MyLanguageVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getBraceQuotedString() {
-    return findChildByType(BRACE_QUOTED_STRING);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getDoubleQuotedString() {
-    return findChildByType(DOUBLE_QUOTED_STRING);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getNumber() {
-    return findChildByType(NUMBER);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getSingleQuotedString() {
-    return findChildByType(SINGLE_QUOTED_STRING);
   }
 
 }

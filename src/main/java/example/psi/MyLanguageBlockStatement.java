@@ -5,13 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MyLanguageIfStatement extends PsiElement {
-
-  @NotNull
-  List<MyLanguageBlockStatement> getBlockStatementList();
-
-  @NotNull
-  MyLanguageExpression getExpression();
+public interface MyLanguageBlockStatement extends PsiElement {
 
   @NotNull
   List<MyLanguageExpressionSequence> getExpressionSequenceList();

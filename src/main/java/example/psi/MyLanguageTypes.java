@@ -11,11 +11,15 @@ import example.psi.impl.*;
 public interface MyLanguageTypes {
 
   IElementType ARGUMENT_LIST = new MyLanguageElementType("ARGUMENT_LIST");
+  IElementType BLOCK_STATEMENT = new MyLanguageElementType("BLOCK_STATEMENT");
+  IElementType BOOLEAN_CONSTANT = new MyLanguageElementType("BOOLEAN_CONSTANT");
   IElementType CONSTANT = new MyLanguageElementType("CONSTANT");
   IElementType EXPRESSION = new MyLanguageElementType("EXPRESSION");
+  IElementType EXPRESSION_SEQUENCE = new MyLanguageElementType("EXPRESSION_SEQUENCE");
   IElementType EXPRESSION_STATEMENT = new MyLanguageElementType("EXPRESSION_STATEMENT");
   IElementType FUNCTION_CALL = new MyLanguageElementType("FUNCTION_CALL");
   IElementType IF_STATEMENT = new MyLanguageElementType("IF_STATEMENT");
+  IElementType IIF_FUNCTION_CALL = new MyLanguageElementType("IIF_FUNCTION_CALL");
   IElementType JAVA_METHOD_CALL = new MyLanguageElementType("JAVA_METHOD_CALL");
   IElementType PARENT_CALL = new MyLanguageElementType("PARENT_CALL");
   IElementType PRIMARY_EXPRESSION = new MyLanguageElementType("PRIMARY_EXPRESSION");
@@ -25,8 +29,6 @@ public interface MyLanguageTypes {
 
   IElementType AMPERSAND = new MyLanguageTokenType("&");
   IElementType AND_OP = new MyLanguageTokenType("&&");
-  IElementType BOOLEAN_FALSE = new MyLanguageTokenType("false");
-  IElementType BOOLEAN_TRUE = new MyLanguageTokenType("true");
   IElementType BRACE_QUOTED_STRING = new MyLanguageTokenType("BRACE_QUOTED_STRING");
   IElementType COMMA = new MyLanguageTokenType(",");
   IElementType DIV = new MyLanguageTokenType("/");
@@ -34,11 +36,14 @@ public interface MyLanguageTypes {
   IElementType DOUBLE_QUOTED_STRING = new MyLanguageTokenType("DOUBLE_QUOTED_STRING");
   IElementType ELSE_KEYWORD = new MyLanguageTokenType("else");
   IElementType EQUAL_EQUAL = new MyLanguageTokenType("==");
+  IElementType FALSE_KEYWORD = new MyLanguageTokenType("false");
   IElementType GREATER = new MyLanguageTokenType(">");
   IElementType GREATER_EQUAL = new MyLanguageTokenType(">=");
   IElementType IDENTIFIER = new MyLanguageTokenType("IDENTIFIER");
   IElementType IF_KEYWORD = new MyLanguageTokenType("if");
+  IElementType IIF_KEYWORD = new MyLanguageTokenType("IIF");
   IElementType JAVA_PATH_IDENTIFIER = new MyLanguageTokenType("JAVA_PATH_IDENTIFIER");
+  IElementType LBRACE = new MyLanguageTokenType("{");
   IElementType LESS = new MyLanguageTokenType("<");
   IElementType LESS_EQUAL = new MyLanguageTokenType("<=");
   IElementType LPAREN = new MyLanguageTokenType("(");
@@ -48,13 +53,15 @@ public interface MyLanguageTypes {
   IElementType NOT_EQUAL = new MyLanguageTokenType("!=");
   IElementType NOT_EQUAL_ALT = new MyLanguageTokenType("<>");
   IElementType NOT_OP = new MyLanguageTokenType("!");
-  IElementType NUMBER_LITERAL = new MyLanguageTokenType("NUMBER_LITERAL");
+  IElementType NUMBER = new MyLanguageTokenType("NUMBER");
   IElementType OR_OP = new MyLanguageTokenType("||");
   IElementType PARENT_KEYWORD = new MyLanguageTokenType("parent");
   IElementType PLUS = new MyLanguageTokenType("+");
+  IElementType RBRACE = new MyLanguageTokenType("}");
   IElementType RPAREN = new MyLanguageTokenType(")");
   IElementType SEMICOLON = new MyLanguageTokenType(";");
   IElementType SINGLE_QUOTED_STRING = new MyLanguageTokenType("SINGLE_QUOTED_STRING");
+  IElementType TRUE_KEYWORD = new MyLanguageTokenType("true");
   IElementType VAR_KEYWORD = new MyLanguageTokenType("var");
   IElementType WHILE_KEYWORD = new MyLanguageTokenType("while");
 
@@ -64,11 +71,20 @@ public interface MyLanguageTypes {
       if (type == ARGUMENT_LIST) {
         return new MyLanguageArgumentListImpl(node);
       }
+      else if (type == BLOCK_STATEMENT) {
+        return new MyLanguageBlockStatementImpl(node);
+      }
+      else if (type == BOOLEAN_CONSTANT) {
+        return new MyLanguageBooleanConstantImpl(node);
+      }
       else if (type == CONSTANT) {
         return new MyLanguageConstantImpl(node);
       }
       else if (type == EXPRESSION) {
         return new MyLanguageExpressionImpl(node);
+      }
+      else if (type == EXPRESSION_SEQUENCE) {
+        return new MyLanguageExpressionSequenceImpl(node);
       }
       else if (type == EXPRESSION_STATEMENT) {
         return new MyLanguageExpressionStatementImpl(node);
@@ -78,6 +94,9 @@ public interface MyLanguageTypes {
       }
       else if (type == IF_STATEMENT) {
         return new MyLanguageIfStatementImpl(node);
+      }
+      else if (type == IIF_FUNCTION_CALL) {
+        return new MyLanguageIifFunctionCallImpl(node);
       }
       else if (type == JAVA_METHOD_CALL) {
         return new MyLanguageJavaMethodCallImpl(node);

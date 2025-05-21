@@ -11,6 +11,9 @@ public interface MyLanguageFunctionCall extends PsiElement {
   MyLanguageArgumentList getArgumentList();
 
   @Nullable
+  MyLanguageIifFunctionCall getIifFunctionCall();
+
+  @Nullable
   MyLanguageJavaMethodCall getJavaMethodCall();
 
   @Nullable
