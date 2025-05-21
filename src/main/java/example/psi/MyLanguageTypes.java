@@ -1,23 +1,11 @@
 // This is a generated file. Not intended for manual editing.
 package example.psi;
 
-import example.MyLanguageElementType;
-import example.MyLanguageTokenType;
-import example.psi.impl.MyLanguageArgumentListImpl;
-import example.psi.impl.MyLanguageConstantImpl;
-import example.psi.impl.MyLanguageExpressionImpl;
-import example.psi.impl.MyLanguageExpressionStatementImpl;
-import example.psi.impl.MyLanguageFunctionCallImpl;
-import example.psi.impl.MyLanguageIfStatementImpl;
-import example.psi.impl.MyLanguageJavaMethodCallImpl;
-import example.psi.impl.MyLanguageParentCallImpl;
-import example.psi.impl.MyLanguagePrimaryExpressionImpl;
-import example.psi.impl.MyLanguageVariableDeclarationImpl;
-import example.psi.impl.MyLanguageVariableReferenceImpl;
-import example.psi.impl.MyLanguageWhileStatementImpl;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.PsiElement;
 import com.intellij.lang.ASTNode;
+import example.MyLanguageElementType;
+import example.MyLanguageTokenType;
 import example.psi.impl.*;
 
 public interface MyLanguageTypes {
@@ -43,13 +31,20 @@ public interface MyLanguageTypes {
   IElementType DOT = new MyLanguageTokenType(".");
   IElementType DOUBLE_QUOTED_STRING = new MyLanguageTokenType("DOUBLE_QUOTED_STRING");
   IElementType ELSE_KEYWORD = new MyLanguageTokenType("else");
+  IElementType EQUAL_EQUAL = new MyLanguageTokenType("==");
+  IElementType GREATER = new MyLanguageTokenType(">");
+  IElementType GREATER_EQUAL = new MyLanguageTokenType(">=");
   IElementType IDENTIFIER = new MyLanguageTokenType("IDENTIFIER");
   IElementType IF_KEYWORD = new MyLanguageTokenType("if");
   IElementType JAVA_PATH_IDENTIFIER = new MyLanguageTokenType("JAVA_PATH_IDENTIFIER");
+  IElementType LESS = new MyLanguageTokenType("<");
+  IElementType LESS_EQUAL = new MyLanguageTokenType("<=");
   IElementType LPAREN = new MyLanguageTokenType("(");
   IElementType MACRO_IDENTIFIER = new MyLanguageTokenType("MACRO_IDENTIFIER");
   IElementType MINUS = new MyLanguageTokenType("-");
   IElementType MUL = new MyLanguageTokenType("*");
+  IElementType NOT_EQUAL = new MyLanguageTokenType("!=");
+  IElementType NOT_EQUAL_ALT = new MyLanguageTokenType("<>");
   IElementType OR_OP = new MyLanguageTokenType("||");
   IElementType PARENT_KEYWORD = new MyLanguageTokenType("parent");
   IElementType PLUS = new MyLanguageTokenType("+");

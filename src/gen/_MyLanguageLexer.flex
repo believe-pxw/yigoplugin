@@ -1,10 +1,11 @@
-package com.example.parser;
+package example.parser;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 
 import static com.intellij.psi.TokenType.BAD_CHARACTER;
 import static com.intellij.psi.TokenType.WHITE_SPACE;
+import static example.psi.MyLanguageTypes.*;
 
 %%
 
@@ -48,6 +49,13 @@ BRACE_QUOTED_STRING=\{[^\}]*\}
   "&&"                         { return AND_OP; }
   "||"                         { return OR_OP; }
   "."                          { return DOT; }
+  "<="                         { return LESS_EQUAL; }
+  ">="                         { return GREATER_EQUAL; }
+  "=="                         { return EQUAL_EQUAL; }
+  "!="                         { return NOT_EQUAL; }
+  "<"                          { return LESS; }
+  ">"                          { return GREATER; }
+  "<>"                         { return NOT_EQUAL_ALT; }
   "("                          { return LPAREN; }
   ")"                          { return RPAREN; }
   ";"                          { return SEMICOLON; }

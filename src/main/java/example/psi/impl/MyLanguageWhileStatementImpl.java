@@ -1,15 +1,13 @@
 // This is a generated file. Not intended for manual editing.
 package example.psi.impl;
 
-import example.psi.MyLanguageExpression;
-import example.psi.MyLanguageExpressionStatement;
-import example.psi.MyLanguageIfStatement;
-import example.psi.MyLanguageVariableDeclaration;
-import example.psi.MyLanguageVisitor;
-import example.psi.MyLanguageWhileStatement;
+import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.util.PsiTreeUtil;
+import static example.psi.MyLanguageTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import example.psi.*;
 

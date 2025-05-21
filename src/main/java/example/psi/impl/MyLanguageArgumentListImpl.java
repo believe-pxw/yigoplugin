@@ -2,14 +2,12 @@
 package example.psi.impl;
 
 import java.util.List;
-
-import example.psi.MyLanguageArgumentList;
-import example.psi.MyLanguageExpression;
-import example.psi.MyLanguageVisitor;
 import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
+import static example.psi.MyLanguageTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import example.psi.*;
 

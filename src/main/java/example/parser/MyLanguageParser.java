@@ -7,6 +7,7 @@ import static example.psi.MyLanguageTypes.*;
 import static com.intellij.lang.parser.GeneratedParserUtilBase.*;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.tree.TokenSet;
 import com.intellij.lang.PsiParser;
 import com.intellij.lang.LightPsiParser;
 
@@ -109,6 +110,54 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, COMMA);
     r = r && expression(b, l + 1);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // additive_expression ((LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT) additive_expression)*
+  static boolean comparison_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "comparison_expression")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = additive_expression(b, l + 1);
+    r = r && comparison_expression_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // ((LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT) additive_expression)*
+  private static boolean comparison_expression_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "comparison_expression_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!comparison_expression_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "comparison_expression_1", c)) break;
+    }
+    return true;
+  }
+
+  // (LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT) additive_expression
+  private static boolean comparison_expression_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "comparison_expression_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = comparison_expression_1_0_0(b, l + 1);
+    r = r && additive_expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT
+  private static boolean comparison_expression_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "comparison_expression_1_0_0")) return false;
+    boolean r;
+    r = consumeToken(b, LESS_EQUAL);
+    if (!r) r = consumeToken(b, GREATER_EQUAL);
+    if (!r) r = consumeToken(b, EQUAL_EQUAL);
+    if (!r) r = consumeToken(b, NOT_EQUAL);
+    if (!r) r = consumeToken(b, LESS);
+    if (!r) r = consumeToken(b, GREATER);
+    if (!r) r = consumeToken(b, NOT_EQUAL_ALT);
     return r;
   }
 
@@ -260,18 +309,18 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // logical_and_expression (OR_OP logical_and_expression)*
+  // comparison_expression (OR_OP comparison_expression)*
   static boolean logical_or_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "logical_or_expression")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = logical_and_expression(b, l + 1);
+    r = comparison_expression(b, l + 1);
     r = r && logical_or_expression_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // (OR_OP logical_and_expression)*
+  // (OR_OP comparison_expression)*
   private static boolean logical_or_expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "logical_or_expression_1")) return false;
     while (true) {
@@ -282,13 +331,13 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // OR_OP logical_and_expression
+  // OR_OP comparison_expression
   private static boolean logical_or_expression_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "logical_or_expression_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OR_OP);
-    r = r && logical_and_expression(b, l + 1);
+    r = r && comparison_expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
