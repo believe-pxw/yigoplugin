@@ -51,6 +51,10 @@ public class MyLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitMacroCallExpression(@NotNull MyLanguageMacroCallExpression o) {
+    visitPsiElement(o);
+  }
+
   public void visitParentCall(@NotNull MyLanguageParentCall o) {
     visitPsiElement(o);
   }

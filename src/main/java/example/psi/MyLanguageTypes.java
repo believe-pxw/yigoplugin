@@ -21,6 +21,7 @@ public interface MyLanguageTypes {
   IElementType IF_STATEMENT = new MyLanguageElementType("IF_STATEMENT");
   IElementType IIF_FUNCTION_CALL = new MyLanguageElementType("IIF_FUNCTION_CALL");
   IElementType JAVA_METHOD_CALL = new MyLanguageElementType("JAVA_METHOD_CALL");
+  IElementType MACRO_CALL_EXPRESSION = new MyLanguageElementType("MACRO_CALL_EXPRESSION");
   IElementType PARENT_CALL = new MyLanguageElementType("PARENT_CALL");
   IElementType PRIMARY_EXPRESSION = new MyLanguageElementType("PRIMARY_EXPRESSION");
   IElementType VARIABLE_DECLARATION = new MyLanguageElementType("VARIABLE_DECLARATION");
@@ -100,6 +101,9 @@ public interface MyLanguageTypes {
       }
       else if (type == JAVA_METHOD_CALL) {
         return new MyLanguageJavaMethodCallImpl(node);
+      }
+      else if (type == MACRO_CALL_EXPRESSION) {
+        return new MyLanguageMacroCallExpressionImpl(node);
       }
       else if (type == PARENT_CALL) {
         return new MyLanguageParentCallImpl(node);

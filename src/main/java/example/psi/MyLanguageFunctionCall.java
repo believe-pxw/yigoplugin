@@ -17,12 +17,12 @@ public interface MyLanguageFunctionCall extends PsiElement {
   MyLanguageJavaMethodCall getJavaMethodCall();
 
   @Nullable
+  MyLanguageMacroCallExpression getMacroCallExpression();
+
+  @Nullable
   MyLanguageParentCall getParentCall();
 
   @Nullable
   PsiElement getIdentifier();
-
-  @Nullable
-  PsiElement getMacroIdentifier();
 
 }

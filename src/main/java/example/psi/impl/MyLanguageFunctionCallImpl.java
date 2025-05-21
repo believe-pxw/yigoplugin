@@ -47,6 +47,12 @@ public class MyLanguageFunctionCallImpl extends ASTWrapperPsiElement implements 
 
   @Override
   @Nullable
+  public MyLanguageMacroCallExpression getMacroCallExpression() {
+    return findChildByClass(MyLanguageMacroCallExpression.class);
+  }
+
+  @Override
+  @Nullable
   public MyLanguageParentCall getParentCall() {
     return findChildByClass(MyLanguageParentCall.class);
   }
@@ -55,12 +61,6 @@ public class MyLanguageFunctionCallImpl extends ASTWrapperPsiElement implements 
   @Nullable
   public PsiElement getIdentifier() {
     return findChildByType(IDENTIFIER);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getMacroIdentifier() {
-    return findChildByType(MACRO_IDENTIFIER);
   }
 
 }

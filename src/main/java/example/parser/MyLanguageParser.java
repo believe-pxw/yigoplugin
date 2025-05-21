@@ -273,7 +273,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (MACRO_IDENTIFIER | IDENTIFIER | java_method_call | parent_call | iif_function_call) LPAREN argument_list? RPAREN
+  // (macro_call_expression | IDENTIFIER | java_method_call | parent_call | iif_function_call) LPAREN argument_list? RPAREN
   public static boolean function_call(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_call")) return false;
     boolean r;
@@ -286,11 +286,11 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // MACRO_IDENTIFIER | IDENTIFIER | java_method_call | parent_call | iif_function_call
+  // macro_call_expression | IDENTIFIER | java_method_call | parent_call | iif_function_call
   private static boolean function_call_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_call_0")) return false;
     boolean r;
-    r = consumeToken(b, MACRO_IDENTIFIER);
+    r = macro_call_expression(b, l + 1);
     if (!r) r = consumeToken(b, IDENTIFIER);
     if (!r) r = java_method_call(b, l + 1);
     if (!r) r = parent_call(b, l + 1);
@@ -428,6 +428,18 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, OR_OP);
     r = r && logical_and_expression(b, l + 1);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // MACRO_IDENTIFIER
+  public static boolean macro_call_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "macro_call_expression")) return false;
+    if (!nextTokenIs(b, MACRO_IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, MACRO_IDENTIFIER);
+    exit_section_(b, m, MACRO_CALL_EXPRESSION, r);
     return r;
   }
 
