@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Form Key="PM_Strategy" Caption="维护策略" FormType="Dict" FormulaCaption="IIF(GetEntryPara('TCode')=='IP11Z','维护周期集','维护策略')" Version="42">
+    <DataSource>
+        <DataObject Key="PM_Strategy" Caption="维护策略" PrimaryTableKey="EPM_Strategy" SecondaryType="Dict" PrimaryType="Entity" Version="1">
+            <TableCollection>
+                <Table Key="EPM_Strategy" Caption="维护策略主表">
+                    <Column Key="OID" Caption="对象标识" DataElementKey="OID"/>
+                    <Column Key="SOID" Caption="主对象标识" DataElementKey="SOID"/>
+                    <Column Key="POID" Caption="父对象标识" DataElementKey="POID"/>
+                    <Column Key="VERID" Caption="对象版本" DataElementKey="VERID"/>
+                    <Column Key="DVERID" Caption="对象明细版本" DataElementKey="DVERID"/>
+                    <Column Key="Enable" Caption="启用标记" DefaultValue="1" DataElementKey="Enable"/>
+                    <Column Key="TLeft" Cache="true" DataElementKey="TLeft"/>
+                    <Column Key="TRight" Cache="true" DataElementKey="TRight"/>
+                    <Column Key="NodeType" Caption="节点类型" DataElementKey="NodeType"/>
+                    <Column Key="ParentID" Caption="上级节点" DataElementKey="ParentID"/>
+                    <Column Key="Code" Caption="代码" Cache="true" DefaultValue="" DataElementKey="Code"/>
+                    <Column Key="Name" Caption="名称" Persist="false" Cache="true" DefaultValue="" SupportI18n="true" DataElementKey="Name"/>
+                    <Column Key="ClientID" Caption="集团" DataElementKey="ClientID"/>
+                    <Column Key="Creator" Caption="创建人员" DataElementKey="Creator"/>
+                    <Column Key="CreateTime" Caption="创建时间" DataElementKey="CreateTime"/>
+                    <Column Key="CreateDate" Caption="制单日期" DataElementKey="CreateDate"/>
+                    <Column Key="Modifier" Caption="修改人员" DataElementKey="Modifier"/>
+                    <Column Key="ModifyTime" Caption="修改时间" DataElementKey="ModifyTime"/>
+                    <Column Key="Notes" Caption="备注" DefaultValue="" DataElementKey="Notes"/>
+                    <Column Key="SchedulingIndicator" Caption="计划标识" Cache="true" DataElementKey="SchedulingIndicatorType"/>
+                    <Column Key="StrategyUnitID" Caption="策略单位" Cache="true" DataElementKey="CycleUnitID"/>
+                    <Column Key="CallHorizon" Caption="调用期" Cache="true" DataElementKey="CallHorizon"/>
+                    <Column Key="FactoryCalendarID" Caption="工厂日历" Cache="true" DataElementKey="CalendarID"/>
+                    <Column Key="LateShiftFactor" Caption="延迟完成时的替换因子" Cache="true" DataElementKey="LateShiftFactor"/>
+                    <Column Key="EarlyShiftFactor" Caption="提早完成时的替换因子" Cache="true" DataElementKey="EarlyShiftFactor"/>
+                    <Column Key="LateTolerance" Caption="延迟完成的容差" Cache="true" DataElementKey="LateTolerance"/>
+                    <Column Key="EarlyTolerance" Caption="提早完成的容差" Cache="true" DataElementKey="EarlyTolerance"/>
+                    <Column Key="TCodeID" Caption="事务码" Cache="true" DataElementKey="TCodeID"/>
+                    <Column Key="IsCycleSet" Caption="是否周期集" Cache="true" DataElementKey="IsCycleSet"/>
+                    <Column Key="SystemVestKey" Caption="单据Key" DataElementKey="SystemVestKey"/>
+                </Table>
+                <Table Key="EPM_StrategyDtl" Caption="维护策略明细" TableMode="Detail" IndexPrefix="EPM_StrategyDtl">
+                    <Column Key="OID" Caption="对象标识" DataElementKey="OID"/>
+                    <Column Key="SOID" Caption="主对象标识" DataElementKey="SOID"/>
+                    <Column Key="POID" Caption="父对象标识" DataElementKey="POID"/>
+                    <Column Key="VERID" Caption="对象版本" DataElementKey="VERID"/>
+                    <Column Key="DVERID" Caption="对象明细版本" DataElementKey="DVERID"/>
+                    <Column Key="Sequence" Caption="序号" DataElementKey="Sequence"/>
+                    <Column Key="CycleNotes" Caption="周期文本" DefaultValue="" DataElementKey="CycleNotes"/>
+                    <Column Key="CycleShortText" Caption="周期短文本" DefaultValue="" DataElementKey="CycleShortText"/>
+                    <Column Key="CycleLength" Caption="周期长度" DataElementKey="PM_CycleLength"/>
+                    <Column Key="CycleHierarchy" Caption="层次" DataElementKey="CycleHierarchy"/>
+                    <Column Key="OffsetPos" Caption="偏置" DataElementKey="Offset"/>
+                    <Column Key="LeadDays" Caption="初始" DataElementKey="LeadFloatDays"/>
+                    <Column Key="FollowUpDays" Caption="后续" DataElementKey="FollowUpDays"/>
+                    <Column Key="PackageUnitID" Caption="单位" DataElementKey="CycleUnitID"/>
+                    <Column Key="BaseLength" Caption="基本数值" DataElementKey="BaseLength"/>
+                    <Column Key="OffsetShortText" Caption="偏置短文本" DefaultValue="" DataElementKey="OffsetShortText"/>
+                    <Column Key="PackageNo" Caption="数据包" DataElementKey="PackageNo"/>
+                </Table>
+            </TableCollection>
+        </DataObject>
+    </DataSource>
+    <OperationCollection>
+        <Operation Key="DicNew" Caption="新增" RefKey="DicNew" TCode="GetEntryTCode()" Activity="01"/>
+        <Operation Key="DicCopyNew" Caption="复制新增" RefKey="DicCopyNew" TCode="GetEntryTCode()" Activity="01"/>
+        <Operation Key="DicModify" Caption="修改" RefKey="DicModify" TCode="GetEntryTCode()" Activity="02"/>
+        <Operation Key="DicSave" Caption="保存" RefKey="DicSave"/>
+        <Operation Key="DicCancel" Caption="取消" RefKey="DicCancel"/>
+        <Operation Key="DicEnabled" Caption="启用" RefKey="DicEnabled" Activity="Y02"/>
+        <Operation Key="DicDisabled" Caption="停用" RefKey="DicDisabled" Activity="Y01"/>
+        <Operation Key="DicInvalid" Caption="作废" RefKey="DicInvalid" Activity="Y03"/>
+        <Operation Key="DicDelete" Caption="删除" RefKey="DicDelete" Activity="06"/>
+        <Operation Key="DicRefresh" Caption="刷新" RefKey="DicRefresh"/>
+        <Operation Key="Lang" Caption="多语言" RefKey="Lang" Activity="Y10"/>
+        <Operation Key="ShowDataLog" Caption="查看数据日志" RefKey="ShowDataLog" Activity="Y08"/>
+        <Operation Key="DicExit" Caption="关闭" RefKey="DicExit"/>
+    </OperationCollection>
+    <Body>
+        <Block>
+            <FlexFlowLayoutPanel Key="root">
+                <TabPanel Key="body" Height="100%">
+                    <SplitPanel Key="BasicInformation" Caption="基本信息" Orientation="Vertical" Visible="true">
+                        <GridLayoutPanel Key="body_basic" Padding="8px" OverflowY="Auto" TopPadding="24px">
+                            <TextEditor Key="Code" Caption="代码" X="0" Y="0" Visible="true" Enable="!ReadOnly()&amp;&amp;com.bokesoft.erp.documentNumber.DocumentNumber.docNumberFieldEnable('Code')" Case="Upper" Trim="true" XSpan="3" MaxLength="30">
+                                <DataBinding TableKey="EPM_Strategy" ColumnKey="Code">
+                                    <CheckRule>
+                                        <![CDATA[IIFS(com.bokesoft.erp.documentNumber.DocumentNumber.docNumberFieldEnable('Code')&&Code=='', '采用外部给号编码规则，请输入代码', true, true)]]>
+                                    </CheckRule>
+                                </DataBinding>
+                            </TextEditor>
+                            <TextEditor Key="Name" Caption="名称" X="0" Y="1" Visible="true" Trim="true" XSpan="3">
+                                <DataBinding DefaultFormulaValue="Macro_MultilLangText('EPM_Strategy','Name')"/>
+                            </TextEditor>
+                            <ComboBox Key="NodeType" Caption="节点类型" X="2" Y="5" Visible="false" Enable="!ReadOnly()&amp;&amp;Enable&lt;0" SourceType="ParaGroup" IntegerValue="true" TextShowType="Caption" GroupKey="NodeType">
+                                <DataBinding TableKey="EPM_Strategy" ColumnKey="NodeType" DefaultValue="0"/>
+                            </ComboBox>
+                            <ComboBox Key="SchedulingIndicator" Caption="计划标识" X="0" Y="2" Visible="!ToInt(IsCycleSet)" SourceType="ParaGroup" GroupKey="SchedulingIndicatorType" IntegerValue="true" XSpan="2">
+                                <DataBinding TableKey="EPM_Strategy" ColumnKey="SchedulingIndicator" DefaultValue="0"/>
+                                <ComboFilter SourceType="Formula">
+                                    <FormulaItems>
+                                        <![CDATA[Macro_SchedulingIndicator_Formula()]]>
+                                    </FormulaItems>
+                                </ComboFilter>
+                            </ComboBox>
+                            <Dict Key="StrategyUnitID" Caption="策略单位" X="2" Y="2" Visible="!ToInt(IsCycleSet)" Enable="IIF(ToBool(com.bokesoft.erp.pm.function.StrategiesFormula.isExistStrategiesPackage()),false,!ReadOnly())" ItemKey="Unit">
+                                <DataBinding TableKey="EPM_Strategy" ColumnKey="StrategyUnitID">
+                                    <CheckRule>
+                                        <![CDATA[IIFS(!ToInt(IsCycleSet), IIF(StrategyUnitID>0,true,MessageFacade('IP453','请输入策略单位')), true, true)]]>
+                                    </CheckRule>
+                                </DataBinding>
+                                <ItemFilter ItemKey="Unit">
+                                    <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                        <FilterValue Index="1" ParaValue="IIF(SchedulingIndicator&gt;=0, ' soid in ('&amp;com.bokesoft.erp.pm.function.StrategiesFormula.getStrategyUnitIDbyIndicator(SchedulingIndicator)&amp;' )', '1=2')"/>
+                                    </Filter>
+                                </ItemFilter>
+                            </Dict>
+                            <NumberEditor Key="CallHorizon" Caption="调用期" X="0" Y="3" Visible="!ToInt(IsCycleSet)" IntegerValue="true" UseGroupingSeparator="false" Scale="0" Precision="9">
+                                <DataBinding TableKey="EPM_Strategy" ColumnKey="CallHorizon">
+                                    <CheckRule>
+                                        <![CDATA[IIF(0<=CallHorizon&&CallHorizon<=100,true,MessageFacade('IP814','请输入0-100间的整数'))]]>
+                                    </CheckRule>
+                                </DataBinding>
+                            </NumberEditor>
+                            <Label Key="Tag1" Caption="%" X="1" Y="3" Visible="!ToInt(IsCycleSet)" Enable="false">
+                                <Format HAlign="Left"/>
+                            </Label>
+                            <Label Key="Tag2" Caption="%" X="1" Y="4" Visible="!ToInt(IsCycleSet)" Enable="false">
+                                <Format HAlign="Left"/>
+                            </Label>
+                            <Label Key="Tag3" Caption="%" X="1" Y="5" Visible="!ToInt(IsCycleSet)" Enable="false">
+                                <Format HAlign="Left"/>
+                            </Label>
+                            <Label Key="Tag4" Caption="%" X="3" Y="3" Visible="!ToInt(IsCycleSet)" Enable="false">
+                                <Format HAlign="Left"/>
+                            </Label>
+                            <Label Key="Tag5" Caption="%" X="3" Y="4" Visible="!ToInt(IsCycleSet)" Enable="false">
+                                <Format HAlign="Left"/>
+                            </Label>
+                            <Dict Key="FactoryCalendarID" Caption="工厂日历" X="0" Y="6" Visible="!ToInt(IsCycleSet)" Enable="!ReadOnly()&amp;&amp;SchedulingIndicator!=3" ItemKey="Calendar" XSpan="2">
+                                <DataBinding TableKey="EPM_Strategy" ColumnKey="FactoryCalendarID"/>
+                            </Dict>
+                            <NumberEditor Key="LateShiftFactor" Caption="延迟完成时的替换因子" X="0" Y="4" Visible="!ToInt(IsCycleSet)" IntegerValue="true" UseGroupingSeparator="false" Scale="0" Precision="9">
+                                <DataBinding TableKey="EPM_Strategy" ColumnKey="LateShiftFactor">
+                                    <CheckRule>
+                                        <![CDATA[IIF(0<=LateShiftFactor&&LateShiftFactor<=100,true,MessageFacade('IP814','请输入0-100间的整数'))]]>
+                                    </CheckRule>
+                                </DataBinding>
+                            </NumberEditor>
+                            <NumberEditor Key="EarlyShiftFactor" Caption="提早完成时的替换因子" X="2" Y="3" Visible="!ToInt(IsCycleSet)" IntegerValue="true" UseGroupingSeparator="false" Scale="0" Precision="9">
+                                <DataBinding TableKey="EPM_Strategy" ColumnKey="EarlyShiftFactor">
+                                    <CheckRule>
+                                        <![CDATA[IIF(0<=EarlyShiftFactor&&EarlyShiftFactor<=100,true,MessageFacade('IP814','请输入0-100间的整数'))]]>
+                                    </CheckRule>
+                                </DataBinding>
+                            </NumberEditor>
+                            <NumberEditor Key="LateTolerance" Caption="延迟完成的容差" X="0" Y="5" Visible="!ToInt(IsCycleSet)" IntegerValue="true" UseGroupingSeparator="false" Scale="0" Precision="9">
+                                <DataBinding TableKey="EPM_Strategy" ColumnKey="LateTolerance">
+                                    <CheckRule>
+                                        <![CDATA[IIF(0<=LateTolerance&&LateTolerance<=100,true,MessageFacade('IP814','请输入0-100间的整数'))]]>
+                                    </CheckRule>
+                                </DataBinding>
+                            </NumberEditor>
+                            <NumberEditor Key="EarlyTolerance" Caption="提早完成的容差" X="2" Y="4" Visible="!ToInt(IsCycleSet)" IntegerValue="true" UseGroupingSeparator="false" Scale="0" Precision="9">
+                                <DataBinding TableKey="EPM_Strategy" ColumnKey="EarlyTolerance">
+                                    <CheckRule>
+                                        <![CDATA[IIF(0<=EarlyTolerance&&EarlyTolerance<=100,true,MessageFacade('IP814','请输入0-100间的整数'))]]>
+                                    </CheckRule>
+                                </DataBinding>
+                            </NumberEditor>
+                            <Button Key="PackSequence" Caption="包顺序" X="2" Y="6" Visible="!ToInt(IsCycleSet)" Enable="ReadOnly()" Type="Normal">
+                                <DataBinding DefaultValue="Pack.顺序"/>
+                                <OnClick>
+                                    <![CDATA[ERPShowModal('PM_PackageSequence',GetCallFormula('Macro_PM_Strategy_ShowEvent',SOID));]]>
+                                </OnClick>
+                            </Button>
+                            <RowDefCollection RowGap="24">
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                            </RowDefCollection>
+                            <ColumnDefCollection ColumnGap="16">
+                                <ColumnDef Width="190px"/>
+                                <ColumnDef Width="30px"/>
+                                <ColumnDef Width="190px"/>
+                                <ColumnDef Width="30px"/>
+                            </ColumnDefCollection>
+                        </GridLayoutPanel>
+                        <Grid Key="StrategiesDtlGrid" Caption="维护策略" SerialSeq="true" Padding="8px">
+                            <GridColumnCollection>
+                                <GridColumn Key="Dtl_IsSelect" Width="32px"/>
+                                <GridColumn Key="Dtl_CycleLength" Caption="周期长度" Width="80px"/>
+                                <GridColumn Key="Dtl_PackageUnitID" Caption="单位" Width="80px"/>
+                                <GridColumn Key="Dtl_BaseLength" Caption="基本数值" Visible="Macro_DebugMode()" Width="80px"/>
+                                <GridColumn Key="Dtl_CycleNotes" Caption="周期文本" Width="80px"/>
+                                <GridColumn Key="Dtl_CycleShortText" Caption="周期短文本" Width="100px"/>
+                                <GridColumn Key="Dtl_CycleHierarchy" Caption="层次" Visible="!ToInt(IsCycleSet)" Width="80px"/>
+                                <GridColumn Key="Dtl_OffsetPos" Caption="偏置" Visible="!ToInt(IsCycleSet)" Width="80px"/>
+                                <GridColumn Key="Dtl_OffsetShortText" Caption="偏置短文本" Visible="!ToInt(IsCycleSet)" Width="100px"/>
+                                <GridColumn Key="Dtl_LeadDays" Caption="初始" Visible="!ToInt(IsCycleSet)" Width="80px"/>
+                                <GridColumn Key="Dtl_FollowUpDays" Caption="后续" Visible="!ToInt(IsCycleSet)" Width="80px"/>
+                                <GridColumn Key="Dtl_OID" Visible="false" Width="80px"/>
+                                <GridColumn Key="Dtl_PackageNo" Caption="维护包" Visible="false" Enable="false" Width="80px"/>
+                            </GridColumnCollection>
+                            <GridRowCollection>
+                                <GridRow Key="RowInStrategiesDtlGrid" TableKey="EPM_StrategyDtl">
+                                    <GridCell Key="Dtl_IsSelect" Caption="选择" CellType="CheckBox" IsSelect="true"/>
+                                    <GridCell Key="Dtl_CycleLength" Caption="周期长度" CellType="NumberEditor" Precision="9" Scale="0" UseGroupingSeparator="false">
+                                        <DataBinding ColumnKey="CycleLength">
+                                            <CheckRule>
+                                                <![CDATA[com.bokesoft.erp.pm.function.StrategiesFormula.checkCycleLength(SchedulingIndicator,Dtl_PackageUnitID,Dtl_CycleLength,IsCycleSet)]]>
+                                            </CheckRule>
+                                        </DataBinding>
+                                    </GridCell>
+                                    <GridCell Key="Dtl_PackageUnitID" Caption="单位" CellType="Dict" ItemKey="Unit">
+                                        <DataBinding ColumnKey="PackageUnitID" DefaultFormulaValue="StrategyUnitID">
+                                            <ValueChanged>
+                                                <![CDATA[IIF(ToInt(IsCycleSet)>0,'',com.bokesoft.erp.pm.function.StrategiesFormula.setMinUnitID());]]>
+                                            </ValueChanged>
+                                        </DataBinding>
+                                        <ItemFilter ItemKey="Unit">
+                                            <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                                <FilterValue Index="1" ParaValue="IIF(StrategyUnitID&gt;0, ' soid in ('&amp;com.bokesoft.erp.pm.function.StrategiesFormula.getPackageUnitIDByStrategyUnitID(StrategyUnitID,SchedulingIndicator)&amp;' )', IIF(ToInt(IsCycleSet)&gt;0,'1=1','1=2'))"/>
+                                            </Filter>
+                                        </ItemFilter>
+                                    </GridCell>
+                                    <GridCell Key="Dtl_BaseLength" Caption="基本数值" CellType="NumberEditor" Scale="3">
+                                        <DataBinding ColumnKey="BaseLength">
+                                            <DefaultFormulaValue>
+                                                <![CDATA[IIF(StrategyUnitID>0&&Dtl_PackageUnitID>0&&Dtl_CycleLength>0,com.bokesoft.erp.basis.unit.UnitFormula.getExValue4Tunit(Dtl_PackageUnitID,StrategyUnitID,Dtl_CycleLength),Dtl_CycleLength)]]>
+                                            </DefaultFormulaValue>
+                                        </DataBinding>
+                                        <CellFormat HAlign="Right"/>
+                                    </GridCell>
+                                    <GridCell Key="Dtl_CycleNotes" Caption="周期文本" CellType="TextEditor" MaxLength="100" Trim="true">
+                                        <DataBinding ColumnKey="CycleNotes" Required="true"/>
+                                    </GridCell>
+                                    <GridCell Key="Dtl_CycleShortText" Caption="周期短文本" CellType="TextEditor" MaxLength="100" Trim="true">
+                                        <DataBinding ColumnKey="CycleShortText" Required="true"/>
+                                    </GridCell>
+                                    <GridCell Key="Dtl_CycleHierarchy" Caption="层次" CellType="NumberEditor" Precision="9" Scale="0" UseGroupingSeparator="false">
+                                        <DataBinding ColumnKey="CycleHierarchy">
+                                            <CheckRule>
+                                                <![CDATA[IIFS(!ToInt(IsCycleSet), IIF(Dtl_CycleHierarchy>0,true,MessageFacade('IP808','请输入层次')), true, true)]]>
+                                            </CheckRule>
+                                        </DataBinding>
+                                    </GridCell>
+                                    <GridCell Key="Dtl_OffsetPos" Caption="偏置" CellType="NumberEditor" Precision="9" Scale="0" UseGroupingSeparator="false">
+                                        <DataBinding ColumnKey="OffsetPos">
+                                            <CheckRule>
+                                                <![CDATA[com.bokesoft.erp.pm.function.StrategiesFormula.checkOffSet(SchedulingIndicator,Dtl_PackageUnitID,Dtl_OffsetPos,Dtl_OffsetShortText,IsCycleSet)]]>
+                                            </CheckRule>
+                                        </DataBinding>
+                                    </GridCell>
+                                    <GridCell Key="Dtl_OffsetShortText" Caption="偏置短文本" CellType="TextEditor" MaxLength="100" Trim="true">
+                                        <DataBinding ColumnKey="OffsetShortText">
+                                            <CheckRule>
+                                                <![CDATA[IIF(Dtl_OffsetPos!=0&&Dtl_OffsetShortText=='',MessageFacade('PM_STRATEGIE001','请输入短文本'),true)]]>
+                                            </CheckRule>
+                                        </DataBinding>
+                                    </GridCell>
+                                    <GridCell Key="Dtl_LeadDays" Caption="初始" CellType="NumberEditor" Precision="9" Scale="0" UseGroupingSeparator="false">
+                                        <DataBinding ColumnKey="LeadDays"/>
+                                    </GridCell>
+                                    <GridCell Key="Dtl_FollowUpDays" Caption="后续" CellType="NumberEditor" Precision="9" Scale="0" UseGroupingSeparator="false">
+                                        <DataBinding ColumnKey="FollowUpDays"/>
+                                    </GridCell>
+                                    <GridCell Key="Dtl_OID" CellType="NumberEditor" Scale="0">
+                                        <DataBinding ColumnKey="OID"/>
+                                    </GridCell>
+                                    <GridCell Key="Dtl_PackageNo" Caption="维护包" CellType="NumberEditor" Enable="false" Precision="9" Scale="0">
+                                        <DataBinding ColumnKey="PackageNo"/>
+                                        <CellFormat HAlign="Right"/>
+                                    </GridCell>
+                                </GridRow>
+                            </GridRowCollection>
+                            <OnRowDelete>
+                                <![CDATA[Macro_DeleteRow_ButtonClickTrg();DeleteRow();Macro_DeleteRow_ButtonClickTrg2();]]>
+                            </OnRowDelete>
+                        </Grid>
+                        <SplitSize Size="425px"/>
+                        <SplitSize Size="100%"/>
+                    </SplitPanel>
+                    <FlexFlowLayoutPanel Key="BodySystem" Caption="系统信息" Padding="8px">
+                        <Embed Key="BodySystemEmbed" FormKey="BodySystemDictForm" RootKey="SystemInfoPanel">
+                            <Var Key="SystemInfoTableKey" Value="EPM_Strategy"/>
+                        </Embed>
+                    </FlexFlowLayoutPanel>
+                    <FlexGridLayoutPanel Key="HiddenInformation" Caption="隐藏信息" ColumnCount="3" ColumnGap="16" OverflowY="Auto" RowGap="24" Visible="false">
+                        <Dict Key="TCodeID" Caption="事务码" X="0" Y="0" Visible="true" ItemKey="TCode">
+                            <DataBinding TableKey="EPM_Strategy" ColumnKey="TCodeID">
+                                <DefaultFormulaValue>
+                                    <![CDATA[IIF(GetEntryPara('TCode')=='',0,GetDictOID('TCode', 'Code', GetEntryPara('TCode')))]]>
+                                </DefaultFormulaValue>
+                            </DataBinding>
+                        </Dict>
+                        <CheckBox Key="IsCycleSet" Caption="周期集" X="0" Y="1" Visible="true">
+                            <DataBinding TableKey="EPM_Strategy" ColumnKey="IsCycleSet">
+                                <DefaultFormulaValue>
+                                    <![CDATA[IIF(GetDictValue('TCode', TCodeID, 'Code')=='IP11Z',true,false)]]>
+                                </DefaultFormulaValue>
+                            </DataBinding>
+                        </CheckBox>
+                    </FlexGridLayoutPanel>
+                </TabPanel>
+            </FlexFlowLayoutPanel>
+        </Block>
+    </Body>
+    <MacroCollection>
+        <Macro Key="Macro_DeleteRow_ButtonClickTrg">
+            <![CDATA[com.bokesoft.erp.pm.function.StrategiesFormula.checkHasUsedStrategiesPackage(Dtl_OID,IsCycleSet)]]>
+        </Macro>
+        <Macro Key="Macro_DeleteRow_ButtonClickTrg2">
+            <![CDATA[com.bokesoft.erp.pm.function.StrategiesFormula.setMinUnitID()]]>
+        </Macro>
+        <Macro Key="Macro_SchedulingIndicator_Formula">
+            <![CDATA[com.bokesoft.erp.pm.function.StrategiesFormula.getSchedulingIndicatorComboListValue()]]>
+        </Macro>
+    </MacroCollection>
+</Form>

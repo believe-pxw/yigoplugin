@@ -1,17 +1,17 @@
 // MyLanguage.bnf
 
 {
-  parserClass="com.example.parser.MyLanguageParser"
+  parserClass="example.parser.MyLanguageParser"
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
   psiClassPrefix="MyLanguage"
   psiImplClassSuffix="Impl"
-  psiPackage="com.example.psi"
-  psiImplPackage="com.example.psi.impl"
+  psiPackage="example.psi"
+  psiImplPackage="example.psi.impl"
 
-  elementTypeHolderClass="com.example.psi.MyLanguageTypes"
-  elementTypeClass="com.example.psi.MyLanguageElementType"
-  tokenTypeClass="com.example.psi.MyLanguageTokenType"
+  elementTypeHolderClass="example.psi.MyLanguageTypes"
+  elementTypeClass="example.psi.MyLanguageElementType"
+  tokenTypeClass="example.psi.MyLanguageTokenType"
 
   tokens = [
     // 关键字 (Keywords)
@@ -41,6 +41,15 @@
     OR_OP = "||"
     DOT = "."
 
+    // Comparison Operators (新增)
+    LESS_EQUAL = "<="
+    GREATER_EQUAL = ">="
+    EQUAL_EQUAL = "=="
+    NOT_EQUAL = "!="
+    LESS = "<"
+    GREATER = ">"
+    NOT_EQUAL_ALT = "<>" // 另一种不等于
+
     // 标点符号 (Punctuation)
     LPAREN = "("
     RPAREN = ")"
@@ -67,13 +76,15 @@ while_statement ::= WHILE_KEYWORD LPAREN expression RPAREN statement
 
 // 表达式 (Expressions)
 // 优先级从低到高定义，以处理操作符优先级
-// Lower precedence for logical OR
 expression ::= logical_or_expression
 
-private logical_or_expression ::= logical_and_expression (OR_OP logical_and_expression)*
+private logical_or_expression ::= comparison_expression (OR_OP comparison_expression)* // 修改: 优先级低于比较表达式
+
+// Comparison expressions (新增)
+private comparison_expression ::= additive_expression ((LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT) additive_expression)*
 
 // Higher precedence for logical AND
-private logical_and_expression ::= additive_expression (AND_OP additive_expression)*
+private logical_and_expression ::= additive_expression (AND_OP additive_expression)* // 调整: 优先级现在与additive_expression相同或更高
 
 // Additive expressions (+, -) and string concatenation (&)
 // String concatenation has similar precedence to arithmetic, adjust if needed
