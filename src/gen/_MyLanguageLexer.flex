@@ -25,9 +25,9 @@ import static example.psi.MyLanguageTypes.*;
 EOL=\R
 WHITE_SPACE=\s+
 
-IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 MACRO_IDENTIFIER=Macro_[a-zA-Z_][a-zA-Z0-9_]*
 JAVA_PATH_IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*(\.[a-zA-Z_][a-zA-Z0-9_]*)+
+IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 SINGLE_QUOTED_STRING='[^']*'
 DOUBLE_QUOTED_STRING=\"[^\"]*\"
 BRACE_QUOTED_STRING=\{[^\}]*\}
@@ -68,9 +68,9 @@ NUMBER=[0-9]+
   "{"                          { return LBRACE; }
   "}"                          { return RBRACE; }
 
-  {IDENTIFIER}                 { return IDENTIFIER; }
   {MACRO_IDENTIFIER}           { return MACRO_IDENTIFIER; }
   {JAVA_PATH_IDENTIFIER}       { return JAVA_PATH_IDENTIFIER; }
+  {IDENTIFIER}                 { return IDENTIFIER; }
   {SINGLE_QUOTED_STRING}       { return SINGLE_QUOTED_STRING; }
   {DOUBLE_QUOTED_STRING}       { return DOUBLE_QUOTED_STRING; }
   {BRACE_QUOTED_STRING}        { return BRACE_QUOTED_STRING; }

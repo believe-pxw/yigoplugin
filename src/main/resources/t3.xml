@@ -17,3 +17,7 @@
         </Macro>
     </MacroCollection>
 </Form>
+
+        <!--<toolWindow factoryClass="com.github.believepxw.yigo.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>-->
+        <!--<psi.referenceContributor language="XML"-->
+        <!--implementation="com.github.believepxw.yigo.CDataReferenceContributor"/>-->
