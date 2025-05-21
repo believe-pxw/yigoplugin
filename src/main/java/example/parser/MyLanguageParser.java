@@ -114,18 +114,18 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // additive_expression ((LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT) additive_expression)*
+  // unary_expression ((LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT) unary_expression)*
   static boolean comparison_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "comparison_expression")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = additive_expression(b, l + 1);
+    r = unary_expression(b, l + 1);
     r = r && comparison_expression_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // ((LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT) additive_expression)*
+  // ((LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT) unary_expression)*
   private static boolean comparison_expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "comparison_expression_1")) return false;
     while (true) {
@@ -136,13 +136,13 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // (LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT) additive_expression
+  // (LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT) unary_expression
   private static boolean comparison_expression_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "comparison_expression_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = comparison_expression_1_0_0(b, l + 1);
-    r = r && additive_expression(b, l + 1);
+    r = r && unary_expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -162,7 +162,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // SINGLE_QUOTED_STRING | DOUBLE_QUOTED_STRING | BRACE_QUOTED_STRING
+  // SINGLE_QUOTED_STRING | DOUBLE_QUOTED_STRING | BRACE_QUOTED_STRING | NUMBER_LITERAL | BOOLEAN_TRUE | BOOLEAN_FALSE
   public static boolean constant(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "constant")) return false;
     boolean r;
@@ -170,6 +170,9 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, SINGLE_QUOTED_STRING);
     if (!r) r = consumeToken(b, DOUBLE_QUOTED_STRING);
     if (!r) r = consumeToken(b, BRACE_QUOTED_STRING);
+    if (!r) r = consumeToken(b, NUMBER_LITERAL);
+    if (!r) r = consumeToken(b, BOOLEAN_TRUE);
+    if (!r) r = consumeToken(b, BOOLEAN_FALSE);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -186,14 +189,22 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // expression
+  // expression SEMICOLON?
   public static boolean expression_statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "expression_statement")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, EXPRESSION_STATEMENT, "<expression statement>");
     r = expression(b, l + 1);
+    r = r && expression_statement_1(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
+  }
+
+  // SEMICOLON?
+  private static boolean expression_statement_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "expression_statement_1")) return false;
+    consumeToken(b, SEMICOLON);
+    return true;
   }
 
   /* ********************************************************** */
@@ -275,18 +286,18 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // additive_expression (AND_OP additive_expression)*
+  // comparison_expression (AND_OP comparison_expression)*
   static boolean logical_and_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "logical_and_expression")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = additive_expression(b, l + 1);
+    r = comparison_expression(b, l + 1);
     r = r && logical_and_expression_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // (AND_OP additive_expression)*
+  // (AND_OP comparison_expression)*
   private static boolean logical_and_expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "logical_and_expression_1")) return false;
     while (true) {
@@ -297,30 +308,30 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // AND_OP additive_expression
+  // AND_OP comparison_expression
   private static boolean logical_and_expression_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "logical_and_expression_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, AND_OP);
-    r = r && additive_expression(b, l + 1);
+    r = r && comparison_expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // comparison_expression (OR_OP comparison_expression)*
+  // logical_and_expression (OR_OP logical_and_expression)*
   static boolean logical_or_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "logical_or_expression")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = comparison_expression(b, l + 1);
+    r = logical_and_expression(b, l + 1);
     r = r && logical_or_expression_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // (OR_OP comparison_expression)*
+  // (OR_OP logical_and_expression)*
   private static boolean logical_or_expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "logical_or_expression_1")) return false;
     while (true) {
@@ -331,13 +342,13 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // OR_OP comparison_expression
+  // OR_OP logical_and_expression
   private static boolean logical_or_expression_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "logical_or_expression_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OR_OP);
-    r = r && comparison_expression(b, l + 1);
+    r = r && logical_and_expression(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -439,13 +450,13 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (variable_declaration | expression_statement | if_statement | while_statement) SEMICOLON
+  // (variable_declaration | expression_statement | if_statement | while_statement) (SEMICOLON | <<eof>>)
   static boolean statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statement")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = statement_0(b, l + 1);
-    r = r && consumeToken(b, SEMICOLON);
+    r = r && statement_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -458,6 +469,41 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     if (!r) r = expression_statement(b, l + 1);
     if (!r) r = if_statement(b, l + 1);
     if (!r) r = while_statement(b, l + 1);
+    return r;
+  }
+
+  // SEMICOLON | <<eof>>
+  private static boolean statement_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "statement_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SEMICOLON);
+    if (!r) r = eof(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // NOT_OP unary_expression // Logical NOT
+  //   | additive_expression
+  static boolean unary_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "unary_expression")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = unary_expression_0(b, l + 1);
+    if (!r) r = additive_expression(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // NOT_OP unary_expression
+  private static boolean unary_expression_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "unary_expression_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, NOT_OP);
+    r = r && unary_expression(b, l + 1);
+    exit_section_(b, m, null, r);
     return r;
   }
 

@@ -31,6 +31,7 @@ JAVA_PATH_IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*(\.[a-zA-Z_][a-zA-Z0-9_]*)+
 SINGLE_QUOTED_STRING='[^']*'
 DOUBLE_QUOTED_STRING=\"[^\"]*\"
 BRACE_QUOTED_STRING=\{[^\}]*\}
+NUMBER_LITERAL=[0-9]+
 
 %%
 <YYINITIAL> {
@@ -41,6 +42,8 @@ BRACE_QUOTED_STRING=\{[^\}]*\}
   "while"                      { return WHILE_KEYWORD; }
   "var"                        { return VAR_KEYWORD; }
   "parent"                     { return PARENT_KEYWORD; }
+  "true"                       { return BOOLEAN_TRUE; }
+  "false"                      { return BOOLEAN_FALSE; }
   "+"                          { return PLUS; }
   "-"                          { return MINUS; }
   "*"                          { return MUL; }
@@ -49,6 +52,7 @@ BRACE_QUOTED_STRING=\{[^\}]*\}
   "&&"                         { return AND_OP; }
   "||"                         { return OR_OP; }
   "."                          { return DOT; }
+  "!"                          { return NOT_OP; }
   "<="                         { return LESS_EQUAL; }
   ">="                         { return GREATER_EQUAL; }
   "=="                         { return EQUAL_EQUAL; }
@@ -67,6 +71,7 @@ BRACE_QUOTED_STRING=\{[^\}]*\}
   {SINGLE_QUOTED_STRING}       { return SINGLE_QUOTED_STRING; }
   {DOUBLE_QUOTED_STRING}       { return DOUBLE_QUOTED_STRING; }
   {BRACE_QUOTED_STRING}        { return BRACE_QUOTED_STRING; }
+  {NUMBER_LITERAL}             { return NUMBER_LITERAL; }
 
 }
 

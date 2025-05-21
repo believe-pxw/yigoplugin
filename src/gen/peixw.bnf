@@ -30,6 +30,10 @@
     SINGLE_QUOTED_STRING = "regexp:'[^']*'" // 'xxx'
     DOUBLE_QUOTED_STRING = "regexp:\"[^\"]*\"" // "xxx"
     BRACE_QUOTED_STRING = "regexp:\{[^\}]*\}" // {xxx}
+    NUMBER_LITERAL = "regexp:[0-9]+" // 数值常量 (新增)
+    BOOLEAN_TRUE = "true" // 布尔常量 (新增)
+    BOOLEAN_FALSE = "false" // 布尔常量 (新增)
+
 
     // 运算符 (Operators)
     PLUS = "+"
@@ -40,8 +44,9 @@
     AND_OP = "&&"
     OR_OP = "||"
     DOT = "."
+    NOT_OP = "!" // 逻辑非运算符 (新增)
 
-    // Comparison Operators (新增)
+    // Comparison Operators
     LESS_EQUAL = "<="
     GREATER_EQUAL = ">="
     EQUAL_EQUAL = "=="
@@ -64,11 +69,14 @@
 
 root ::= statement*
 
-private statement ::= (variable_declaration | expression_statement | if_statement | while_statement) SEMICOLON
+// Modified: Allowing expression_statement to optionally not end with SEMICOLON
+// This makes single expressions like in IIF arguments valid without a trailing semicolon.
+private statement ::= (variable_declaration | expression_statement | if_statement | while_statement) (SEMICOLON | <<eof>>)
 
 variable_declaration ::= VAR_KEYWORD IDENTIFIER
 
-expression_statement ::= expression
+// Changed expression_statement to allow optional semicolon
+expression_statement ::= expression SEMICOLON?
 
 if_statement ::= IF_KEYWORD LPAREN expression RPAREN statement (ELSE_KEYWORD statement)?
 
@@ -78,16 +86,20 @@ while_statement ::= WHILE_KEYWORD LPAREN expression RPAREN statement
 // 优先级从低到高定义，以处理操作符优先级
 expression ::= logical_or_expression
 
-private logical_or_expression ::= comparison_expression (OR_OP comparison_expression)* // 修改: 优先级低于比较表达式
-
-// Comparison expressions (新增)
-private comparison_expression ::= additive_expression ((LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT) additive_expression)*
+private logical_or_expression ::= logical_and_expression (OR_OP logical_and_expression)*
 
 // Higher precedence for logical AND
-private logical_and_expression ::= additive_expression (AND_OP additive_expression)* // 调整: 优先级现在与additive_expression相同或更高
+private logical_and_expression ::= comparison_expression (AND_OP comparison_expression)*
+
+// Comparison expressions
+private comparison_expression ::= unary_expression ((LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT) unary_expression)* // Modified: Refers to unary_expression
+
+// Unary expressions (e.g., !exp, -exp) (新增)
+private unary_expression ::=
+  NOT_OP unary_expression // Logical NOT
+  | additive_expression // Other expressions are handled by additive_expression
 
 // Additive expressions (+, -) and string concatenation (&)
-// String concatenation has similar precedence to arithmetic, adjust if needed
 private additive_expression ::= multiplicative_expression ((PLUS | MINUS | AMPERSAND) multiplicative_expression)*
 
 // Multiplicative expressions (*, /)
@@ -102,7 +114,8 @@ primary_expression ::=
 
 variable_reference ::= IDENTIFIER
 
-constant ::= SINGLE_QUOTED_STRING | DOUBLE_QUOTED_STRING | BRACE_QUOTED_STRING
+// Added NUMBER_LITERAL to constant
+constant ::= SINGLE_QUOTED_STRING | DOUBLE_QUOTED_STRING | BRACE_QUOTED_STRING | NUMBER_LITERAL | BOOLEAN_TRUE | BOOLEAN_FALSE
 
 function_call ::=
   (MACRO_IDENTIFIER | IDENTIFIER | java_method_call | parent_call) LPAREN argument_list? RPAREN
@@ -111,4 +124,5 @@ java_method_call ::= JAVA_PATH_IDENTIFIER
 
 parent_call ::= PARENT_KEYWORD DOT IDENTIFIER
 
+// Added an optional SEMICOLON to argument_list expressions (if you want to be very flexible, but usually not needed inside argument lists)
 argument_list ::= expression (COMMA expression)*

@@ -41,6 +41,12 @@ public class MyLanguageConstantImpl extends ASTWrapperPsiElement implements MyLa
 
   @Override
   @Nullable
+  public PsiElement getNumberLiteral() {
+    return findChildByType(NUMBER_LITERAL);
+  }
+
+  @Override
+  @Nullable
   public PsiElement getSingleQuotedString() {
     return findChildByType(SINGLE_QUOTED_STRING);
   }

@@ -14,6 +14,9 @@ public interface MyLanguageConstant extends PsiElement {
   PsiElement getDoubleQuotedString();
 
   @Nullable
+  PsiElement getNumberLiteral();
+
+  @Nullable
   PsiElement getSingleQuotedString();
 
 }

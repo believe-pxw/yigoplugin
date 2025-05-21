@@ -25,6 +25,8 @@ public interface MyLanguageTypes {
 
   IElementType AMPERSAND = new MyLanguageTokenType("&");
   IElementType AND_OP = new MyLanguageTokenType("&&");
+  IElementType BOOLEAN_FALSE = new MyLanguageTokenType("false");
+  IElementType BOOLEAN_TRUE = new MyLanguageTokenType("true");
   IElementType BRACE_QUOTED_STRING = new MyLanguageTokenType("BRACE_QUOTED_STRING");
   IElementType COMMA = new MyLanguageTokenType(",");
   IElementType DIV = new MyLanguageTokenType("/");
@@ -45,6 +47,8 @@ public interface MyLanguageTypes {
   IElementType MUL = new MyLanguageTokenType("*");
   IElementType NOT_EQUAL = new MyLanguageTokenType("!=");
   IElementType NOT_EQUAL_ALT = new MyLanguageTokenType("<>");
+  IElementType NOT_OP = new MyLanguageTokenType("!");
+  IElementType NUMBER_LITERAL = new MyLanguageTokenType("NUMBER_LITERAL");
   IElementType OR_OP = new MyLanguageTokenType("||");
   IElementType PARENT_KEYWORD = new MyLanguageTokenType("parent");
   IElementType PLUS = new MyLanguageTokenType("+");
