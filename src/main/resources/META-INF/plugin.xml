@@ -12,8 +12,22 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!--<toolWindow factoryClass="com.github.believepxw.yigo.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>-->
-        <psi.referenceContributor language="XML"
-                                  implementation="com.github.believepxw.yigo.CDataReferenceContributor"/>
+        <!--<psi.referenceContributor language="XML"-->
+                                  <!--implementation="com.github.believepxw.yigo.CDataReferenceContributor"/>-->
+        <multiHostInjector implementation="com.github.believepxw.yigo.MyLanguageXmlInjector"/>
+
+        <!--<fileType
+                name="MyLanguage File"
+                implementationClass="com.example.MyLanguageFileType"
+                fieldName="INSTANCE"
+                language="MyLanguageID"
+                extensions="mylang"/>
+        <lang.parserDefinition
+                language="MyLanguageID"
+                implementationClass="com.example.MyLanguageParserDefinition"/>
+        <lang.syntaxHighlighterFactory
+                language="MyLanguageID"
+                implementationClass="com.example.MyLanguageSyntaxHighlighterFactory"/>-->
     </extensions>
 
     <applicationListeners>
