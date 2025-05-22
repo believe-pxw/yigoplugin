@@ -21,8 +21,7 @@ public class MyLanguageParserDefinition implements ParserDefinition{
     // public static final TokenSet COMMENTS = TokenSet.create(MyLanguageTypes.COMMENT_TOKEN); // 如果有注释
     public static final TokenSet STRING_LITERALS = TokenSet.create(
             MyLanguageTypes.SINGLE_QUOTED_STRING,
-            MyLanguageTypes.DOUBLE_QUOTED_STRING,
-            MyLanguageTypes.BRACE_QUOTED_STRING
+            MyLanguageTypes.DOUBLE_QUOTED_STRING
     ); // 示例，根据你的 tokens 定义
 
     // 这个 IFileElementType 需要和 plugin.xml 中 filetype 的 language 属性匹配

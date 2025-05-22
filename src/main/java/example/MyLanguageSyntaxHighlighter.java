@@ -70,8 +70,7 @@ public class MyLanguageSyntaxHighlighter extends SyntaxHighlighterBase {
         } else if (tokenType.equals(MyLanguageTypes.IDENTIFIER)) {
             return IDENTIFIER_KEYS;
         } else if (tokenType.equals(MyLanguageTypes.SINGLE_QUOTED_STRING) ||
-                tokenType.equals(MyLanguageTypes.DOUBLE_QUOTED_STRING) ||
-                tokenType.equals(MyLanguageTypes.BRACE_QUOTED_STRING)) {
+                tokenType.equals(MyLanguageTypes.DOUBLE_QUOTED_STRING)) {
             return STRING_KEYS;
         } else if (tokenType.equals(MyLanguageTypes.PLUS) ||
                 tokenType.equals(MyLanguageTypes.MINUS) ||
