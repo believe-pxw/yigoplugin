@@ -1,5 +1,6 @@
 package com.github.believepxw.yigo
 
+import com.github.believepxw.yigo.ref.JavaMethodReference
 import com.github.believepxw.yigo.ref.VariableReference
 import com.intellij.lang.injection.InjectedLanguageManager
 import com.intellij.openapi.util.Pair
@@ -57,6 +58,8 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                 references.add(MacroReference(element, rangeInInjectedFragment, referencedName))
                             } else if (elementType == MyLanguageTypes.VARIABLE_REFERENCE) {
                                 references.add(VariableReference(element, rangeInInjectedFragment, referencedName))
+                            }else if (elementType == MyLanguageTypes.JAVA_PATH_IDENTIFIER) {
+                                references.add(JavaMethodReference(element, rangeInInjectedFragment, referencedName))
                             }
                             true // 继续遍历
                         }

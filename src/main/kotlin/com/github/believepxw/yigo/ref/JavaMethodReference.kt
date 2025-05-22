@@ -1,11 +1,11 @@
-package com.github.believepxw.yigo
+package com.github.believepxw.yigo.ref
 
 import com.intellij.openapi.util.TextRange
+import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementResolveResult
 import com.intellij.psi.PsiPolyVariantReference
 import com.intellij.psi.PsiReferenceBase
-import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.ResolveResult
 import com.intellij.psi.search.GlobalSearchScope
 

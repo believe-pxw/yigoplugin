@@ -33,6 +33,11 @@ public class MacroReference extends PsiReferenceBase<PsiElement> implements PsiP
             PsiElement macroTag = findMacroTagInFile(currentXmlFile, macroName);
             if (macroTag != null) {
                 return new ResolveResult[]{new PsiElementResolveResult(macroTag)};
+            }else{
+                XmlTag macroDefinition = MacroNameIndex.findMacroDefinition(myElement.getProject(), macroName);
+                if (macroDefinition != null) {
+                    return new ResolveResult[]{new PsiElementResolveResult(macroDefinition)};
+                }
             }
         }
         return ResolveResult.EMPTY_ARRAY;

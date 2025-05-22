@@ -31,14 +31,16 @@ class VariableReference(
     // If your variable *declarations* (where you jump TO) have different tag names
     // (e.g., <VariableDef name="myVar"/>), you MUST update this set to reflect those declaration tags.
     // For now, I'll assume your declarations are also the same tags using a 'name' attribute for definition.
-    private val variableDefinitionTagNames: Set<String> = Collections.unmodifiableSet(setOf(
-        "Dict", "DynamicDict", "TextEditor", "TextArea", "CheckBox", "ComboBox",
-        "CheckListBox", "DatePicker", "UTCDatePicker", "MonthPicker", "TimePicker",
-        "Button", "NumberEditor", "Label", "TextButton", "RadioButton", "PasswordEditor",
-        "Image", "WebBrowser", "RichEditor", "HyperLink", "Separator", "DropdownButton",
-        "Icon", "Custom", "BPMGraph", "Dynamic", "Carousel", "EditView", "Gantt", // Existing usage tags
-        "Variable", "VarDef" // Add common variable definition tag names if they are different
-    ))
+    private val variableDefinitionTagNames: Set<String> = Collections.unmodifiableSet(
+        setOf(
+            "Dict", "DynamicDict", "TextEditor", "TextArea", "CheckBox", "ComboBox",
+            "CheckListBox", "DatePicker", "UTCDatePicker", "MonthPicker", "TimePicker",
+            "Button", "NumberEditor", "Label", "TextButton", "RadioButton", "PasswordEditor",
+            "Image", "WebBrowser", "RichEditor", "HyperLink", "Separator", "DropdownButton",
+            "Icon", "Custom", "BPMGraph", "Dynamic", "Carousel", "EditView", "Gantt", // Existing usage tags
+            "Variable", "VarDef", "GridCell" // Add common variable definition tag names if they are different
+        )
+    )
 
     /**
      * 解析引用，返回它指向的PSI元素（即变量的声明）。
