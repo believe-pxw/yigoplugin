@@ -19,6 +19,10 @@ public class MyLanguageSyntaxHighlighter extends SyntaxHighlighterBase {
             createTextAttributesKey("MYLANG_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
     public static final TextAttributesKey IDENTIFIER =
             createTextAttributesKey("MYLANG_IDENTIFIER", DefaultLanguageHighlighterColors.IDENTIFIER);
+    public static final TextAttributesKey METHOD =
+            createTextAttributesKey("MYLANG_INSTANCE_METHOD", DefaultLanguageHighlighterColors.INSTANCE_METHOD);
+    public static final TextAttributesKey METHOD_CALL =
+            createTextAttributesKey("MYLANG_FUNCTION_CALL", DefaultLanguageHighlighterColors.FUNCTION_CALL);
     public static final TextAttributesKey STRING =
             createTextAttributesKey("MYLANG_STRING", DefaultLanguageHighlighterColors.STRING);
     public static final TextAttributesKey OPERATOR =
@@ -40,6 +44,8 @@ public class MyLanguageSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] PARENTHESES_KEYS = new TextAttributesKey[]{PARENTHESES};
     private static final TextAttributesKey[] SEMICOLON_KEYS = new TextAttributesKey[]{SEMICOLON_ATTR};
     private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
+    private static final TextAttributesKey[] METHOD_KEYS = new TextAttributesKey[]{METHOD};
+    private static final TextAttributesKey[] METHOD_CALL_KEYS = new TextAttributesKey[]{METHOD_CALL};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 
     @NotNull
@@ -50,16 +56,18 @@ public class MyLanguageSyntaxHighlighter extends SyntaxHighlighterBase {
 
     @NotNull
     @Override
-    public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
+    public TextAttributesKey @NotNull [] getTokenHighlights(IElementType tokenType) {
         if (tokenType.equals(MyLanguageTypes.IF_KEYWORD) ||
                 tokenType.equals(MyLanguageTypes.ELSE_KEYWORD) ||
                 tokenType.equals(MyLanguageTypes.WHILE_KEYWORD) ||
                 tokenType.equals(MyLanguageTypes.VAR_KEYWORD) ||
                 tokenType.equals(MyLanguageTypes.PARENT_KEYWORD)) {
             return KEYWORD_KEYS;
-        } else if (tokenType.equals(MyLanguageTypes.IDENTIFIER) ||
-                tokenType.equals(MyLanguageTypes.MACRO_IDENTIFIER) ||
-                tokenType.equals(MyLanguageTypes.JAVA_PATH_IDENTIFIER)) {
+        } else if (tokenType.equals(MyLanguageTypes.MACRO_IDENTIFIER)) {
+            return METHOD_KEYS;
+        } else if (tokenType.equals(MyLanguageTypes.JAVA_PATH_IDENTIFIER)) {
+            return METHOD_CALL_KEYS;
+        } else if (tokenType.equals(MyLanguageTypes.IDENTIFIER)) {
             return IDENTIFIER_KEYS;
         } else if (tokenType.equals(MyLanguageTypes.SINGLE_QUOTED_STRING) ||
                 tokenType.equals(MyLanguageTypes.DOUBLE_QUOTED_STRING) ||

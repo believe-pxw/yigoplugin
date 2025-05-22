@@ -6,19 +6,16 @@
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
-    <depends>com.intellij.modules.xml</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!--
         <fileType
                 name="MyLanguage File"
                 implementationClass="example.MyLanguageFileType"
                 fieldName="INSTANCE"
                 language="MyLanguage"
                 extensions="mylang"/>
-        -->
         <multiHostInjector implementation="com.github.believepxw.yigo.MyLanguageXmlInjector"/>
         <lang.parserDefinition language="MyLanguage" implementationClass="example.MyLanguageParserDefinition"/>
         <lang.syntaxHighlighterFactory language="MyLanguage" implementationClass="example.MyLanguageSyntaxHighlighterFactory"/>
