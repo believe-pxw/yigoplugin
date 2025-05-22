@@ -19,7 +19,7 @@
         <multiHostInjector implementation="com.github.believepxw.yigo.MyLanguageXmlInjector"/>
         <lang.parserDefinition language="MyLanguage" implementationClass="example.MyLanguageParserDefinition"/>
         <lang.syntaxHighlighterFactory language="MyLanguage" implementationClass="example.MyLanguageSyntaxHighlighterFactory"/>
-        <psi.referenceContributor language="MyLanguage" implementation="example.MyLanguageReferenceContributor"/>
+        <psi.referenceContributor language="XML" implementation="com.github.believepxw.yigo.MyLanguageReferenceContributor"/>
     </extensions>
     <applicationListeners>
     </applicationListeners>

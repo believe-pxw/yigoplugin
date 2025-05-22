@@ -1,4 +1,4 @@
-package example;
+package example.ref;
 
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
@@ -17,8 +17,8 @@ public class MacroReference extends PsiReferenceBase<PsiElement> implements PsiP
 
     private final String macroName;
 
-    public MacroReference(@NotNull PsiElement element, String macroName) {
-        super(element, TextRange.from(0, element.getTextLength()));
+    public MacroReference(@NotNull PsiElement element,TextRange textRange, String macroName) {
+        super(element, textRange);
         this.macroName = macroName;
     }
 
@@ -30,7 +30,7 @@ public class MacroReference extends PsiReferenceBase<PsiElement> implements PsiP
         if (containingFile instanceof XmlFile) { // 确保是XML文件
             XmlFile currentXmlFile = (XmlFile) containingFile;
             // 在当前XML文件中查找宏定义
-            XmlTag macroTag = findMacroTagInFile(currentXmlFile, macroName);
+            PsiElement macroTag = findMacroTagInFile(currentXmlFile, macroName);
             if (macroTag != null) {
                 return new ResolveResult[]{new PsiElementResolveResult(macroTag)};
             }
@@ -58,7 +58,7 @@ public class MacroReference extends PsiReferenceBase<PsiElement> implements PsiP
     // --- 自定义查找宏定义的方法 (保持不变) ---
 
     // 示例：在 XML 文件中查找指定的宏标签
-    private XmlTag findMacroTagInFile(XmlFile xmlFile, String macroName) {
+    private PsiElement findMacroTagInFile(XmlFile xmlFile, String macroName) {
         XmlTag rootTag = xmlFile.getRootTag();
         if (rootTag == null) return null;
 
@@ -68,7 +68,7 @@ public class MacroReference extends PsiReferenceBase<PsiElement> implements PsiP
             for (XmlTag macroTag : macroCollectionTag.findSubTags("Macro")) {
                 String keyAttribute = macroTag.getAttributeValue("Key");
                 if (keyAttribute != null && keyAttribute.equals(macroName)) {
-                    return macroTag; // 找到匹配的 <Macro> 标签
+                    return macroTag.getAttribute("Key").getLastChild(); // 找到匹配的 <Macro> 标签
                 }
             }
         }
