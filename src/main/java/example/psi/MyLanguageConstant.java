@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface MyLanguageConstant extends PsiElement {
 
   @Nullable
-  PsiElement getBraceQuotedString();
-
-  @Nullable
   PsiElement getDoubleQuotedString();
 
   @Nullable

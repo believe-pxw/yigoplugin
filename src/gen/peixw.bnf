@@ -32,7 +32,6 @@
     // 常量 (Constants)
     SINGLE_QUOTED_STRING = "regexp:'[^']*'"
     DOUBLE_QUOTED_STRING = "regexp:\"[^\"]*\""
-    BRACE_QUOTED_STRING = "regexp:\{[^\}]*\}"
     NUMBER = "regexp:[0-9]+"
 
     // 运算符 (Operators)
@@ -125,7 +124,6 @@ variable_reference ::= IDENTIFIER
 
 constant ::= SINGLE_QUOTED_STRING
   | DOUBLE_QUOTED_STRING
-  | BRACE_QUOTED_STRING
   | NUMBER
 
 boolean_constant ::= TRUE_KEYWORD | FALSE_KEYWORD

@@ -202,7 +202,6 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // SINGLE_QUOTED_STRING
   //   | DOUBLE_QUOTED_STRING
-  //   | BRACE_QUOTED_STRING
   //   | NUMBER
   public static boolean constant(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "constant")) return false;
@@ -210,7 +209,6 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, CONSTANT, "<constant>");
     r = consumeToken(b, SINGLE_QUOTED_STRING);
     if (!r) r = consumeToken(b, DOUBLE_QUOTED_STRING);
-    if (!r) r = consumeToken(b, BRACE_QUOTED_STRING);
     if (!r) r = consumeToken(b, NUMBER);
     exit_section_(b, l, m, r, false, null);
     return r;

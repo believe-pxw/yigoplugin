@@ -29,12 +29,6 @@ public class MyLanguageConstantImpl extends ASTWrapperPsiElement implements MyLa
 
   @Override
   @Nullable
-  public PsiElement getBraceQuotedString() {
-    return findChildByType(BRACE_QUOTED_STRING);
-  }
-
-  @Override
-  @Nullable
   public PsiElement getDoubleQuotedString() {
     return findChildByType(DOUBLE_QUOTED_STRING);
   }

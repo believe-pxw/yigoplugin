@@ -30,7 +30,6 @@ JAVA_PATH_IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*(\.[a-zA-Z_][a-zA-Z0-9_]*)+
 IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 SINGLE_QUOTED_STRING='[^']*'
 DOUBLE_QUOTED_STRING=\"[^\"]*\"
-BRACE_QUOTED_STRING=\{[^\}]*\}
 NUMBER=[0-9]+
 
 %%
@@ -73,7 +72,6 @@ NUMBER=[0-9]+
   {IDENTIFIER}                 { return IDENTIFIER; }
   {SINGLE_QUOTED_STRING}       { return SINGLE_QUOTED_STRING; }
   {DOUBLE_QUOTED_STRING}       { return DOUBLE_QUOTED_STRING; }
-  {BRACE_QUOTED_STRING}        { return BRACE_QUOTED_STRING; }
   {NUMBER}                     { return NUMBER; }
 
 }

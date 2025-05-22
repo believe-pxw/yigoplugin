@@ -30,7 +30,6 @@ public interface MyLanguageTypes {
 
   IElementType AMPERSAND = new MyLanguageTokenType("&");
   IElementType AND_OP = new MyLanguageTokenType("&&");
-  IElementType BRACE_QUOTED_STRING = new MyLanguageTokenType("BRACE_QUOTED_STRING");
   IElementType COMMA = new MyLanguageTokenType(",");
   IElementType DIV = new MyLanguageTokenType("/");
   IElementType DOT = new MyLanguageTokenType(".");
