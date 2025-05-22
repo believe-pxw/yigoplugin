@@ -8,6 +8,8 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.patterns.PlatformPatterns
 import com.intellij.psi.*
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.xml.XmlAttributeValue
+import com.intellij.remoteDev.util.UrlParameterKeys.Companion.host
 import com.intellij.util.ProcessingContext
 import com.intellij.util.containers.toArray
 import example.psi.MyLanguageTypes
@@ -29,6 +31,13 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                         // 获取所有注入片段
                         injectedFragments = InjectedLanguageManager.getInstance(element.getProject())
                             .getInjectedPsiFiles(host)
+                        if (injectedFragments == null || injectedFragments.isEmpty()) {
+                            return PsiReference.EMPTY_ARRAY
+                        }
+                    }else if (element is XmlAttributeValue) {
+                        // 获取所有注入片段
+                        injectedFragments = InjectedLanguageManager.getInstance(element.getProject())
+                            .getInjectedPsiFiles(element)
                         if (injectedFragments == null || injectedFragments.isEmpty()) {
                             return PsiReference.EMPTY_ARRAY
                         }
