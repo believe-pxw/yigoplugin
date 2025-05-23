@@ -15,15 +15,20 @@ class MyLanguageXmlInjector : MultiHostInjector {
         if (context is XmlText) {
             context.children.forEach {
                 if (it.elementType.toString() == "XML_CDATA") {
-                    registrar
-                        .startInjecting(MyLanguage.INSTANCE)
-                        .addPlace(
-                            null,
-                            null,
-                            context as PsiLanguageInjectionHost,
-                            TextRange.from(it.startOffsetInParent + 9, it.textLength - 3)
-                        )
-                        .doneInjecting()
+                    try {
+                        registrar
+                            .startInjecting(MyLanguage.INSTANCE)
+                            .addPlace(
+                                null,
+                                null,
+                                context as PsiLanguageInjectionHost,
+                                TextRange.from(it.startOffsetInParent + 9, it.getTextLength() - 3 - 9)
+                            )
+                            .doneInjecting()
+                    } catch (e: IllegalArgumentException) {
+                        throw e
+                    }
+
                 }
             }
         }else if (context is XmlAttributeValue) {
