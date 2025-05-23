@@ -33,7 +33,7 @@ class MyLanguageXmlInjector : MultiHostInjector {
             }
         }else if (context is XmlAttributeValue) {
             var attrKey = context.parent.firstChild.text
-            if (attrKey in listOf("Enable", "Visible","ValueChanged","DefaultFormulaValue","CheckRule")) {
+            if (attrKey in listOf("Enable", "Visible","ValueChanged","DefaultFormulaValue","CheckRule","ParaValue","RefValue")) {
                 registrar
                     .startInjecting(MyLanguage.INSTANCE)
                     .addPlace(

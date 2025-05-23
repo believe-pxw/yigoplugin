@@ -18,11 +18,11 @@ public class MyLanguageSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey KEYWORD =
             createTextAttributesKey("MYLANG_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
     public static final TextAttributesKey IDENTIFIER =
-            createTextAttributesKey("MYLANG_IDENTIFIER", DefaultLanguageHighlighterColors.IDENTIFIER);
+            createTextAttributesKey("MYLANG_IDENTIFIER", DefaultLanguageHighlighterColors.INSTANCE_FIELD);
     public static final TextAttributesKey METHOD =
-            createTextAttributesKey("MYLANG_INSTANCE_METHOD", DefaultLanguageHighlighterColors.INSTANCE_METHOD);
+            createTextAttributesKey("MYLANG_INSTANCE_METHOD", DefaultLanguageHighlighterColors.INTERFACE_NAME);
     public static final TextAttributesKey METHOD_CALL =
-            createTextAttributesKey("MYLANG_FUNCTION_CALL", DefaultLanguageHighlighterColors.FUNCTION_CALL);
+            createTextAttributesKey("MYLANG_FUNCTION_CALL", DefaultLanguageHighlighterColors.CLASS_NAME);
     public static final TextAttributesKey STRING =
             createTextAttributesKey("MYLANG_STRING", DefaultLanguageHighlighterColors.STRING);
     public static final TextAttributesKey OPERATOR =
