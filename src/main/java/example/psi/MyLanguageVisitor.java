@@ -55,10 +55,6 @@ public class MyLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitParentCall(@NotNull MyLanguageParentCall o) {
-    visitPsiElement(o);
-  }
-
   public void visitPrimaryExpression(@NotNull MyLanguagePrimaryExpression o) {
     visitPsiElement(o);
   }

@@ -28,6 +28,12 @@ public class MyLanguageVariableDeclarationImpl extends ASTWrapperPsiElement impl
   }
 
   @Override
+  @Nullable
+  public MyLanguageExpression getExpression() {
+    return findChildByClass(MyLanguageExpression.class);
+  }
+
+  @Override
   @NotNull
   public PsiElement getIdentifier() {
     return findNotNullChildByType(IDENTIFIER);

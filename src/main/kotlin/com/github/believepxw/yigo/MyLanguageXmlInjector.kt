@@ -12,8 +12,11 @@ import example.MyLanguage
 
 class MyLanguageXmlInjector : MultiHostInjector {
     override fun getLanguagesToInject(registrar: MultiHostRegistrar, context: PsiElement) {
+        if (context !is PsiLanguageInjectionHost) {
+            return
+        }
         if (context is XmlText) {
-            context.children.forEach {
+            (context as XmlText).children.forEach {
                 if (it.elementType.toString() == "XML_CDATA") {
                     try {
                         registrar
@@ -32,7 +35,7 @@ class MyLanguageXmlInjector : MultiHostInjector {
                 }
             }
         }else if (context is XmlAttributeValue) {
-            var attrKey = context.parent.firstChild.text
+            var attrKey = (context as XmlAttributeValue).parent.firstChild.text
             if (attrKey in listOf("Enable", "Visible","ValueChanged","DefaultFormulaValue","CheckRule","ParaValue","RefValue")) {
                 registrar
                     .startInjecting(MyLanguage.INSTANCE)

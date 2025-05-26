@@ -22,7 +22,6 @@ public interface MyLanguageTypes {
   IElementType IIF_FUNCTION_CALL = new MyLanguageElementType("IIF_FUNCTION_CALL");
   IElementType JAVA_METHOD_CALL = new MyLanguageElementType("JAVA_METHOD_CALL");
   IElementType MACRO_CALL_EXPRESSION = new MyLanguageElementType("MACRO_CALL_EXPRESSION");
-  IElementType PARENT_CALL = new MyLanguageElementType("PARENT_CALL");
   IElementType PRIMARY_EXPRESSION = new MyLanguageElementType("PRIMARY_EXPRESSION");
   IElementType VARIABLE_DECLARATION = new MyLanguageElementType("VARIABLE_DECLARATION");
   IElementType VARIABLE_REFERENCE = new MyLanguageElementType("VARIABLE_REFERENCE");
@@ -35,6 +34,7 @@ public interface MyLanguageTypes {
   IElementType DOT = new MyLanguageTokenType(".");
   IElementType DOUBLE_QUOTED_STRING = new MyLanguageTokenType("DOUBLE_QUOTED_STRING");
   IElementType ELSE_KEYWORD = new MyLanguageTokenType("else");
+  IElementType EQ = new MyLanguageTokenType("=");
   IElementType EQUAL_EQUAL = new MyLanguageTokenType("==");
   IElementType FALSE_KEYWORD = new MyLanguageTokenType("false");
   IElementType GREATER = new MyLanguageTokenType(">");
@@ -103,9 +103,6 @@ public interface MyLanguageTypes {
       }
       else if (type == MACRO_CALL_EXPRESSION) {
         return new MyLanguageMacroCallExpressionImpl(node);
-      }
-      else if (type == PARENT_CALL) {
-        return new MyLanguageParentCallImpl(node);
       }
       else if (type == PRIMARY_EXPRESSION) {
         return new MyLanguagePrimaryExpressionImpl(node);

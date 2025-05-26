@@ -14,7 +14,7 @@
   tokenTypeClass="example.psi.MyLanguageTokenType"
 
   tokens = [
-    // 关键字 (Keywords)
+    // ... (Tokens 部分保持不变) ...
     IF_KEYWORD = "if"
     ELSE_KEYWORD = "else"
     WHILE_KEYWORD = "while"
@@ -24,17 +24,14 @@
     FALSE_KEYWORD = "false"
     IIF_KEYWORD = "IIF"
 
-    // 标识符 (Identifiers)
     MACRO_IDENTIFIER = "regexp:Macro_[a-zA-Z_][a-zA-Z0-9_]*"
     JAVA_PATH_IDENTIFIER = "regexp:[a-zA-Z_][a-zA-Z0-9_]*(\.[a-zA-Z_][a-zA-Z0-9_]*)+"
     IDENTIFIER = "regexp:[a-zA-Z_][a-zA-Z0-9_]*"
 
-    // 常量 (Constants)
     SINGLE_QUOTED_STRING = "regexp:'[^']*'"
     DOUBLE_QUOTED_STRING = "regexp:\"[^\"]*\""
     NUMBER = "regexp:[0-9]+"
 
-    // 运算符 (Operators)
     PLUS = "+"
     MINUS = "-"
     MUL = "*"
@@ -44,8 +41,8 @@
     OR_OP = "||"
     DOT = "."
     NOT_OP = "!"
+    EQ = "="
 
-    // Comparison Operators
     LESS_EQUAL = "<="
     GREATER_EQUAL = ">="
     EQUAL_EQUAL = "=="
@@ -54,13 +51,12 @@
     GREATER = ">"
     NOT_EQUAL_ALT = "<>"
 
-    // 标点符号 (Punctuation)
     LPAREN = "("
     RPAREN = ")"
     SEMICOLON = ";"
     COMMA = ","
-    LBRACE = "{" // Added for block_statement
-    RBRACE = "}" // Added for block_statement
+    LBRACE = "{"
+    RBRACE = "}"
   ]
 }
 
@@ -68,20 +64,23 @@
 // 语法规则 (Grammar Rules)
 // ---------------------------------------------------------------------
 
-// The root now expects a sequence of top-level statements.
-// A top-level statement can be a single statement potentially followed by a semicolon,
-// allowing for chaining. The final semicolon is optional.
 root ::= top_level_statement*
 
-private top_level_statement ::= (variable_declaration | expression_sequence | if_statement | while_statement) SEMICOLON? // SEMICOLON is optional at the very end
+// CHANGED: Separated rules. Var declarations MUST end with a semicolon. Other statements MAY.
+private top_level_statement ::=
+  (variable_declaration SEMICOLON)
+  | ((expression_sequence | if_statement | while_statement) SEMICOLON?)
 
-// New rule to handle multiple expression statements separated by semicolons
+// This rule uses semicolon as a separator, which is fine. The optional final semicolon is handled by top_level_statement.
 expression_sequence ::= expression_statement (SEMICOLON expression_statement)*
 
-// Other statements remain largely the same, but they would appear as part of a top_level_statement
-private statement ::= (variable_declaration | expression_sequence | if_statement | while_statement) SEMICOLON?
+// CHANGED: Also updated the general 'statement' rule for use inside blocks.
+private statement ::=
+  (variable_declaration SEMICOLON)
+  | ((expression_sequence | if_statement | while_statement) SEMICOLON?)
 
-variable_declaration ::= VAR_KEYWORD IDENTIFIER
+// variable_declaration rule itself is clean. The semicolon is enforced by the rule that calls it.
+variable_declaration ::= VAR_KEYWORD IDENTIFIER (EQ expression)?
 
 expression_statement ::= expression
 
@@ -89,55 +88,33 @@ if_statement ::= IF_KEYWORD LPAREN expression RPAREN statement_block (ELSE_KEYWO
 
 while_statement ::= WHILE_KEYWORD LPAREN expression RPAREN statement_block
 
-// Helper rule for statements that can be a single statement or a block
-// Note: If you want blocks to also allow optional semicolons inside,
-// you might need to apply similar SEMICOLON? logic there or use `statement*` if semicolon-optional rules handle it.
+// statement_block now correctly handles our new composite 'statement' rule.
 private statement_block ::= statement | block_statement
 
-block_statement ::= LBRACE statement* RBRACE // Use LBRACE/RBRACE tokens
+block_statement ::= LBRACE statement* RBRACE
 
-// 表达式 (Expressions)
-// 优先级从低到高定义，以处理操作符优先级
+// ---------------------------------------------------------------------
+// (表达式部分保持不变)
+// ---------------------------------------------------------------------
 expression ::= logical_or_expression
-
 private logical_or_expression ::= logical_and_expression (OR_OP logical_and_expression)*
-
 private logical_and_expression ::= comparison_expression (AND_OP comparison_expression)*
-
 private comparison_expression ::= additive_expression ((LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT) additive_expression)*
-
 private additive_expression ::= multiplicative_expression ((PLUS | MINUS | AMPERSAND) multiplicative_expression)*
-
 private multiplicative_expression ::= unary_expression ((MUL | DIV) unary_expression)*
-
-private unary_expression ::= NOT_OP unary_expression | primary_expression
-
-// Primary expressions: the most basic elements
+private unary_expression ::= (MINUS | NOT_OP) unary_expression | primary_expression
 primary_expression ::=
   constant
   | function_call
   | variable_reference
   | LPAREN expression RPAREN
   | boolean_constant
-
-variable_reference ::= IDENTIFIER
-
-constant ::= SINGLE_QUOTED_STRING
-  | DOUBLE_QUOTED_STRING
-  | NUMBER
-
+variable_reference ::= path
+constant ::= SINGLE_QUOTED_STRING | DOUBLE_QUOTED_STRING | NUMBER
 boolean_constant ::= TRUE_KEYWORD | FALSE_KEYWORD
-
-function_call ::=
-  (macro_call_expression | IDENTIFIER | java_method_call | parent_call | iif_function_call) LPAREN argument_list? RPAREN
-
-// 新增 macro_call_expression 规则
+function_call ::= (macro_call_expression | path | java_method_call | iif_function_call) LPAREN argument_list? RPAREN
 macro_call_expression ::= MACRO_IDENTIFIER
-
 java_method_call ::= JAVA_PATH_IDENTIFIER
-
-parent_call ::= PARENT_KEYWORD DOT IDENTIFIER
-
 iif_function_call ::= IIF_KEYWORD
-
 argument_list ::= expression (COMMA expression)*
+private path ::= (PARENT_KEYWORD DOT)? IDENTIFIER

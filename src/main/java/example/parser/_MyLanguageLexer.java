@@ -104,11 +104,11 @@ public class _MyLanguageLexer implements FlexLexer {
   private static final String ZZ_ACTION_PACKED_0 =
     "\1\0\1\1\1\2\1\3\1\1\1\4\1\1\1\5"+
     "\1\6\1\7\1\10\1\11\1\12\1\13\1\14\1\15"+
-    "\1\16\1\17\1\1\1\20\12\21\1\22\1\1\1\23"+
-    "\1\24\1\0\1\25\1\26\1\0\1\27\1\30\1\31"+
-    "\1\32\1\33\1\0\4\21\1\34\4\21\1\35\1\36"+
-    "\1\37\5\21\1\40\2\21\1\41\2\21\1\42\2\21"+
-    "\1\43\1\21\1\44\1\21\1\45\1\46";
+    "\1\16\1\17\1\20\1\21\12\22\1\23\1\1\1\24"+
+    "\1\25\1\0\1\26\1\27\1\0\1\30\1\31\1\32"+
+    "\1\33\1\34\1\0\4\22\1\35\4\22\1\36\1\37"+
+    "\1\40\5\22\1\41\2\22\1\42\2\22\1\43\2\22"+
+    "\1\44\1\22\1\45\1\22\1\46\1\47";
 
   private static int [] zzUnpackAction() {
     int [] result = new int[76];
@@ -575,192 +575,197 @@ public class _MyLanguageLexer implements FlexLexer {
             { return BAD_CHARACTER;
             }
           // fall through
-          case 39: break;
+          case 40: break;
           case 2:
             { return WHITE_SPACE;
             }
           // fall through
-          case 40: break;
+          case 41: break;
           case 3:
             { return NOT_OP;
             }
           // fall through
-          case 41: break;
+          case 42: break;
           case 4:
             { return AMPERSAND;
             }
           // fall through
-          case 42: break;
+          case 43: break;
           case 5:
             { return LPAREN;
             }
           // fall through
-          case 43: break;
+          case 44: break;
           case 6:
             { return RPAREN;
             }
           // fall through
-          case 44: break;
+          case 45: break;
           case 7:
             { return MUL;
             }
           // fall through
-          case 45: break;
+          case 46: break;
           case 8:
             { return PLUS;
             }
           // fall through
-          case 46: break;
+          case 47: break;
           case 9:
             { return COMMA;
             }
           // fall through
-          case 47: break;
+          case 48: break;
           case 10:
             { return MINUS;
             }
           // fall through
-          case 48: break;
+          case 49: break;
           case 11:
             { return DOT;
             }
           // fall through
-          case 49: break;
+          case 50: break;
           case 12:
             { return DIV;
             }
           // fall through
-          case 50: break;
+          case 51: break;
           case 13:
             { return NUMBER;
             }
           // fall through
-          case 51: break;
+          case 52: break;
           case 14:
             { return SEMICOLON;
             }
           // fall through
-          case 52: break;
+          case 53: break;
           case 15:
             { return LESS;
             }
           // fall through
-          case 53: break;
-          case 16:
-            { return GREATER;
-            }
-          // fall through
           case 54: break;
-          case 17:
-            { return IDENTIFIER;
+          case 16:
+            { return EQ;
             }
           // fall through
           case 55: break;
-          case 18:
-            { return LBRACE;
+          case 17:
+            { return GREATER;
             }
           // fall through
           case 56: break;
-          case 19:
-            { return RBRACE;
+          case 18:
+            { return IDENTIFIER;
             }
           // fall through
           case 57: break;
-          case 20:
-            { return NOT_EQUAL;
+          case 19:
+            { return LBRACE;
             }
           // fall through
           case 58: break;
-          case 21:
-            { return DOUBLE_QUOTED_STRING;
+          case 20:
+            { return RBRACE;
             }
           // fall through
           case 59: break;
-          case 22:
-            { return AND_OP;
+          case 21:
+            { return NOT_EQUAL;
             }
           // fall through
           case 60: break;
-          case 23:
-            { return SINGLE_QUOTED_STRING;
+          case 22:
+            { return DOUBLE_QUOTED_STRING;
             }
           // fall through
           case 61: break;
-          case 24:
-            { return LESS_EQUAL;
+          case 23:
+            { return AND_OP;
             }
           // fall through
           case 62: break;
-          case 25:
-            { return NOT_EQUAL_ALT;
+          case 24:
+            { return SINGLE_QUOTED_STRING;
             }
           // fall through
           case 63: break;
-          case 26:
-            { return EQUAL_EQUAL;
+          case 25:
+            { return LESS_EQUAL;
             }
           // fall through
           case 64: break;
-          case 27:
-            { return GREATER_EQUAL;
+          case 26:
+            { return NOT_EQUAL_ALT;
             }
           // fall through
           case 65: break;
-          case 28:
-            { return IF_KEYWORD;
+          case 27:
+            { return EQUAL_EQUAL;
             }
           // fall through
           case 66: break;
-          case 29:
-            { return OR_OP;
+          case 28:
+            { return GREATER_EQUAL;
             }
           // fall through
           case 67: break;
-          case 30:
-            { return JAVA_PATH_IDENTIFIER;
+          case 29:
+            { return IF_KEYWORD;
             }
           // fall through
           case 68: break;
-          case 31:
-            { return IIF_KEYWORD;
+          case 30:
+            { return OR_OP;
             }
           // fall through
           case 69: break;
-          case 32:
-            { return VAR_KEYWORD;
+          case 31:
+            { return JAVA_PATH_IDENTIFIER;
             }
           // fall through
           case 70: break;
-          case 33:
-            { return ELSE_KEYWORD;
+          case 32:
+            { return IIF_KEYWORD;
             }
           // fall through
           case 71: break;
-          case 34:
-            { return TRUE_KEYWORD;
+          case 33:
+            { return VAR_KEYWORD;
             }
           // fall through
           case 72: break;
-          case 35:
-            { return FALSE_KEYWORD;
+          case 34:
+            { return ELSE_KEYWORD;
             }
           // fall through
           case 73: break;
-          case 36:
-            { return WHILE_KEYWORD;
+          case 35:
+            { return TRUE_KEYWORD;
             }
           // fall through
           case 74: break;
-          case 37:
-            { return PARENT_KEYWORD;
+          case 36:
+            { return FALSE_KEYWORD;
             }
           // fall through
           case 75: break;
-          case 38:
-            { return MACRO_IDENTIFIER;
+          case 37:
+            { return WHILE_KEYWORD;
             }
           // fall through
           case 76: break;
+          case 38:
+            { return PARENT_KEYWORD;
+            }
+          // fall through
+          case 77: break;
+          case 39:
+            { return MACRO_IDENTIFIER;
+            }
+          // fall through
+          case 78: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }

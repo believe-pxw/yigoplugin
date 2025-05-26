@@ -20,9 +20,6 @@ public interface MyLanguageFunctionCall extends PsiElement {
   MyLanguageMacroCallExpression getMacroCallExpression();
 
   @Nullable
-  MyLanguageParentCall getParentCall();
-
-  @Nullable
   PsiElement getIdentifier();
 
 }

@@ -53,6 +53,7 @@ NUMBER=[0-9]+
   "||"                         { return OR_OP; }
   "."                          { return DOT; }
   "!"                          { return NOT_OP; }
+  "="                          { return EQ; }
   "<="                         { return LESS_EQUAL; }
   ">="                         { return GREATER_EQUAL; }
   "=="                         { return EQUAL_EQUAL; }

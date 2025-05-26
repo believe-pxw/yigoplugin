@@ -53,12 +53,6 @@ public class MyLanguageFunctionCallImpl extends ASTWrapperPsiElement implements 
 
   @Override
   @Nullable
-  public MyLanguageParentCall getParentCall() {
-    return findChildByClass(MyLanguageParentCall.class);
-  }
-
-  @Override
-  @Nullable
   public PsiElement getIdentifier() {
     return findChildByType(IDENTIFIER);
   }

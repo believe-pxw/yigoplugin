@@ -7,6 +7,9 @@ import com.intellij.psi.PsiElement;
 
 public interface MyLanguageVariableDeclaration extends PsiElement {
 
+  @Nullable
+  MyLanguageExpression getExpression();
+
   @NotNull
   PsiElement getIdentifier();
 
