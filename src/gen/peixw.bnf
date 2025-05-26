@@ -14,7 +14,6 @@
   tokenTypeClass="example.psi.MyLanguageTokenType"
 
   tokens = [
-    // ... (Tokens 部分保持不变) ...
     IF_KEYWORD = "if"
     ELSE_KEYWORD = "else"
     WHILE_KEYWORD = "while"
@@ -32,11 +31,16 @@
     DOUBLE_QUOTED_STRING = "regexp:\"[^\"]*\""
     NUMBER = "regexp:[0-9]+"
 
+    AMP_ENTITY = "&amp;"
+    LT_ENTITY = "&lt;"
+    GT_ENTITY = "&gt;"
+    AND_OP_ENTITY = "&amp;&amp;"
+
     PLUS = "+"
     MINUS = "-"
     MUL = "*"
     DIV = "/"
-    AMPERSAND = "&"
+    AMPERSAND = "&" // This is the literal "&"
     AND_OP = "&&"
     OR_OP = "||"
     DOT = "."
@@ -47,8 +51,8 @@
     GREATER_EQUAL = ">="
     EQUAL_EQUAL = "=="
     NOT_EQUAL = "!="
-    LESS = "<"
-    GREATER = ">"
+    LESS = "<"    // This is the literal "<"
+    GREATER = ">" // This is the literal ">"
     NOT_EQUAL_ALT = "<>"
 
     LPAREN = "("
@@ -66,20 +70,16 @@
 
 root ::= top_level_statement*
 
-// CHANGED: Separated rules. Var declarations MUST end with a semicolon. Other statements MAY.
 private top_level_statement ::=
   (variable_declaration SEMICOLON)
   | ((expression_sequence | if_statement | while_statement) SEMICOLON?)
 
-// This rule uses semicolon as a separator, which is fine. The optional final semicolon is handled by top_level_statement.
 expression_sequence ::= expression_statement (SEMICOLON expression_statement)*
 
-// CHANGED: Also updated the general 'statement' rule for use inside blocks.
 private statement ::=
   (variable_declaration SEMICOLON)
   | ((expression_sequence | if_statement | while_statement) SEMICOLON?)
 
-// variable_declaration rule itself is clean. The semicolon is enforced by the rule that calls it.
 variable_declaration ::= VAR_KEYWORD IDENTIFIER (EQ expression)?
 
 expression_statement ::= expression
@@ -88,19 +88,18 @@ if_statement ::= IF_KEYWORD LPAREN expression RPAREN statement_block (ELSE_KEYWO
 
 while_statement ::= WHILE_KEYWORD LPAREN expression RPAREN statement_block
 
-// statement_block now correctly handles our new composite 'statement' rule.
 private statement_block ::= statement | block_statement
 
 block_statement ::= LBRACE statement* RBRACE
 
-// ---------------------------------------------------------------------
-// (表达式部分保持不变)
-// ---------------------------------------------------------------------
 expression ::= logical_or_expression
 private logical_or_expression ::= logical_and_expression (OR_OP logical_and_expression)*
-private logical_and_expression ::= comparison_expression (AND_OP comparison_expression)*
-private comparison_expression ::= additive_expression ((LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT) additive_expression)*
-private additive_expression ::= multiplicative_expression ((PLUS | MINUS | AMPERSAND) multiplicative_expression)*
+private logical_and_expression ::= comparison_expression ((AND_OP|AND_OP_ENTITY) comparison_expression)*
+
+private comparison_expression ::= additive_expression ((LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT | LT_ENTITY | GT_ENTITY) additive_expression)*
+
+private additive_expression ::= multiplicative_expression ((PLUS | MINUS | AMPERSAND | AMP_ENTITY) multiplicative_expression)*
+
 private multiplicative_expression ::= unary_expression ((MUL | DIV) unary_expression)*
 private unary_expression ::= (MINUS | NOT_OP) unary_expression | primary_expression
 primary_expression ::=

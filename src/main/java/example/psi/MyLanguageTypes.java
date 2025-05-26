@@ -26,7 +26,9 @@ public interface MyLanguageTypes {
   IElementType WHILE_STATEMENT = new MyLanguageElementType("WHILE_STATEMENT");
 
   IElementType AMPERSAND = new MyLanguageTokenType("&");
+  IElementType AMP_ENTITY = new MyLanguageTokenType("&amp;");
   IElementType AND_OP = new MyLanguageTokenType("&&");
+  IElementType AND_OP_ENTITY = new MyLanguageTokenType("&amp;&amp;");
   IElementType COMMA = new MyLanguageTokenType(",");
   IElementType DIV = new MyLanguageTokenType("/");
   IElementType DOT = new MyLanguageTokenType(".");
@@ -37,6 +39,7 @@ public interface MyLanguageTypes {
   IElementType FALSE_KEYWORD = new MyLanguageTokenType("false");
   IElementType GREATER = new MyLanguageTokenType(">");
   IElementType GREATER_EQUAL = new MyLanguageTokenType(">=");
+  IElementType GT_ENTITY = new MyLanguageTokenType("&gt;");
   IElementType IDENTIFIER = new MyLanguageTokenType("IDENTIFIER");
   IElementType IF_KEYWORD = new MyLanguageTokenType("if");
   IElementType IIF_KEYWORD = new MyLanguageTokenType("IIF");
@@ -45,6 +48,7 @@ public interface MyLanguageTypes {
   IElementType LESS = new MyLanguageTokenType("<");
   IElementType LESS_EQUAL = new MyLanguageTokenType("<=");
   IElementType LPAREN = new MyLanguageTokenType("(");
+  IElementType LT_ENTITY = new MyLanguageTokenType("&lt;");
   IElementType MACRO_IDENTIFIER = new MyLanguageTokenType("MACRO_IDENTIFIER");
   IElementType MINUS = new MyLanguageTokenType("-");
   IElementType MUL = new MyLanguageTokenType("*");

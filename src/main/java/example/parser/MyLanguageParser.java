@@ -36,7 +36,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // multiplicative_expression ((PLUS | MINUS | AMPERSAND) multiplicative_expression)*
+  // multiplicative_expression ((PLUS | MINUS | AMPERSAND | AMP_ENTITY) multiplicative_expression)*
   static boolean additive_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "additive_expression")) return false;
     boolean r;
@@ -47,7 +47,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ((PLUS | MINUS | AMPERSAND) multiplicative_expression)*
+  // ((PLUS | MINUS | AMPERSAND | AMP_ENTITY) multiplicative_expression)*
   private static boolean additive_expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "additive_expression_1")) return false;
     while (true) {
@@ -58,7 +58,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // (PLUS | MINUS | AMPERSAND) multiplicative_expression
+  // (PLUS | MINUS | AMPERSAND | AMP_ENTITY) multiplicative_expression
   private static boolean additive_expression_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "additive_expression_1_0")) return false;
     boolean r;
@@ -69,13 +69,14 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // PLUS | MINUS | AMPERSAND
+  // PLUS | MINUS | AMPERSAND | AMP_ENTITY
   private static boolean additive_expression_1_0_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "additive_expression_1_0_0")) return false;
     boolean r;
     r = consumeToken(b, PLUS);
     if (!r) r = consumeToken(b, MINUS);
     if (!r) r = consumeToken(b, AMPERSAND);
+    if (!r) r = consumeToken(b, AMP_ENTITY);
     return r;
   }
 
@@ -152,7 +153,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // additive_expression ((LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT) additive_expression)*
+  // additive_expression ((LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT | LT_ENTITY | GT_ENTITY) additive_expression)*
   static boolean comparison_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "comparison_expression")) return false;
     boolean r;
@@ -163,7 +164,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ((LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT) additive_expression)*
+  // ((LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT | LT_ENTITY | GT_ENTITY) additive_expression)*
   private static boolean comparison_expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "comparison_expression_1")) return false;
     while (true) {
@@ -174,7 +175,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // (LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT) additive_expression
+  // (LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT | LT_ENTITY | GT_ENTITY) additive_expression
   private static boolean comparison_expression_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "comparison_expression_1_0")) return false;
     boolean r;
@@ -185,7 +186,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT
+  // LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT | LT_ENTITY | GT_ENTITY
   private static boolean comparison_expression_1_0_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "comparison_expression_1_0_0")) return false;
     boolean r;
@@ -196,6 +197,8 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, LESS);
     if (!r) r = consumeToken(b, GREATER);
     if (!r) r = consumeToken(b, NOT_EQUAL_ALT);
+    if (!r) r = consumeToken(b, LT_ENTITY);
+    if (!r) r = consumeToken(b, GT_ENTITY);
     return r;
   }
 
@@ -359,7 +362,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // comparison_expression (AND_OP comparison_expression)*
+  // comparison_expression ((AND_OP|AND_OP_ENTITY) comparison_expression)*
   static boolean logical_and_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "logical_and_expression")) return false;
     boolean r;
@@ -370,7 +373,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (AND_OP comparison_expression)*
+  // ((AND_OP|AND_OP_ENTITY) comparison_expression)*
   private static boolean logical_and_expression_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "logical_and_expression_1")) return false;
     while (true) {
@@ -381,14 +384,23 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // AND_OP comparison_expression
+  // (AND_OP|AND_OP_ENTITY) comparison_expression
   private static boolean logical_and_expression_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "logical_and_expression_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, AND_OP);
+    r = logical_and_expression_1_0_0(b, l + 1);
     r = r && comparison_expression(b, l + 1);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // AND_OP|AND_OP_ENTITY
+  private static boolean logical_and_expression_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "logical_and_expression_1_0_0")) return false;
+    boolean r;
+    r = consumeToken(b, AND_OP);
+    if (!r) r = consumeToken(b, AND_OP_ENTITY);
     return r;
   }
 

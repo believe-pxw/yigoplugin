@@ -44,6 +44,10 @@ NUMBER=[0-9]+
   "true"                       { return TRUE_KEYWORD; }
   "false"                      { return FALSE_KEYWORD; }
   "IIF"                        { return IIF_KEYWORD; }
+  "&amp;"                      { return AMP_ENTITY; }
+  "&lt;"                       { return LT_ENTITY; }
+  "&gt;"                       { return GT_ENTITY; }
+  "&amp;&amp;"                 { return AND_OP_ENTITY; }
   "+"                          { return PLUS; }
   "-"                          { return MINUS; }
   "*"                          { return MUL; }
