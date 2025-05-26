@@ -28,9 +28,21 @@ public class MyLanguageVariableReferenceImpl extends ASTWrapperPsiElement implem
   }
 
   @Override
+  @Nullable
+  public PsiElement getContainerKeyword() {
+    return findChildByType(CONTAINER_KEYWORD);
+  }
+
+  @Override
   @NotNull
   public PsiElement getIdentifier() {
     return findNotNullChildByType(IDENTIFIER);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getParentKeyword() {
+    return findChildByType(PARENT_KEYWORD);
   }
 
 }

@@ -30,6 +30,7 @@ public interface MyLanguageTypes {
   IElementType AND_OP = new MyLanguageTokenType("&&");
   IElementType AND_OP_ENTITY = new MyLanguageTokenType("&amp;&amp;");
   IElementType COMMA = new MyLanguageTokenType(",");
+  IElementType CONTAINER_KEYWORD = new MyLanguageTokenType("CONTAINER_KEYWORD");
   IElementType DIV = new MyLanguageTokenType("/");
   IElementType DOT = new MyLanguageTokenType(".");
   IElementType DOUBLE_QUOTED_STRING = new MyLanguageTokenType("DOUBLE_QUOTED_STRING");
@@ -57,7 +58,7 @@ public interface MyLanguageTypes {
   IElementType NOT_OP = new MyLanguageTokenType("!");
   IElementType NUMBER = new MyLanguageTokenType("NUMBER");
   IElementType OR_OP = new MyLanguageTokenType("||");
-  IElementType PARENT_KEYWORD = new MyLanguageTokenType("parent");
+  IElementType PARENT_KEYWORD = new MyLanguageTokenType("PARENT_KEYWORD");
   IElementType PLUS = new MyLanguageTokenType("+");
   IElementType RBRACE = new MyLanguageTokenType("}");
   IElementType RPAREN = new MyLanguageTokenType(")");

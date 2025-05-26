@@ -7,7 +7,13 @@ import com.intellij.psi.PsiElement;
 
 public interface MyLanguageVariableReference extends PsiElement {
 
+  @Nullable
+  PsiElement getContainerKeyword();
+
   @NotNull
   PsiElement getIdentifier();
+
+  @Nullable
+  PsiElement getParentKeyword();
 
 }

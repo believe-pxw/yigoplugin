@@ -25,8 +25,10 @@ import static example.psi.MyLanguageTypes.*;
 EOL=\R
 WHITE_SPACE=\s+
 
+PARENT_KEYWORD=[pP]arent
+CONTAINER_KEYWORD=[cC]ontainer
 MACRO_IDENTIFIER=Macro_[a-zA-Z_][a-zA-Z0-9_]*
-JAVA_PATH_IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*(\.[a-zA-Z_][a-zA-Z0-9_]*)+
+JAVA_PATH_IDENTIFIER=com*(\.[a-zA-Z_][a-zA-Z0-9_]*)+
 IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 SINGLE_QUOTED_STRING='[^']*'
 DOUBLE_QUOTED_STRING=\"[^\"]*\"
@@ -40,7 +42,6 @@ NUMBER=[0-9]+
   "else"                       { return ELSE_KEYWORD; }
   "while"                      { return WHILE_KEYWORD; }
   "var"                        { return VAR_KEYWORD; }
-  "parent"                     { return PARENT_KEYWORD; }
   "true"                       { return TRUE_KEYWORD; }
   "false"                      { return FALSE_KEYWORD; }
   "IIF"                        { return IIF_KEYWORD; }
@@ -72,6 +73,8 @@ NUMBER=[0-9]+
   "{"                          { return LBRACE; }
   "}"                          { return RBRACE; }
 
+  {PARENT_KEYWORD}             { return PARENT_KEYWORD; }
+  {CONTAINER_KEYWORD}          { return CONTAINER_KEYWORD; }
   {MACRO_IDENTIFIER}           { return MACRO_IDENTIFIER; }
   {JAVA_PATH_IDENTIFIER}       { return JAVA_PATH_IDENTIFIER; }
   {IDENTIFIER}                 { return IDENTIFIER; }

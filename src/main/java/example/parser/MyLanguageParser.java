@@ -272,22 +272,50 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (macro_call_expression | path | java_method_call | iif_function_call) LPAREN argument_list? RPAREN
+  // ((PARENT_KEYWORD | CONTAINER_KEYWORD) DOT)? (macro_call_expression | path | java_method_call | iif_function_call) LPAREN argument_list? RPAREN
   public static boolean function_call(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_call")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, FUNCTION_CALL, "<function call>");
     r = function_call_0(b, l + 1);
+    r = r && function_call_1(b, l + 1);
     r = r && consumeToken(b, LPAREN);
-    r = r && function_call_2(b, l + 1);
+    r = r && function_call_3(b, l + 1);
     r = r && consumeToken(b, RPAREN);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // macro_call_expression | path | java_method_call | iif_function_call
+  // ((PARENT_KEYWORD | CONTAINER_KEYWORD) DOT)?
   private static boolean function_call_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_call_0")) return false;
+    function_call_0_0(b, l + 1);
+    return true;
+  }
+
+  // (PARENT_KEYWORD | CONTAINER_KEYWORD) DOT
+  private static boolean function_call_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "function_call_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = function_call_0_0_0(b, l + 1);
+    r = r && consumeToken(b, DOT);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // PARENT_KEYWORD | CONTAINER_KEYWORD
+  private static boolean function_call_0_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "function_call_0_0_0")) return false;
+    boolean r;
+    r = consumeToken(b, PARENT_KEYWORD);
+    if (!r) r = consumeToken(b, CONTAINER_KEYWORD);
+    return r;
+  }
+
+  // macro_call_expression | path | java_method_call | iif_function_call
+  private static boolean function_call_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "function_call_1")) return false;
     boolean r;
     r = macro_call_expression(b, l + 1);
     if (!r) r = path(b, l + 1);
@@ -297,8 +325,8 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   // argument_list?
-  private static boolean function_call_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "function_call_2")) return false;
+  private static boolean function_call_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "function_call_3")) return false;
     argument_list(b, l + 1);
     return true;
   }
@@ -494,10 +522,9 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (PARENT_KEYWORD DOT)? IDENTIFIER
+  // ((PARENT_KEYWORD | CONTAINER_KEYWORD) DOT)? IDENTIFIER
   static boolean path(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "path")) return false;
-    if (!nextTokenIs(b, "", IDENTIFIER, PARENT_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = path_0(b, l + 1);
@@ -506,20 +533,30 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (PARENT_KEYWORD DOT)?
+  // ((PARENT_KEYWORD | CONTAINER_KEYWORD) DOT)?
   private static boolean path_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "path_0")) return false;
     path_0_0(b, l + 1);
     return true;
   }
 
-  // PARENT_KEYWORD DOT
+  // (PARENT_KEYWORD | CONTAINER_KEYWORD) DOT
   private static boolean path_0_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "path_0_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, PARENT_KEYWORD, DOT);
+    r = path_0_0_0(b, l + 1);
+    r = r && consumeToken(b, DOT);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // PARENT_KEYWORD | CONTAINER_KEYWORD
+  private static boolean path_0_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "path_0_0_0")) return false;
+    boolean r;
+    r = consumeToken(b, PARENT_KEYWORD);
+    if (!r) r = consumeToken(b, CONTAINER_KEYWORD);
     return r;
   }
 
@@ -747,7 +784,6 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   // path
   public static boolean variable_reference(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variable_reference")) return false;
-    if (!nextTokenIs(b, "<variable reference>", IDENTIFIER, PARENT_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, VARIABLE_REFERENCE, "<variable reference>");
     r = path(b, l + 1);
