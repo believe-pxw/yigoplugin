@@ -74,16 +74,18 @@ root ::= top_level_statement*
 
 private top_level_statement ::=
   (variable_declaration SEMICOLON)
+  | (variable_assignment SEMICOLON?)
   | ((expression_sequence | if_statement | while_statement) SEMICOLON?)
 
 expression_sequence ::= expression_statement (SEMICOLON expression_statement)*
 
 private statement ::=
   (variable_declaration SEMICOLON)
+  | (variable_assignment SEMICOLON?)
   | ((expression_sequence | if_statement | while_statement) SEMICOLON?)
 
 variable_declaration ::= VAR_KEYWORD IDENTIFIER (EQ expression)?
-
+variable_assignment ::= IDENTIFIER EQ expression
 expression_statement ::= expression
 
 if_statement ::= IF_KEYWORD LPAREN expression RPAREN statement_block (ELSE_KEYWORD statement_block)?

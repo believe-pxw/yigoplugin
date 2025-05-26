@@ -20,6 +20,9 @@ public interface MyLanguageWhileStatement extends PsiElement {
   MyLanguageIfStatement getIfStatement();
 
   @Nullable
+  MyLanguageVariableAssignment getVariableAssignment();
+
+  @Nullable
   MyLanguageVariableDeclaration getVariableDeclaration();
 
   @Nullable

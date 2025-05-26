@@ -41,6 +41,12 @@ public class MyLanguageBlockStatementImpl extends ASTWrapperPsiElement implement
 
   @Override
   @NotNull
+  public List<MyLanguageVariableAssignment> getVariableAssignmentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MyLanguageVariableAssignment.class);
+  }
+
+  @Override
+  @NotNull
   public List<MyLanguageVariableDeclaration> getVariableDeclarationList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, MyLanguageVariableDeclaration.class);
   }

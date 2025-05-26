@@ -621,6 +621,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // (variable_declaration SEMICOLON)
+  //   | (variable_assignment SEMICOLON?)
   //   | ((expression_sequence | if_statement | while_statement) SEMICOLON?)
   static boolean statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statement")) return false;
@@ -628,6 +629,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = statement_0(b, l + 1);
     if (!r) r = statement_1(b, l + 1);
+    if (!r) r = statement_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -643,20 +645,38 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (expression_sequence | if_statement | while_statement) SEMICOLON?
+  // variable_assignment SEMICOLON?
   private static boolean statement_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statement_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = statement_1_0(b, l + 1);
+    r = variable_assignment(b, l + 1);
     r = r && statement_1_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
+  // SEMICOLON?
+  private static boolean statement_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "statement_1_1")) return false;
+    consumeToken(b, SEMICOLON);
+    return true;
+  }
+
+  // (expression_sequence | if_statement | while_statement) SEMICOLON?
+  private static boolean statement_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "statement_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = statement_2_0(b, l + 1);
+    r = r && statement_2_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
   // expression_sequence | if_statement | while_statement
-  private static boolean statement_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "statement_1_0")) return false;
+  private static boolean statement_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "statement_2_0")) return false;
     boolean r;
     r = expression_sequence(b, l + 1);
     if (!r) r = if_statement(b, l + 1);
@@ -665,8 +685,8 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   // SEMICOLON?
-  private static boolean statement_1_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "statement_1_1")) return false;
+  private static boolean statement_2_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "statement_2_1")) return false;
     consumeToken(b, SEMICOLON);
     return true;
   }
@@ -683,6 +703,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // (variable_declaration SEMICOLON)
+  //   | (variable_assignment SEMICOLON?)
   //   | ((expression_sequence | if_statement | while_statement) SEMICOLON?)
   static boolean top_level_statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "top_level_statement")) return false;
@@ -690,6 +711,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = top_level_statement_0(b, l + 1);
     if (!r) r = top_level_statement_1(b, l + 1);
+    if (!r) r = top_level_statement_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -705,20 +727,38 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (expression_sequence | if_statement | while_statement) SEMICOLON?
+  // variable_assignment SEMICOLON?
   private static boolean top_level_statement_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "top_level_statement_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = top_level_statement_1_0(b, l + 1);
+    r = variable_assignment(b, l + 1);
     r = r && top_level_statement_1_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
+  // SEMICOLON?
+  private static boolean top_level_statement_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "top_level_statement_1_1")) return false;
+    consumeToken(b, SEMICOLON);
+    return true;
+  }
+
+  // (expression_sequence | if_statement | while_statement) SEMICOLON?
+  private static boolean top_level_statement_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "top_level_statement_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = top_level_statement_2_0(b, l + 1);
+    r = r && top_level_statement_2_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
   // expression_sequence | if_statement | while_statement
-  private static boolean top_level_statement_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "top_level_statement_1_0")) return false;
+  private static boolean top_level_statement_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "top_level_statement_2_0")) return false;
     boolean r;
     r = expression_sequence(b, l + 1);
     if (!r) r = if_statement(b, l + 1);
@@ -727,8 +767,8 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   // SEMICOLON?
-  private static boolean top_level_statement_1_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "top_level_statement_1_1")) return false;
+  private static boolean top_level_statement_2_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "top_level_statement_2_1")) return false;
     consumeToken(b, SEMICOLON);
     return true;
   }
@@ -762,6 +802,19 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     boolean r;
     r = consumeToken(b, MINUS);
     if (!r) r = consumeToken(b, NOT_OP);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // IDENTIFIER EQ expression
+  public static boolean variable_assignment(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "variable_assignment")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, IDENTIFIER, EQ);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, VARIABLE_ASSIGNMENT, r);
     return r;
   }
 

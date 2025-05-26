@@ -14,6 +14,9 @@ public interface MyLanguageBlockStatement extends PsiElement {
   List<MyLanguageIfStatement> getIfStatementList();
 
   @NotNull
+  List<MyLanguageVariableAssignment> getVariableAssignmentList();
+
+  @NotNull
   List<MyLanguageVariableDeclaration> getVariableDeclarationList();
 
   @NotNull

@@ -20,6 +20,9 @@ public interface MyLanguageIfStatement extends PsiElement {
   List<MyLanguageIfStatement> getIfStatementList();
 
   @NotNull
+  List<MyLanguageVariableAssignment> getVariableAssignmentList();
+
+  @NotNull
   List<MyLanguageVariableDeclaration> getVariableDeclarationList();
 
   @NotNull

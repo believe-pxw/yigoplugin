@@ -53,6 +53,12 @@ public class MyLanguageWhileStatementImpl extends ASTWrapperPsiElement implement
 
   @Override
   @Nullable
+  public MyLanguageVariableAssignment getVariableAssignment() {
+    return findChildByClass(MyLanguageVariableAssignment.class);
+  }
+
+  @Override
+  @Nullable
   public MyLanguageVariableDeclaration getVariableDeclaration() {
     return findChildByClass(MyLanguageVariableDeclaration.class);
   }

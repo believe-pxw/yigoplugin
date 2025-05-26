@@ -21,6 +21,7 @@ public interface MyLanguageTypes {
   IElementType JAVA_METHOD_CALL = new MyLanguageElementType("JAVA_METHOD_CALL");
   IElementType MACRO_CALL_EXPRESSION = new MyLanguageElementType("MACRO_CALL_EXPRESSION");
   IElementType PRIMARY_EXPRESSION = new MyLanguageElementType("PRIMARY_EXPRESSION");
+  IElementType VARIABLE_ASSIGNMENT = new MyLanguageElementType("VARIABLE_ASSIGNMENT");
   IElementType VARIABLE_DECLARATION = new MyLanguageElementType("VARIABLE_DECLARATION");
   IElementType VARIABLE_REFERENCE = new MyLanguageElementType("VARIABLE_REFERENCE");
   IElementType WHILE_STATEMENT = new MyLanguageElementType("WHILE_STATEMENT");
@@ -110,6 +111,9 @@ public interface MyLanguageTypes {
       }
       else if (type == PRIMARY_EXPRESSION) {
         return new MyLanguagePrimaryExpressionImpl(node);
+      }
+      else if (type == VARIABLE_ASSIGNMENT) {
+        return new MyLanguageVariableAssignmentImpl(node);
       }
       else if (type == VARIABLE_DECLARATION) {
         return new MyLanguageVariableDeclarationImpl(node);
