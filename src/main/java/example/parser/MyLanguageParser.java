@@ -115,7 +115,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LBRACE statement* RBRACE
+  // LBRACE statement* RBRACE COLON*
   public static boolean block_statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "block_statement")) return false;
     if (!nextTokenIs(b, LBRACE)) return false;
@@ -124,6 +124,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, LBRACE);
     r = r && block_statement_1(b, l + 1);
     r = r && consumeToken(b, RBRACE);
+    r = r && block_statement_3(b, l + 1);
     exit_section_(b, m, BLOCK_STATEMENT, r);
     return r;
   }
@@ -135,6 +136,17 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
       int c = current_position_(b);
       if (!statement(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "block_statement_1", c)) break;
+    }
+    return true;
+  }
+
+  // COLON*
+  private static boolean block_statement_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "block_statement_3")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!consumeToken(b, COLON)) break;
+      if (!empty_element_parsed_guard_(b, "block_statement_3", c)) break;
     }
     return true;
   }
@@ -566,6 +578,8 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   //   | variable_reference
   //   | LPAREN expression RPAREN
   //   | boolean_constant
+  //   | block_statement
+  //   | COLON
   public static boolean primary_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "primary_expression")) return false;
     boolean r;
@@ -575,6 +589,8 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     if (!r) r = variable_reference(b, l + 1);
     if (!r) r = primary_expression_3(b, l + 1);
     if (!r) r = boolean_constant(b, l + 1);
+    if (!r) r = block_statement(b, l + 1);
+    if (!r) r = consumeToken(b, COLON);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

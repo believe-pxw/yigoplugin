@@ -29,6 +29,7 @@ public interface MyLanguageTypes {
   IElementType AMP_ENTITY = new MyLanguageTokenType("&amp;");
   IElementType AND_OP = new MyLanguageTokenType("&&");
   IElementType AND_OP_ENTITY = new MyLanguageTokenType("&amp;&amp;");
+  IElementType COLON = new MyLanguageTokenType(":");
   IElementType COMMA = new MyLanguageTokenType(",");
   IElementType CONTAINER_KEYWORD = new MyLanguageTokenType("CONTAINER_KEYWORD");
   IElementType DIV = new MyLanguageTokenType("/");

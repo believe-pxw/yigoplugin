@@ -62,6 +62,7 @@
     COMMA = ","
     LBRACE = "{"
     RBRACE = "}"
+    COLON = ":"
   ]
 }
 
@@ -91,7 +92,7 @@ while_statement ::= WHILE_KEYWORD LPAREN expression RPAREN statement_block
 
 private statement_block ::= statement | block_statement
 
-block_statement ::= LBRACE statement* RBRACE
+block_statement ::= LBRACE statement* RBRACE COLON*
 
 expression ::= logical_or_expression
 private logical_or_expression ::= logical_and_expression (OR_OP logical_and_expression)*
@@ -109,6 +110,8 @@ primary_expression ::=
   | variable_reference
   | LPAREN expression RPAREN
   | boolean_constant
+  | block_statement
+  | COLON
 variable_reference ::= path
 constant ::= SINGLE_QUOTED_STRING | DOUBLE_QUOTED_STRING | NUMBER
 boolean_constant ::= TRUE_KEYWORD | FALSE_KEYWORD

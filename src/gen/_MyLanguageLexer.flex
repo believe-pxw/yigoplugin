@@ -72,6 +72,7 @@ NUMBER=[0-9]+
   ","                          { return COMMA; }
   "{"                          { return LBRACE; }
   "}"                          { return RBRACE; }
+  ":"                          { return COLON; }
 
   {PARENT_KEYWORD}             { return PARENT_KEYWORD; }
   {CONTAINER_KEYWORD}          { return CONTAINER_KEYWORD; }
