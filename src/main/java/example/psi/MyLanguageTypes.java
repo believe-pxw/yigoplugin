@@ -4,8 +4,6 @@ package example.psi;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.PsiElement;
 import com.intellij.lang.ASTNode;
-import example.MyLanguageElementType;
-import example.MyLanguageTokenType;
 import example.psi.impl.*;
 
 public interface MyLanguageTypes {

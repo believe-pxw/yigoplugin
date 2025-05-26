@@ -1,6 +1,7 @@
-package example;
+package example.psi;
 
 import com.intellij.psi.tree.IElementType;
+import example.MyLanguage;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
