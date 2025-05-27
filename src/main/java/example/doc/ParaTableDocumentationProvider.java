@@ -12,6 +12,7 @@ import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
+import example.index.DataObjectIndex;
 import example.ref.DataObjectReference;
 import org.jetbrains.annotations.Nullable;
 
@@ -187,7 +188,7 @@ public class ParaTableDocumentationProvider implements DocumentationProvider {
             if (domainInfo != null) {
                 String itemKey1 = domainInfo.get("ItemKey");
                 if (itemKey1 != null && !itemKey1.isEmpty()) {
-                    return DataObjectReference.getDataObjectPsi(project, itemKey1);
+                    return DataObjectIndex.findDataObjectDefinition(project, itemKey1);
                 }
             }
         }
@@ -323,7 +324,11 @@ public class ParaTableDocumentationProvider implements DocumentationProvider {
     public PsiElement getDocumentationElementForLink(PsiManager psiManager, String link, PsiElement context) {
         if (link.startsWith("dataObjectKey/")) {
             String key = link.substring("dataObjectKey/".length());
-            return DataObjectReference.getDataObjectPsi(psiManager.getProject(), key).getContainingFile();
+            XmlTag dataObjectDefinition = DataObjectIndex.findDataObjectDefinition(psiManager.getProject(), key);
+            if (dataObjectDefinition != null) {
+                return dataObjectDefinition.getContainingFile();
+            }
+            return null;
         } else {
             return null;
         }
