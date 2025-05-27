@@ -38,7 +38,6 @@ public class DataObjectReference extends PsiReferenceBase<XmlAttributeValue> {
     // or you have a dedicated service for parsing/caching PsiElements.
     // Let's create a simple cache for this reference class itself for demonstration.
     private static final Map<Project, Map<String, PsiElement>> cachedDataObjectPsiElements = new ConcurrentHashMap<>();
-    private static final AtomicBoolean hasPopulated = new AtomicBoolean(false); // Simple flag to ensure population once per project load
 
     public DataObjectReference(@NotNull XmlAttributeValue element, TextRange rangeInElement) {
         super(element, rangeInElement);
@@ -54,12 +53,10 @@ public class DataObjectReference extends PsiReferenceBase<XmlAttributeValue> {
     }
 
     public static PsiElement getDataObjectPsi(Project project, String dataObjectKey) {
-        if (!cachedDataObjectPsiElements.containsKey(project) || !hasPopulated.get()) {
+        if (!cachedDataObjectPsiElements.containsKey(project)) {
             // Re-use or adapt the logic from ParaTableDocumentationProvider's populateDataObjectCache
             populateDataObjectCache(project);
-            hasPopulated.set(true); // Set to true after initial population
         }
-
         // Return the PsiElement from the cache
         return cachedDataObjectPsiElements.getOrDefault(project, Collections.emptyMap()).get(dataObjectKey);
     }
@@ -77,7 +74,7 @@ public class DataObjectReference extends PsiReferenceBase<XmlAttributeValue> {
     // In a production plugin, you'd extract this caching logic into a shared service.
     private static synchronized void populateDataObjectCache(Project project) {
         // Prevent concurrent modification and re-population
-        if (cachedDataObjectPsiElements.containsKey(project) && hasPopulated.get()) {
+        if (cachedDataObjectPsiElements.containsKey(project)) {
             return;
         }
 

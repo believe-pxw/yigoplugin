@@ -24,29 +24,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.intellij.lang.documentation.DocumentationProvider;
 
+import static example.index.AttrConstant.*;
+
 public class ParaTableDocumentationProvider implements DocumentationProvider {
 
-    // Constants for ParaTable files (your existing constants)
-    private static final String PARATABLE_FILENAME_PREFIX = "ParaTable";
-    private static final String PARA_GROUP_TAG = "ParaGroup";
-    private static final String ITEM_TAG = "Item";
-    private static final String KEY_ATTRIBUTE = "Key";
-    private static final String CAPTION_ATTRIBUTE = "Caption";
-    private static final String VALUE_ATTRIBUTE = "Value";
-    private static final String GROUP_KEY_ATTRIBUTE = "GroupKey";
 
-    // Constants for DataElement and Domain files
-    private static final String DATA_ELEMENT_FOLDER = "DataElement";
-    private static final String DOMAIN_FOLDER = "Domain";
-    private static final String DATA_ELEMENT_DEF_TAG = "DataElementDef";
-    private static final String DATA_ELEMENT_COLLECTION_TAG = "DataElementCollection";
-    private static final String DATA_ELEMENT_TAG = "DataElement";
-    private static final String DATA_ELEMENT_KEY_ATTRIBUTE = "DataElementKey";
-    private static final String DOMAIN_DEF_TAG = "DomainDef";
-    private static final String DOMAIN_COLLECTION_TAG = "DomainCollection";
-    private static final String DOMAIN_TAG = "Domain";
-    private static final String REF_CONTROL_TYPE_ATTRIBUTE = "RefControlType";
-    private static final String DATA_TYPE_ATTRIBUTE = "DataType";
 
 
     // Caches for ParaTable (your existing cache)

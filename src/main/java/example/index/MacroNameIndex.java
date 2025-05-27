@@ -1,4 +1,4 @@
-package example.ref;
+package example.index;
 
 import com.intellij.ide.highlighter.XmlFileType; // 导入XML文件类型
 import com.intellij.openapi.project.Project;
@@ -6,7 +6,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.indexing.*;

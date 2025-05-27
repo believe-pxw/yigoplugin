@@ -10,7 +10,7 @@
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <fileBasedIndex implementation="example.ref.MacroNameIndex"/>
+        <fileBasedIndex implementation="example.index.MacroNameIndex"/>
         <fileType
                 name="MyLanguage File"
                 implementationClass="example.MyLanguageFileType"
