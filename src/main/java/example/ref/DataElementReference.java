@@ -23,10 +23,7 @@ public class DataElementReference extends PsiReferenceBase<XmlAttributeValue> {
     @Override
     public PsiElement resolve() {
         Project project = myElement.getProject();
-        PsiElement psi = ParaTableDocumentationProvider.getItemKeyByElementKey(project, dataElementKey);
-        if (psi == null) {
-            psi = ParaTableDocumentationProvider.getDataElementPsi(project, dataElementKey);
-        }
+        PsiElement psi = ParaTableDocumentationProvider.getDataElementPsi(project, dataElementKey);
         if (psi == null) {
             return myElement;
         }
