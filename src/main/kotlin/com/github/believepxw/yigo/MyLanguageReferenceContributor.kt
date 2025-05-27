@@ -30,7 +30,11 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                 ): Array<PsiReference?> {
                     var injectedFragments: MutableList<Pair<PsiElement?, TextRange?>>? = null
                     if (element.getNode().getElementType().toString() == "XML_DATA_CHARACTERS") {
-                        val host = element.getParent().getParent() as PsiLanguageInjectionHost
+                        val ancestor = element.parent.parent
+                        if (ancestor !is PsiLanguageInjectionHost) {
+                            return PsiReference.EMPTY_ARRAY
+                        }
+                        val host = ancestor
                         // 获取所有注入片段
                         injectedFragments = InjectedLanguageManager.getInstance(element.getProject())
                             .getInjectedPsiFiles(host)
