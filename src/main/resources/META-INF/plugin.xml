@@ -22,6 +22,7 @@
         <lang.syntaxHighlighterFactory language="MyLanguage" implementationClass="example.MyLanguageSyntaxHighlighterFactory"/>
         <psi.referenceContributor language="XML" implementation="com.github.believepxw.yigo.MyLanguageReferenceContributor"/>
         <lang.documentationProvider language="XML" implementationClass="example.doc.ParaTableDocumentationProvider"/>
+        <lang.findUsagesProvider language="MyLanguage" implementationClass="example.MyLanguageFindUsagesProvider"/>
     </extensions>
     <applicationListeners>
     </applicationListeners>
