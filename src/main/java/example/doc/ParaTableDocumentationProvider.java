@@ -12,6 +12,7 @@ import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
+import example.ref.DataObjectReference;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -49,13 +50,15 @@ public class ParaTableDocumentationProvider implements DocumentationProvider {
 
 
     // Caches for ParaTable (your existing cache)
-    private final Map<Project, Map<String, String>> cachedParaGroupDocs = new ConcurrentHashMap<>();
+    private static final Map<Project, Map<String, String>> cachedParaGroupDocs = new ConcurrentHashMap<>();
 
     // Caches for DataElement and Domain
     // Project -> DataElementKey -> Map<AttributeName, AttributeValue>
-    private final Map<Project, Map<String, Map<String, String>>> cachedDataElements = new ConcurrentHashMap<>();
+    private static final Map<Project, Map<String, Map<String, String>>> cachedDataElements = new ConcurrentHashMap<>();
+    private static final Map<Project, Map<String, PsiElement>> cachedDataElementPsi = new ConcurrentHashMap<>();
+    private static final Map<Project, Map<String, PsiElement>> cachedDomainPsi = new ConcurrentHashMap<>();
     // Project -> DomainKey -> Map<AttributeName, AttributeValue>
-    private final Map<Project, Map<String, Map<String, String>>> cachedDomains = new ConcurrentHashMap<>();
+    private static final Map<Project, Map<String, Map<String, String>>> cachedDomains = new ConcurrentHashMap<>();
 
 
     @Nullable
@@ -86,7 +89,7 @@ public class ParaTableDocumentationProvider implements DocumentationProvider {
         return null;
     }
 
-    public String getParaGroupDoc(Project project,String groupKeyValue) {
+    public static String getParaGroupDoc(Project project,String groupKeyValue) {
         // 尝试从缓存获取，如果没有则查找并生成
         return cachedParaGroupDocs
                 .computeIfAbsent(project, p -> new ConcurrentHashMap<>())
@@ -94,7 +97,7 @@ public class ParaTableDocumentationProvider implements DocumentationProvider {
     }
 
     // --- ParaTable Documentation Logic (your existing logic) ---
-    private String findAndGenerateParaGroupDocumentation(Project project, String groupKey) {
+    private static String findAndGenerateParaGroupDocumentation(Project project, String groupKey) {
         Collection<VirtualFile> xmlFiles = FileTypeIndex.getFiles(XmlFileType.INSTANCE, GlobalSearchScope.projectScope(project));
 
         for (VirtualFile virtualFile : xmlFiles) {
@@ -117,7 +120,7 @@ public class ParaTableDocumentationProvider implements DocumentationProvider {
         return null; // If no matching ParaGroup is found
     }
 
-    private String formatParaGroupDocumentation(XmlTag paraGroupTag) {
+    private static String formatParaGroupDocumentation(XmlTag paraGroupTag) {
         StringBuilder docBuilder = new StringBuilder();
         docBuilder.append("<h3>表单类型: ").append(paraGroupTag.getAttributeValue(CAPTION_ATTRIBUTE)).append("</h3>");
         docBuilder.append("<table>");
@@ -173,7 +176,7 @@ public class ParaTableDocumentationProvider implements DocumentationProvider {
                     docBuilder.append("<li><b>Caption:</b> ").append(domainCaption != null ? domainCaption : "N/A").append("</li>");
                     docBuilder.append("<li><b>RefControlType:</b> ").append(refControlType != null ? refControlType : "N/A").append("</li>");
                     if (itemKey != null) {
-                        docBuilder.append("<li><b>ItemKey:</b> ").append(itemKey).append("</li>");
+                        docBuilder.append("<li><b>ItemKey:</b> <a href=\"psi_element://dataObjectKey/").append(itemKey).append("\">").append(itemKey).append("</a></li>");
                     }
                     if (groupKey != null) {
                         docBuilder.append("<li><b>groupKey:</b> ").append(groupKey).append("</li>");
@@ -192,10 +195,42 @@ public class ParaTableDocumentationProvider implements DocumentationProvider {
         }
     }
 
-    private synchronized void populateDataElementCache(Project project) {
+    public static PsiElement getItemKeyByElementKey(Project project, String elementKey)  {
+        populateDataElementCache(project);
+        populateDomainCache(project);
+        Map<String, String> dataElementInfo = cachedDataElements.getOrDefault(project, Collections.emptyMap()).get(elementKey);
+        if (dataElementInfo != null) {
+            String domainKey = dataElementInfo.get("DomainKey");
+            Map<String, String> domainInfo = cachedDomains.getOrDefault(project, Collections.emptyMap()).get(domainKey);
+            if (domainInfo != null) {
+                String itemKey1 = domainInfo.get("ItemKey");
+                if (itemKey1 != null && !itemKey1.isEmpty()) {
+                    return DataObjectReference.getDataObjectPsi(project, itemKey1);
+                }
+            }
+        }
+        return null;
+    }
+
+
+    public static PsiElement getDataElementPsi(Project project, String elementKey)  {
+        populateDataElementCache(project);
+        populateDomainCache(project);
+        return cachedDataElementPsi.getOrDefault(project, Collections.emptyMap()).get(elementKey);
+    }
+
+    public static PsiElement getDomainPsi(Project project, String domainKey)  {
+        populateDataElementCache(project);
+        populateDomainCache(project);
+        return cachedDomainPsi.getOrDefault(project, Collections.emptyMap()).get(domainKey);
+    }
+
+
+    private static synchronized void populateDataElementCache(Project project) {
         // Only populate if not already cached for this project
         if (!cachedDataElements.containsKey(project)) {
             Map<String, Map<String, String>> projectDataElements = new ConcurrentHashMap<>();
+            Map<String, PsiElement> projectDataElementPsis = new ConcurrentHashMap<>();
             Collection<VirtualFile> xmlFiles = FileTypeIndex.getFiles(XmlFileType.INSTANCE, GlobalSearchScope.projectScope(project));
 
             for (VirtualFile virtualFile : xmlFiles) {
@@ -211,6 +246,7 @@ public class ParaTableDocumentationProvider implements DocumentationProvider {
                                 for (XmlTag dataElementTag : collectionTag.findSubTags(DATA_ELEMENT_TAG)) {
                                     String key = dataElementTag.getAttributeValue(KEY_ATTRIBUTE);
                                     if (key != null) {
+                                        projectDataElementPsis.put(key, dataElementTag);
                                         Map<String, String> attributes = new HashMap<>();
                                         attributes.put(KEY_ATTRIBUTE, key);
                                         Optional.ofNullable(dataElementTag.getAttributeValue(CAPTION_ATTRIBUTE))
@@ -226,13 +262,15 @@ public class ParaTableDocumentationProvider implements DocumentationProvider {
                 }
             }
             cachedDataElements.put(project, projectDataElements);
+            cachedDataElementPsi.put(project, projectDataElementPsis);
         }
     }
 
-    private synchronized void populateDomainCache(Project project) {
+    private static synchronized void populateDomainCache(Project project) {
         // Only populate if not already cached for this project
         if (!cachedDomains.containsKey(project)) {
             Map<String, Map<String, String>> projectDomains = new ConcurrentHashMap<>();
+            Map<String, PsiElement> projectDomainPsis = new ConcurrentHashMap<>();
             Collection<VirtualFile> xmlFiles = FileTypeIndex.getFiles(XmlFileType.INSTANCE, GlobalSearchScope.projectScope(project));
 
             for (VirtualFile virtualFile : xmlFiles) {
@@ -248,6 +286,7 @@ public class ParaTableDocumentationProvider implements DocumentationProvider {
                                 for (XmlTag domainTag : collectionTag.findSubTags(DOMAIN_TAG)) {
                                     String key = domainTag.getAttributeValue(KEY_ATTRIBUTE);
                                     if (key != null) {
+                                        projectDomainPsis.put(key, domainTag);
                                         Map<String, String> attributes = new HashMap<>();
                                         attributes.put(KEY_ATTRIBUTE, key);
                                         Optional.ofNullable(domainTag.getAttributeValue(CAPTION_ATTRIBUTE))
@@ -280,6 +319,7 @@ public class ParaTableDocumentationProvider implements DocumentationProvider {
                 }
             }
             cachedDomains.put(project, projectDomains);
+            cachedDomainPsi.put(project, projectDomainPsis);
         }
     }
 
@@ -299,6 +339,11 @@ public class ParaTableDocumentationProvider implements DocumentationProvider {
     @Nullable
     @Override
     public PsiElement getDocumentationElementForLink(PsiManager psiManager, String link, PsiElement context) {
-        return null;
+        if (link.startsWith("dataObjectKey/")) {
+            String key = link.substring("dataObjectKey/".length());
+            return DataObjectReference.getDataObjectPsi(psiManager.getProject(), key).getContainingFile();
+        } else {
+            return null;
+        }
     }
 }

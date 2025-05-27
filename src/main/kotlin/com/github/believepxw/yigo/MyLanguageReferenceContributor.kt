@@ -13,6 +13,9 @@ import com.intellij.remoteDev.util.UrlParameterKeys.Companion.host
 import com.intellij.util.ProcessingContext
 import com.intellij.util.containers.toArray
 import example.psi.MyLanguageTypes
+import example.ref.DataElementReference
+import example.ref.DataObjectReference
+import example.ref.DomainReference
 import example.ref.MacroReference
 
 class MyLanguageReferenceContributor : PsiReferenceContributor() {
@@ -39,6 +42,20 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                         injectedFragments = InjectedLanguageManager.getInstance(element.getProject())
                             .getInjectedPsiFiles(element)
                         if (injectedFragments == null || injectedFragments.isEmpty()) {
+                            var tagName = element.parent.firstChild.text
+                            if (tagName == "ItemKey") {
+                                val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
+                                references.add(DataObjectReference(element, TextRange(0, element.text.length)))
+                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                            }else if (tagName == "DataElementKey") {
+                                val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
+                                references.add(DataElementReference(element, TextRange(0, element.text.length)))
+                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                            }else if (tagName == "DomainKey") {
+                                val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
+                                references.add(DomainReference(element, TextRange(0, element.text.length)))
+                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                            }
                             return PsiReference.EMPTY_ARRAY
                         }
                     } else {
