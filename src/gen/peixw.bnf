@@ -30,6 +30,8 @@
 
     SINGLE_QUOTED_STRING = "regexp:'[^']*'"
     DOUBLE_QUOTED_STRING = "regexp:\"[^\"]*\""
+    // 新增：用于表示字面量对象的大括号字符串
+    LITERAL_OBJECT_STR = "regexp:\{[^{}]*(\{[^{}]*\}[^{}]*)*\}"
     NUMBER = "regexp:[0-9]+"
 
     AMP_ENTITY = "&amp;"
@@ -41,7 +43,7 @@
     MINUS = "-"
     MUL = "*"
     DIV = "/"
-    AMPERSAND = "&" // This is the literal "&"
+    AMPERSAND = "&"
     AND_OP = "&&"
     OR_OP = "||"
     DOT = "."
@@ -52,8 +54,8 @@
     GREATER_EQUAL = ">="
     EQUAL_EQUAL = "=="
     NOT_EQUAL = "!="
-    LESS = "<"    // This is the literal "<"
-    GREATER = ">" // This is the literal ">"
+    LESS = "<"
+    GREATER = ">"
     NOT_EQUAL_ALT = "<>"
 
     LPAREN = "("
@@ -106,18 +108,25 @@ private additive_expression ::= multiplicative_expression ((PLUS | MINUS | AMPER
 
 private multiplicative_expression ::= unary_expression ((MUL | DIV) unary_expression)*
 private unary_expression ::= (MINUS | NOT_OP) unary_expression | primary_expression
+
 primary_expression ::=
   constant
   | function_call
   | variable_reference
   | LPAREN expression RPAREN
   | boolean_constant
-  | block_statement
-  | COLON
+  | literal_object  // 新增：字面量对象
+
 variable_reference ::= path
 constant ::= SINGLE_QUOTED_STRING | DOUBLE_QUOTED_STRING | NUMBER
 boolean_constant ::= TRUE_KEYWORD | FALSE_KEYWORD
-function_call ::= ((PARENT_KEYWORD | CONTAINER_KEYWORD) DOT)? (macro_call_expression | path | java_method_call | iif_function_call) LPAREN argument_list? RPAREN
+literal_object ::= LITERAL_OBJECT_STR  // 新增：处理字面量大括号对象
+
+function_call ::= ((PARENT_KEYWORD | CONTAINER_KEYWORD) DOT)? (macro_call_expression | path | java_method_call | iif_function_call | confirm_msg_call) LPAREN argument_list? RPAREN
+
+// 新增：专门处理 ConfirmMsg 函数调用
+confirm_msg_call ::= IDENTIFIER  // ConfirmMsg
+
 macro_call_expression ::= MACRO_IDENTIFIER
 java_method_call ::= JAVA_PATH_IDENTIFIER
 iif_function_call ::= IIF_KEYWORD

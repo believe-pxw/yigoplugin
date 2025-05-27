@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface MyLanguagePrimaryExpression extends PsiElement {
 
   @Nullable
-  MyLanguageBlockStatement getBlockStatement();
-
-  @Nullable
   MyLanguageBooleanConstant getBooleanConstant();
 
   @Nullable
@@ -21,6 +18,9 @@ public interface MyLanguagePrimaryExpression extends PsiElement {
 
   @Nullable
   MyLanguageFunctionCall getFunctionCall();
+
+  @Nullable
+  MyLanguageLiteralObject getLiteralObject();
 
   @Nullable
   MyLanguageVariableReference getVariableReference();

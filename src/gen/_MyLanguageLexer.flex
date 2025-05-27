@@ -32,6 +32,7 @@ JAVA_PATH_IDENTIFIER=com*(\.[a-zA-Z_][a-zA-Z0-9_]*)+
 IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 SINGLE_QUOTED_STRING='[^']*'
 DOUBLE_QUOTED_STRING=\"[^\"]*\"
+LITERAL_OBJECT_STR=\{[^{}]*(\{[^{}]*\}[^{}]*)*\}
 NUMBER=[0-9]+
 
 %%
@@ -81,6 +82,7 @@ NUMBER=[0-9]+
   {IDENTIFIER}                 { return IDENTIFIER; }
   {SINGLE_QUOTED_STRING}       { return SINGLE_QUOTED_STRING; }
   {DOUBLE_QUOTED_STRING}       { return DOUBLE_QUOTED_STRING; }
+  {LITERAL_OBJECT_STR}         { return LITERAL_OBJECT_STR; }
   {NUMBER}                     { return NUMBER; }
 
 }

@@ -35,6 +35,12 @@ public class MyLanguageFunctionCallImpl extends ASTWrapperPsiElement implements 
 
   @Override
   @Nullable
+  public MyLanguageConfirmMsgCall getConfirmMsgCall() {
+    return findChildByClass(MyLanguageConfirmMsgCall.class);
+  }
+
+  @Override
+  @Nullable
   public MyLanguageIifFunctionCall getIifFunctionCall() {
     return findChildByClass(MyLanguageIifFunctionCall.class);
   }

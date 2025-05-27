@@ -19,6 +19,10 @@ public class MyLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitConfirmMsgCall(@NotNull MyLanguageConfirmMsgCall o) {
+    visitPsiElement(o);
+  }
+
   public void visitConstant(@NotNull MyLanguageConstant o) {
     visitPsiElement(o);
   }
@@ -48,6 +52,10 @@ public class MyLanguageVisitor extends PsiElementVisitor {
   }
 
   public void visitJavaMethodCall(@NotNull MyLanguageJavaMethodCall o) {
+    visitPsiElement(o);
+  }
+
+  public void visitLiteralObject(@NotNull MyLanguageLiteralObject o) {
     visitPsiElement(o);
   }
 

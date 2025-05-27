@@ -11,6 +11,7 @@ public interface MyLanguageTypes {
   IElementType ARGUMENT_LIST = new MyLanguageElementType("ARGUMENT_LIST");
   IElementType BLOCK_STATEMENT = new MyLanguageElementType("BLOCK_STATEMENT");
   IElementType BOOLEAN_CONSTANT = new MyLanguageElementType("BOOLEAN_CONSTANT");
+  IElementType CONFIRM_MSG_CALL = new MyLanguageElementType("CONFIRM_MSG_CALL");
   IElementType CONSTANT = new MyLanguageElementType("CONSTANT");
   IElementType EXPRESSION = new MyLanguageElementType("EXPRESSION");
   IElementType EXPRESSION_SEQUENCE = new MyLanguageElementType("EXPRESSION_SEQUENCE");
@@ -19,6 +20,7 @@ public interface MyLanguageTypes {
   IElementType IF_STATEMENT = new MyLanguageElementType("IF_STATEMENT");
   IElementType IIF_FUNCTION_CALL = new MyLanguageElementType("IIF_FUNCTION_CALL");
   IElementType JAVA_METHOD_CALL = new MyLanguageElementType("JAVA_METHOD_CALL");
+  IElementType LITERAL_OBJECT = new MyLanguageElementType("LITERAL_OBJECT");
   IElementType MACRO_CALL_EXPRESSION = new MyLanguageElementType("MACRO_CALL_EXPRESSION");
   IElementType PRIMARY_EXPRESSION = new MyLanguageElementType("PRIMARY_EXPRESSION");
   IElementType VARIABLE_ASSIGNMENT = new MyLanguageElementType("VARIABLE_ASSIGNMENT");
@@ -50,6 +52,7 @@ public interface MyLanguageTypes {
   IElementType LBRACE = new MyLanguageTokenType("{");
   IElementType LESS = new MyLanguageTokenType("<");
   IElementType LESS_EQUAL = new MyLanguageTokenType("<=");
+  IElementType LITERAL_OBJECT_STR = new MyLanguageTokenType("LITERAL_OBJECT_STR");
   IElementType LPAREN = new MyLanguageTokenType("(");
   IElementType LT_ENTITY = new MyLanguageTokenType("&lt;");
   IElementType MACRO_IDENTIFIER = new MyLanguageTokenType("MACRO_IDENTIFIER");
@@ -82,6 +85,9 @@ public interface MyLanguageTypes {
       else if (type == BOOLEAN_CONSTANT) {
         return new MyLanguageBooleanConstantImpl(node);
       }
+      else if (type == CONFIRM_MSG_CALL) {
+        return new MyLanguageConfirmMsgCallImpl(node);
+      }
       else if (type == CONSTANT) {
         return new MyLanguageConstantImpl(node);
       }
@@ -105,6 +111,9 @@ public interface MyLanguageTypes {
       }
       else if (type == JAVA_METHOD_CALL) {
         return new MyLanguageJavaMethodCallImpl(node);
+      }
+      else if (type == LITERAL_OBJECT) {
+        return new MyLanguageLiteralObjectImpl(node);
       }
       else if (type == MACRO_CALL_EXPRESSION) {
         return new MyLanguageMacroCallExpressionImpl(node);
