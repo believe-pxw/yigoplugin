@@ -55,6 +55,10 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
                                 references.add(DomainReference(element, TextRange(0, element.text.length)))
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                            }else if (tagName == "RefObjectKey") {
+                                val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
+                                references.add(DataObjectReference(element, TextRange(0, element.text.length)))
+                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
                             }
                             return PsiReference.EMPTY_ARRAY
                         }
