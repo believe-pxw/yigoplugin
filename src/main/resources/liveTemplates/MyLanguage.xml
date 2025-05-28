@@ -1,0 +1,68 @@
+<!-- resources/liveTemplates/MyLanguage.xml -->
+<templateSet group="MyLanguage">
+
+    <!-- ConfirmMsg模板 -->
+    <template name="confirm" value="ConfirmMsg('$CODE$', '$TEXT$', {{$PARAMS$}}, '$STYLE$', {$CALLBACK$})"
+              description="ConfirmMsg function call" toReformat="true" toShortenFQNames="true">
+        <variable name="CODE" expression="" defaultValue="&quot;MSG001&quot;" alwaysStopAt="true" />
+        <variable name="TEXT" expression="" defaultValue="&quot;Message text&quot;" alwaysStopAt="true" />
+        <variable name="PARAMS" expression="" defaultValue="GetValue('param')" alwaysStopAt="true" />
+        <variable name="STYLE" expression="" defaultValue="OK" alwaysStopAt="true" />
+        <variable name="CALLBACK" expression="" defaultValue="OK: {}" alwaysStopAt="true" />
+        <context>
+            <option name="MyLanguage" value="true" />
+        </context>
+    </template>
+
+    <!-- 简化的ConfirmMsg模板 -->
+    <template name="confirmSimple" value="ConfirmMsg('$CODE$', '$TEXT$')"
+              description="Simple ConfirmMsg function call" toReformat="true">
+        <variable name="CODE" expression="" defaultValue="&quot;MSG001&quot;" alwaysStopAt="true" />
+        <variable name="TEXT" expression="" defaultValue="&quot;Message text&quot;" alwaysStopAt="true" />
+        <context>
+            <option name="MyLanguage" value="true" />
+        </context>
+    </template>
+
+    <!-- IIF模板 -->
+    <template name="iif" value="IIF($CONDITION$, $TRUE_VALUE$, $FALSE_VALUE$)"
+              description="IIF function call" toReformat="true">
+        <variable name="CONDITION" expression="" defaultValue="true" alwaysStopAt="true" />
+        <variable name="TRUE_VALUE" expression="" defaultValue="'yes'" alwaysStopAt="true" />
+        <variable name="FALSE_VALUE" expression="" defaultValue="'no'" alwaysStopAt="true" />
+        <context>
+            <option name="MyLanguage" value="true" />
+        </context>
+    </template>
+
+    <!-- If语句模板 -->
+    <template name="if" value="if ($CONDITION$) {&#10;    $BODY$&#10;}"
+              description="If statement" toReformat="true">
+        <variable name="CONDITION" expression="" defaultValue="true" alwaysStopAt="true" />
+        <variable name="BODY" expression="" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="MyLanguage" value="true" />
+        </context>
+    </template>
+
+    <!-- While循环模板 -->
+    <template name="while" value="while ($CONDITION$) {&#10;    $BODY$&#10;}"
+              description="While loop" toReformat="true">
+        <variable name="CONDITION" expression="" defaultValue="true" alwaysStopAt="true" />
+        <variable name="BODY" expression="" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="MyLanguage" value="true" />
+        </context>
+    </template>
+
+    <!-- 变量声明模板 -->
+    <template name="var" value="var $NAME$ = $VALUE$;"
+              description="Variable declaration" toReformat="true">
+        <variable name="NAME" expression="" defaultValue="variable" alwaysStopAt="true" />
+        <variable name="VALUE" expression="" defaultValue="null" alwaysStopAt="true" />
+        <context>
+            <option name="MyLanguage" value="true" />
+        </context>
+    </template>
+
+</templateSet>

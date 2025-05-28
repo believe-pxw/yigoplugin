@@ -19,6 +19,23 @@
                 language="MyLanguage"
                 extensions="mylang"/>
         <multiHostInjector implementation="com.github.believepxw.yigo.MyLanguageXmlInjector"/>
+        <!-- 代码补全 -->
+        <completion.contributor
+                language="MyLanguage"
+                implementationClass="example.completion.MyLanguageCompletionContributor"/>
+
+        <completion.contributor
+                language="MyLanguage"
+                implementationClass="example.completion.ContextAwareCompletionContributor"/>
+
+        <!-- 括号匹配 -->
+        <!--<lang.braceMatcher-->
+        <!--        language="MyLanguage"-->
+        <!--        implementationClass="example.editor.MyLanguageBraceMatcher"/>-->
+
+        <!-- Live Templates -->
+        <defaultLiveTemplates file="/liveTemplates/MyLanguage.xml"/>
+        <liveTemplateContext implementation="example.templates.MyLanguageLiveTemplateContext" contextId="MyLanguage"/>
         <lang.parserDefinition language="MyLanguage" implementationClass="example.MyLanguageParserDefinition"/>
         <lang.syntaxHighlighterFactory language="MyLanguage" implementationClass="example.MyLanguageSyntaxHighlighterFactory"/>
         <psi.referenceContributor language="XML" implementation="com.github.believepxw.yigo.MyLanguageReferenceContributor"/>
