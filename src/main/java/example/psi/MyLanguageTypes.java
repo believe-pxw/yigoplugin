@@ -11,8 +11,14 @@ public interface MyLanguageTypes {
   IElementType ARGUMENT_LIST = new MyLanguageElementType("ARGUMENT_LIST");
   IElementType BLOCK_STATEMENT = new MyLanguageElementType("BLOCK_STATEMENT");
   IElementType BOOLEAN_CONSTANT = new MyLanguageElementType("BOOLEAN_CONSTANT");
+  IElementType CALLBACK_KEY = new MyLanguageElementType("CALLBACK_KEY");
+  IElementType CALLBACK_OBJECT = new MyLanguageElementType("CALLBACK_OBJECT");
+  IElementType CALLBACK_PROPERTY = new MyLanguageElementType("CALLBACK_PROPERTY");
+  IElementType CODE_BLOCK_LITERAL = new MyLanguageElementType("CODE_BLOCK_LITERAL");
+  IElementType CONFIRM_MSG_ARGS = new MyLanguageElementType("CONFIRM_MSG_ARGS");
   IElementType CONFIRM_MSG_CALL = new MyLanguageElementType("CONFIRM_MSG_CALL");
   IElementType CONSTANT = new MyLanguageElementType("CONSTANT");
+  IElementType DOUBLE_BRACE_EXPRESSION = new MyLanguageElementType("DOUBLE_BRACE_EXPRESSION");
   IElementType EXPRESSION = new MyLanguageElementType("EXPRESSION");
   IElementType EXPRESSION_SEQUENCE = new MyLanguageElementType("EXPRESSION_SEQUENCE");
   IElementType EXPRESSION_STATEMENT = new MyLanguageElementType("EXPRESSION_STATEMENT");
@@ -20,9 +26,14 @@ public interface MyLanguageTypes {
   IElementType IF_STATEMENT = new MyLanguageElementType("IF_STATEMENT");
   IElementType IIF_FUNCTION_CALL = new MyLanguageElementType("IIF_FUNCTION_CALL");
   IElementType JAVA_METHOD_CALL = new MyLanguageElementType("JAVA_METHOD_CALL");
-  IElementType LITERAL_OBJECT = new MyLanguageElementType("LITERAL_OBJECT");
   IElementType MACRO_CALL_EXPRESSION = new MyLanguageElementType("MACRO_CALL_EXPRESSION");
+  IElementType MESSAGE_PARAMS_EXPRESSION = new MyLanguageElementType("MESSAGE_PARAMS_EXPRESSION");
+  IElementType OBJECT_LITERAL = new MyLanguageElementType("OBJECT_LITERAL");
+  IElementType OBJECT_LITERAL_CONTENT = new MyLanguageElementType("OBJECT_LITERAL_CONTENT");
+  IElementType OBJECT_PROPERTY = new MyLanguageElementType("OBJECT_PROPERTY");
+  IElementType PARAMETER_ARRAY = new MyLanguageElementType("PARAMETER_ARRAY");
   IElementType PRIMARY_EXPRESSION = new MyLanguageElementType("PRIMARY_EXPRESSION");
+  IElementType REGULAR_FUNCTION_CALL = new MyLanguageElementType("REGULAR_FUNCTION_CALL");
   IElementType VARIABLE_ASSIGNMENT = new MyLanguageElementType("VARIABLE_ASSIGNMENT");
   IElementType VARIABLE_DECLARATION = new MyLanguageElementType("VARIABLE_DECLARATION");
   IElementType VARIABLE_REFERENCE = new MyLanguageElementType("VARIABLE_REFERENCE");
@@ -34,6 +45,7 @@ public interface MyLanguageTypes {
   IElementType AND_OP_ENTITY = new MyLanguageTokenType("&amp;&amp;");
   IElementType COLON = new MyLanguageTokenType(":");
   IElementType COMMA = new MyLanguageTokenType(",");
+  IElementType CONFIRM_MSG = new MyLanguageTokenType("ConfirmMsg");
   IElementType CONTAINER_KEYWORD = new MyLanguageTokenType("CONTAINER_KEYWORD");
   IElementType DIV = new MyLanguageTokenType("/");
   IElementType DOT = new MyLanguageTokenType(".");
@@ -52,7 +64,6 @@ public interface MyLanguageTypes {
   IElementType LBRACE = new MyLanguageTokenType("{");
   IElementType LESS = new MyLanguageTokenType("<");
   IElementType LESS_EQUAL = new MyLanguageTokenType("<=");
-  IElementType LITERAL_OBJECT_STR = new MyLanguageTokenType("LITERAL_OBJECT_STR");
   IElementType LPAREN = new MyLanguageTokenType("(");
   IElementType LT_ENTITY = new MyLanguageTokenType("&lt;");
   IElementType MACRO_IDENTIFIER = new MyLanguageTokenType("MACRO_IDENTIFIER");
@@ -85,11 +96,29 @@ public interface MyLanguageTypes {
       else if (type == BOOLEAN_CONSTANT) {
         return new MyLanguageBooleanConstantImpl(node);
       }
+      else if (type == CALLBACK_KEY) {
+        return new MyLanguageCallbackKeyImpl(node);
+      }
+      else if (type == CALLBACK_OBJECT) {
+        return new MyLanguageCallbackObjectImpl(node);
+      }
+      else if (type == CALLBACK_PROPERTY) {
+        return new MyLanguageCallbackPropertyImpl(node);
+      }
+      else if (type == CODE_BLOCK_LITERAL) {
+        return new MyLanguageCodeBlockLiteralImpl(node);
+      }
+      else if (type == CONFIRM_MSG_ARGS) {
+        return new MyLanguageConfirmMsgArgsImpl(node);
+      }
       else if (type == CONFIRM_MSG_CALL) {
         return new MyLanguageConfirmMsgCallImpl(node);
       }
       else if (type == CONSTANT) {
         return new MyLanguageConstantImpl(node);
+      }
+      else if (type == DOUBLE_BRACE_EXPRESSION) {
+        return new MyLanguageDoubleBraceExpressionImpl(node);
       }
       else if (type == EXPRESSION) {
         return new MyLanguageExpressionImpl(node);
@@ -112,14 +141,29 @@ public interface MyLanguageTypes {
       else if (type == JAVA_METHOD_CALL) {
         return new MyLanguageJavaMethodCallImpl(node);
       }
-      else if (type == LITERAL_OBJECT) {
-        return new MyLanguageLiteralObjectImpl(node);
-      }
       else if (type == MACRO_CALL_EXPRESSION) {
         return new MyLanguageMacroCallExpressionImpl(node);
       }
+      else if (type == MESSAGE_PARAMS_EXPRESSION) {
+        return new MyLanguageMessageParamsExpressionImpl(node);
+      }
+      else if (type == OBJECT_LITERAL) {
+        return new MyLanguageObjectLiteralImpl(node);
+      }
+      else if (type == OBJECT_LITERAL_CONTENT) {
+        return new MyLanguageObjectLiteralContentImpl(node);
+      }
+      else if (type == OBJECT_PROPERTY) {
+        return new MyLanguageObjectPropertyImpl(node);
+      }
+      else if (type == PARAMETER_ARRAY) {
+        return new MyLanguageParameterArrayImpl(node);
+      }
       else if (type == PRIMARY_EXPRESSION) {
         return new MyLanguagePrimaryExpressionImpl(node);
+      }
+      else if (type == REGULAR_FUNCTION_CALL) {
+        return new MyLanguageRegularFunctionCallImpl(node);
       }
       else if (type == VARIABLE_ASSIGNMENT) {
         return new MyLanguageVariableAssignmentImpl(node);

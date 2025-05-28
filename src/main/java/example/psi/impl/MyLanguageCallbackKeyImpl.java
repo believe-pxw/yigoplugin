@@ -11,14 +11,14 @@ import static example.psi.MyLanguageTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import example.psi.*;
 
-public class MyLanguageConfirmMsgCallImpl extends ASTWrapperPsiElement implements MyLanguageConfirmMsgCall {
+public class MyLanguageCallbackKeyImpl extends ASTWrapperPsiElement implements MyLanguageCallbackKey {
 
-  public MyLanguageConfirmMsgCallImpl(@NotNull ASTNode node) {
+  public MyLanguageCallbackKeyImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MyLanguageVisitor visitor) {
-    visitor.visitConfirmMsgCall(this);
+    visitor.visitCallbackKey(this);
   }
 
   @Override
@@ -28,9 +28,21 @@ public class MyLanguageConfirmMsgCallImpl extends ASTWrapperPsiElement implement
   }
 
   @Override
-  @NotNull
-  public MyLanguageConfirmMsgArgs getConfirmMsgArgs() {
-    return findNotNullChildByClass(MyLanguageConfirmMsgArgs.class);
+  @Nullable
+  public PsiElement getDoubleQuotedString() {
+    return findChildByType(DOUBLE_QUOTED_STRING);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getIdentifier() {
+    return findChildByType(IDENTIFIER);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getSingleQuotedString() {
+    return findChildByType(SINGLE_QUOTED_STRING);
   }
 
 }

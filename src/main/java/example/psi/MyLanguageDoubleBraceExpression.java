@@ -5,9 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MyLanguageConfirmMsgCall extends PsiElement {
+public interface MyLanguageDoubleBraceExpression extends PsiElement {
 
   @NotNull
-  MyLanguageConfirmMsgArgs getConfirmMsgArgs();
+  MyLanguageExpression getExpression();
 
 }

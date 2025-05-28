@@ -11,14 +11,14 @@ import static example.psi.MyLanguageTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import example.psi.*;
 
-public class MyLanguageConfirmMsgCallImpl extends ASTWrapperPsiElement implements MyLanguageConfirmMsgCall {
+public class MyLanguageDoubleBraceExpressionImpl extends ASTWrapperPsiElement implements MyLanguageDoubleBraceExpression {
 
-  public MyLanguageConfirmMsgCallImpl(@NotNull ASTNode node) {
+  public MyLanguageDoubleBraceExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MyLanguageVisitor visitor) {
-    visitor.visitConfirmMsgCall(this);
+    visitor.visitDoubleBraceExpression(this);
   }
 
   @Override
@@ -29,8 +29,8 @@ public class MyLanguageConfirmMsgCallImpl extends ASTWrapperPsiElement implement
 
   @Override
   @NotNull
-  public MyLanguageConfirmMsgArgs getConfirmMsgArgs() {
-    return findNotNullChildByClass(MyLanguageConfirmMsgArgs.class);
+  public MyLanguageExpression getExpression() {
+    return findNotNullChildByClass(MyLanguageExpression.class);
   }
 
 }

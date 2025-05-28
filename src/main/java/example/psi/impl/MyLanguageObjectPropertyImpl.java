@@ -11,14 +11,14 @@ import static example.psi.MyLanguageTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import example.psi.*;
 
-public class MyLanguageConfirmMsgCallImpl extends ASTWrapperPsiElement implements MyLanguageConfirmMsgCall {
+public class MyLanguageObjectPropertyImpl extends ASTWrapperPsiElement implements MyLanguageObjectProperty {
 
-  public MyLanguageConfirmMsgCallImpl(@NotNull ASTNode node) {
+  public MyLanguageObjectPropertyImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MyLanguageVisitor visitor) {
-    visitor.visitConfirmMsgCall(this);
+    visitor.visitObjectProperty(this);
   }
 
   @Override
@@ -28,9 +28,27 @@ public class MyLanguageConfirmMsgCallImpl extends ASTWrapperPsiElement implement
   }
 
   @Override
+  @Nullable
+  public MyLanguageCodeBlockLiteral getCodeBlockLiteral() {
+    return findChildByClass(MyLanguageCodeBlockLiteral.class);
+  }
+
+  @Override
+  @Nullable
+  public MyLanguageExpression getExpression() {
+    return findChildByClass(MyLanguageExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public MyLanguageObjectLiteral getObjectLiteral() {
+    return findChildByClass(MyLanguageObjectLiteral.class);
+  }
+
+  @Override
   @NotNull
-  public MyLanguageConfirmMsgArgs getConfirmMsgArgs() {
-    return findNotNullChildByClass(MyLanguageConfirmMsgArgs.class);
+  public PsiElement getIdentifier() {
+    return findNotNullChildByType(IDENTIFIER);
   }
 
 }

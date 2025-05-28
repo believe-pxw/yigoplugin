@@ -5,9 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MyLanguageConfirmMsgCall extends PsiElement {
+public interface MyLanguageCallbackProperty extends PsiElement {
 
   @NotNull
-  MyLanguageConfirmMsgArgs getConfirmMsgArgs();
+  MyLanguageCallbackKey getCallbackKey();
+
+  @NotNull
+  MyLanguageCodeBlockLiteral getCodeBlockLiteral();
 
 }

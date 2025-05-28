@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface MyLanguageObjectLiteral extends PsiElement {
 
   @NotNull
-  PsiElement getObjectLiteralString();
+  MyLanguageObjectLiteralContent getObjectLiteralContent();
 
 }

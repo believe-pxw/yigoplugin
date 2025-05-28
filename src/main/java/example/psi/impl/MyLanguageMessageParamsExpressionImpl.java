@@ -11,14 +11,14 @@ import static example.psi.MyLanguageTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import example.psi.*;
 
-public class MyLanguagePrimaryExpressionImpl extends ASTWrapperPsiElement implements MyLanguagePrimaryExpression {
+public class MyLanguageMessageParamsExpressionImpl extends ASTWrapperPsiElement implements MyLanguageMessageParamsExpression {
 
-  public MyLanguagePrimaryExpressionImpl(@NotNull ASTNode node) {
+  public MyLanguageMessageParamsExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MyLanguageVisitor visitor) {
-    visitor.visitPrimaryExpression(this);
+    visitor.visitMessageParamsExpression(this);
   }
 
   @Override
@@ -29,14 +29,8 @@ public class MyLanguagePrimaryExpressionImpl extends ASTWrapperPsiElement implem
 
   @Override
   @Nullable
-  public MyLanguageBooleanConstant getBooleanConstant() {
-    return findChildByClass(MyLanguageBooleanConstant.class);
-  }
-
-  @Override
-  @Nullable
-  public MyLanguageConstant getConstant() {
-    return findChildByClass(MyLanguageConstant.class);
+  public MyLanguageDoubleBraceExpression getDoubleBraceExpression() {
+    return findChildByClass(MyLanguageDoubleBraceExpression.class);
   }
 
   @Override
@@ -47,14 +41,14 @@ public class MyLanguagePrimaryExpressionImpl extends ASTWrapperPsiElement implem
 
   @Override
   @Nullable
-  public MyLanguageFunctionCall getFunctionCall() {
-    return findChildByClass(MyLanguageFunctionCall.class);
+  public MyLanguageObjectLiteral getObjectLiteral() {
+    return findChildByClass(MyLanguageObjectLiteral.class);
   }
 
   @Override
   @Nullable
-  public MyLanguageVariableReference getVariableReference() {
-    return findChildByClass(MyLanguageVariableReference.class);
+  public MyLanguageParameterArray getParameterArray() {
+    return findChildByClass(MyLanguageParameterArray.class);
   }
 
 }

@@ -8,21 +8,15 @@ import com.intellij.psi.PsiElement;
 public interface MyLanguageFunctionCall extends PsiElement {
 
   @Nullable
-  MyLanguageArgumentList getArgumentList();
-
-  @Nullable
   MyLanguageConfirmMsgCall getConfirmMsgCall();
 
   @Nullable
-  MyLanguageIifFunctionCall getIifFunctionCall();
+  MyLanguageRegularFunctionCall getRegularFunctionCall();
 
   @Nullable
-  MyLanguageJavaMethodCall getJavaMethodCall();
+  PsiElement getContainerKeyword();
 
   @Nullable
-  MyLanguageMacroCallExpression getMacroCallExpression();
-
-  @Nullable
-  PsiElement getIdentifier();
+  PsiElement getParentKeyword();
 
 }

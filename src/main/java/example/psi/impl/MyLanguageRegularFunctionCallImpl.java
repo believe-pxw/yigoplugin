@@ -11,14 +11,14 @@ import static example.psi.MyLanguageTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import example.psi.*;
 
-public class MyLanguageFunctionCallImpl extends ASTWrapperPsiElement implements MyLanguageFunctionCall {
+public class MyLanguageRegularFunctionCallImpl extends ASTWrapperPsiElement implements MyLanguageRegularFunctionCall {
 
-  public MyLanguageFunctionCallImpl(@NotNull ASTNode node) {
+  public MyLanguageRegularFunctionCallImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MyLanguageVisitor visitor) {
-    visitor.visitFunctionCall(this);
+    visitor.visitRegularFunctionCall(this);
   }
 
   @Override
@@ -29,20 +29,38 @@ public class MyLanguageFunctionCallImpl extends ASTWrapperPsiElement implements 
 
   @Override
   @Nullable
-  public MyLanguageConfirmMsgCall getConfirmMsgCall() {
-    return findChildByClass(MyLanguageConfirmMsgCall.class);
+  public MyLanguageArgumentList getArgumentList() {
+    return findChildByClass(MyLanguageArgumentList.class);
   }
 
   @Override
   @Nullable
-  public MyLanguageRegularFunctionCall getRegularFunctionCall() {
-    return findChildByClass(MyLanguageRegularFunctionCall.class);
+  public MyLanguageIifFunctionCall getIifFunctionCall() {
+    return findChildByClass(MyLanguageIifFunctionCall.class);
+  }
+
+  @Override
+  @Nullable
+  public MyLanguageJavaMethodCall getJavaMethodCall() {
+    return findChildByClass(MyLanguageJavaMethodCall.class);
+  }
+
+  @Override
+  @Nullable
+  public MyLanguageMacroCallExpression getMacroCallExpression() {
+    return findChildByClass(MyLanguageMacroCallExpression.class);
   }
 
   @Override
   @Nullable
   public PsiElement getContainerKeyword() {
     return findChildByType(CONTAINER_KEYWORD);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getIdentifier() {
+    return findChildByType(IDENTIFIER);
   }
 
   @Override

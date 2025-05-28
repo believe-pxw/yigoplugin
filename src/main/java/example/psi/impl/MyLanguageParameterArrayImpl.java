@@ -11,14 +11,14 @@ import static example.psi.MyLanguageTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import example.psi.*;
 
-public class MyLanguageConfirmMsgCallImpl extends ASTWrapperPsiElement implements MyLanguageConfirmMsgCall {
+public class MyLanguageParameterArrayImpl extends ASTWrapperPsiElement implements MyLanguageParameterArray {
 
-  public MyLanguageConfirmMsgCallImpl(@NotNull ASTNode node) {
+  public MyLanguageParameterArrayImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MyLanguageVisitor visitor) {
-    visitor.visitConfirmMsgCall(this);
+    visitor.visitParameterArray(this);
   }
 
   @Override
@@ -29,8 +29,8 @@ public class MyLanguageConfirmMsgCallImpl extends ASTWrapperPsiElement implement
 
   @Override
   @NotNull
-  public MyLanguageConfirmMsgArgs getConfirmMsgArgs() {
-    return findNotNullChildByClass(MyLanguageConfirmMsgArgs.class);
+  public List<MyLanguageExpression> getExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MyLanguageExpression.class);
   }
 
 }

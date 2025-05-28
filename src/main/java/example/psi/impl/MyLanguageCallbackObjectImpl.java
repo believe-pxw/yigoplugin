@@ -11,14 +11,14 @@ import static example.psi.MyLanguageTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import example.psi.*;
 
-public class MyLanguageLiteralObjectImpl extends ASTWrapperPsiElement implements MyLanguageLiteralObject {
+public class MyLanguageCallbackObjectImpl extends ASTWrapperPsiElement implements MyLanguageCallbackObject {
 
-  public MyLanguageLiteralObjectImpl(@NotNull ASTNode node) {
+  public MyLanguageCallbackObjectImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MyLanguageVisitor visitor) {
-    visitor.visitLiteralObject(this);
+    visitor.visitCallbackObject(this);
   }
 
   @Override
@@ -29,8 +29,8 @@ public class MyLanguageLiteralObjectImpl extends ASTWrapperPsiElement implements
 
   @Override
   @NotNull
-  public PsiElement getLiteralObjectStr() {
-    return findNotNullChildByType(LITERAL_OBJECT_STR);
+  public List<MyLanguageCallbackProperty> getCallbackPropertyList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MyLanguageCallbackProperty.class);
   }
 
 }

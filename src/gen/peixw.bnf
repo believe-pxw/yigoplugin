@@ -1,4 +1,4 @@
-// MyLanguage.bnf
+// MyLanguage.bnf - Context-Aware Version
 
 {
   parserClass="example.parser.MyLanguageParser"
@@ -24,14 +24,15 @@
     FALSE_KEYWORD = "false"
     IIF_KEYWORD = "IIF"
 
+    // 特殊函数标识符
+    CONFIRM_MSG = "ConfirmMsg"
+
     MACRO_IDENTIFIER = "regexp:Macro_[a-zA-Z_][a-zA-Z0-9_]*"
     JAVA_PATH_IDENTIFIER = "regexp:com*(\.[a-zA-Z_][a-zA-Z0-9_]*)+"
     IDENTIFIER = "regexp:[a-zA-Z_][a-zA-Z0-9_]*"
 
     SINGLE_QUOTED_STRING = "regexp:'[^']*'"
     DOUBLE_QUOTED_STRING = "regexp:\"[^\"]*\""
-    // 新增：用于表示字面量对象的大括号字符串
-    LITERAL_OBJECT_STR = "regexp:\{[^{}]*(\{[^{}]*\}[^{}]*)*\}"
     NUMBER = "regexp:[0-9]+"
 
     AMP_ENTITY = "&amp;"
@@ -115,17 +116,61 @@ primary_expression ::=
   | variable_reference
   | LPAREN expression RPAREN
   | boolean_constant
-  | literal_object  // 新增：字面量对象
 
 variable_reference ::= path
 constant ::= SINGLE_QUOTED_STRING | DOUBLE_QUOTED_STRING | NUMBER
 boolean_constant ::= TRUE_KEYWORD | FALSE_KEYWORD
-literal_object ::= LITERAL_OBJECT_STR  // 新增：处理字面量大括号对象
 
-function_call ::= ((PARENT_KEYWORD | CONTAINER_KEYWORD) DOT)? (macro_call_expression | path | java_method_call | iif_function_call | confirm_msg_call) LPAREN argument_list? RPAREN
+// 关键改进：区分不同类型的函数调用
+function_call ::=
+  ((PARENT_KEYWORD | CONTAINER_KEYWORD) DOT)?
+  (
+    confirm_msg_call |          // 特殊处理 ConfirmMsg
+    regular_function_call       // 普通函数调用
+  )
 
-// 新增：专门处理 ConfirmMsg 函数调用
-confirm_msg_call ::= IDENTIFIER  // ConfirmMsg
+// ConfirmMsg 特殊处理：支持新的参数格式
+confirm_msg_call ::= CONFIRM_MSG LPAREN confirm_msg_args RPAREN
+confirm_msg_args ::=
+  expression COMMA expression                                              // 必需：args[0]消息代码, args[1]消息文本
+  (COMMA message_params_expression                                        // 可选：args[2]消息参数
+    (COMMA expression                                                     // 可选：args[3]样式(OK,YES_NO,YES_NO_CANCEL)
+      (COMMA callback_object)?                                            // 可选：args[4]回调函数对象
+    )?
+  )?
+
+// 消息参数表达式：支持多种格式
+message_params_expression ::=
+  parameter_array |           // {{参数1},{参数2},{参数3}} 的形式
+  double_brace_expression |   // {{表达式}} 的形式
+  object_literal |            // {} 空对象形式
+  expression                  // 其他表达式形式
+
+// 双大括号表达式：{{表达式}}
+double_brace_expression ::= LBRACE LBRACE expression RBRACE RBRACE
+
+// 参数数组：{{param1},{param2},{param3}}
+parameter_array ::= LBRACE LBRACE expression RBRACE (COMMA LBRACE expression RBRACE)* RBRACE
+
+// 回调函数对象：专门用于ConfirmMsg的回调
+callback_object ::= LBRACE callback_property (COMMA callback_property)* RBRACE
+callback_property ::= callback_key COLON code_block_literal
+callback_key ::=
+  SINGLE_QUOTED_STRING | DOUBLE_QUOTED_STRING |  // 字符串形式的键
+  IDENTIFIER                                     // 或标识符形式
+
+// 普通函数调用
+regular_function_call ::=
+  (macro_call_expression | path | java_method_call | iif_function_call)
+  LPAREN argument_list? RPAREN
+
+// 对象字面量：专门用于函数参数中的字面量对象
+object_literal ::= LBRACE object_literal_content RBRACE
+object_literal_content ::= (object_property (COMMA object_property)*)?
+object_property ::= IDENTIFIER COLON (object_literal | expression | code_block_literal)
+
+// 代码块字面量：在对象属性中表示要执行的代码
+code_block_literal ::= LBRACE statement* RBRACE
 
 macro_call_expression ::= MACRO_IDENTIFIER
 java_method_call ::= JAVA_PATH_IDENTIFIER

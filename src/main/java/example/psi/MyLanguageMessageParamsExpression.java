@@ -5,21 +5,18 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MyLanguagePrimaryExpression extends PsiElement {
+public interface MyLanguageMessageParamsExpression extends PsiElement {
 
   @Nullable
-  MyLanguageBooleanConstant getBooleanConstant();
-
-  @Nullable
-  MyLanguageConstant getConstant();
+  MyLanguageDoubleBraceExpression getDoubleBraceExpression();
 
   @Nullable
   MyLanguageExpression getExpression();
 
   @Nullable
-  MyLanguageFunctionCall getFunctionCall();
+  MyLanguageObjectLiteral getObjectLiteral();
 
   @Nullable
-  MyLanguageVariableReference getVariableReference();
+  MyLanguageParameterArray getParameterArray();
 
 }

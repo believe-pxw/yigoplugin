@@ -165,6 +165,95 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // SINGLE_QUOTED_STRING | DOUBLE_QUOTED_STRING |  // 字符串形式的键
+  //   IDENTIFIER
+  public static boolean callback_key(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "callback_key")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, CALLBACK_KEY, "<callback key>");
+    r = consumeToken(b, SINGLE_QUOTED_STRING);
+    if (!r) r = consumeToken(b, DOUBLE_QUOTED_STRING);
+    if (!r) r = consumeToken(b, IDENTIFIER);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // LBRACE callback_property (COMMA callback_property)* RBRACE
+  public static boolean callback_object(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "callback_object")) return false;
+    if (!nextTokenIs(b, LBRACE)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LBRACE);
+    r = r && callback_property(b, l + 1);
+    r = r && callback_object_2(b, l + 1);
+    r = r && consumeToken(b, RBRACE);
+    exit_section_(b, m, CALLBACK_OBJECT, r);
+    return r;
+  }
+
+  // (COMMA callback_property)*
+  private static boolean callback_object_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "callback_object_2")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!callback_object_2_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "callback_object_2", c)) break;
+    }
+    return true;
+  }
+
+  // COMMA callback_property
+  private static boolean callback_object_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "callback_object_2_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMA);
+    r = r && callback_property(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // callback_key COLON code_block_literal
+  public static boolean callback_property(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "callback_property")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, CALLBACK_PROPERTY, "<callback property>");
+    r = callback_key(b, l + 1);
+    r = r && consumeToken(b, COLON);
+    r = r && code_block_literal(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // LBRACE statement* RBRACE
+  public static boolean code_block_literal(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "code_block_literal")) return false;
+    if (!nextTokenIs(b, LBRACE)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LBRACE);
+    r = r && code_block_literal_1(b, l + 1);
+    r = r && consumeToken(b, RBRACE);
+    exit_section_(b, m, CODE_BLOCK_LITERAL, r);
+    return r;
+  }
+
+  // statement*
+  private static boolean code_block_literal_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "code_block_literal_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!statement(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "code_block_literal_1", c)) break;
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
   // additive_expression ((LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT | LT_ENTITY | GT_ENTITY) additive_expression)*
   static boolean comparison_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "comparison_expression")) return false;
@@ -215,13 +304,100 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENTIFIER
-  public static boolean confirm_msg_call(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "confirm_msg_call")) return false;
-    if (!nextTokenIs(b, IDENTIFIER)) return false;
+  // expression COMMA expression                                              // 必需：args[0]消息代码, args[1]消息文本
+  //   (COMMA message_params_expression                                        // 可选：args[2]消息参数
+  //     (COMMA expression                                                     // 可选：args[3]样式(OK,YES_NO,YES_NO_CANCEL)
+  //       (COMMA callback_object)?                                            // 可选：args[4]回调函数对象
+  //     )?
+  //   )?
+  public static boolean confirm_msg_args(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "confirm_msg_args")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, CONFIRM_MSG_ARGS, "<confirm msg args>");
+    r = expression(b, l + 1);
+    r = r && consumeToken(b, COMMA);
+    r = r && expression(b, l + 1);
+    r = r && confirm_msg_args_3(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // (COMMA message_params_expression                                        // 可选：args[2]消息参数
+  //     (COMMA expression                                                     // 可选：args[3]样式(OK,YES_NO,YES_NO_CANCEL)
+  //       (COMMA callback_object)?                                            // 可选：args[4]回调函数对象
+  //     )?
+  //   )?
+  private static boolean confirm_msg_args_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "confirm_msg_args_3")) return false;
+    confirm_msg_args_3_0(b, l + 1);
+    return true;
+  }
+
+  // COMMA message_params_expression                                        // 可选：args[2]消息参数
+  //     (COMMA expression                                                     // 可选：args[3]样式(OK,YES_NO,YES_NO_CANCEL)
+  //       (COMMA callback_object)?                                            // 可选：args[4]回调函数对象
+  //     )?
+  private static boolean confirm_msg_args_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "confirm_msg_args_3_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, IDENTIFIER);
+    r = consumeToken(b, COMMA);
+    r = r && message_params_expression(b, l + 1);
+    r = r && confirm_msg_args_3_0_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (COMMA expression                                                     // 可选：args[3]样式(OK,YES_NO,YES_NO_CANCEL)
+  //       (COMMA callback_object)?                                            // 可选：args[4]回调函数对象
+  //     )?
+  private static boolean confirm_msg_args_3_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "confirm_msg_args_3_0_2")) return false;
+    confirm_msg_args_3_0_2_0(b, l + 1);
+    return true;
+  }
+
+  // COMMA expression                                                     // 可选：args[3]样式(OK,YES_NO,YES_NO_CANCEL)
+  //       (COMMA callback_object)?
+  private static boolean confirm_msg_args_3_0_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "confirm_msg_args_3_0_2_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMA);
+    r = r && expression(b, l + 1);
+    r = r && confirm_msg_args_3_0_2_0_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (COMMA callback_object)?
+  private static boolean confirm_msg_args_3_0_2_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "confirm_msg_args_3_0_2_0_2")) return false;
+    confirm_msg_args_3_0_2_0_2_0(b, l + 1);
+    return true;
+  }
+
+  // COMMA callback_object
+  private static boolean confirm_msg_args_3_0_2_0_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "confirm_msg_args_3_0_2_0_2_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMA);
+    r = r && callback_object(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // CONFIRM_MSG LPAREN confirm_msg_args RPAREN
+  public static boolean confirm_msg_call(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "confirm_msg_call")) return false;
+    if (!nextTokenIs(b, CONFIRM_MSG)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, CONFIRM_MSG, LPAREN);
+    r = r && confirm_msg_args(b, l + 1);
+    r = r && consumeToken(b, RPAREN);
     exit_section_(b, m, CONFIRM_MSG_CALL, r);
     return r;
   }
@@ -236,6 +412,20 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, DOUBLE_QUOTED_STRING);
     if (!r) r = consumeToken(b, NUMBER);
     exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // LBRACE LBRACE expression RBRACE RBRACE
+  public static boolean double_brace_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "double_brace_expression")) return false;
+    if (!nextTokenIs(b, LBRACE)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, LBRACE, LBRACE);
+    r = r && expression(b, l + 1);
+    r = r && consumeTokens(b, 0, RBRACE, RBRACE);
+    exit_section_(b, m, DOUBLE_BRACE_EXPRESSION, r);
     return r;
   }
 
@@ -296,16 +486,17 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ((PARENT_KEYWORD | CONTAINER_KEYWORD) DOT)? (macro_call_expression | path | java_method_call | iif_function_call | confirm_msg_call) LPAREN argument_list? RPAREN
+  // ((PARENT_KEYWORD | CONTAINER_KEYWORD) DOT)?
+  //   (
+  //     confirm_msg_call |          // 特殊处理 ConfirmMsg
+  //     regular_function_call       // 普通函数调用
+  //   )
   public static boolean function_call(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_call")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, FUNCTION_CALL, "<function call>");
     r = function_call_0(b, l + 1);
     r = r && function_call_1(b, l + 1);
-    r = r && consumeToken(b, LPAREN);
-    r = r && function_call_3(b, l + 1);
-    r = r && consumeToken(b, RPAREN);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -337,23 +528,14 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // macro_call_expression | path | java_method_call | iif_function_call | confirm_msg_call
+  // confirm_msg_call |          // 特殊处理 ConfirmMsg
+  //     regular_function_call
   private static boolean function_call_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "function_call_1")) return false;
     boolean r;
-    r = macro_call_expression(b, l + 1);
-    if (!r) r = path(b, l + 1);
-    if (!r) r = java_method_call(b, l + 1);
-    if (!r) r = iif_function_call(b, l + 1);
-    if (!r) r = confirm_msg_call(b, l + 1);
+    r = confirm_msg_call(b, l + 1);
+    if (!r) r = regular_function_call(b, l + 1);
     return r;
-  }
-
-  // argument_list?
-  private static boolean function_call_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "function_call_3")) return false;
-    argument_list(b, l + 1);
-    return true;
   }
 
   /* ********************************************************** */
@@ -411,18 +593,6 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, JAVA_PATH_IDENTIFIER);
     exit_section_(b, m, JAVA_METHOD_CALL, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // LITERAL_OBJECT_STR
-  public static boolean literal_object(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "literal_object")) return false;
-    if (!nextTokenIs(b, LITERAL_OBJECT_STR)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, LITERAL_OBJECT_STR);
-    exit_section_(b, m, LITERAL_OBJECT, r);
     return r;
   }
 
@@ -516,6 +686,23 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // parameter_array |           // {{参数1},{参数2},{参数3}} 的形式
+  //   double_brace_expression |   // {{表达式}} 的形式
+  //   object_literal |            // {} 空对象形式
+  //   expression
+  public static boolean message_params_expression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "message_params_expression")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, MESSAGE_PARAMS_EXPRESSION, "<message params expression>");
+    r = parameter_array(b, l + 1);
+    if (!r) r = double_brace_expression(b, l + 1);
+    if (!r) r = object_literal(b, l + 1);
+    if (!r) r = expression(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
   // unary_expression ((MUL | DIV) unary_expression)*
   static boolean multiplicative_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "multiplicative_expression")) return false;
@@ -555,6 +742,125 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     boolean r;
     r = consumeToken(b, MUL);
     if (!r) r = consumeToken(b, DIV);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // LBRACE object_literal_content RBRACE
+  public static boolean object_literal(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_literal")) return false;
+    if (!nextTokenIs(b, LBRACE)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LBRACE);
+    r = r && object_literal_content(b, l + 1);
+    r = r && consumeToken(b, RBRACE);
+    exit_section_(b, m, OBJECT_LITERAL, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // (object_property (COMMA object_property)*)?
+  public static boolean object_literal_content(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_literal_content")) return false;
+    Marker m = enter_section_(b, l, _NONE_, OBJECT_LITERAL_CONTENT, "<object literal content>");
+    object_literal_content_0(b, l + 1);
+    exit_section_(b, l, m, true, false, null);
+    return true;
+  }
+
+  // object_property (COMMA object_property)*
+  private static boolean object_literal_content_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_literal_content_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = object_property(b, l + 1);
+    r = r && object_literal_content_0_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (COMMA object_property)*
+  private static boolean object_literal_content_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_literal_content_0_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!object_literal_content_0_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "object_literal_content_0_1", c)) break;
+    }
+    return true;
+  }
+
+  // COMMA object_property
+  private static boolean object_literal_content_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_literal_content_0_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMA);
+    r = r && object_property(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // IDENTIFIER COLON (object_literal | expression | code_block_literal)
+  public static boolean object_property(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_property")) return false;
+    if (!nextTokenIs(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, IDENTIFIER, COLON);
+    r = r && object_property_2(b, l + 1);
+    exit_section_(b, m, OBJECT_PROPERTY, r);
+    return r;
+  }
+
+  // object_literal | expression | code_block_literal
+  private static boolean object_property_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_property_2")) return false;
+    boolean r;
+    r = object_literal(b, l + 1);
+    if (!r) r = expression(b, l + 1);
+    if (!r) r = code_block_literal(b, l + 1);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // LBRACE LBRACE expression RBRACE (COMMA LBRACE expression RBRACE)* RBRACE
+  public static boolean parameter_array(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "parameter_array")) return false;
+    if (!nextTokenIs(b, LBRACE)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, LBRACE, LBRACE);
+    r = r && expression(b, l + 1);
+    r = r && consumeToken(b, RBRACE);
+    r = r && parameter_array_4(b, l + 1);
+    r = r && consumeToken(b, RBRACE);
+    exit_section_(b, m, PARAMETER_ARRAY, r);
+    return r;
+  }
+
+  // (COMMA LBRACE expression RBRACE)*
+  private static boolean parameter_array_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "parameter_array_4")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!parameter_array_4_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "parameter_array_4", c)) break;
+    }
+    return true;
+  }
+
+  // COMMA LBRACE expression RBRACE
+  private static boolean parameter_array_4_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "parameter_array_4_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, COMMA, LBRACE);
+    r = r && expression(b, l + 1);
+    r = r && consumeToken(b, RBRACE);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -603,7 +909,6 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   //   | variable_reference
   //   | LPAREN expression RPAREN
   //   | boolean_constant
-  //   | literal_object
   public static boolean primary_expression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "primary_expression")) return false;
     boolean r;
@@ -613,7 +918,6 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     if (!r) r = variable_reference(b, l + 1);
     if (!r) r = primary_expression_3(b, l + 1);
     if (!r) r = boolean_constant(b, l + 1);
-    if (!r) r = literal_object(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -628,6 +932,39 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     r = r && consumeToken(b, RPAREN);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  /* ********************************************************** */
+  // (macro_call_expression | path | java_method_call | iif_function_call)
+  //   LPAREN argument_list? RPAREN
+  public static boolean regular_function_call(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "regular_function_call")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, REGULAR_FUNCTION_CALL, "<regular function call>");
+    r = regular_function_call_0(b, l + 1);
+    r = r && consumeToken(b, LPAREN);
+    r = r && regular_function_call_2(b, l + 1);
+    r = r && consumeToken(b, RPAREN);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // macro_call_expression | path | java_method_call | iif_function_call
+  private static boolean regular_function_call_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "regular_function_call_0")) return false;
+    boolean r;
+    r = macro_call_expression(b, l + 1);
+    if (!r) r = path(b, l + 1);
+    if (!r) r = java_method_call(b, l + 1);
+    if (!r) r = iif_function_call(b, l + 1);
+    return r;
+  }
+
+  // argument_list?
+  private static boolean regular_function_call_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "regular_function_call_2")) return false;
+    argument_list(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */
