@@ -16,7 +16,7 @@ public class MyLanguageCompletionContributor extends CompletionContributor {
         // 函数补全
         extend(CompletionType.BASIC,
                 PlatformPatterns.psiElement()
-                        .withParent(PlatformPatterns.psiElement(MyLanguageTypes.FUNCTION_CALL)),
+                        .withParent(PlatformPatterns.psiElement(MyLanguageTypes.IDENTIFIER)),
                 new FunctionCompletionProvider());
 
         // 变量补全

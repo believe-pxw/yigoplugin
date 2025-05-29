@@ -6,6 +6,7 @@ import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StubIndex;
 import com.intellij.util.ProcessingContext;
@@ -24,30 +25,19 @@ public class SmartCompletionProvider extends CompletionProvider<CompletionParame
         Project project = parameters.getOriginalFile().getProject();
 
         // 基于索引的智能补全
-        addVariablesFromIndex(project, result);
+        addVariablesFromIndex(parameters,project, result);
         addFunctionsFromIndex(project, result);
 
         // 基于当前文件上下文的补全
         addContextualCompletions(parameters, result);
     }
 
-    private void addVariablesFromIndex(Project project, CompletionResultSet result) {
+    private void addVariablesFromIndex(CompletionParameters parameters,Project project, CompletionResultSet result) {
         // 使用StubIndex获取项目中所有变量
-        Collection<String> variableNames = StubIndex.getInstance()
-                .getAllKeys(MyLanguageVariableIndex.KEY, project);
-
-        for (String varName : variableNames) {
-            Collection<MyLanguageVariableDeclaration> declarations =
-                    StubIndex.getElements(MyLanguageVariableIndex.KEY, varName,
-                            project, GlobalSearchScope.allScope(project),
-                            MyLanguageVariableDeclaration.class);
-
-            if (!declarations.isEmpty()) {
-                result.addElement(LookupElementBuilder.create(varName)
-                        .withTypeText("variable")
-                        .withIcon(Icons.VARIABLE_ICON));
-            }
-        }
+        PsiFile originalFile = parameters.getOriginalFile();
+        result.addElement(LookupElementBuilder.create("test")
+                .withTypeText("variable")
+                .withIcon(Icons.VARIABLE_ICON));
     }
 
     private void addFunctionsFromIndex(Project project, CompletionResultSet result) {
