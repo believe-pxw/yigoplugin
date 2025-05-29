@@ -15,13 +15,16 @@ public class MyLanguageCompletionContributor extends CompletionContributor {
 
         // 函数补全
         extend(CompletionType.BASIC,
-                PlatformPatterns.psiElement()
-                        .withParent(PlatformPatterns.psiElement(MyLanguageTypes.IDENTIFIER)),
+                PlatformPatterns.psiElement(MyLanguageTypes.IDENTIFIER),
                 new FunctionCompletionProvider());
 
         // 变量补全
         extend(CompletionType.BASIC,
                 PlatformPatterns.psiElement(MyLanguageTypes.IDENTIFIER),
                 new VariableCompletionProvider());
+
+        extend(CompletionType.BASIC,
+                PlatformPatterns.psiElement(MyLanguageTypes.IDENTIFIER),
+                new SourceOnlyCompletionProvider());
     }
 }

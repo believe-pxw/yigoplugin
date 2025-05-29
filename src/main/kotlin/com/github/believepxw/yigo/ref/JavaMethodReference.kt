@@ -19,7 +19,7 @@ class JavaMethodReference(
         val (className, methodName) = fullMethod.substringBeforeLast('.') to fullMethod.substringAfterLast('.')
         val project = myElement.project
         val javaPsiFacade = JavaPsiFacade.getInstance(project)
-        val searchScope = GlobalSearchScope.allScope(project)
+        val searchScope = GlobalSearchScope.projectScope(project)
         val psiClass = javaPsiFacade.findClass(className, searchScope) ?: return ResolveResult.EMPTY_ARRAY
 
         val methods = psiClass.findMethodsByName(methodName, true)

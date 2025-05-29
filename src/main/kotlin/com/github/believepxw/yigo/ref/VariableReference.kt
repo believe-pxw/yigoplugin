@@ -31,7 +31,7 @@ class VariableReference(
     // If your variable *declarations* (where you jump TO) have different tag names
     // (e.g., <VariableDef name="myVar"/>), you MUST update this set to reflect those declaration tags.
     // For now, I'll assume your declarations are also the same tags using a 'name' attribute for definition.
-    private val variableDefinitionTagNames: Set<String> = Collections.unmodifiableSet(
+     val variableDefinitionTagNames: Set<String> = Collections.unmodifiableSet(
         setOf(
             "Dict", "DynamicDict", "TextEditor", "TextArea", "CheckBox", "ComboBox",
             "CheckListBox", "DatePicker", "UTCDatePicker", "MonthPicker", "TimePicker",
@@ -61,14 +61,7 @@ class VariableReference(
      * @return 建议的对象数组。
      */
     override fun getVariants(): Array<Any> {
-        val containingFile = element.containingFile as? XmlFile ?: return emptyArray()
-        val variableNames = mutableListOf<String>()
-        val rootTag = containingFile.document?.rootTag ?: return emptyArray()
-
-        // 从XML文件的根标签开始递归收集所有变量名
-        collectVariableNamesRecursive(rootTag, variableNames)
-
-        return variableNames.toTypedArray()
+        return emptyArray()
     }
 
     /**
@@ -126,28 +119,5 @@ class VariableReference(
             }
         }
         return null
-    }
-
-    /**
-     * 递归收集所有变量名，用于代码补全。
-     *
-     * @param currentTag 当前正在检查的XmlTag。
-     * @param variableNames 存储收集到的变量名的列表。
-     */
-    private fun collectVariableNamesRecursive(currentTag: XmlTag?, variableNames: MutableList<String>) {
-        if (currentTag == null) return
-
-        // Check if the current tag is a variable definition
-        if (currentTag.localName in variableDefinitionTagNames) {
-            val nameAttribute = currentTag.getAttributeValue("name") // Assuming variable definitions have a 'name' attribute
-            if (!nameAttribute.isNullOrBlank()) {
-                variableNames.add(nameAttribute)
-            }
-        }
-
-        // Recursively traverse sub-tags
-        for (subTag in currentTag.subTags) {
-            collectVariableNamesRecursive(subTag, variableNames)
-        }
     }
 }

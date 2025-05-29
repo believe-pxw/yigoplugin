@@ -114,7 +114,7 @@ public class MacroNameIndex extends FileBasedIndexExtension<String, Void> {
         // 使用 GlobalSearchScope.allScope(project) 在整个项目范围内查找
         // FileBasedIndex.getInstance().getContainingFiles(KEY, macroName, scope) 返回包含指定键的所有文件
         Collection<VirtualFile> files = FileBasedIndex.getInstance().getContainingFiles(
-                KEY, macroName, GlobalSearchScope.allScope(project));
+                KEY, macroName, GlobalSearchScope.projectScope(project));
 
         for (VirtualFile file : files) {
             PsiFile psiFile = PsiManager.getInstance(project).findFile(file);

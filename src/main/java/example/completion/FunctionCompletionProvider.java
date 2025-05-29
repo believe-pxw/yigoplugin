@@ -4,8 +4,16 @@ import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionProvider;
 import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
+import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.xml.XmlFile;
+import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.ProcessingContext;
+import com.intellij.util.indexing.FileBasedIndex;
+import example.index.MacroNameIndex;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
 
 // 3. 函数补全提供者
 class FunctionCompletionProvider extends CompletionProvider<CompletionParameters> {
@@ -34,16 +42,33 @@ class FunctionCompletionProvider extends CompletionProvider<CompletionParameters
     }
 
     private void addMacroCompletions(CompletionResultSet result, CompletionParameters parameters) {
-        // 动态获取可用的Macro函数
-        String[] macros = {
-                "Macro_UIOpt_BillTemporarySave_Exp_Formula",
-                "Macro_GetCurrentUser",
-                "Macro_GetCurrentDate"
-        };
+        PsiElement element = parameters.getPosition();
+        XmlFile hostXmlFile = VariableCompletionProvider.getHostXmlFile(element);
+        if (hostXmlFile == null) {
+            registerCommonDefMacro(result, element.getProject());
+            return;
+        }
+        if (hostXmlFile.getRootTag() == null) {
+            registerCommonDefMacro(result, element.getProject());
+            return;
+        }
+        XmlTag macroCollectionTag = hostXmlFile.getRootTag().findFirstSubTag("MacroCollection");
+        if (macroCollectionTag != null) {
+            for (XmlTag macroTag : macroCollectionTag.findSubTags("Macro")) {
+                String keyAttribute = macroTag.getAttributeValue("Key");
+                result.addElement(LookupElementBuilder.create(keyAttribute)
+                        .withTypeText("macro")
+                        .withIcon(Icons.MACRO_ICON));
+            }
+        }
+        registerCommonDefMacro(result, element.getProject());
+    }
 
-        for (String macro : macros) {
-            result.addElement(LookupElementBuilder.create(macro)
-                    .withTypeText("macro")
+    public static void registerCommonDefMacro(CompletionResultSet result, Project project) {
+        Collection<String> allKeys = FileBasedIndex.getInstance().getAllKeys(MacroNameIndex.KEY, project);
+        for (String allKey : allKeys) {
+            result.addElement(LookupElementBuilder.create(allKey)
+                    .withTypeText("Macro in CommonDef")
                     .withIcon(Icons.MACRO_ICON));
         }
     }

@@ -29,9 +29,9 @@
                 implementationClass="example.completion.ContextAwareCompletionContributor"/>
 
         <!-- 括号匹配 -->
-        <!--<lang.braceMatcher-->
-        <!--        language="MyLanguage"-->
-        <!--        implementationClass="example.editor.MyLanguageBraceMatcher"/>-->
+        <lang.braceMatcher
+                language="MyLanguage"
+                implementationClass="example.editor.MyLanguageBraceMatcher"/>
 
         <!-- Live Templates -->
         <defaultLiveTemplates file="/liveTemplates/MyLanguage.xml"/>
@@ -40,6 +40,7 @@
         <lang.syntaxHighlighterFactory language="MyLanguage" implementationClass="example.MyLanguageSyntaxHighlighterFactory"/>
         <psi.referenceContributor language="XML" implementation="com.github.believepxw.yigo.MyLanguageReferenceContributor"/>
         <lang.documentationProvider language="XML" implementationClass="example.doc.ParaTableDocumentationProvider"/>
+        <lang.documentationProvider language="MyLanguage" implementationClass="example.doc.MyLanguageDocumentationProvider"/>
         <lang.findUsagesProvider language="MyLanguage" implementationClass="example.MyLanguageFindUsagesProvider"/>
     </extensions>
     <applicationListeners>

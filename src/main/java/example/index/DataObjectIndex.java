@@ -123,7 +123,7 @@ public class DataObjectIndex extends FileBasedIndexExtension<String, Void> {
     public static XmlTag findDataObjectDefinition(Project project, String dataObjectKey) {
         // 使用 GlobalSearchScope.allScope(project) 在整个项目范围内查找
         Collection<VirtualFile> files = FileBasedIndex.getInstance().getContainingFiles(
-                KEY, dataObjectKey, GlobalSearchScope.allScope(project));
+                KEY, dataObjectKey, GlobalSearchScope.projectScope(project));
 
         for (VirtualFile file : files) {
             PsiFile psiFile = PsiManager.getInstance(project).findFile(file);
