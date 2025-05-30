@@ -13,10 +13,12 @@ import com.intellij.remoteDev.util.UrlParameterKeys.Companion.host
 import com.intellij.util.ProcessingContext
 import com.intellij.util.containers.toArray
 import example.psi.MyLanguageTypes
+import example.ref.DataBindingColumnReference
 import example.ref.DataElementReference
 import example.ref.DataObjectReference
 import example.ref.DomainReference
 import example.ref.MacroReference
+import example.ref.OperationRefKeyReference
 
 class MyLanguageReferenceContributor : PsiReferenceContributor() {
     override fun registerReferenceProviders(registrar: PsiReferenceRegistrar) {
@@ -59,9 +61,17 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
                                 references.add(DomainReference(element, TextRange(0, element.text.length)))
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            }else if (tagName == "RefObjectKey") {
+                            } else if (tagName == "RefObjectKey") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
                                 references.add(DataObjectReference(element, TextRange(0, element.text.length)))
+                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                            }else if (tagName == "ColumnKey") {
+                                val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
+                                references.add(DataBindingColumnReference(element, TextRange(0, element.text.length)))
+                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                            }else if (tagName == "RefKey") {
+                                val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
+                                references.add(OperationRefKeyReference(element, TextRange(0, element.text.length)))
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
                             }
                             return PsiReference.EMPTY_ARRAY
