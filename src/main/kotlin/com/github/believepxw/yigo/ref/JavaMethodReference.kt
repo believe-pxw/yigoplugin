@@ -27,6 +27,4 @@ class JavaMethodReference(
     }
 
     override fun resolve(): PsiElement? = multiResolve(false).firstOrNull()?.element
-
-    override fun getVariants(): Array<Any> = emptyArray()
 }

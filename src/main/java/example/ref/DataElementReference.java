@@ -29,10 +29,4 @@ public class DataElementReference extends PsiReferenceBase<XmlAttributeValue> {
         }
         return psi;
     }
-
-    @NotNull
-    @Override
-    public Object[] getVariants() {
-        return new Object[0];
-    }
 }

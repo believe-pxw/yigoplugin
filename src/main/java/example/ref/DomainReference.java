@@ -29,10 +29,4 @@ public class DomainReference extends PsiReferenceBase<XmlAttributeValue> {
         }
         return domainPsi;
     }
-
-    @NotNull
-    @Override
-    public Object[] getVariants() {
-        return new Object[0];
-    }
 }

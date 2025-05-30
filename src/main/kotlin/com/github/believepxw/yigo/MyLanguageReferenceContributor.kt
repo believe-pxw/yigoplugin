@@ -9,16 +9,11 @@ import com.intellij.patterns.PlatformPatterns
 import com.intellij.psi.*
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.xml.XmlAttributeValue
-import com.intellij.remoteDev.util.UrlParameterKeys.Companion.host
+import com.intellij.psi.xml.XmlTag
 import com.intellij.util.ProcessingContext
 import com.intellij.util.containers.toArray
 import example.psi.MyLanguageTypes
-import example.ref.DataBindingColumnReference
-import example.ref.DataElementReference
-import example.ref.DataObjectReference
-import example.ref.DomainReference
-import example.ref.MacroReference
-import example.ref.OperationRefKeyReference
+import example.ref.*
 
 class MyLanguageReferenceContributor : PsiReferenceContributor() {
     override fun registerReferenceProviders(registrar: PsiReferenceRegistrar) {
@@ -73,6 +68,18 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
                                 references.add(OperationRefKeyReference(element, TextRange(0, element.text.length)))
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                            }else if (tagName == "Key") {
+                                var tag = element.parent.parent as XmlTag
+                                if (tag.localName in VariableReference.variableDefinitionTagNames) {
+                                    val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
+                                    references.add(VariableReference(element, TextRange(0, element.text.length), element.value))
+                                    return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                                }
+                                if (tag.localName == "Macro") {
+                                    val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
+                                    references.add(MacroReference(element, TextRange(0, element.text.length), element.value))
+                                    return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                                }
                             }
                             return PsiReference.EMPTY_ARRAY
                         }

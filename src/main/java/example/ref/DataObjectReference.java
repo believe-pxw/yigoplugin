@@ -25,10 +25,4 @@ public class DataObjectReference extends PsiReferenceBase<XmlAttributeValue> {
         Project project = myElement.getProject();
         return DataObjectIndex.findDataObjectDefinition(project, dataObjectKey);
     }
-
-    @NotNull
-    @Override
-    public Object[] getVariants() {
-        return new Object[0];
-    }
 }

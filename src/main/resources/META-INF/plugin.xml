@@ -41,7 +41,7 @@
         <psi.referenceContributor language="XML" implementation="com.github.believepxw.yigo.MyLanguageReferenceContributor"/>
         <lang.documentationProvider language="XML" implementationClass="example.doc.ParaTableDocumentationProvider"/>
         <lang.documentationProvider language="MyLanguage" implementationClass="example.doc.MyLanguageDocumentationProvider"/>
-        <lang.findUsagesProvider language="MyLanguage" implementationClass="example.MyLanguageFindUsagesProvider"/>
+        <lang.findUsagesProvider language="MyLanguage" implementationClass="example.findusages.MyLanguageFindUsagesProvider"/>
     </extensions>
     <applicationListeners>
     </applicationListeners>
