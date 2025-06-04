@@ -32,7 +32,9 @@ JAVA_PATH_IDENTIFIER=com*(\.[a-zA-Z_][a-zA-Z0-9_]*)+
 IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 SINGLE_QUOTED_STRING='[^']*'
 DOUBLE_QUOTED_STRING=\"[^\"]*\"
-NUMBER=[0-9]+
+DECIMAL_NUMBER=[0-9]+\.[0-9]+
+INTEGER_NUMBER=[0-9]+
+NUMBER=[0-9]+(\.[0-9]+)?
 
 %%
 <YYINITIAL> {
@@ -82,6 +84,8 @@ NUMBER=[0-9]+
   {IDENTIFIER}                 { return IDENTIFIER; }
   {SINGLE_QUOTED_STRING}       { return SINGLE_QUOTED_STRING; }
   {DOUBLE_QUOTED_STRING}       { return DOUBLE_QUOTED_STRING; }
+  {DECIMAL_NUMBER}             { return DECIMAL_NUMBER; }
+  {INTEGER_NUMBER}             { return INTEGER_NUMBER; }
   {NUMBER}                     { return NUMBER; }
 
 }

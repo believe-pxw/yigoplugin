@@ -87,6 +87,10 @@ public class MyLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitNumericConstant(@NotNull MyLanguageNumericConstant o) {
+    visitPsiElement(o);
+  }
+
   public void visitObjectLiteral(@NotNull MyLanguageObjectLiteral o) {
     visitPsiElement(o);
   }

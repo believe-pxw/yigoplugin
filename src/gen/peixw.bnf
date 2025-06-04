@@ -1,4 +1,4 @@
-// MyLanguage.bnf - Context-Aware Version
+// MyLanguage.bnf - Context-Aware Version with Decimal Support
 
 {
   parserClass="example.parser.MyLanguageParser"
@@ -33,7 +33,11 @@
 
     SINGLE_QUOTED_STRING = "regexp:'[^']*'"
     DOUBLE_QUOTED_STRING = "regexp:\"[^\"]*\""
-    NUMBER = "regexp:[0-9]+"
+
+    // 扩展数字类型以支持小数
+    DECIMAL_NUMBER = "regexp:[0-9]+\.[0-9]+"  // 小数：如 0.00, 3.14, 123.456
+    INTEGER_NUMBER = "regexp:[0-9]+"          // 整数：如 0, 123, 456
+    NUMBER = "regexp:[0-9]+(\.[0-9]+)?"       // 通用数字匹配（整数或小数）
 
     AMP_ENTITY = "&amp;"
     LT_ENTITY = "&lt;"
@@ -118,7 +122,18 @@ primary_expression ::=
   | boolean_constant
 
 variable_reference ::= path
-constant ::= SINGLE_QUOTED_STRING | DOUBLE_QUOTED_STRING | NUMBER
+
+// 扩展常量规则以支持不同类型的数字
+constant ::=
+  SINGLE_QUOTED_STRING
+  | DOUBLE_QUOTED_STRING
+  | numeric_constant
+
+// 新增数字常量规则，支持小数和整数
+numeric_constant ::=
+  DECIMAL_NUMBER      // 优先匹配小数
+  | INTEGER_NUMBER    // 然后匹配整数
+
 boolean_constant ::= TRUE_KEYWORD | FALSE_KEYWORD
 
 // 关键改进：区分不同类型的函数调用

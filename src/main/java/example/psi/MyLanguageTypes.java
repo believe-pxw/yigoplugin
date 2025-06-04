@@ -28,6 +28,7 @@ public interface MyLanguageTypes {
   IElementType JAVA_METHOD_CALL = new MyLanguageElementType("JAVA_METHOD_CALL");
   IElementType MACRO_CALL_EXPRESSION = new MyLanguageElementType("MACRO_CALL_EXPRESSION");
   IElementType MESSAGE_PARAMS_EXPRESSION = new MyLanguageElementType("MESSAGE_PARAMS_EXPRESSION");
+  IElementType NUMERIC_CONSTANT = new MyLanguageElementType("NUMERIC_CONSTANT");
   IElementType OBJECT_LITERAL = new MyLanguageElementType("OBJECT_LITERAL");
   IElementType OBJECT_LITERAL_CONTENT = new MyLanguageElementType("OBJECT_LITERAL_CONTENT");
   IElementType OBJECT_PROPERTY = new MyLanguageElementType("OBJECT_PROPERTY");
@@ -47,6 +48,7 @@ public interface MyLanguageTypes {
   IElementType COMMA = new MyLanguageTokenType(",");
   IElementType CONFIRM_MSG = new MyLanguageTokenType("ConfirmMsg");
   IElementType CONTAINER_KEYWORD = new MyLanguageTokenType("CONTAINER_KEYWORD");
+  IElementType DECIMAL_NUMBER = new MyLanguageTokenType("DECIMAL_NUMBER");
   IElementType DIV = new MyLanguageTokenType("/");
   IElementType DOT = new MyLanguageTokenType(".");
   IElementType DOUBLE_QUOTED_STRING = new MyLanguageTokenType("DOUBLE_QUOTED_STRING");
@@ -60,6 +62,7 @@ public interface MyLanguageTypes {
   IElementType IDENTIFIER = new MyLanguageTokenType("IDENTIFIER");
   IElementType IF_KEYWORD = new MyLanguageTokenType("if");
   IElementType IIF_KEYWORD = new MyLanguageTokenType("IIF");
+  IElementType INTEGER_NUMBER = new MyLanguageTokenType("INTEGER_NUMBER");
   IElementType JAVA_PATH_IDENTIFIER = new MyLanguageTokenType("JAVA_PATH_IDENTIFIER");
   IElementType LBRACE = new MyLanguageTokenType("{");
   IElementType LESS = new MyLanguageTokenType("<");
@@ -146,6 +149,9 @@ public interface MyLanguageTypes {
       }
       else if (type == MESSAGE_PARAMS_EXPRESSION) {
         return new MyLanguageMessageParamsExpressionImpl(node);
+      }
+      else if (type == NUMERIC_CONSTANT) {
+        return new MyLanguageNumericConstantImpl(node);
       }
       else if (type == OBJECT_LITERAL) {
         return new MyLanguageObjectLiteralImpl(node);

@@ -403,14 +403,16 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // SINGLE_QUOTED_STRING | DOUBLE_QUOTED_STRING | NUMBER
+  // SINGLE_QUOTED_STRING 
+  //   | DOUBLE_QUOTED_STRING 
+  //   | numeric_constant
   public static boolean constant(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "constant")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, CONSTANT, "<constant>");
     r = consumeToken(b, SINGLE_QUOTED_STRING);
     if (!r) r = consumeToken(b, DOUBLE_QUOTED_STRING);
-    if (!r) r = consumeToken(b, NUMBER);
+    if (!r) r = numeric_constant(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -742,6 +744,20 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     boolean r;
     r = consumeToken(b, MUL);
     if (!r) r = consumeToken(b, DIV);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // DECIMAL_NUMBER      // 优先匹配小数
+  //   | INTEGER_NUMBER
+  public static boolean numeric_constant(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "numeric_constant")) return false;
+    if (!nextTokenIs(b, "<numeric constant>", DECIMAL_NUMBER, INTEGER_NUMBER)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, NUMERIC_CONSTANT, "<numeric constant>");
+    r = consumeToken(b, DECIMAL_NUMBER);
+    if (!r) r = consumeToken(b, INTEGER_NUMBER);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 

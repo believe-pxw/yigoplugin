@@ -11,14 +11,14 @@ import static example.psi.MyLanguageTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import example.psi.*;
 
-public class MyLanguageConstantImpl extends ASTWrapperPsiElement implements MyLanguageConstant {
+public class MyLanguageNumericConstantImpl extends ASTWrapperPsiElement implements MyLanguageNumericConstant {
 
-  public MyLanguageConstantImpl(@NotNull ASTNode node) {
+  public MyLanguageNumericConstantImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MyLanguageVisitor visitor) {
-    visitor.visitConstant(this);
+    visitor.visitNumericConstant(this);
   }
 
   @Override
@@ -29,20 +29,14 @@ public class MyLanguageConstantImpl extends ASTWrapperPsiElement implements MyLa
 
   @Override
   @Nullable
-  public MyLanguageNumericConstant getNumericConstant() {
-    return findChildByClass(MyLanguageNumericConstant.class);
+  public PsiElement getDecimalNumber() {
+    return findChildByType(DECIMAL_NUMBER);
   }
 
   @Override
   @Nullable
-  public PsiElement getDoubleQuotedString() {
-    return findChildByType(DOUBLE_QUOTED_STRING);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getSingleQuotedString() {
-    return findChildByType(SINGLE_QUOTED_STRING);
+  public PsiElement getIntegerNumber() {
+    return findChildByType(INTEGER_NUMBER);
   }
 
 }

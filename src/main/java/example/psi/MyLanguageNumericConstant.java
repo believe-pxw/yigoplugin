@@ -5,15 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MyLanguageConstant extends PsiElement {
+public interface MyLanguageNumericConstant extends PsiElement {
 
   @Nullable
-  MyLanguageNumericConstant getNumericConstant();
+  PsiElement getDecimalNumber();
 
   @Nullable
-  PsiElement getDoubleQuotedString();
-
-  @Nullable
-  PsiElement getSingleQuotedString();
+  PsiElement getIntegerNumber();
 
 }
