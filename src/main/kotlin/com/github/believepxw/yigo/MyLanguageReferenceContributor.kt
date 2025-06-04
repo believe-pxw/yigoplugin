@@ -111,6 +111,17 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                 references.add(VariableReference(element, rangeInInjectedFragment, referencedName))
                             }else if (elementType == MyLanguageTypes.JAVA_PATH_IDENTIFIER) {
                                 references.add(JavaMethodReference(element, rangeInInjectedFragment, referencedName))
+                            } else if (elementType == MyLanguageTypes.IDENTIFIER) {
+                                val parentElementType = injectedElement.parent.node.elementType
+                                if (parentElementType == MyLanguageTypes.REGULAR_FUNCTION_CALL) {
+                                    references.add(
+                                        JavaMethodReference(
+                                            element,
+                                            rangeInInjectedFragment,
+                                            referencedName
+                                        )
+                                    )
+                                }
                             }
                             true // 继续遍历
                         }
