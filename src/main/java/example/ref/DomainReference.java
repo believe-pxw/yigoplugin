@@ -29,4 +29,9 @@ public class DomainReference extends PsiReferenceBase<XmlAttributeValue> {
         }
         return domainPsi;
     }
+
+    @Override
+    public boolean isSoft() {
+        return true;
+    }
 }

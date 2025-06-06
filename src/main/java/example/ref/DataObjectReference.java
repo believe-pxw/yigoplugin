@@ -25,4 +25,9 @@ public class DataObjectReference extends PsiReferenceBase<XmlAttributeValue> {
         Project project = myElement.getProject();
         return DataObjectIndex.findDataObjectDefinition(project, dataObjectKey);
     }
+
+    @Override
+    public boolean isSoft() {
+        return true;
+    }
 }

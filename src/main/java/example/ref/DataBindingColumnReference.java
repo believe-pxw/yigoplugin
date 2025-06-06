@@ -234,4 +234,9 @@ public class DataBindingColumnReference extends PsiReferenceBase<XmlAttributeVal
         // 处理重命名操作
         return getElement().getParent(); // 返回attribute而不是attributeValue
     }
+
+    @Override
+    public boolean isSoft() {
+        return true;
+    }
 }

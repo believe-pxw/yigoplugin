@@ -169,4 +169,9 @@ public class OperationRefKeyReference extends PsiReferenceBase<XmlAttributeValue
         XmlTag parentTag = attribute.getParent();
         return parentTag != null && "Operation".equals(parentTag.getName());
     }
+
+    @Override
+    public boolean isSoft() {
+        return true;
+    }
 }

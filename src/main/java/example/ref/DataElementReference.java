@@ -29,4 +29,9 @@ public class DataElementReference extends PsiReferenceBase<XmlAttributeValue> {
         }
         return psi;
     }
+
+    @Override
+    public boolean isSoft() {
+        return true;
+    }
 }

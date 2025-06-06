@@ -80,4 +80,9 @@ public class MacroReference extends PsiReferenceBase<PsiElement> implements PsiP
         }
         return null;
     }
+
+    @Override
+    public boolean isSoft() {
+        return true;
+    }
 }

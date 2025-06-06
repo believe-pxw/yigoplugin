@@ -28,4 +28,8 @@ class JavaMethodReference(
     }
 
     override fun resolve(): PsiElement? = multiResolve(false).firstOrNull()?.element
+
+    override fun isSoft(): Boolean {
+        return true
+    }
 }
