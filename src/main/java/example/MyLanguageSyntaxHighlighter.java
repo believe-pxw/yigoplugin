@@ -20,7 +20,7 @@ public class MyLanguageSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey IDENTIFIER =
             createTextAttributesKey("MYLANG_IDENTIFIER", DefaultLanguageHighlighterColors.INSTANCE_FIELD);
     public static final TextAttributesKey METHOD =
-            createTextAttributesKey("MYLANG_INSTANCE_METHOD", DefaultLanguageHighlighterColors.INTERFACE_NAME);
+            createTextAttributesKey("MYLANG_INSTANCE_METHOD", DefaultLanguageHighlighterColors.LOCAL_VARIABLE);
     public static final TextAttributesKey METHOD_CALL =
             createTextAttributesKey("MYLANG_FUNCTION_CALL", DefaultLanguageHighlighterColors.CLASS_NAME);
     public static final TextAttributesKey STRING =

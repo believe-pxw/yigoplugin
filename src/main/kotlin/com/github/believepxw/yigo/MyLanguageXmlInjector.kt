@@ -7,6 +7,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiLanguageInjectionHost
 import com.intellij.psi.util.elementType
 import com.intellij.psi.xml.XmlAttributeValue
+import com.intellij.psi.xml.XmlTag
 import com.intellij.psi.xml.XmlText
 import example.MyLanguage
 
@@ -19,6 +20,16 @@ class MyLanguageXmlInjector : MultiHostInjector {
             (context as XmlText).children.forEach {
                 if (it.elementType.toString() == "XML_CDATA") {
                     try {
+                        val parent = (context as? PsiElement)?.parent
+                        if (parent is XmlTag) {
+                            var tag = parent
+                            if (tag.localName == "Statement" || tag.localName == "TableFilter") {
+                                val attributeValue = tag.getAttributeValue("Type")
+                                if (attributeValue == null || attributeValue == "Sql") {
+                                    return
+                                }
+                            }
+                        }
                         registrar
                             .startInjecting(MyLanguage.INSTANCE)
                             .addPlace(
@@ -36,7 +47,19 @@ class MyLanguageXmlInjector : MultiHostInjector {
             }
         }else if (context is XmlAttributeValue) {
             var attrKey = (context as XmlAttributeValue).parent.firstChild.text
-            if (attrKey in listOf("Enable", "Visible","ValueChanged","DefaultFormulaValue","CheckRule","ParaValue","RefValue")) {
+            if (attrKey in listOf(
+                    "Enable",
+                    "Visible",
+                    "ValueChanged",
+                    "DefaultFormulaValue",
+                    "CheckRule",
+                    "ParaValue",
+                    "RefValue",
+                    "GroupBy",
+                    "OrderBy",
+                    "Formula"
+                )
+            ) {
                 registrar
                     .startInjecting(MyLanguage.INSTANCE)
                     .addPlace(
