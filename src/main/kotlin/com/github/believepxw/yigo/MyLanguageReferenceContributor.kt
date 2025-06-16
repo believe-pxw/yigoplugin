@@ -38,7 +38,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                         if (injectedFragments == null || injectedFragments.isEmpty()) {
                             return PsiReference.EMPTY_ARRAY
                         }
-                    }else if (element is XmlAttributeValue) {
+                    } else if (element is XmlAttributeValue) {
                         // 获取所有注入片段
                         injectedFragments = InjectedLanguageManager.getInstance(element.getProject())
                             .getInjectedPsiFiles(element)
@@ -54,11 +54,38 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                     )
                                 )
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            }else if (tagName == "DataElementKey") {
+                            } else if (tagName == "DataElementKey") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
                                 references.add(DataElementReference(element, TextRange(0, element.text.length)))
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            }else if (tagName == "DomainKey") {
+                            } else if (tagName == "FormKey") {
+                                val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
+                                references.add(FormReference(element, TextRange(0, element.text.length), element.value))
+                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                            } else if (tagName == "Parameters") {
+                                val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
+
+                                var value = element.value
+                                if (value.contains("FormKey=")) {
+                                    var split = value.split(";")
+                                    split.forEach {
+                                        if (it.contains("FormKey=")) {
+                                            var split1 = it.split("=")
+                                            value = split1[1]
+                                            //找出FormKey在value中的offset
+                                            var startOffset = it.indexOf(value)
+                                            references.add(
+                                                FormReference(
+                                                    element,
+                                                    TextRange(startOffset, startOffset + value.length),
+                                                    value
+                                                )
+                                            )
+                                        }
+                                    }
+                                }
+                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                            } else if (tagName == "DomainKey") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
                                 references.add(DomainReference(element, TextRange(0, element.text.length)))
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
@@ -72,24 +99,36 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                     )
                                 )
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            }else if (tagName == "ColumnKey") {
+                            } else if (tagName == "ColumnKey") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
                                 references.add(DataBindingColumnReference(element, TextRange(0, element.text.length)))
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            }else if (tagName == "RefKey") {
+                            } else if (tagName == "RefKey") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
                                 references.add(OperationRefKeyReference(element, TextRange(0, element.text.length)))
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            }else if (tagName == "Key") {
+                            } else if (tagName == "Key") {
                                 var tag = element.parent.parent as XmlTag
                                 if (tag.localName in VariableReference.variableDefinitionTagNames) {
                                     val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                    references.add(VariableReference(element, TextRange(0, element.text.length), element.value))
+                                    references.add(
+                                        VariableReference(
+                                            element,
+                                            TextRange(0, element.text.length),
+                                            element.value
+                                        )
+                                    )
                                     return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
                                 }
                                 if (tag.localName == "Macro") {
                                     val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                    references.add(MacroReference(element, TextRange(0, element.text.length), element.value))
+                                    references.add(
+                                        MacroReference(
+                                            element,
+                                            TextRange(0, element.text.length),
+                                            element.value
+                                        )
+                                    )
                                     return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
                                 }
                             }
@@ -121,7 +160,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                 references.add(MacroReference(element, rangeInInjectedFragment, referencedName))
                             } else if (elementType == MyLanguageTypes.VARIABLE_REFERENCE) {
                                 references.add(VariableReference(element, rangeInInjectedFragment, referencedName))
-                            }else if (elementType == MyLanguageTypes.JAVA_PATH_IDENTIFIER) {
+                            } else if (elementType == MyLanguageTypes.JAVA_PATH_IDENTIFIER) {
                                 references.add(JavaMethodReference(element, rangeInInjectedFragment, referencedName))
                             } else if (elementType == MyLanguageTypes.IDENTIFIER) {
                                 val parentElementType = injectedElement.parent.node.elementType
@@ -134,7 +173,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                         )
                                     )
                                 }
-                            }else if (elementType == MyLanguageTypes.CONSTANT) {
+                            } else if (elementType == MyLanguageTypes.CONSTANT) {
                                 val parentElementType =
                                     injectedElement.parent.parent.parent.parent.node.elementType
                                 if (parentElementType == MyLanguageTypes.REGULAR_FUNCTION_CALL) {
@@ -162,7 +201,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                                     referencedName.substring(1, referencedName.length - 1)
                                                 )
                                             )
-                                        }else if (firstChild.text == "GetDictValue") {
+                                        } else if (firstChild.text == "GetDictValue") {
                                             references.add(
                                                 DataObjectReference(
                                                     element,
