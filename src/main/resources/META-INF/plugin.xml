@@ -11,6 +11,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <fileBasedIndex implementation="example.index.MacroNameIndex"/>
+        <fileBasedIndex implementation="example.index.FormIndex"/>
         <fileBasedIndex implementation="example.index.DataObjectIndex"/>
         <fileType
                 name="MyLanguage File"
