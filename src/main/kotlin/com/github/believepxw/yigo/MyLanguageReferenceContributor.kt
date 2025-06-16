@@ -177,42 +177,47 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                 val parentElementType =
                                     injectedElement.parent.parent.parent.parent.node.elementType
                                 if (parentElementType == MyLanguageTypes.REGULAR_FUNCTION_CALL) {
-                                    var firstChild = injectedElement.parent.parent.parent.parent.firstChild
-                                    if (firstChild.node.elementType == MyLanguageTypes.IDENTIFIER)
-                                        if (firstChild.text == "ERPShowModal" || firstChild.text == "Open" || firstChild.text == "OpenDict") {
-                                            references.add(
-                                                FormReference(
-                                                    element,
-                                                    TextRange(
-                                                        rangeInInjectedFragment.startOffset + 1,
-                                                        rangeInInjectedFragment.endOffset - 1
-                                                    ),
-                                                    referencedName.substring(1, referencedName.length - 1)
+                                    var funcName = injectedElement.parent.parent.parent.parent.firstChild
+                                    if (funcName.node.elementType == MyLanguageTypes.IDENTIFIER) {
+                                        var argumentList = injectedElement.parent.parent.parent
+                                        var firstExpression = injectedElement.parent.parent
+                                        if (argumentList.firstChild == firstExpression) {
+                                            if (funcName.text == "ERPShowModal" || funcName.text == "Open" || funcName.text == "OpenDict") {
+                                                references.add(
+                                                    FormReference(
+                                                        element,
+                                                        TextRange(
+                                                            rangeInInjectedFragment.startOffset + 1,
+                                                            rangeInInjectedFragment.endOffset - 1
+                                                        ),
+                                                        referencedName.substring(1, referencedName.length - 1)
+                                                    )
                                                 )
-                                            )
-                                        } else if (firstChild.text == "SetValue" || firstChild.text == "GetValue") {
-                                            references.add(
-                                                VariableReference(
-                                                    element,
-                                                    TextRange(
-                                                        rangeInInjectedFragment.startOffset + 1,
-                                                        rangeInInjectedFragment.endOffset - 1
-                                                    ),
-                                                    referencedName.substring(1, referencedName.length - 1)
+                                            } else if (funcName.text == "SetValue" || funcName.text == "GetValue") {
+                                                references.add(
+                                                    VariableReference(
+                                                        element,
+                                                        TextRange(
+                                                            rangeInInjectedFragment.startOffset + 1,
+                                                            rangeInInjectedFragment.endOffset - 1
+                                                        ),
+                                                        referencedName.substring(1, referencedName.length - 1)
+                                                    )
                                                 )
-                                            )
-                                        } else if (firstChild.text == "GetDictValue") {
-                                            references.add(
-                                                DataObjectReference(
-                                                    element,
-                                                    TextRange(
-                                                        rangeInInjectedFragment.startOffset + 1,
-                                                        rangeInInjectedFragment.endOffset - 1
-                                                    ),
-                                                    referencedName.substring(1, referencedName.length - 1)
+                                            } else if (funcName.text == "GetDictValue") {
+                                                references.add(
+                                                    DataObjectReference(
+                                                        element,
+                                                        TextRange(
+                                                            rangeInInjectedFragment.startOffset + 1,
+                                                            rangeInInjectedFragment.endOffset - 1
+                                                        ),
+                                                        referencedName.substring(1, referencedName.length - 1)
+                                                    )
                                                 )
-                                            )
+                                            }
                                         }
+                                    }
                                 }
                             }
                             true // 继续遍历
