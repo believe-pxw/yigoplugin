@@ -177,6 +177,9 @@ public class MyLanguageBlock extends AbstractBlock {
                 }else {
                     Indent indent = Indent.getNoneIndent();
                     Wrap wrap = Wrap.createWrap(WrapType.NONE, false);
+                    if (childType == MyLanguageTypes.RPAREN) {
+                        wrap = Wrap.createWrap(WrapType.ALWAYS, true);
+                    }
                     blocks.add(new MyLanguageBlock(child, wrap, null, spacingBuilder, indent));
                 }
             }
