@@ -29,6 +29,12 @@ public class MyLanguageCodeBlockLiteralImpl extends ASTWrapperPsiElement impleme
 
   @Override
   @NotNull
+  public List<MyLanguageComment> getCommentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MyLanguageComment.class);
+  }
+
+  @Override
+  @NotNull
   public List<MyLanguageStatement> getStatementList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, MyLanguageStatement.class);
   }

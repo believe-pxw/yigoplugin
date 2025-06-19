@@ -35,6 +35,10 @@ public class MyLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitComment(@NotNull MyLanguageComment o) {
+    visitPsiElement(o);
+  }
+
   public void visitConfirmMsgArgs(@NotNull MyLanguageConfirmMsgArgs o) {
     visitPsiElement(o);
   }

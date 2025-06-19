@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface MyLanguageStatement extends PsiElement {
 
   @Nullable
+  MyLanguageComment getComment();
+
+  @Nullable
   MyLanguageExpressionSequence getExpressionSequence();
 
   @Nullable

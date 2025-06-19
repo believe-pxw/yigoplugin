@@ -15,6 +15,7 @@ public interface MyLanguageTypes {
   IElementType CALLBACK_OBJECT = new MyLanguageElementType("CALLBACK_OBJECT");
   IElementType CALLBACK_PROPERTY = new MyLanguageElementType("CALLBACK_PROPERTY");
   IElementType CODE_BLOCK_LITERAL = new MyLanguageElementType("CODE_BLOCK_LITERAL");
+  IElementType COMMENT = new MyLanguageElementType("COMMENT");
   IElementType CONFIRM_MSG_ARGS = new MyLanguageElementType("CONFIRM_MSG_ARGS");
   IElementType CONFIRM_MSG_CALL = new MyLanguageElementType("CONFIRM_MSG_CALL");
   IElementType CONSTANT = new MyLanguageElementType("CONSTANT");
@@ -46,6 +47,7 @@ public interface MyLanguageTypes {
   IElementType AMP_ENTITY = new MyLanguageTokenType("&amp;");
   IElementType AND_OP = new MyLanguageTokenType("&&");
   IElementType AND_OP_ENTITY = new MyLanguageTokenType("&amp;&amp;");
+  IElementType BLOCK_COMMENT = new MyLanguageTokenType("BLOCK_COMMENT");
   IElementType COLON = new MyLanguageTokenType(":");
   IElementType COMMA = new MyLanguageTokenType(",");
   IElementType CONFIRM_MSG = new MyLanguageTokenType("ConfirmMsg");
@@ -69,6 +71,7 @@ public interface MyLanguageTypes {
   IElementType LBRACE = new MyLanguageTokenType("{");
   IElementType LESS = new MyLanguageTokenType("<");
   IElementType LESS_EQUAL = new MyLanguageTokenType("<=");
+  IElementType LINE_COMMENT = new MyLanguageTokenType("LINE_COMMENT");
   IElementType LPAREN = new MyLanguageTokenType("(");
   IElementType LT_ENTITY = new MyLanguageTokenType("&lt;");
   IElementType MACRO_IDENTIFIER = new MyLanguageTokenType("MACRO_IDENTIFIER");
@@ -112,6 +115,9 @@ public interface MyLanguageTypes {
       }
       else if (type == CODE_BLOCK_LITERAL) {
         return new MyLanguageCodeBlockLiteralImpl(node);
+      }
+      else if (type == COMMENT) {
+        return new MyLanguageCommentImpl(node);
       }
       else if (type == CONFIRM_MSG_ARGS) {
         return new MyLanguageConfirmMsgArgsImpl(node);

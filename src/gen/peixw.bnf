@@ -1,4 +1,4 @@
-// MyLanguage.bnf - Context-Aware Version with Decimal Support
+// MyLanguage.bnf - Context-Aware Version with Decimal Support and Comments
 
 {
   parserClass="example.parser.MyLanguageParser"
@@ -39,6 +39,10 @@
     INTEGER_NUMBER = "regexp:[0-9]+"          // 整数：如 0, 123, 456
     NUMBER = "regexp:[0-9]+(\.[0-9]+)?"       // 通用数字匹配（整数或小数）
 
+    // 注释 tokens
+    LINE_COMMENT = "regexp://.*"                           // 单行注释：// 开头到行尾
+    BLOCK_COMMENT = "regexp:/\*([^*]|\*+[^*/])*\*+/"      // 多行注释：/* ... */
+
     AMP_ENTITY = "&amp;"
     LT_ENTITY = "&lt;"
     GT_ENTITY = "&gt;"
@@ -77,7 +81,10 @@
 // 语法规则 (Grammar Rules)
 // ---------------------------------------------------------------------
 
-root ::= top_level_statement*
+root ::= (comment | top_level_statement)*
+
+// 注释规则
+comment ::= LINE_COMMENT | BLOCK_COMMENT
 
 private top_level_statement ::=
   (variable_declaration SEMICOLON)
@@ -87,7 +94,8 @@ private top_level_statement ::=
 expression_sequence ::= expression_statement (SEMICOLON expression_statement)*
 
 statement ::=
-  (variable_declaration SEMICOLON)
+  comment
+  | (variable_declaration SEMICOLON)
   | (variable_assignment SEMICOLON?)
   | ((expression_sequence | if_statement | while_statement) SEMICOLON?)
 
@@ -101,7 +109,7 @@ while_statement ::= WHILE_KEYWORD LPAREN expression RPAREN statement_block
 
 statement_block ::= statement | block_statement
 
-block_statement ::= LBRACE statement* RBRACE COLON*
+block_statement ::= LBRACE (comment | statement)* RBRACE COLON*
 
 expression ::= logical_or_expression
 private logical_or_expression ::= logical_and_expression (OR_OP logical_and_expression)*
@@ -185,7 +193,7 @@ object_literal_content ::= (object_property (COMMA object_property)*)?
 object_property ::= IDENTIFIER COLON (object_literal | expression | code_block_literal)
 
 // 代码块字面量：在对象属性中表示要执行的代码
-code_block_literal ::= LBRACE statement* RBRACE
+code_block_literal ::= LBRACE (comment | statement)* RBRACE
 
 macro_call_expression ::= MACRO_IDENTIFIER
 java_method_call ::= JAVA_PATH_IDENTIFIER

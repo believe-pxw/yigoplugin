@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface MyLanguageCodeBlockLiteral extends PsiElement {
 
   @NotNull
+  List<MyLanguageComment> getCommentList();
+
+  @NotNull
   List<MyLanguageStatement> getStatementList();
 
 }

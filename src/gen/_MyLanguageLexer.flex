@@ -35,6 +35,8 @@ DOUBLE_QUOTED_STRING=\"[^\"]*\"
 DECIMAL_NUMBER=[0-9]+\.[0-9]+
 INTEGER_NUMBER=[0-9]+
 NUMBER=[0-9]+(\.[0-9]+)?
+LINE_COMMENT="//".*
+BLOCK_COMMENT="/"\*([^*]|\*+[^*/])*\*+"/"
 
 %%
 <YYINITIAL> {
@@ -87,6 +89,8 @@ NUMBER=[0-9]+(\.[0-9]+)?
   {DECIMAL_NUMBER}             { return DECIMAL_NUMBER; }
   {INTEGER_NUMBER}             { return INTEGER_NUMBER; }
   {NUMBER}                     { return NUMBER; }
+  {LINE_COMMENT}               { return LINE_COMMENT; }
+  {BLOCK_COMMENT}              { return BLOCK_COMMENT; }
 
 }
 

@@ -29,6 +29,12 @@ public class MyLanguageStatementImpl extends ASTWrapperPsiElement implements MyL
 
   @Override
   @Nullable
+  public MyLanguageComment getComment() {
+    return findChildByClass(MyLanguageComment.class);
+  }
+
+  @Override
+  @Nullable
   public MyLanguageExpressionSequence getExpressionSequence() {
     return findChildByClass(MyLanguageExpressionSequence.class);
   }

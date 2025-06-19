@@ -151,6 +151,7 @@ public class MyLanguageBlock extends AbstractBlock {
                 if (childType == MyLanguageTypes.ARGUMENT_LIST) {
                     Indent indent = Indent.getNoneIndent();
                     ASTNode next = child.getFirstChildNode();
+                    boolean first = true;
                     while (next != null) {
                         childType = next.getElementType();
                         if (childType != TokenType.WHITE_SPACE) {
@@ -164,6 +165,10 @@ public class MyLanguageBlock extends AbstractBlock {
                             } else if (isArgument(next) && argumentCount > 0 && argumentCount % 2 == 0) {
                                 // 新行的参数需要缩进
                                 indent = Indent.getContinuationIndent();
+                            }
+                            if (first) {
+                                wrap = Wrap.createWrap(WrapType.ALWAYS, true);
+                                first = false;
                             }
                             blocks.add(new MyLanguageBlock(next, wrap, null, spacingBuilder, indent));
                         }
