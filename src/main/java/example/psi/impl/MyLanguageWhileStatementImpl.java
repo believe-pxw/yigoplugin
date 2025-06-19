@@ -28,45 +28,15 @@ public class MyLanguageWhileStatementImpl extends ASTWrapperPsiElement implement
   }
 
   @Override
-  @Nullable
-  public MyLanguageBlockStatement getBlockStatement() {
-    return findChildByClass(MyLanguageBlockStatement.class);
-  }
-
-  @Override
   @NotNull
   public MyLanguageExpression getExpression() {
     return findNotNullChildByClass(MyLanguageExpression.class);
   }
 
   @Override
-  @Nullable
-  public MyLanguageExpressionSequence getExpressionSequence() {
-    return findChildByClass(MyLanguageExpressionSequence.class);
-  }
-
-  @Override
-  @Nullable
-  public MyLanguageIfStatement getIfStatement() {
-    return findChildByClass(MyLanguageIfStatement.class);
-  }
-
-  @Override
-  @Nullable
-  public MyLanguageVariableAssignment getVariableAssignment() {
-    return findChildByClass(MyLanguageVariableAssignment.class);
-  }
-
-  @Override
-  @Nullable
-  public MyLanguageVariableDeclaration getVariableDeclaration() {
-    return findChildByClass(MyLanguageVariableDeclaration.class);
-  }
-
-  @Override
-  @Nullable
-  public MyLanguageWhileStatement getWhileStatement() {
-    return findChildByClass(MyLanguageWhileStatement.class);
+  @NotNull
+  public MyLanguageStatementBlock getStatementBlock() {
+    return findNotNullChildByClass(MyLanguageStatementBlock.class);
   }
 
 }

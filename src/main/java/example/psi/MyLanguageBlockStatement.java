@@ -8,18 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface MyLanguageBlockStatement extends PsiElement {
 
   @NotNull
-  List<MyLanguageExpressionSequence> getExpressionSequenceList();
-
-  @NotNull
-  List<MyLanguageIfStatement> getIfStatementList();
-
-  @NotNull
-  List<MyLanguageVariableAssignment> getVariableAssignmentList();
-
-  @NotNull
-  List<MyLanguageVariableDeclaration> getVariableDeclarationList();
-
-  @NotNull
-  List<MyLanguageWhileStatement> getWhileStatementList();
+  List<MyLanguageStatement> getStatementList();
 
 }

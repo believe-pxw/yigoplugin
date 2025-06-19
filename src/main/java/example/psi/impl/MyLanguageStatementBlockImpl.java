@@ -11,14 +11,14 @@ import static example.psi.MyLanguageTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import example.psi.*;
 
-public class MyLanguageBlockStatementImpl extends ASTWrapperPsiElement implements MyLanguageBlockStatement {
+public class MyLanguageStatementBlockImpl extends ASTWrapperPsiElement implements MyLanguageStatementBlock {
 
-  public MyLanguageBlockStatementImpl(@NotNull ASTNode node) {
+  public MyLanguageStatementBlockImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MyLanguageVisitor visitor) {
-    visitor.visitBlockStatement(this);
+    visitor.visitStatementBlock(this);
   }
 
   @Override
@@ -28,9 +28,15 @@ public class MyLanguageBlockStatementImpl extends ASTWrapperPsiElement implement
   }
 
   @Override
-  @NotNull
-  public List<MyLanguageStatement> getStatementList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MyLanguageStatement.class);
+  @Nullable
+  public MyLanguageBlockStatement getBlockStatement() {
+    return findChildByClass(MyLanguageBlockStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public MyLanguageStatement getStatement() {
+    return findChildByClass(MyLanguageStatement.class);
   }
 
 }

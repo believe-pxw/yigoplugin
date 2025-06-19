@@ -5,9 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MyLanguageCodeBlockLiteral extends PsiElement {
+public interface MyLanguageStatementBlock extends PsiElement {
 
-  @NotNull
-  List<MyLanguageStatement> getStatementList();
+  @Nullable
+  MyLanguageBlockStatement getBlockStatement();
+
+  @Nullable
+  MyLanguageStatement getStatement();
 
 }

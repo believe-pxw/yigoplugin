@@ -115,6 +115,14 @@ public class MyLanguageVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitStatement(@NotNull MyLanguageStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitStatementBlock(@NotNull MyLanguageStatementBlock o) {
+    visitPsiElement(o);
+  }
+
   public void visitVariableAssignment(@NotNull MyLanguageVariableAssignment o) {
     visitPsiElement(o);
   }

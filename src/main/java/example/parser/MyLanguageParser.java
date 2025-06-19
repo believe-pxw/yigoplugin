@@ -403,8 +403,8 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // SINGLE_QUOTED_STRING 
-  //   | DOUBLE_QUOTED_STRING 
+  // SINGLE_QUOTED_STRING
+  //   | DOUBLE_QUOTED_STRING
   //   | numeric_constant
   public static boolean constant(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "constant")) return false;
@@ -999,14 +999,14 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   // (variable_declaration SEMICOLON)
   //   | (variable_assignment SEMICOLON?)
   //   | ((expression_sequence | if_statement | while_statement) SEMICOLON?)
-  static boolean statement(PsiBuilder b, int l) {
+  public static boolean statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statement")) return false;
     boolean r;
-    Marker m = enter_section_(b);
+    Marker m = enter_section_(b, l, _NONE_, STATEMENT, "<statement>");
     r = statement_0(b, l + 1);
     if (!r) r = statement_1(b, l + 1);
     if (!r) r = statement_2(b, l + 1);
-    exit_section_(b, m, null, r);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -1069,11 +1069,13 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // statement | block_statement
-  static boolean statement_block(PsiBuilder b, int l) {
+  public static boolean statement_block(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statement_block")) return false;
     boolean r;
+    Marker m = enter_section_(b, l, _NONE_, STATEMENT_BLOCK, "<statement block>");
     r = statement(b, l + 1);
     if (!r) r = block_statement(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 

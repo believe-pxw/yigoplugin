@@ -86,7 +86,7 @@ private top_level_statement ::=
 
 expression_sequence ::= expression_statement (SEMICOLON expression_statement)*
 
-private statement ::=
+statement ::=
   (variable_declaration SEMICOLON)
   | (variable_assignment SEMICOLON?)
   | ((expression_sequence | if_statement | while_statement) SEMICOLON?)
@@ -99,7 +99,7 @@ if_statement ::= IF_KEYWORD LPAREN expression RPAREN statement_block (ELSE_KEYWO
 
 while_statement ::= WHILE_KEYWORD LPAREN expression RPAREN statement_block
 
-private statement_block ::= statement | block_statement
+statement_block ::= statement | block_statement
 
 block_statement ::= LBRACE statement* RBRACE COLON*
 

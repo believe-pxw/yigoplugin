@@ -29,32 +29,8 @@ public class MyLanguageCodeBlockLiteralImpl extends ASTWrapperPsiElement impleme
 
   @Override
   @NotNull
-  public List<MyLanguageExpressionSequence> getExpressionSequenceList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MyLanguageExpressionSequence.class);
-  }
-
-  @Override
-  @NotNull
-  public List<MyLanguageIfStatement> getIfStatementList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MyLanguageIfStatement.class);
-  }
-
-  @Override
-  @NotNull
-  public List<MyLanguageVariableAssignment> getVariableAssignmentList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MyLanguageVariableAssignment.class);
-  }
-
-  @Override
-  @NotNull
-  public List<MyLanguageVariableDeclaration> getVariableDeclarationList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MyLanguageVariableDeclaration.class);
-  }
-
-  @Override
-  @NotNull
-  public List<MyLanguageWhileStatement> getWhileStatementList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MyLanguageWhileStatement.class);
+  public List<MyLanguageStatement> getStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MyLanguageStatement.class);
   }
 
 }

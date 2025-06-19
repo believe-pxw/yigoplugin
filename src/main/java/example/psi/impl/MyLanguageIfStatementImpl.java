@@ -29,44 +29,14 @@ public class MyLanguageIfStatementImpl extends ASTWrapperPsiElement implements M
 
   @Override
   @NotNull
-  public List<MyLanguageBlockStatement> getBlockStatementList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MyLanguageBlockStatement.class);
-  }
-
-  @Override
-  @NotNull
   public MyLanguageExpression getExpression() {
     return findNotNullChildByClass(MyLanguageExpression.class);
   }
 
   @Override
   @NotNull
-  public List<MyLanguageExpressionSequence> getExpressionSequenceList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MyLanguageExpressionSequence.class);
-  }
-
-  @Override
-  @NotNull
-  public List<MyLanguageIfStatement> getIfStatementList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MyLanguageIfStatement.class);
-  }
-
-  @Override
-  @NotNull
-  public List<MyLanguageVariableAssignment> getVariableAssignmentList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MyLanguageVariableAssignment.class);
-  }
-
-  @Override
-  @NotNull
-  public List<MyLanguageVariableDeclaration> getVariableDeclarationList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MyLanguageVariableDeclaration.class);
-  }
-
-  @Override
-  @NotNull
-  public List<MyLanguageWhileStatement> getWhileStatementList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MyLanguageWhileStatement.class);
+  public List<MyLanguageStatementBlock> getStatementBlockList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MyLanguageStatementBlock.class);
   }
 
 }
