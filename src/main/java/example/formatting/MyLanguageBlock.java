@@ -75,6 +75,18 @@ public class MyLanguageBlock extends AbstractBlock {
         }
         return false;
     }
+
+    // 辅助方法：检查是否为 IIFS 函数调用
+    private boolean isIIFFunctionCall(ASTNode node) {
+        if (node.getElementType() == MyLanguageTypes.REGULAR_FUNCTION_CALL) {
+            ASTNode nameNode = node.findChildByType(MyLanguageTypes.IIF_FUNCTION_CALL);
+            if (nameNode != null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * 核心修正：為子塊分配正確的縮進和換行
      */
@@ -95,6 +107,10 @@ public class MyLanguageBlock extends AbstractBlock {
                 // --- 規則 1: 處理塊內部的語句 ---
                 if (isIIFSFunctionCall(myNode)) {
                     return buildIIFSChildren();
+                }
+
+                if (isIIFFunctionCall(myNode)) {
+                    return buildIIFChildren();
                 }
 
                 if (isParentIndentedBlock) {
@@ -138,7 +154,48 @@ public class MyLanguageBlock extends AbstractBlock {
                 type == MyLanguageTypes.FUNCTION_CALL;
     }
 
+    private List<Block> buildIIFChildren() {
+        List<Block> blocks = new ArrayList<>();
+        ASTNode child = myNode.getFirstChildNode();
 
+        while (child != null) {
+            IElementType childType = child.getElementType();
+            if (childType != TokenType.WHITE_SPACE) {
+                if (childType == MyLanguageTypes.ARGUMENT_LIST) {
+                    Indent indent = Indent.getNoneIndent();
+                    ASTNode next = child.getFirstChildNode();
+                    boolean first = true;
+                    while (next != null) {
+                        childType = next.getElementType();
+                        if (childType != TokenType.WHITE_SPACE) {
+                            Wrap wrap = Wrap.createWrap(WrapType.NONE, false);
+                            if (childType == MyLanguageTypes.COMMA) {
+                                wrap = Wrap.createWrap(WrapType.ALWAYS, true);
+                            } else if (isArgument(next)) {
+                                // 新行的参数需要缩进
+                                indent = Indent.getContinuationIndent();
+                            }
+                            if (first) {
+                                wrap = Wrap.createWrap(WrapType.ALWAYS, true);
+                                first = false;
+                            }
+                            blocks.add(new MyLanguageBlock(next, wrap, null, spacingBuilder, indent));
+                        }
+                        next = next.getTreeNext();
+                    }
+                } else {
+                    Indent indent = Indent.getNoneIndent();
+                    Wrap wrap = Wrap.createWrap(WrapType.NONE, false);
+                    if (childType == MyLanguageTypes.RPAREN) {
+                        wrap = Wrap.createWrap(WrapType.ALWAYS, true);
+                    }
+                    blocks.add(new MyLanguageBlock(child, wrap, null, spacingBuilder, indent));
+                }
+            }
+            child = child.getTreeNext();
+        }
+        return blocks;
+    }
 
     private List<Block> buildIIFSChildren() {
         List<Block> blocks = new ArrayList<>();
