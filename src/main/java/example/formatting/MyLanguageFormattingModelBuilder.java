@@ -64,6 +64,7 @@ public class MyLanguageFormattingModelBuilder implements FormattingModelBuilder 
 
                 // --- 核心換行規則 ---
                 .after(MyLanguageTypes.SEMICOLON).spacing(0, 0, 1, true, 0) // 分號後必須換行
+                .between(MyLanguageTypes.STATEMENT, MyLanguageTypes.STATEMENT).spacing(0, 0, 1, true, 0) // 分號後必須換行
                 .between(MyLanguageTypes.RBRACE, MyLanguageTypes.ELSE_KEYWORD).spaces(1) // } else {
                 .between(MyLanguageTypes.RPAREN, MyLanguageTypes.STATEMENT_BLOCK).spaces(1) // if (...) {
 
