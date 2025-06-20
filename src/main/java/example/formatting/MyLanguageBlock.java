@@ -219,7 +219,7 @@ public class MyLanguageBlock extends AbstractBlock {
                                 if (argumentCount % 2 == 0) {
                                     wrap = Wrap.createWrap(WrapType.ALWAYS, true);
                                 }
-                            } else if (isArgument(next) && argumentCount > 0 && argumentCount % 2 == 0) {
+                            } else if (isArgument(next) && argumentCount % 2 == 0) {
                                 // 新行的参数需要缩进
                                 indent = Indent.getContinuationIndent();
                             }
