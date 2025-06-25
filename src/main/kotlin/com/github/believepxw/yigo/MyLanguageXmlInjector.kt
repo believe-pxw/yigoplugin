@@ -57,6 +57,7 @@ class MyLanguageXmlInjector : MultiHostInjector {
                     "RefValue",
                     "GroupBy",
                     "OrderBy",
+                    "FormulaCaption",
                     "Formula"
                 )
             ) {
