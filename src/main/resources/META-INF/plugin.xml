@@ -6,6 +6,7 @@
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
+    <depends>com.intellij.modules.xml</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
@@ -13,6 +14,8 @@
         <fileBasedIndex implementation="example.index.MacroNameIndex"/>
         <fileBasedIndex implementation="example.index.FormIndex"/>
         <fileBasedIndex implementation="example.index.DataObjectIndex"/>
+        <xml.schemaProvider
+                implementation="example.schema.YigoFormSchemaProvider"/>
         <fileType
                 name="MyLanguage File"
                 implementationClass="example.MyLanguageFileType"
