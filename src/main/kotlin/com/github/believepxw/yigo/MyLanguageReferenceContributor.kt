@@ -43,8 +43,8 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                         injectedFragments = InjectedLanguageManager.getInstance(element.getProject())
                             .getInjectedPsiFiles(element)
                         if (injectedFragments == null || injectedFragments.isEmpty()) {
-                            var tagName = element.parent.firstChild.text
-                            if (tagName == "ItemKey") {
+                            var attrKey = element.parent.firstChild.text
+                            if (attrKey == "ItemKey") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
                                 references.add(
                                     DataObjectReference(
@@ -54,15 +54,15 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                     )
                                 )
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            } else if (tagName == "DataElementKey") {
+                            } else if (attrKey == "DataElementKey") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
                                 references.add(DataElementReference(element, TextRange(0, element.text.length)))
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            } else if (tagName == "FormKey") {
+                            } else if (attrKey == "FormKey") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
                                 references.add(FormReference(element, TextRange(0, element.text.length), element.value))
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            } else if (tagName == "Parameters") {
+                            } else if (attrKey == "Parameters") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
 
                                 var value = element.value
@@ -85,11 +85,11 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                     }
                                 }
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            } else if (tagName == "DomainKey") {
+                            } else if (attrKey == "DomainKey") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
                                 references.add(DomainReference(element, TextRange(0, element.text.length)))
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            } else if (tagName == "RefObjectKey") {
+                            } else if (attrKey == "RefObjectKey") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
                                 references.add(
                                     DataObjectReference(
@@ -99,15 +99,25 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                     )
                                 )
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            } else if (tagName == "ColumnKey") {
+                            } else if (attrKey == "ColumnKey") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
                                 references.add(DataBindingColumnReference(element, TextRange(0, element.text.length)))
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            } else if (tagName == "RefKey") {
+                            } else if (attrKey == "RefKey") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
                                 references.add(OperationRefKeyReference(element, TextRange(0, element.text.length)))
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            } else if (tagName == "Key") {
+                            } else if (attrKey == "GroupKey") {
+                                val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
+                                references.add(
+                                    ParaGroupReference(
+                                        element,
+                                        TextRange(0, element.text.length),
+                                        element.value
+                                    )
+                                )
+                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                            } else if (attrKey == "Key") {
                                 var tag = element.parent.parent as XmlTag
                                 if (tag.localName in VariableReference.variableDefinitionTagNames) {
                                     val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
