@@ -145,7 +145,7 @@ class SourceOnlyCompletionProvider extends CompletionProvider<CompletionParamete
         if (qualifiedClassName == null) {
             return method.getName();
         }
-        if (qualifiedClassName.equals("com.bokesoft.erp.ShortNameFunction")) {
+        if (qualifiedClassName.equals("com.bokesoft.erp.ShortNameFunction") || qualifiedClassName.equals("com.bokesoft.erp.OnlyInUIFunction")) {
             return method.getName();
         }
 

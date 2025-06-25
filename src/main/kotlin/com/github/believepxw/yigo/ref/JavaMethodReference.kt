@@ -17,7 +17,12 @@ class JavaMethodReference(
         if (!fullMethod.contains(".")) {
             val shortNameClass = javaPsiFacade.findClass("com.bokesoft.erp.ShortNameFunction", searchScope)
                 ?: return ResolveResult.EMPTY_ARRAY
-            val methods = shortNameClass.findMethodsByName(fullMethod, true)
+            var methods = shortNameClass.findMethodsByName(fullMethod, true)
+            if (methods.isEmpty()) {
+                val onlyUIClass = javaPsiFacade.findClass("com.bokesoft.erp.OnlyInUIFunction", searchScope)
+                    ?: return ResolveResult.EMPTY_ARRAY
+                methods = onlyUIClass.findMethodsByName(fullMethod, true)
+            }
             return methods.map { PsiElementResolveResult(it) }.toTypedArray()
         } else {
             val (className, methodName) = fullMethod.substringBeforeLast('.') to fullMethod.substringAfterLast('.')
