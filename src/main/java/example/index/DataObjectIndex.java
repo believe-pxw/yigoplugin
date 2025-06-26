@@ -6,6 +6,8 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.xml.XmlAttribute;
+import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.indexing.DataIndexer;
@@ -120,7 +122,7 @@ public class DataObjectIndex extends FileBasedIndexExtension<String, Void> {
      * @return 匹配的 XmlTag（宏定义）如果找到，否则返回null。
      */
     @Nullable
-    public static XmlTag findDataObjectDefinition(Project project, String dataObjectKey) {
+    public static XmlAttributeValue findDataObjectDefinition(Project project, String dataObjectKey) {
         // 使用 GlobalSearchScope.allScope(project) 在整个项目范围内查找
         Collection<VirtualFile> files = FileBasedIndex.getInstance().getContainingFiles(
                 KEY, dataObjectKey, GlobalSearchScope.projectScope(project));
@@ -137,14 +139,14 @@ public class DataObjectIndex extends FileBasedIndexExtension<String, Void> {
                         for (XmlTag dataObjectTag : dataSourceTag.findSubTags("DataObject")) {
                             String key = dataObjectTag.getAttributeValue("Key");
                             if (key != null) {
-                                return dataObjectTag;
+                                return dataObjectTag.getAttribute("Key").getValueElement();
                             }
                         }
                     }
                 } else if ("DataObject".equals(rootTag.getName())) {
                     String key = rootTag.getAttributeValue("Key");
                     if (key != null) {
-                        return rootTag;
+                        return rootTag.getAttribute("Key").getValueElement();
                     }
                 }
             }

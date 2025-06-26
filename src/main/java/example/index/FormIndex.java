@@ -6,6 +6,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.indexing.DataIndexer;
@@ -109,7 +110,7 @@ public class FormIndex extends FileBasedIndexExtension<String, Void> {
      * @return 匹配的 XmlTag（宏定义）如果找到，否则返回null。
      */
     @Nullable
-    public static XmlTag findFormDefinition(Project project, String formKey) {
+    public static XmlAttributeValue findFormDefinition(Project project, String formKey) {
         // 使用 GlobalSearchScope.allScope(project) 在整个项目范围内查找
         Collection<VirtualFile> files = FileBasedIndex.getInstance().getContainingFiles(
                 KEY, formKey, GlobalSearchScope.projectScope(project));
@@ -123,7 +124,7 @@ public class FormIndex extends FileBasedIndexExtension<String, Void> {
                 if ("Form".equals(rootTag.getName())) { // Check for <Form> root tag
                     String key = rootTag.getAttributeValue("Key");
                     if (key != null) {
-                        return rootTag;
+                        return rootTag.getAttribute("Key").getValueElement();
                     }
                 }
             }

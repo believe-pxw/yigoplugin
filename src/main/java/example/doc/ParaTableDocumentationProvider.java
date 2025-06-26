@@ -324,7 +324,7 @@ public class ParaTableDocumentationProvider implements DocumentationProvider {
     public PsiElement getDocumentationElementForLink(PsiManager psiManager, String link, PsiElement context) {
         if (link.startsWith("dataObjectKey/")) {
             String key = link.substring("dataObjectKey/".length());
-            XmlTag dataObjectDefinition = DataObjectIndex.findDataObjectDefinition(psiManager.getProject(), key);
+            XmlAttributeValue dataObjectDefinition = DataObjectIndex.findDataObjectDefinition(psiManager.getProject(), key);
             if (dataObjectDefinition != null) {
                 return dataObjectDefinition.getContainingFile();
             }

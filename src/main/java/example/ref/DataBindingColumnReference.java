@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DataBindingColumnReference extends PsiReferenceBase<XmlAttributeValue> {
 
@@ -108,7 +109,8 @@ public class DataBindingColumnReference extends PsiReferenceBase<XmlAttributeVal
         String refKey = dataSourceTag.getAttributeValue("RefObjectKey");
         XmlTag dataObjectTag;
         if (refKey != null) {
-            dataObjectTag = DataObjectIndex.findDataObjectDefinition(startElement.getProject(), refKey);
+            XmlAttributeValue dataObjectDefinition = DataObjectIndex.findDataObjectDefinition(startElement.getProject(), refKey);
+            dataObjectTag = (XmlTag) dataObjectDefinition.getParent().getParent();
         }else {
             dataObjectTag = findChildTagByName(dataSourceTag, "DataObject");
 
@@ -136,7 +138,30 @@ public class DataBindingColumnReference extends PsiReferenceBase<XmlAttributeVal
         }
 
         if (targetTable == null) {
-            return null;
+            XmlTag embedTableCollection = findChildTagByName(dataObjectTag, "EmbedTableCollection");
+            if (embedTableCollection != null) {
+                XmlTag[] subTags = embedTableCollection.findSubTags("EmbedTable");
+                for (XmlTag subTag : subTags) {
+                    if (Objects.equals(subTag.getAttributeValue("TableKeys"), tableKey)) {
+                        String objectKey = subTag.getAttributeValue("ObjectKey");
+                        XmlAttributeValue dataObjectDefinition = DataObjectIndex.findDataObjectDefinition(startElement.getProject(), objectKey);
+                        dataObjectTag = (XmlTag) dataObjectDefinition.getParent().getParent();
+                        XmlTag[] subTags1 = dataObjectTag.findSubTags("TableCollection");
+                        for (XmlTag xmlTag : subTags1) {
+                            XmlTag[] subTags2 = xmlTag.findSubTags("Table");
+                            for (XmlTag tag : subTags2) {
+                                String key = tag.getAttributeValue("Key");
+                                if (key.equals(tableKey)) {
+                                    targetTable = tag;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (targetTable == null) {
+                return null;
+            }
         }
 
         // 在Table中查找指定的Column

@@ -141,6 +141,41 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                     )
                                     return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
                                 }
+                                if (tag.localName == "DataObject") {
+                                    val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
+                                    references.add(
+                                        DataObjectDefinitionReference(
+                                            element,
+                                            TextRange(0, element.text.length),
+                                            element.value
+                                        )
+                                    )
+                                    return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                                }
+                                if (tag.localName == "Form") {
+                                    val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
+                                    references.add(
+                                        FormDefinitionReference(
+                                            element,
+                                            TextRange(0, element.text.length),
+                                            element.value
+                                        )
+                                    )
+                                    return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                                }
+                            }else if (attrKey == "ObjectKey") {
+                                var tag = element.parent.parent as XmlTag
+                                if (tag.localName == "EmbedTable") {
+                                    val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
+                                    references.add(
+                                        DataObjectReference(
+                                            element,
+                                            TextRange(0, element.text.length),
+                                            element.value
+                                        )
+                                    )
+                                    return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                                }
                             }
                             return PsiReference.EMPTY_ARRAY
                         }
