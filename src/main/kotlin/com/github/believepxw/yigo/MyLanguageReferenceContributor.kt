@@ -163,6 +163,39 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                     )
                                     return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
                                 }
+                                if (tag.localName == "DataElement") {
+                                    val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
+                                    references.add(
+                                        DataElementDefinitionReference(
+                                            element,
+                                            TextRange(0, element.text.length),
+                                            element.value
+                                        )
+                                    )
+                                    return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                                }
+                                if (tag.localName == "Domain") {
+                                    val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
+                                    references.add(
+                                        DomainDefinitionReference(
+                                            element,
+                                            TextRange(0, element.text.length),
+                                            element.value
+                                        )
+                                    )
+                                    return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                                }
+                                if (tag.localName == "ParaGroup") {
+                                    val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
+                                    references.add(
+                                        ParaGroupDefinitionReference(
+                                            element,
+                                            TextRange(0, element.text.length),
+                                            element.value
+                                        )
+                                    )
+                                    return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                                }
                             }else if (attrKey == "ObjectKey") {
                                 var tag = element.parent.parent as XmlTag
                                 if (tag.localName == "EmbedTable") {

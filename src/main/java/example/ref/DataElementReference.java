@@ -5,6 +5,7 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReferenceBase;
 import com.intellij.psi.xml.XmlAttributeValue;
+import com.intellij.psi.xml.XmlTag;
 import example.doc.ParaTableDocumentationProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,9 +26,9 @@ public class DataElementReference extends PsiReferenceBase<XmlAttributeValue> {
         Project project = myElement.getProject();
         PsiElement psi = ParaTableDocumentationProvider.getDataElementPsi(project, dataElementKey);
         if (psi == null) {
-            return myElement;
+            return null;
         }
-        return psi;
+        return ((XmlTag) psi).getAttribute("Key").getValueElement();
     }
 
     @Override
