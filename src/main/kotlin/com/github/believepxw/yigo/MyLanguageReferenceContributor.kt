@@ -101,7 +101,13 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
                             } else if (attrKey == "ColumnKey") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                references.add(DataBindingColumnReference(element, TextRange(0, element.text.length)))
+                                references.add(
+                                    DataBindingColumnReference(
+                                        element,
+                                        TextRange(0, element.text.length),
+                                        false
+                                    )
+                                )
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
                             } else if (attrKey == "RefKey") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
@@ -192,6 +198,16 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                             element,
                                             TextRange(0, element.text.length),
                                             element.value
+                                        )
+                                    )
+                                    return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                                }
+                                if (tag.localName == "Column") {
+                                    val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
+                                    references.add(
+                                        DataBindingColumnReference(
+                                            element,
+                                            TextRange(0, element.text.length), true
                                         )
                                     )
                                     return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)

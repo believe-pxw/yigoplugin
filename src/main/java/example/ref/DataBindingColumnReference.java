@@ -19,15 +19,21 @@ import java.util.Objects;
 public class DataBindingColumnReference extends PsiReferenceBase<XmlAttributeValue> {
 
     private final String columnKey;
+    private boolean isDefinition;
 
-    public DataBindingColumnReference(@NotNull XmlAttributeValue element, TextRange textRange) {
+    public DataBindingColumnReference(@NotNull XmlAttributeValue element, TextRange textRange,boolean isDefinition) {
         super(element, textRange);
         this.columnKey = element.getValue();
+        this.isDefinition = isDefinition;
     }
 
     @Override
     public @Nullable PsiElement resolve() {
         XmlAttributeValue element = getElement();
+        if (isDefinition) {
+            return element;
+        }
+
         XmlTag dataBindingTag = getParentDataBindingTag(element);
 
         if (dataBindingTag == null) {
@@ -94,7 +100,7 @@ public class DataBindingColumnReference extends PsiReferenceBase<XmlAttributeVal
     /**
      * 在指定的Table中查找Column
      */
-    private XmlTag findColumnInTable(XmlElement startElement, String tableKey, String columnKey) {
+    private XmlAttributeValue findColumnInTable(XmlElement startElement, String tableKey, String columnKey) {
         // 找到根元素（Form）
         XmlTag rootTag = getRootFormTag(startElement);
         if (rootTag == null) {
@@ -169,7 +175,7 @@ public class DataBindingColumnReference extends PsiReferenceBase<XmlAttributeVal
         for (XmlTag column : columns) {
             XmlAttribute keyAttr = column.getAttribute("Key");
             if (keyAttr != null && columnKey.equals(keyAttr.getValue())) {
-                return column;
+                return column.getAttribute("Key").getValueElement();
             }
         }
 
