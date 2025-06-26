@@ -50,7 +50,7 @@ public class OperationRefKeyReference extends PsiReferenceBase<XmlAttributeValue
             if (virtualFile.getName().equals("CommonDef.xml")) {
                 PsiFile psiFile = psiManager.findFile(virtualFile);
                 if (psiFile instanceof XmlFile) {
-                    XmlTag foundOperation = findOperationByKey((XmlFile) psiFile, refKey);
+                    XmlAttributeValue foundOperation = findOperationByKey((XmlFile) psiFile, refKey);
                     if (foundOperation != null) {
                         return foundOperation;
                     }
@@ -63,7 +63,7 @@ public class OperationRefKeyReference extends PsiReferenceBase<XmlAttributeValue
     /**
      * 在XML文件中查找指定Key的Operation
      */
-    private XmlTag findOperationByKey(XmlFile xmlFile, String key) {
+    private XmlAttributeValue findOperationByKey(XmlFile xmlFile, String key) {
         XmlTag rootTag = xmlFile.getRootTag();
         if (rootTag == null) {
             return null;
@@ -77,7 +77,7 @@ public class OperationRefKeyReference extends PsiReferenceBase<XmlAttributeValue
             for (XmlTag operation : operations) {
                 XmlAttribute keyAttr = operation.getAttribute("Key");
                 if (keyAttr != null && key.equals(keyAttr.getValue())) {
-                    return operation;
+                    return operation.getAttribute("Key").getValueElement();
                 }
             }
         }

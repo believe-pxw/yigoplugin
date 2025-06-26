@@ -212,6 +212,13 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                     )
                                     return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
                                 }
+                                if (tag.localName == "Operation") {
+                                    if (tag.containingFile.name == "CommonDef.xml") {
+                                        val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
+                                        references.add(OperationRefKeyReference(element, TextRange(0, element.text.length)))
+                                        return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                                    }
+                                }
                             }else if (attrKey == "ObjectKey") {
                                 var tag = element.parent.parent as XmlTag
                                 if (tag.localName == "EmbedTable") {
