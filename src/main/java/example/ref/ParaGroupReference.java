@@ -32,7 +32,7 @@ public class ParaGroupReference extends PsiReferenceBase<PsiElement> {
             XmlTag rootTag = xmlFile.getRootTag();
             for (XmlTag subTag : rootTag.getSubTags()) {
                 if (subTag.getAttributeValue("Key").equals(paraGroupKey)) {
-                    return subTag.getAttribute("Key");
+                    return subTag.getAttribute("Key").getValueElement();
                 }
             }
         }
