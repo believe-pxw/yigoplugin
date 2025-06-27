@@ -45,6 +45,9 @@ class VariableReference(
      * @return 如果解析成功，返回声明的PsiElement；否则返回null。
      */
     override fun resolve(): PsiElement? {
+        if (element is XmlAttributeValue) {
+            return element
+        }
         val containingFile = element.containingFile as? XmlFile ?: return null
 
         // 从整个XML文件的根标签开始递归查找变量定义
