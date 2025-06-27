@@ -1,6 +1,9 @@
 package example.findusages;
 
 import com.intellij.find.findUsages.FindUsagesHandler;
+import com.intellij.find.findUsages.FindUsagesOptions;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
@@ -10,6 +13,8 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.psi.xml.XmlTag;
+import com.intellij.usageView.UsageInfo;
+import com.intellij.util.Processor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -81,5 +86,16 @@ public class DataBindingFindUsagesHandler extends FindUsagesHandler {
         }
 
         return elements.toArray(new PsiElement[0]);
+    }
+
+    @Override
+    public boolean processElementUsages(@NotNull PsiElement element, @NotNull Processor<? super UsageInfo> processor, @NotNull FindUsagesOptions options) {
+        ModuleManager moduleManager = ModuleManager.getInstance(element.getProject());
+        Module moduleByName = moduleManager.findModuleByName("erp-entity-core");
+        if (moduleByName != null) {
+            GlobalSearchScope globalSearchScope = GlobalSearchScope.notScope(GlobalSearchScope.fileScope(element.getContainingFile()));
+            options.searchScope = options.searchScope.intersectWith(globalSearchScope);
+        }
+        return super.processElementUsages(element, processor, options);
     }
 }
