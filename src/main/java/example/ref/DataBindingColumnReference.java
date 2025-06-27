@@ -12,8 +12,6 @@ import example.index.DataObjectIndex;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class DataBindingColumnReference extends PsiReferenceBase<PsiElement> {
@@ -21,18 +19,15 @@ public class DataBindingColumnReference extends PsiReferenceBase<PsiElement> {
     private final String columnKey;
     private boolean isDefinition;
 
-    private PsiElement ref;
-
-    public DataBindingColumnReference(@NotNull XmlAttributeValue element, TextRange textRange,boolean isDefinition) {
+    public DataBindingColumnReference(@NotNull XmlAttributeValue element, TextRange textRange, boolean isDefinition) {
         super(element, textRange);
         this.columnKey = element.getValue();
         this.isDefinition = isDefinition;
     }
 
-    public DataBindingColumnReference(@NotNull PsiElement element, TextRange textRange, String columnKey, PsiElement ref) {
-        super(element, textRange);
-        this.columnKey = columnKey;
-        this.ref = ref;
+    @Override
+    public PsiElement handleElementRename(@NotNull String newElementName) throws IncorrectOperationException {
+        return super.handleElementRename(newElementName);
     }
 
     @Override
@@ -40,10 +35,7 @@ public class DataBindingColumnReference extends PsiReferenceBase<PsiElement> {
         if (isDefinition) {
             return getElement();
         }
-        if (ref != null) {
-            return ref;
-        }
-        XmlAttributeValue element = (XmlAttributeValue)getElement();
+        XmlAttributeValue element = (XmlAttributeValue) getElement();
         XmlTag dataBindingTag = getParentDataBindingTag(element);
 
         if (dataBindingTag == null) {
@@ -127,7 +119,7 @@ public class DataBindingColumnReference extends PsiReferenceBase<PsiElement> {
         if (refKey != null) {
             XmlAttributeValue dataObjectDefinition = DataObjectIndex.findDataObjectDefinition(startElement.getProject(), refKey);
             dataObjectTag = (XmlTag) dataObjectDefinition.getParent().getParent();
-        }else {
+        } else {
             dataObjectTag = findChildTagByName(dataSourceTag, "DataObject");
 
         }
