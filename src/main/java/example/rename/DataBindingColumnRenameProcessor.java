@@ -1,9 +1,12 @@
 package example.rename;
 
 import com.github.believepxw.yigo.ref.VariableReference;
+import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementFactory;
+import com.intellij.psi.PsiExpression;
+import com.intellij.psi.PsiLiteralExpression;
 import com.intellij.psi.PsiReference;
-import com.intellij.psi.search.SearchScope;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.refactoring.listeners.RefactoringElementListener;
 import com.intellij.refactoring.rename.RenamePsiElementProcessor;
@@ -52,12 +55,19 @@ public class DataBindingColumnRenameProcessor extends RenamePsiElementProcessor 
         PsiReference reference = element.getReference();
         PsiElement[] psiElements;
         if (reference instanceof DataBindingColumnReference) {
-            psiElements = DataBindingFindUsagesHandler.getPsiElements((XmlAttributeValue) element);
+            psiElements = DataBindingFindUsagesHandler.getPsiElements((XmlAttributeValue) element, true);
         } else {
-            psiElements = FieldFindUsagesHandler.getPsiElements((XmlAttributeValue) element);
+            psiElements = FieldFindUsagesHandler.getPsiElements((XmlAttributeValue) element, true);
         }
         for (PsiElement psiElement : psiElements) {
             if (element == psiElement) {
+                continue;
+            }
+            if (psiElement instanceof PsiLiteralExpression) {
+                PsiLiteralExpression tmp = (PsiLiteralExpression) psiElement;
+                PsiElementFactory factory = JavaPsiFacade.getInstance(element.getProject()).getElementFactory();
+                PsiExpression newLiteralExpression = factory.createExpressionFromText("\"" + newName + "\"", null);
+                tmp.replace(newLiteralExpression);
                 continue;
             }
             if (psiElement != null) {

@@ -8,9 +8,11 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiField;
+import com.intellij.psi.PsiLiteralExpression;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.usageView.UsageInfo;
@@ -18,6 +20,7 @@ import com.intellij.util.Processor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class FieldFindUsagesHandler extends FindUsagesHandler {
@@ -31,10 +34,10 @@ public class FieldFindUsagesHandler extends FindUsagesHandler {
 
     @Override
     public PsiElement @NotNull [] getPrimaryElements() {
-        return getPsiElements(xmlAttributeValue);
+        return getPsiElements(xmlAttributeValue, false);
     }
 
-    public static PsiElement @NotNull [] getPsiElements(XmlAttributeValue xmlAttributeValue) {
+    public static PsiElement @NotNull [] getPsiElements(XmlAttributeValue xmlAttributeValue,boolean isRename) {
         List<PsiElement> elements = new ArrayList<>();
         elements.add(xmlAttributeValue);
         XmlFile containingFile = (XmlFile) xmlAttributeValue.getContainingFile();
@@ -54,6 +57,17 @@ public class FieldFindUsagesHandler extends FindUsagesHandler {
                 }
             }
             if (clazz != null) {
+                if (isRename) {
+                    // --- 新增代码：查找字面量等于 columnKey 的地方 ---
+                    // 遍历clazz中的所有PsiLiteralExpression
+                    Collection<PsiLiteralExpression> literalExpressions = PsiTreeUtil.findChildrenOfType(clazz, PsiLiteralExpression.class);
+                    for (PsiLiteralExpression literal : literalExpressions) {
+                        Object value = literal.getValue();
+                        if (value instanceof String && fieldKey.equals(value)) {
+                            elements.add(literal);
+                        }
+                    }
+                }
                 PsiField field = clazz.findFieldByName(fieldKey, true);
                 elements.add(field);
                 PsiMethod[] getMethod = clazz.findMethodsByName("get" + fieldKey, true);
