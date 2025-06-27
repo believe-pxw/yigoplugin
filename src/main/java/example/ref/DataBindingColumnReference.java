@@ -7,7 +7,6 @@ import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.psi.xml.XmlElement;
 import com.intellij.psi.xml.XmlTag;
-import com.intellij.util.IncorrectOperationException;
 import example.index.DataObjectIndex;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -23,11 +22,6 @@ public class DataBindingColumnReference extends PsiReferenceBase<PsiElement> {
         super(element, textRange);
         this.columnKey = element.getValue();
         this.isDefinition = isDefinition;
-    }
-
-    @Override
-    public PsiElement handleElementRename(@NotNull String newElementName) throws IncorrectOperationException {
-        return super.handleElementRename(newElementName);
     }
 
     @Override

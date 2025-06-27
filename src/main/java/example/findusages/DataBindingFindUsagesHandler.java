@@ -56,7 +56,9 @@ public class DataBindingFindUsagesHandler extends FindUsagesHandler {
         }
         if (clazz != null) {
             PsiField field = clazz.findFieldByName(columnKey, true);
-            elements.add(field);
+            if (field != null) {
+                elements.add(field);
+            }
             PsiMethod[] getMethod = clazz.findMethodsByName("get" + columnKey, true);
             for (PsiMethod method : getMethod) {
                 elements.add(method);

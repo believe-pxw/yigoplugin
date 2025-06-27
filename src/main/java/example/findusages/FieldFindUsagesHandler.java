@@ -40,8 +40,7 @@ public class FieldFindUsagesHandler extends FindUsagesHandler {
         XmlFile containingFile = (XmlFile) xmlAttributeValue.getContainingFile();
         if (containingFile.getRootTag().getName().equals("Form")) {
             String formKey = containingFile.getRootTag().getAttributeValue("Key");
-            String fieldKey = xmlAttributeValue.getText().replace("\"", "");
-
+            String fieldKey = xmlAttributeValue.getValue();
             Project project = xmlAttributeValue.getProject();
             GlobalSearchScope searchScope = GlobalSearchScope.projectScope(project);
             PsiShortNamesCache shortNamesCache = PsiShortNamesCache.getInstance(project);

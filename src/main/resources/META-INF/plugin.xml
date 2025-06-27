@@ -16,6 +16,8 @@
         <fileBasedIndex implementation="example.index.DataObjectIndex"/>
         <findUsagesHandlerFactory implementation="example.findusages.DataBindingFindUsagesHandlerFactory"/>
         <findUsagesHandlerFactory implementation="example.findusages.FieldFindUsagesHandlerFactory"/>
+        <renamePsiElementProcessor implementation="example.rename.DataBindingColumnRenameProcessor"/>
+
 
         <xml.schemaProvider
                 implementation="example.schema.YigoFormSchemaProvider"/>
