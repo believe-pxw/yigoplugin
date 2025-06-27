@@ -65,7 +65,7 @@ public class FieldFindUsagesHandler extends FindUsagesHandler {
                 for (PsiMethod method : setMethod) {
                     elements.add(method);
                 }
-                classesByName = shortNamesCache.getClassesByName(fieldKey + "_Loader", searchScope);
+                classesByName = shortNamesCache.getClassesByName(formKey + "_Loader", searchScope);
                 PsiClass loadClazz = null;
                 for (PsiClass psiClass : classesByName) {
                     String qualifiedName = psiClass.getQualifiedName();
