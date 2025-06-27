@@ -49,22 +49,21 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                 references.add(
                                     DataObjectReference(
                                         element,
-                                        TextRange(0, element.text.length),
+                                        TextRange(0 + 1, element.text.length - 1),
                                         element.value
                                     )
                                 )
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
                             } else if (attrKey == "DataElementKey") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                references.add(DataElementReference(element, TextRange(0, element.text.length)))
+                                references.add(DataElementReference(element, TextRange(0 + 1, element.text.length - 1)))
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
                             } else if (attrKey == "FormKey") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                references.add(FormReference(element, TextRange(0, element.text.length), element.value))
+                                references.add(FormReference(element, TextRange(0 + 1, element.text.length - 1), element.value))
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
                             } else if (attrKey == "Parameters") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-
                                 var value = element.value
                                 if (value.contains("FormKey=")) {
                                     var split = value.split(";")
@@ -77,7 +76,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                             references.add(
                                                 FormReference(
                                                     element,
-                                                    TextRange(startOffset, startOffset + value.length),
+                                                    TextRange(startOffset + 1, startOffset + value.length - 1),
                                                     value
                                                 )
                                             )
@@ -87,14 +86,14 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
                             } else if (attrKey == "DomainKey") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                references.add(DomainReference(element, TextRange(0, element.text.length)))
+                                references.add(DomainReference(element, TextRange(0 + 1, element.text.length - 1)))
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
                             } else if (attrKey == "RefObjectKey") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
                                 references.add(
                                     DataObjectReference(
                                         element,
-                                        TextRange(0, element.text.length),
+                                        TextRange(0 + 1, element.text.length - 1),
                                         element.value
                                     )
                                 )
@@ -104,21 +103,21 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                 references.add(
                                     DataBindingColumnReference(
                                         element,
-                                        TextRange(0, element.text.length),
+                                        TextRange(0 + 1, element.text.length - 1),
                                         false
                                     )
                                 )
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
                             } else if (attrKey == "RefKey") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                references.add(OperationRefKeyReference(element, TextRange(0, element.text.length)))
+                                references.add(OperationRefKeyReference(element, TextRange(0 + 1, element.text.length - 1)))
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
                             } else if (attrKey == "GroupKey") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
                                 references.add(
                                     ParaGroupReference(
                                         element,
-                                        TextRange(0, element.text.length),
+                                        TextRange(0 + 1, element.text.length - 1),
                                         element.value
                                     )
                                 )
@@ -130,7 +129,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                     references.add(
                                         VariableReference(
                                             element,
-                                            TextRange(0, element.text.length),
+                                            TextRange(0 + 1, element.text.length - 1),
                                             element.value
                                         )
                                     )
@@ -141,7 +140,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                     references.add(
                                         MacroReference(
                                             element,
-                                            TextRange(0, element.text.length),
+                                            TextRange(0 + 1, element.text.length - 1),
                                             element.value
                                         )
                                     )
@@ -152,7 +151,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                     references.add(
                                         DataObjectDefinitionReference(
                                             element,
-                                            TextRange(0, element.text.length),
+                                            TextRange(0 + 1, element.text.length - 1),
                                             element.value
                                         )
                                     )
@@ -163,7 +162,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                     references.add(
                                         FormDefinitionReference(
                                             element,
-                                            TextRange(0, element.text.length),
+                                            TextRange(0 + 1, element.text.length - 1),
                                             element.value
                                         )
                                     )
@@ -174,7 +173,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                     references.add(
                                         DataElementDefinitionReference(
                                             element,
-                                            TextRange(0, element.text.length),
+                                            TextRange(0 + 1, element.text.length - 1),
                                             element.value
                                         )
                                     )
@@ -185,7 +184,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                     references.add(
                                         DomainDefinitionReference(
                                             element,
-                                            TextRange(0, element.text.length),
+                                            TextRange(0 + 1, element.text.length - 1),
                                             element.value
                                         )
                                     )
@@ -196,7 +195,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                     references.add(
                                         ParaGroupDefinitionReference(
                                             element,
-                                            TextRange(0, element.text.length),
+                                            TextRange(0 + 1, element.text.length - 1),
                                             element.value
                                         )
                                     )
@@ -207,7 +206,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                     references.add(
                                         DataBindingColumnReference(
                                             element,
-                                            TextRange(0, element.text.length), true
+                                            TextRange(0 + 1, element.text.length - 1), true
                                         )
                                     )
                                     return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
@@ -215,7 +214,12 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                 if (tag.localName == "Operation") {
                                     if (tag.containingFile.name == "CommonDef.xml") {
                                         val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                        references.add(OperationRefKeyReference(element, TextRange(0, element.text.length)))
+                                        references.add(
+                                            OperationRefKeyReference(
+                                                element,
+                                                TextRange(0 + 1, element.text.length - 1)
+                                            )
+                                        )
                                         return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
                                     }
                                 }
@@ -226,7 +230,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                     references.add(
                                         DataObjectReference(
                                             element,
-                                            TextRange(0, element.text.length),
+                                            TextRange(0 + 1, element.text.length - 1),
                                             element.value
                                         )
                                     )
