@@ -14,6 +14,10 @@
         <fileBasedIndex implementation="example.index.MacroNameIndex"/>
         <fileBasedIndex implementation="example.index.FormIndex"/>
         <fileBasedIndex implementation="example.index.DataObjectIndex"/>
+        <!--<findUsagesHandlerFactory-->
+        <!--        implementation="example.findusages.DataBindingFindUsagesHandlerFactory"-->
+        <!--        order="first"/>-->
+
         <xml.schemaProvider
                 implementation="example.schema.YigoFormSchemaProvider"/>
         <fileType

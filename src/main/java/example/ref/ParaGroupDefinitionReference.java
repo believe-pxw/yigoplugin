@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class ParaGroupDefinitionReference extends PsiReferenceBase<PsiElement> implements PsiPolyVariantReference {
+public class ParaGroupDefinitionReference extends PsiReferenceBase<PsiElement> {
 
     private final String paraGroupKey;
 
@@ -36,14 +36,4 @@ public class ParaGroupDefinitionReference extends PsiReferenceBase<PsiElement> i
         return true;
     }
 
-    @Override
-    public ResolveResult @NotNull [] multiResolve(boolean b) {
-        ArrayList<ResolveResult> results = new ArrayList<>();
-        GlobalSearchScope searchScope = GlobalSearchScope.projectScope(myElement.getProject());
-        Collection<PsiReference> all = ReferencesSearch.search(myElement, searchScope).findAll();
-        for (PsiReference psiReference : all) {
-            results.add(new PsiElementResolveResult(psiReference.getElement()));
-        }
-        return results.toArray(new ResolveResult[0]);
-    }
 }

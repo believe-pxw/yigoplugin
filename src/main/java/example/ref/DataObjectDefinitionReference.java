@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class DataObjectDefinitionReference extends PsiReferenceBase<PsiElement> implements PsiPolyVariantReference {
+public class DataObjectDefinitionReference extends PsiReferenceBase<PsiElement>  {
 
     private final String dataObjectKey;
 
@@ -34,16 +34,5 @@ public class DataObjectDefinitionReference extends PsiReferenceBase<PsiElement> 
     @Override
     public boolean isSoft() {
         return true;
-    }
-
-    @Override
-    public ResolveResult @NotNull [] multiResolve(boolean b) {
-        ArrayList<ResolveResult> results = new ArrayList<>();
-        GlobalSearchScope searchScope = GlobalSearchScope.projectScope(myElement.getProject());
-        Collection<PsiReference> all = ReferencesSearch.search(myElement, searchScope).findAll();
-        for (PsiReference psiReference : all) {
-            results.add(new PsiElementResolveResult(psiReference.getElement()));
-        }
-        return results.toArray(new ResolveResult[0]);
     }
 }

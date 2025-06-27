@@ -16,10 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class DataBindingColumnReference extends PsiReferenceBase<XmlAttributeValue> {
+public class DataBindingColumnReference extends PsiReferenceBase<PsiElement> {
 
     private final String columnKey;
     private boolean isDefinition;
+
+    private PsiElement ref;
 
     public DataBindingColumnReference(@NotNull XmlAttributeValue element, TextRange textRange,boolean isDefinition) {
         super(element, textRange);
@@ -27,13 +29,21 @@ public class DataBindingColumnReference extends PsiReferenceBase<XmlAttributeVal
         this.isDefinition = isDefinition;
     }
 
+    public DataBindingColumnReference(@NotNull PsiElement element, TextRange textRange, String columnKey, PsiElement ref) {
+        super(element, textRange);
+        this.columnKey = columnKey;
+        this.ref = ref;
+    }
+
     @Override
     public @Nullable PsiElement resolve() {
-        XmlAttributeValue element = getElement();
         if (isDefinition) {
-            return element;
+            return getElement();
         }
-
+        if (ref != null) {
+            return ref;
+        }
+        XmlAttributeValue element = (XmlAttributeValue)getElement();
         XmlTag dataBindingTag = getParentDataBindingTag(element);
 
         if (dataBindingTag == null) {
@@ -205,65 +215,6 @@ public class DataBindingColumnReference extends PsiReferenceBase<XmlAttributeVal
     private XmlTag findChildTagByName(XmlTag parent, String tagName) {
         XmlTag[] children = parent.findSubTags(tagName);
         return children.length > 0 ? children[0] : null;
-    }
-
-    @Override
-    public Object @NotNull [] getVariants() {
-        // 返回可能的列名作为代码补全选项
-        List<String> variants = new ArrayList<>();
-
-        XmlAttributeValue element = getElement();
-        XmlTag dataBindingTag = getParentDataBindingTag(element);
-
-        if (dataBindingTag != null) {
-            // 获取TableKey
-            XmlAttribute tableKeyAttr = dataBindingTag.getAttribute("TableKey");
-            String tableKey = null;
-
-            if (tableKeyAttr != null && tableKeyAttr.getValue() != null) {
-                tableKey = tableKeyAttr.getValue();
-            } else {
-                tableKey = findTableKeyFromGridRow(dataBindingTag);
-            }
-
-            if (tableKey != null) {
-                // 收集该Table中所有Column的Key作为补全选项
-                XmlTag rootTag = getRootFormTag(element);
-                if (rootTag != null) {
-                    XmlTag dataSourceTag = findChildTagByName(rootTag, "DataSource");
-                    if (dataSourceTag != null) {
-                        XmlTag dataObjectTag = findChildTagByName(dataSourceTag, "DataObject");
-                        if (dataObjectTag != null) {
-                            XmlTag tableCollectionTag = findChildTagByName(dataObjectTag, "TableCollection");
-                            if (tableCollectionTag != null) {
-                                XmlTag[] tables = tableCollectionTag.findSubTags("Table");
-                                for (XmlTag table : tables) {
-                                    XmlAttribute keyAttr = table.getAttribute("Key");
-                                    if (keyAttr != null && tableKey.equals(keyAttr.getValue())) {
-                                        XmlTag[] columns = table.findSubTags("Column");
-                                        for (XmlTag column : columns) {
-                                            XmlAttribute columnKeyAttr = column.getAttribute("Key");
-                                            if (columnKeyAttr != null && columnKeyAttr.getValue() != null) {
-                                                variants.add(columnKeyAttr.getValue());
-                                            }
-                                        }
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return variants.toArray();
-    }
-
-    @Override
-    public PsiElement handleElementRename(@NotNull String newElementName) throws IncorrectOperationException {
-        // 处理重命名操作
-        return getElement().getParent(); // 返回attribute而不是attributeValue
     }
 
     @Override
