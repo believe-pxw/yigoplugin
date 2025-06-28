@@ -8,31 +8,29 @@ class JavaMethodReference(
     element: PsiElement,
     range: TextRange,
     private val fullMethod: String
-) : PsiReferenceBase<PsiElement>(element, range), PsiPolyVariantReference {
+) : PsiReferenceBase<PsiElement>(element, range) {
 
-    override fun multiResolve(incompleteCode: Boolean): Array<ResolveResult> {
+    override fun resolve(): PsiElement?{
         val project = myElement.project
         val javaPsiFacade = JavaPsiFacade.getInstance(project)
         val searchScope = GlobalSearchScope.projectScope(project)
         if (!fullMethod.contains(".")) {
             val shortNameClass = javaPsiFacade.findClass("com.bokesoft.erp.ShortNameFunction", searchScope)
-                ?: return ResolveResult.EMPTY_ARRAY
+                ?: return null
             var methods = shortNameClass.findMethodsByName(fullMethod, true)
             if (methods.isEmpty()) {
                 val onlyUIClass = javaPsiFacade.findClass("com.bokesoft.erp.OnlyInUIFunction", searchScope)
-                    ?: return ResolveResult.EMPTY_ARRAY
+                    ?: return null
                 methods = onlyUIClass.findMethodsByName(fullMethod, true)
             }
-            return methods.map { PsiElementResolveResult(it) }.toTypedArray()
+            return methods.first()
         } else {
             val (className, methodName) = fullMethod.substringBeforeLast('.') to fullMethod.substringAfterLast('.')
-            val psiClass = javaPsiFacade.findClass(className, searchScope) ?: return ResolveResult.EMPTY_ARRAY
+            val psiClass = javaPsiFacade.findClass(className, searchScope) ?: return null
             val methods = psiClass.findMethodsByName(methodName, true)
-            return methods.map { PsiElementResolveResult(it) }.toTypedArray()
+            return methods.first()
         }
     }
-
-    override fun resolve(): PsiElement? = multiResolve(false).firstOrNull()?.element
 
     override fun isSoft(): Boolean {
         return true
