@@ -23,11 +23,17 @@ class JavaMethodReference(
                     ?: return null
                 methods = onlyUIClass.findMethodsByName(fullMethod, true)
             }
+            if (methods.isEmpty()) {
+                return null
+            }
             return methods.first()
         } else {
             val (className, methodName) = fullMethod.substringBeforeLast('.') to fullMethod.substringAfterLast('.')
             val psiClass = javaPsiFacade.findClass(className, searchScope) ?: return null
             val methods = psiClass.findMethodsByName(methodName, true)
+            if (methods.isEmpty()) {
+                return null
+            }
             return methods.first()
         }
     }
