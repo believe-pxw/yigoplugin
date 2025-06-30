@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 public class MyLanguageFindUsagesProvider implements FindUsagesProvider {
 
     // 定义哪些 token 是标识符、注释和字符串字面量，用于构建词语索引
-    private static final TokenSet IDENTIFIERS = TokenSet.create(MyLanguageTypes.IDENTIFIER, MyLanguageTypes.MACRO_IDENTIFIER);
+    private static final TokenSet IDENTIFIERS = TokenSet.create(MyLanguageTypes.IDENTIFIER, MyLanguageTypes.MACRO_IDENTIFIER, MyLanguageTypes.JAVA_PATH_IDENTIFIER);
     private static final TokenSet COMMENTS = TokenSet.EMPTY; // 你的语法中没有明确的注释，如果需要可以添加
     private static final TokenSet LITERALS = TokenSet.create(MyLanguageTypes.SINGLE_QUOTED_STRING, MyLanguageTypes.DOUBLE_QUOTED_STRING, MyLanguageTypes.NUMBER);
 
@@ -29,7 +29,9 @@ public class MyLanguageFindUsagesProvider implements FindUsagesProvider {
         // 我们主要关注 PsiNamedElement，特别是我们语法中的 IDENTIFIER，它通常代表变量名
         return psiElement instanceof PsiNamedElement &&
                 (psiElement.getNode().getElementType() == MyLanguageTypes.IDENTIFIER ||
-                        psiElement.getNode().getElementType() == MyLanguageTypes.MACRO_IDENTIFIER);
+                        psiElement.getNode().getElementType() == MyLanguageTypes.MACRO_IDENTIFIER ||
+                        psiElement.getNode().getElementType() == MyLanguageTypes.JAVA_PATH_IDENTIFIER
+                        );
     }
 
     // 获取元素类型，用于在 "Find Usages" 结果窗口中显示
@@ -48,6 +50,9 @@ public class MyLanguageFindUsagesProvider implements FindUsagesProvider {
         }
         if (element.getNode().getElementType() == MyLanguageTypes.MACRO_IDENTIFIER) {
             return "Macro";
+        }
+        if (element.getNode().getElementType() == MyLanguageTypes.JAVA_PATH_IDENTIFIER) {
+            return "Method";
         }
         return "";
     }
