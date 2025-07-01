@@ -47,6 +47,12 @@ public class MyLanguageStatementImpl extends ASTWrapperPsiElement implements MyL
 
   @Override
   @Nullable
+  public MyLanguageReturnStatement getReturnStatement() {
+    return findChildByClass(MyLanguageReturnStatement.class);
+  }
+
+  @Override
+  @Nullable
   public MyLanguageVariableAssignment getVariableAssignment() {
     return findChildByClass(MyLanguageVariableAssignment.class);
   }

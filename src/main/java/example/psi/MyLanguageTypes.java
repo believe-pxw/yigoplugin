@@ -36,6 +36,7 @@ public interface MyLanguageTypes {
   IElementType PARAMETER_ARRAY = new MyLanguageElementType("PARAMETER_ARRAY");
   IElementType PRIMARY_EXPRESSION = new MyLanguageElementType("PRIMARY_EXPRESSION");
   IElementType REGULAR_FUNCTION_CALL = new MyLanguageElementType("REGULAR_FUNCTION_CALL");
+  IElementType RETURN_STATEMENT = new MyLanguageElementType("RETURN_STATEMENT");
   IElementType STATEMENT = new MyLanguageElementType("STATEMENT");
   IElementType STATEMENT_BLOCK = new MyLanguageElementType("STATEMENT_BLOCK");
   IElementType VARIABLE_ASSIGNMENT = new MyLanguageElementType("VARIABLE_ASSIGNMENT");
@@ -85,6 +86,7 @@ public interface MyLanguageTypes {
   IElementType PARENT_KEYWORD = new MyLanguageTokenType("PARENT_KEYWORD");
   IElementType PLUS = new MyLanguageTokenType("+");
   IElementType RBRACE = new MyLanguageTokenType("}");
+  IElementType RETURN_KEYWORD = new MyLanguageTokenType("return");
   IElementType RPAREN = new MyLanguageTokenType(")");
   IElementType SEMICOLON = new MyLanguageTokenType(";");
   IElementType SINGLE_QUOTED_STRING = new MyLanguageTokenType("SINGLE_QUOTED_STRING");
@@ -178,6 +180,9 @@ public interface MyLanguageTypes {
       }
       else if (type == REGULAR_FUNCTION_CALL) {
         return new MyLanguageRegularFunctionCallImpl(node);
+      }
+      else if (type == RETURN_STATEMENT) {
+        return new MyLanguageReturnStatementImpl(node);
       }
       else if (type == STATEMENT) {
         return new MyLanguageStatementImpl(node);

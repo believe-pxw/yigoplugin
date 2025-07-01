@@ -1015,6 +1015,19 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // RETURN_KEYWORD expression
+  public static boolean return_statement(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "return_statement")) return false;
+    if (!nextTokenIs(b, RETURN_KEYWORD)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, RETURN_KEYWORD);
+    r = r && expression(b, l + 1);
+    exit_section_(b, m, RETURN_STATEMENT, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // (comment | top_level_statement)*
   static boolean root(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "root")) return false;
@@ -1039,7 +1052,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   // comment
   //   | (variable_declaration SEMICOLON)
   //   | (variable_assignment SEMICOLON?)
-  //   | ((expression_sequence | if_statement | while_statement) SEMICOLON?)
+  //   | ((expression_sequence | if_statement | while_statement | return_statement) SEMICOLON?)
   public static boolean statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statement")) return false;
     boolean r;
@@ -1081,7 +1094,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // (expression_sequence | if_statement | while_statement) SEMICOLON?
+  // (expression_sequence | if_statement | while_statement | return_statement) SEMICOLON?
   private static boolean statement_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statement_3")) return false;
     boolean r;
@@ -1092,13 +1105,14 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // expression_sequence | if_statement | while_statement
+  // expression_sequence | if_statement | while_statement | return_statement
   private static boolean statement_3_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statement_3_0")) return false;
     boolean r;
     r = expression_sequence(b, l + 1);
     if (!r) r = if_statement(b, l + 1);
     if (!r) r = while_statement(b, l + 1);
+    if (!r) r = return_statement(b, l + 1);
     return r;
   }
 
@@ -1124,7 +1138,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // (variable_declaration SEMICOLON)
   //   | (variable_assignment SEMICOLON?)
-  //   | ((expression_sequence | if_statement | while_statement) SEMICOLON?)
+  //   | ((expression_sequence | if_statement | while_statement |return_statement) SEMICOLON?)
   static boolean top_level_statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "top_level_statement")) return false;
     boolean r;
@@ -1165,7 +1179,7 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // (expression_sequence | if_statement | while_statement) SEMICOLON?
+  // (expression_sequence | if_statement | while_statement |return_statement) SEMICOLON?
   private static boolean top_level_statement_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "top_level_statement_2")) return false;
     boolean r;
@@ -1176,13 +1190,14 @@ public class MyLanguageParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // expression_sequence | if_statement | while_statement
+  // expression_sequence | if_statement | while_statement |return_statement
   private static boolean top_level_statement_2_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "top_level_statement_2_0")) return false;
     boolean r;
     r = expression_sequence(b, l + 1);
     if (!r) r = if_statement(b, l + 1);
     if (!r) r = while_statement(b, l + 1);
+    if (!r) r = return_statement(b, l + 1);
     return r;
   }
 

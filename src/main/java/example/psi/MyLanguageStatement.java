@@ -17,6 +17,9 @@ public interface MyLanguageStatement extends PsiElement {
   MyLanguageIfStatement getIfStatement();
 
   @Nullable
+  MyLanguageReturnStatement getReturnStatement();
+
+  @Nullable
   MyLanguageVariableAssignment getVariableAssignment();
 
   @Nullable

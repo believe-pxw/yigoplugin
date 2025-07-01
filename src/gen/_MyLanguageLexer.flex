@@ -45,6 +45,7 @@ BLOCK_COMMENT="/"\*([^*]|\*+[^*/])*\*+"/"
   "if"                         { return IF_KEYWORD; }
   "else"                       { return ELSE_KEYWORD; }
   "while"                      { return WHILE_KEYWORD; }
+  "return"                     { return RETURN_KEYWORD; }
   "var"                        { return VAR_KEYWORD; }
   "true"                       { return TRUE_KEYWORD; }
   "false"                      { return FALSE_KEYWORD; }
