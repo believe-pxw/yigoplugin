@@ -3,13 +3,9 @@ package com.github.believepxw.yigo.ref
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReferenceBase
-import com.intellij.psi.XmlElementFactory
-import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
-import com.intellij.psi.xml.XmlElement
 import com.intellij.psi.xml.XmlFile
 import com.intellij.psi.xml.XmlTag
-import com.intellij.util.IncorrectOperationException
 import java.util.*
 
 /**
@@ -45,7 +41,8 @@ class VariableReference(
      * @return 如果解析成功，返回声明的PsiElement；否则返回null。
      */
     override fun resolve(): PsiElement? {
-        if (element is XmlAttributeValue) {
+        //Key属性直接返回自己
+        if (element is XmlAttributeValue && element.parent.firstChild.text == "Key") {
             return element
         }
         val containingFile = element.containingFile as? XmlFile ?: return null

@@ -63,7 +63,7 @@ public class DataBindingColumnReference extends PsiReferenceBase<PsiElement> {
         while (parent != null) {
             if (parent instanceof XmlTag) {
                 XmlTag tag = (XmlTag) parent;
-                if ("DataBinding".equals(tag.getName())) {
+                if ("DataBinding".equals(tag.getName()) || "Condition".equals(tag.getName())) {
                     return tag;
                 }
             }
