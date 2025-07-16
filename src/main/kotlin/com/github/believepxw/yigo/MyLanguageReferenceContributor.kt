@@ -287,7 +287,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                         var argumentList = injectedElement.parent.parent.parent
                                         var firstExpression = injectedElement.parent.parent
                                         if (argumentList.firstChild == firstExpression) {
-                                            if (funcName.text == "ERPShowModal" || funcName.text == "Open" || funcName.text == "OpenDict") {
+                                            if (funcName.text == "ERPShowModal" || funcName.text == "Open" || funcName.text == "OpenDict" || funcName.text == "New") {
                                                 references.add(
                                                     FormReference(
                                                         element,
