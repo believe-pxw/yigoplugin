@@ -108,9 +108,24 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                     )
                                 )
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                            }else if (attrKey == "BindingCellKey") {
+                                val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
+                                references.add(
+                                    VariableReference(
+                                        element,
+                                        TextRange(0 + 1, element.text.length - 1),
+                                        element.value
+                                    )
+                                )
+                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
                             } else if (attrKey == "RefKey") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                references.add(OperationRefKeyReference(element, TextRange(0 + 1, element.text.length - 1)))
+                                references.add(
+                                    OperationRefKeyReference(
+                                        element,
+                                        TextRange(0 + 1, element.text.length - 1)
+                                    )
+                                )
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
                             } else if (attrKey == "GroupKey") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
@@ -223,7 +238,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                         return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
                                     }
                                 }
-                            }else if (attrKey == "ObjectKey") {
+                            } else if (attrKey == "ObjectKey") {
                                 var tag = element.parent.parent as XmlTag
                                 if (tag.localName == "EmbedTable") {
                                     val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
@@ -298,7 +313,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                                         referencedName.substring(1, referencedName.length - 1)
                                                     )
                                                 )
-                                            } else if (funcName.text == "SetValue" || funcName.text == "GetValue") {
+                                            } else if (funcName.text == "SetValue" || funcName.text == "GetValue" || funcName.text == "Sum") {
                                                 references.add(
                                                     VariableReference(
                                                         element,
