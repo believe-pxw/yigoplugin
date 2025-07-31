@@ -24,13 +24,17 @@ class MethodInsertHandler implements InsertHandler<LookupElement> {
 
         // 插入方法调用的括号
         document.insertString(offset, "()");
-
-        // 如果方法有参数，将光标移到括号内
-        PsiParameter[] parameters = method.getParameterList().getParameters();
-        if (parameters.length > 0) {
+        if (method == null) {
             editor.getCaretModel().moveToOffset(offset + 1);
-        } else {
-            editor.getCaretModel().moveToOffset(offset + 2);
+        }else {
+            // 如果方法有参数，将光标移到括号内
+            PsiParameter[] parameters = method.getParameterList().getParameters();
+            if (parameters.length > 0) {
+                editor.getCaretModel().moveToOffset(offset + 1);
+            } else {
+                editor.getCaretModel().moveToOffset(offset + 2);
+            }
         }
+
     }
 }

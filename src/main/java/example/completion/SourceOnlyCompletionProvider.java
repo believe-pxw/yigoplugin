@@ -15,13 +15,13 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiModifier;
 import com.intellij.psi.PsiParameter;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.search.searches.ClassInheritorsSearch;
 import com.intellij.util.ProcessingContext;
-import com.intellij.util.Query;
+import example.completion.func.JsonMethodParser;
+import example.completion.func.MethodDetails;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.Map;
 
 class SourceOnlyCompletionProvider extends CompletionProvider<CompletionParameters> {
     @Override
@@ -36,27 +36,29 @@ class SourceOnlyCompletionProvider extends CompletionProvider<CompletionParamete
     private void addSourceEntityContextActionMethods(Project project, CompletionResultSet result) {
         // 创建只包含源码的搜索范围
         GlobalSearchScope sourceScope = createSourceOnlyScope(project);
+        PsiClass shortNameFunctionClass = JavaPsiFacade.getInstance(project).findClass("com.bokesoft.erp.ShortNameFunction", sourceScope);
 
-        PsiClass entityContextActionClass = JavaPsiFacade.getInstance(project)
-                .findClass("com.bokesoft.erp.entity.util.EntityContextAction", sourceScope);
-
-        if (entityContextActionClass == null) {
-            return;
+        Map<String, MethodDetails> methodDetails = JsonMethodParser.parseMethods(project);
+        for (MethodDetails methodDetail : methodDetails.values()) {
+            result.addElement(new MyMethodLookupElement(methodDetail));
         }
 
+
+        //PsiClass entityContextActionClass = JavaPsiFacade.getInstance(project)
+        //        .findClass("com.bokesoft.erp.entity.util.EntityContextAction", sourceScope);
+
+        //if (entityContextActionClass == null) {
+        //    return;
+        //}
+
         // 在源码范围内搜索继承者
-        Query<PsiClass> inheritors = ClassInheritorsSearch.search(
-                entityContextActionClass,
-                sourceScope,
-                true);
+        //Query<PsiClass> inheritors = ClassInheritorsSearch.search(
+        //        entityContextActionClass,
+        //        sourceScope,
+        //        true);
 
-        Set<String> addedMethods = new HashSet<>();
-
-        for (PsiClass inheritor : inheritors) {
-            // 双重检查确保在源码中
-            if (isClassInSourceCode(inheritor, project)) {
-                addMethodsFromClass(inheritor, entityContextActionClass, addedMethods, result, project);
-            }
+        if (shortNameFunctionClass != null) {
+            addMethodsFromClass(shortNameFunctionClass, result, methodDetails );
         }
     }
 
@@ -80,31 +82,31 @@ class SourceOnlyCompletionProvider extends CompletionProvider<CompletionParamete
     }
 
     private void addMethodsFromClass(PsiClass inheritor,
-                                     PsiClass baseClass,
-                                     Set<String> addedMethods,
                                      CompletionResultSet result,
-                                     Project project) {
+                                     Map<String, MethodDetails> methodDetails
+    ) {
 
         // 只获取当前类中定义的方法，而不是所有继承的方法
         PsiMethod[] ownMethods = inheritor.getMethods();
 
         for (PsiMethod method : ownMethods) {
-            if (shouldIncludeMethod(method, baseClass) &&
-                    isMethodInSourceCode(method, project) &&
-                    !addedMethods.contains(method.getName())) {
-
-                addedMethods.add(method.getName());
+            if (shouldIncludeMethod(method)) {
+                boolean contains = false;
+                for (MethodDetails value : methodDetails.values()) {
+                    if (value.getKey().equals(method.getName())) {
+                        contains = true;
+                        break;
+                    }
+                }
+                if (contains) {
+                    continue;
+                }
                 result.addElement(createLookupElement(method));
             }
         }
     }
 
-    private boolean isMethodInSourceCode(PsiMethod method, Project project) {
-        PsiClass containingClass = method.getContainingClass();
-        return containingClass != null && isClassInSourceCode(containingClass, project);
-    }
-
-    private boolean shouldIncludeMethod(PsiMethod method, PsiClass baseClass) {
+    private boolean shouldIncludeMethod(PsiMethod method) {
         // 排除构造方法
         if (method.isConstructor()) {
             return false;
