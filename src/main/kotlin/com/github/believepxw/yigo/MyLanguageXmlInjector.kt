@@ -16,6 +16,9 @@ class MyLanguageXmlInjector : MultiHostInjector {
         if (context !is PsiLanguageInjectionHost) {
             return
         }
+        if (context.containingFile.virtualFile.path.contains("/initializeData/")) {
+            return
+        }
         if (context is XmlText) {
             (context as XmlText).children.forEach {
                 if (it.elementType.toString() == "XML_CDATA") {
