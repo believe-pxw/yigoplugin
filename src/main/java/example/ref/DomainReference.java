@@ -7,6 +7,7 @@ import com.intellij.psi.PsiReferenceBase;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.psi.xml.XmlTag;
 import example.doc.ParaTableDocumentationProvider;
+import example.index.DomainIndex;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,7 +25,7 @@ public class DomainReference extends PsiReferenceBase<XmlAttributeValue> {
     @Override
     public PsiElement resolve() {
         Project project = myElement.getProject();
-        PsiElement domainPsi = ParaTableDocumentationProvider.getDomainPsi(project, domainKey);
+        PsiElement domainPsi = DomainIndex.findDomainDefinition(project, domainKey);
         if (domainPsi == null) {
             return null;
         }

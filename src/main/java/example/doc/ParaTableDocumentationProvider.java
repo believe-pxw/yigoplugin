@@ -12,36 +12,21 @@ import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
+import example.index.DataElementIndex;
 import example.index.DataObjectIndex;
-import example.ref.DataObjectReference;
+import example.index.DomainIndex;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 import com.intellij.lang.documentation.DocumentationProvider;
 
 import static example.index.AttrConstant.*;
 
 public class ParaTableDocumentationProvider implements DocumentationProvider {
-
-
-
-
-    // Caches for ParaTable (your existing cache)
-    private static final Map<Project, Map<String, String>> cachedParaGroupDocs = new ConcurrentHashMap<>();
-
-    // Caches for DataElement and Domain
-    // Project -> DataElementKey -> Map<AttributeName, AttributeValue>
-    private static final Map<Project, Map<String, Map<String, String>>> cachedDataElements = new ConcurrentHashMap<>();
-    private static final Map<Project, Map<String, PsiElement>> cachedDataElementPsi = new ConcurrentHashMap<>();
-    private static final Map<Project, Map<String, PsiElement>> cachedDomainPsi = new ConcurrentHashMap<>();
-    // Project -> DomainKey -> Map<AttributeName, AttributeValue>
-    private static final Map<Project, Map<String, Map<String, String>>> cachedDomains = new ConcurrentHashMap<>();
 
 
     @Nullable
@@ -72,11 +57,8 @@ public class ParaTableDocumentationProvider implements DocumentationProvider {
         return null;
     }
 
-    public static String getParaGroupDoc(Project project,String groupKeyValue) {
-        // 尝试从缓存获取，如果没有则查找并生成
-        return cachedParaGroupDocs
-                .computeIfAbsent(project, p -> new ConcurrentHashMap<>())
-                .computeIfAbsent(groupKeyValue, key -> findAndGenerateParaGroupDocumentation(project, key));
+    public static String getParaGroupDoc(Project project, String groupKeyValue) {
+        return findAndGenerateParaGroupDocumentation(project, groupKeyValue);
     }
 
     // --- ParaTable Documentation Logic (your existing logic) ---
@@ -126,14 +108,11 @@ public class ParaTableDocumentationProvider implements DocumentationProvider {
     // --- DataElement and Domain Documentation Logic ---
 
     private String generateDataElementDocumentation(Project project, String dataElementKey) {
-        // Ensure caches are populated
-        populateDataElementCache(project);
-        populateDomainCache(project);
 
         StringBuilder docBuilder = new StringBuilder();
 
         // Get DataElement information
-        Map<String, String> dataElementInfo = cachedDataElements.getOrDefault(project, Collections.emptyMap()).get(dataElementKey);
+        Map<String, String> dataElementInfo = getDataElementInfo(project, dataElementKey);
         if (dataElementInfo != null) {
             String dataElementCaption = dataElementInfo.get(CAPTION_ATTRIBUTE);
             String domainKey = dataElementInfo.get("DomainKey"); // In DataElement, the Key attribute is the DomainKey
@@ -146,7 +125,7 @@ public class ParaTableDocumentationProvider implements DocumentationProvider {
 
             // Get Domain information if DomainKey is present
             if (domainKey != null) {
-                Map<String, String> domainInfo = cachedDomains.getOrDefault(project, Collections.emptyMap()).get(domainKey);
+                Map<String, String> domainInfo = getDomainInfo(project, domainKey);
                 if (domainInfo != null) {
                     String domainCaption = domainInfo.get(CAPTION_ATTRIBUTE);
                     String refControlType = domainInfo.get(REF_CONTROL_TYPE_ATTRIBUTE);
@@ -178,132 +157,56 @@ public class ParaTableDocumentationProvider implements DocumentationProvider {
         }
     }
 
-    public static PsiElement getItemKeyByElementKey(Project project, String elementKey)  {
-        populateDataElementCache(project);
-        populateDomainCache(project);
-        Map<String, String> dataElementInfo = cachedDataElements.getOrDefault(project, Collections.emptyMap()).get(elementKey);
-        if (dataElementInfo != null) {
-            String domainKey = dataElementInfo.get("DomainKey");
-            Map<String, String> domainInfo = cachedDomains.getOrDefault(project, Collections.emptyMap()).get(domainKey);
-            if (domainInfo != null) {
-                String itemKey1 = domainInfo.get("ItemKey");
-                if (itemKey1 != null && !itemKey1.isEmpty()) {
-                    return DataObjectIndex.findDataObjectDefinition(project, itemKey1);
-                }
+
+    private static Map<String, String> getDataElementInfo(Project project, String elementKey) {
+        XmlTag dataElementTag = DataElementIndex.findDEDefinition(project, elementKey);
+        if (dataElementTag != null) {
+            String key = dataElementTag.getAttributeValue(KEY_ATTRIBUTE);
+            if (key != null) {
+                Map<String, String> attributes = new HashMap<>();
+                attributes.put(KEY_ATTRIBUTE, key);
+                Optional.ofNullable(dataElementTag.getAttributeValue(CAPTION_ATTRIBUTE))
+                        .ifPresent(val -> attributes.put(CAPTION_ATTRIBUTE, val));
+                Optional.ofNullable(dataElementTag.getAttributeValue("DomainKey")) // Assuming DomainKey is also a key here
+                        .ifPresent(val -> attributes.put("DomainKey", val)); // Keep the specific DomainKey attribute if it's explicitly there
+                return attributes;
             }
         }
         return null;
     }
 
-
-    public static PsiElement getDataElementPsi(Project project, String elementKey)  {
-        populateDataElementCache(project);
-        populateDomainCache(project);
-        return cachedDataElementPsi.getOrDefault(project, Collections.emptyMap()).get(elementKey);
-    }
-
-    public static PsiElement getDomainPsi(Project project, String domainKey)  {
-        populateDataElementCache(project);
-        populateDomainCache(project);
-        return cachedDomainPsi.getOrDefault(project, Collections.emptyMap()).get(domainKey);
-    }
-
-
-    private static synchronized void populateDataElementCache(Project project) {
-        // Only populate if not already cached for this project
-        if (!cachedDataElements.containsKey(project)) {
-            Map<String, Map<String, String>> projectDataElements = new ConcurrentHashMap<>();
-            Map<String, PsiElement> projectDataElementPsis = new ConcurrentHashMap<>();
-            Collection<VirtualFile> xmlFiles = FileTypeIndex.getFiles(XmlFileType.INSTANCE, GlobalSearchScope.projectScope(project));
-
-            for (VirtualFile virtualFile : xmlFiles) {
-                // Check if the file is in the DataElement folder
-                if (virtualFile.getParent() != null && DATA_ELEMENT_FOLDER.equals(virtualFile.getParent().getName()) && virtualFile.getName().endsWith(".xml")) {
-                    PsiFile psiFile = PsiManager.getInstance(project).findFile(virtualFile);
-                    if (psiFile instanceof XmlFile) {
-                        XmlFile dataElementFile = (XmlFile) psiFile;
-                        XmlTag rootTag = dataElementFile.getRootTag();
-                        if (rootTag != null && DATA_ELEMENT_DEF_TAG.equals(rootTag.getName())) {
-                            XmlTag collectionTag = rootTag.findFirstSubTag(DATA_ELEMENT_COLLECTION_TAG);
-                            if (collectionTag != null) {
-                                for (XmlTag dataElementTag : collectionTag.findSubTags(DATA_ELEMENT_TAG)) {
-                                    String key = dataElementTag.getAttributeValue(KEY_ATTRIBUTE);
-                                    if (key != null) {
-                                        projectDataElementPsis.put(key, dataElementTag);
-                                        Map<String, String> attributes = new HashMap<>();
-                                        attributes.put(KEY_ATTRIBUTE, key);
-                                        Optional.ofNullable(dataElementTag.getAttributeValue(CAPTION_ATTRIBUTE))
-                                                .ifPresent(val -> attributes.put(CAPTION_ATTRIBUTE, val));
-                                        Optional.ofNullable(dataElementTag.getAttributeValue("DomainKey")) // Assuming DomainKey is also a key here
-                                                .ifPresent(val -> attributes.put("DomainKey", val)); // Keep the specific DomainKey attribute if it's explicitly there
-                                        projectDataElements.put(key, attributes);
-                                    }
-                                }
-                            }
-                        }
-                    }
+    private static Map<String, String> getDomainInfo(Project project, String domainKey) {
+        XmlTag domainTag = DomainIndex.findDomainDefinition(project, domainKey);
+        if (domainTag != null) {
+            String key = domainTag.getAttributeValue(KEY_ATTRIBUTE);
+            if (key != null) {
+                Map<String, String> attributes = new HashMap<>();
+                attributes.put(KEY_ATTRIBUTE, key);
+                Optional.ofNullable(domainTag.getAttributeValue(CAPTION_ATTRIBUTE))
+                        .ifPresent(val -> attributes.put(CAPTION_ATTRIBUTE, val));
+                Optional.ofNullable(domainTag.getAttributeValue(REF_CONTROL_TYPE_ATTRIBUTE))
+                        .ifPresent(val -> attributes.put(REF_CONTROL_TYPE_ATTRIBUTE, val));
+                Optional.ofNullable(domainTag.getAttributeValue(DATA_TYPE_ATTRIBUTE))
+                        .ifPresent(val -> attributes.put(DATA_TYPE_ATTRIBUTE, val));
+                Optional.ofNullable(domainTag.getAttributeValue("ItemKey"))
+                        .ifPresent(val -> attributes.put("ItemKey", val));
+                String comboBoxItemStr = "";
+                String groupKey = domainTag.getAttributeValue("GroupKey");
+                if (groupKey != null) {
+                    comboBoxItemStr = getParaGroupDoc(project, groupKey);
+                    attributes.put("groupKey", groupKey);
                 }
-            }
-            cachedDataElements.put(project, projectDataElements);
-            cachedDataElementPsi.put(project, projectDataElementPsis);
-        }
-    }
-
-    private static synchronized void populateDomainCache(Project project) {
-        // Only populate if not already cached for this project
-        if (!cachedDomains.containsKey(project)) {
-            Map<String, Map<String, String>> projectDomains = new ConcurrentHashMap<>();
-            Map<String, PsiElement> projectDomainPsis = new ConcurrentHashMap<>();
-            Collection<VirtualFile> xmlFiles = FileTypeIndex.getFiles(XmlFileType.INSTANCE, GlobalSearchScope.projectScope(project));
-
-            for (VirtualFile virtualFile : xmlFiles) {
-                // Check if the file is in the Domain folder
-                if (virtualFile.getParent() != null && DOMAIN_FOLDER.equals(virtualFile.getParent().getName()) && virtualFile.getName().endsWith(".xml")) {
-                    PsiFile psiFile = PsiManager.getInstance(project).findFile(virtualFile);
-                    if (psiFile instanceof XmlFile) {
-                        XmlFile domainFile = (XmlFile) psiFile;
-                        XmlTag rootTag = domainFile.getRootTag();
-                        if (rootTag != null && DOMAIN_DEF_TAG.equals(rootTag.getName())) {
-                            XmlTag collectionTag = rootTag.findFirstSubTag(DOMAIN_COLLECTION_TAG);
-                            if (collectionTag != null) {
-                                for (XmlTag domainTag : collectionTag.findSubTags(DOMAIN_TAG)) {
-                                    String key = domainTag.getAttributeValue(KEY_ATTRIBUTE);
-                                    if (key != null) {
-                                        projectDomainPsis.put(key, domainTag);
-                                        Map<String, String> attributes = new HashMap<>();
-                                        attributes.put(KEY_ATTRIBUTE, key);
-                                        Optional.ofNullable(domainTag.getAttributeValue(CAPTION_ATTRIBUTE))
-                                                .ifPresent(val -> attributes.put(CAPTION_ATTRIBUTE, val));
-                                        Optional.ofNullable(domainTag.getAttributeValue(REF_CONTROL_TYPE_ATTRIBUTE))
-                                                .ifPresent(val -> attributes.put(REF_CONTROL_TYPE_ATTRIBUTE, val));
-                                        Optional.ofNullable(domainTag.getAttributeValue(DATA_TYPE_ATTRIBUTE))
-                                                .ifPresent(val -> attributes.put(DATA_TYPE_ATTRIBUTE, val));
-                                        Optional.ofNullable(domainTag.getAttributeValue("ItemKey"))
-                                                .ifPresent(val -> attributes.put("ItemKey", val));
-                                        String comboBoxItemStr = "";
-                                        String groupKey = domainTag.getAttributeValue("GroupKey");
-                                        if (groupKey != null) {
-                                            comboBoxItemStr = getParaGroupDoc(project, groupKey);
-                                            attributes.put("groupKey", groupKey);
-                                        }
-                                        XmlTag[] subTags = domainTag.getSubTags();
-                                        if (subTags.length > 0) {
-                                            comboBoxItemStr = formatParaGroupDocumentation(domainTag);
-                                        }
-                                        if (comboBoxItemStr != null && comboBoxItemStr.length() > 0) {
-                                            attributes.put("comboBoxItem", comboBoxItemStr);
-                                        }
-                                        projectDomains.put(key, attributes);
-                                    }
-                                }
-                            }
-                        }
-                    }
+                XmlTag[] subTags = domainTag.getSubTags();
+                if (subTags.length > 0) {
+                    comboBoxItemStr = formatParaGroupDocumentation(domainTag);
                 }
+                if (comboBoxItemStr != null && comboBoxItemStr.length() > 0) {
+                    attributes.put("comboBoxItem", comboBoxItemStr);
+                }
+                return attributes;
             }
-            cachedDomains.put(project, projectDomains);
-            cachedDomainPsi.put(project, projectDomainPsis);
         }
+        return null;
     }
 
 

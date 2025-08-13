@@ -7,6 +7,7 @@ import com.intellij.psi.PsiReferenceBase;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.psi.xml.XmlTag;
 import example.doc.ParaTableDocumentationProvider;
+import example.index.DataElementIndex;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,7 +25,7 @@ public class DataElementReference extends PsiReferenceBase<XmlAttributeValue> {
     @Override
     public PsiElement resolve() {
         Project project = myElement.getProject();
-        PsiElement psi = ParaTableDocumentationProvider.getDataElementPsi(project, dataElementKey);
+        PsiElement psi = DataElementIndex.findDEDefinition(project, dataElementKey);
         if (psi == null) {
             return null;
         }
