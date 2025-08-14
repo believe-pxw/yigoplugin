@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public class MyLanguageLiveTemplateContext extends TemplateContextType {
 
     public MyLanguageLiveTemplateContext() {
-        super("MyLanguage", "MyLanguage");
+        super( "MyLanguage");
     }
 
     @Override

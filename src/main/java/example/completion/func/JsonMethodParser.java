@@ -2,12 +2,15 @@ package example.completion.func;
 
 import com.intellij.json.psi.JsonFile;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,9 +19,10 @@ public class JsonMethodParser {
     public static Map<String, MethodDetails> parseMethods(Project project) {
         // 这里放入之前 JsonFileReader 中解析 JSON 的逻辑
         // 示例：从 "frontFuns.json" 读取并解析
-        @NotNull PsiFile[] psiFiles = FilenameIndex.getFilesByName(project, "frontFuns.json", GlobalSearchScope.projectScope(project));
+        Collection<VirtualFile> virtualFiles = FilenameIndex.getVirtualFilesByName("frontFuns.json", GlobalSearchScope.projectScope(project));
 
-        for (PsiFile file : psiFiles) {
+        for (VirtualFile virtualFile: virtualFiles) {
+            PsiFile file = PsiManager.getInstance(project).findFile(virtualFile);
             if (file instanceof JsonFile) {
                 JsonFile jsonFile = (JsonFile) file;
                 // 这里是之前 processJsonFile 方法中的逻辑，需要适配为返回 MethodDetails 列表

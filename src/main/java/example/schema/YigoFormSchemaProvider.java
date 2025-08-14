@@ -1,7 +1,9 @@
 package example.schema;
 
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.xml.XmlFile;
@@ -12,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public class YigoFormSchemaProvider extends XmlSchemaProvider {
@@ -19,15 +22,14 @@ public class YigoFormSchemaProvider extends XmlSchemaProvider {
 
     @Override
     public @Nullable XmlFile getSchema(@NotNull @NonNls String s, com.intellij.openapi.module.@Nullable Module module, @NotNull PsiFile psiFile) {
-        if (psiFile instanceof XmlFile) {
+        if (psiFile instanceof XmlFile xmlFile) {
             final Project project = psiFile.getProject();
-            XmlFile xmlFile = (XmlFile) psiFile;
             XmlTag rootTag = xmlFile.getRootTag();
             if (rootTag != null) {
                 if (xsdFileRootTags.contains(rootTag.getName())) {
-                    @NotNull PsiFile[] filesByName = FilenameIndex.getFilesByName(project, rootTag.getName() + ".xsd", GlobalSearchScope.projectScope(project));
-                    if (filesByName != null) {
-                        return (XmlFile) filesByName[0];
+                    Collection<VirtualFile> virtualFiles = FilenameIndex.getVirtualFilesByName(rootTag.getName() + ".xsd", GlobalSearchScope.projectScope(project));
+                    if (!virtualFiles.isEmpty()) {
+                        return (XmlFile) PsiManager.getInstance(project).findFile(virtualFiles.iterator().next());
                     }
                 }
             }
