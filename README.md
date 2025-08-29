@@ -38,17 +38,3 @@ Plugin based on the [IntelliJ Platform Plugin Template][template].
 
 [template]: https://github.com/JetBrains/intellij-platform-plugin-template
 [docs:plugin-description]: https://plugins.jetbrains.com/docs/intellij/plugin-user-experience.html#plugin-description-and-presentation
-
-
-
-## 功能说明：
-
-1. 支持光标浮动到groupkey上自动显示关联的值
-
-![image-20250522154845331](./image/README/image-20250522154845331.png)
-
-2. CDATA中支持语法解析，高亮 字段，宏公式，java引用 <font color =red >还不完整</font>![image-20250522154955972](./image/README/image-20250522154955972.png)
-
-3. 支持公式中的字段，宏公式，java代码跳转![PixPin_2025-05-22_15-51-36](./image/README/PixPin_2025-05-22_15-51-36.gif)
-
-![PixPin_2025-05-22_15-53-46](./image/README/PixPin_2025-05-22_15-53-46.gif)
