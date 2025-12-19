@@ -19,7 +19,8 @@ import java.util.*
 class VariableReference(
     element: PsiElement, // Keep as PsiElement as it's the base for XmlAttributeValue
     textRangeInElement: TextRange,
-    private val variableName: String
+    private val variableName: String,
+    private val externalRootTag: XmlTag? = null
 ) : PsiReferenceBase<PsiElement>(element, textRangeInElement) {
 
     companion object {
@@ -30,7 +31,7 @@ class VariableReference(
                 "Button", "NumberEditor", "Label", "TextButton", "RadioButton", "PasswordEditor",
                 "Image", "WebBrowser", "RichEditor", "HyperLink", "Separator", "DropdownButton",
                 "Icon", "Custom", "BPMGraph", "Dynamic", "Carousel", "EditView", "Gantt", // Existing usage tags
-                "Variable", "VarDef", "GridCell" // Add common variable definition tag names if they are different
+                "Variable", "VarDef", "GridCell"
             )
         )
     }
@@ -42,13 +43,11 @@ class VariableReference(
      */
     override fun resolve(): PsiElement? {
         //Key属性直接返回自己
-        if (element is XmlAttributeValue && element.parent.firstChild.text == "Key") {
+        if (element is XmlAttributeValue && element.parent.firstChild.text == "Key" && externalRootTag == null) {
             return element
         }
-        val containingFile = element.containingFile as? XmlFile ?: return null
 
-        // 从整个XML文件的根标签开始递归查找变量定义
-        val rootTag = containingFile.document?.rootTag ?: return null
+        val rootTag = externalRootTag ?: (element.containingFile as? XmlFile)?.document?.rootTag ?: return null
         return findVariableDefinitionRecursive(rootTag, variableName)
     }
 

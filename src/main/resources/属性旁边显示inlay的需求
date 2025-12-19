@@ -1,0 +1,2 @@
+在我的xml中，有几种情况，我需要这几种情况都显示inlay提示：
+1.<DataBinding TableKey="EPM_MaintenanceOrderHead" ColumnKey="OrderTypeID"/> 在我domain中
