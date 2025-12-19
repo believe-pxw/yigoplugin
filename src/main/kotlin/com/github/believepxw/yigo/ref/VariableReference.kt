@@ -43,7 +43,7 @@ class VariableReference(
      */
     override fun resolve(): PsiElement? {
         //Key属性直接返回自己
-        if (element is XmlAttributeValue && element.parent.firstChild.text == "Key") {
+        if (element is XmlAttributeValue && element.parent.firstChild.text == "Key" && externalRootTag == null) {
             return element
         }
 

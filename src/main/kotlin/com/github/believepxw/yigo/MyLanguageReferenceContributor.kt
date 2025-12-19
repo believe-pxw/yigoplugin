@@ -326,6 +326,30 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                         return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
                                     }
                                 }
+                                if (tag.localName == "SourceField") {
+                                    if (tag.getAttribute("Definition") == null) {
+                                        val mapTag = findMapTag(element)
+                                        val srcFormKey = mapTag?.getAttributeValue("SrcFormKey")
+                                        if (srcFormKey != null) {
+                                            val formDef =
+                                                FormIndex.findFormDefinition(element.project, srcFormKey)
+                                            val formTag = formDef?.parent?.parent as? XmlTag
+                                            if (formTag != null) {
+                                                val references: MutableList<PsiReference?> =
+                                                    ArrayList<PsiReference?>()
+                                                references.add(
+                                                    VariableReference(
+                                                        element,
+                                                        TextRange(1, element.text.length - 1),
+                                                        element.value,
+                                                        formTag
+                                                    )
+                                                )
+                                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                                            }
+                                        }
+                                    }
+                                }
                             } else if (attrKey == "ObjectKey") {
                                 var tag = element.parent.parent as XmlTag
                                 if (tag.localName == "EmbedTable") {
