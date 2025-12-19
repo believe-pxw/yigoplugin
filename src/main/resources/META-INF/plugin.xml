@@ -57,6 +57,7 @@
 
         <lang.formatter language="MyLanguage" implementationClass="example.formatting.MyLanguageFormattingModelBuilder"/>
         <codeInsight.inlayProvider language="XML" implementationClass="com.github.believepxw.yigo.inlay.LabelTypeInlayProvider"/>
+        <codeInsight.inlayProvider language="XML" implementationClass="com.github.believepxw.yigo.inlay.YigoInlayProvider"/>
     </extensions>
     <applicationListeners>
     </applicationListeners>
