@@ -37,6 +37,12 @@ class MyLanguageXmlInjector : MultiHostInjector {
                                 if (attributeValue == null || attributeValue == "Sql") {
                                     return
                                 }
+                            } else if (tag.localName == "SourceField") {
+                                val condition = tag.getAttributeValue("Condition")
+                                val type = tag.getAttributeValue("Type")
+                                if (type != "Formula" && condition == null) {
+                                    return
+                                }
                             }
                         }
                         registrar
@@ -67,7 +73,13 @@ class MyLanguageXmlInjector : MultiHostInjector {
                     "GroupBy",
                     "OrderBy",
                     "FormulaCaption",
-                    "Formula"
+                    "OrderBy",
+                    "FormulaCaption",
+                    "Formula",
+                    "RemainderPushValue",
+                    "MaxCurPushValue",
+                    "AllowSurplus",
+                    "Condition"
                 )
             ) {
                 registrar
@@ -79,6 +91,22 @@ class MyLanguageXmlInjector : MultiHostInjector {
                         TextRange.from(0, context.getTextLength())
                     )
                     .doneInjecting()
+            } else if (attrKey == "Definition") {
+                val tag = (context as XmlAttributeValue).parent.parent as XmlTag
+                if (tag.localName == "SourceField") {
+                    val type = tag.getAttributeValue("Type")
+                    if (type == "Formula") {
+                         registrar
+                            .startInjecting(MyLanguage.INSTANCE)
+                            .addPlace(
+                                null,
+                                null,
+                                context as PsiLanguageInjectionHost,
+                                TextRange.from(0, context.getTextLength())
+                            )
+                            .doneInjecting()
+                    }
+                }
             }
         }
     }
