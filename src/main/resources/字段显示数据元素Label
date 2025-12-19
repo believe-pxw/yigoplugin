@@ -1,0 +1,20 @@
+在PM_MaintenanceOrder.xml中，
+有这样的头控件 可以参考VariableReference中的variableDefinitionTagNames，GridCell除外
+<Dict Key="OrderTypeID" Caption="订单类型" LabelType="M" X="1" Y="0" Visible="true" Enable="false" ItemKey="PM_OrderType">
+                                <DataBinding TableKey="EPM_MaintenanceOrderHead" ColumnKey="OrderTypeID"/>
+                            </Dict>
+OrderTypeID字段中的DataBinding可以通过tablekey和columnkey 找到Column为OrderTypeID的字段，这个字段上有个“<Column Key="OrderTypeID" Caption="订单类型" CodeColumnKey="OrderTypeCode" DataElementKey="PM_OrderTypeID"/>” DataElementKey 属性，对应在的xml内容是这样“<DataElement Key="PM_OrderTypeID" Caption="维护订单类型" DomainKey="PM_OrderType" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="订单类型" TextEn="Order Type"/>
+                <FieldLabel Key="Medium" Length="15" Text="订单类型" TextEn="Order Type"/>
+                <FieldLabel Key="Long" Length="20" Text="订单类型" TextEn="Order Type"/>
+                <FieldLabel Key="Header" Length="4" Text="类型" TextEn="Type"/>
+            </FieldLabelCollection>
+        </DataElement>”
+
+我现在的需求是 插件能够支持在 LabelType="M" 这个属性的右边通过inlay的方式显示数据元素的Label，其中S表示取Key为Short的FieldLabel，M表示取Key为Medium的FieldLabel，L表示取Key为Long的FieldLabel，H表示取Key为Header的FieldLabel，取Text属性就行
+
+在<GridColumn Key="RO_ControlCodeID" Caption="控制码" LabelType="M" Width="80px" Sortable="true"/> 元素中也存在LabelType属性，也同样要用inlay的方式显示，当然，这种获取数据元素的方式有点不一样，需要先通过Key找到<GridCell Key="RO_ControlCodeID" Caption="控制码" CellType="Dict" ItemKey="PP_ControlCode">
+                                                <DataBinding ColumnKey="ControlCodeID">。然后通过columnKey获取数据元素
+以上这些获取column，cell，dataelement元素应该在我的代码中都有index,你可以自己找一下实现。
+好了，我的需求就是这些，你先列个计划给我看看

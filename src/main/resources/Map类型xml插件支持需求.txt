@@ -1,0 +1,5 @@
+我的项目是一个Idea plugin,主要是解析xml中的一些引用关系与表达式，现在我想在这个基础上增加对<Map></Map>这种xml的解析，比如PM_MaintenanceOrder2MM_MSEG261文件，这个文件中有表达式 比如RemainderPushValue属性，对于表达式的解析我的代码中已有实现，你只需要inject 到MyLanguage语言到xml中就行，参考com.github.believepxw.yigo.MyLanguageXmlInjector类。
+另外还有对字段的引用，比如<SourceField Key="4" Definition="BO_RequirementQuantity" TargetFieldKey="BaseQuantity" EdgeType="QUANTITYFOCUS_BASEQUANTITY" Type="Formula" Condition="Macro_JudgeMoveType(GetPara('HeadMoveTypeID'), '261', 1)"/>
+当Type="Formula"时，需要解析Definition中的表达式，TargetFieldKey需要解析TargetFieldKey中的字段引用（可以参考MyLanguageReferenceContributor类），是先通过寻找Map元素中的SrcFormKey="PM_MaintenanceOrder"或TgtFormKey="MM_MSEG"，如果的Definition就是对应SrcFormKey中的字段，那么TargetFieldKey就是对应TgtFormKey中的字段，这一点在我的代码实现中有实现。
+我的需求是让我这个检查能注入MyLaguage语言到xml中以及构建xml字段关系引用
+你现在先制定好分析以及制定需求分析与任务，不要写代码，我如果有描述得不清楚的地方，你指出来。
