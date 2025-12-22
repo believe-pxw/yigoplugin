@@ -7,9 +7,11 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiPolyVariantReference;
 import com.intellij.psi.PsiReferenceBase;
 import com.intellij.psi.ResolveResult;
+import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.IncorrectOperationException;
+import example.index.FormIndex;
 import example.index.MacroNameIndex;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,7 +20,7 @@ public class MacroReference extends PsiReferenceBase<PsiElement> implements PsiP
 
     private final String macroName;
 
-    public MacroReference(@NotNull PsiElement element,TextRange textRange, String macroName) {
+    public MacroReference(@NotNull PsiElement element, TextRange textRange, String macroName) {
         super(element, textRange);
         this.macroName = macroName;
     }
@@ -29,12 +31,29 @@ public class MacroReference extends PsiReferenceBase<PsiElement> implements PsiP
         PsiFile containingFile = myElement.getContainingFile();
 
         if (containingFile instanceof XmlFile) { // 确保是XML文件
+            XmlTag rootTag = ((XmlFile) containingFile).getRootTag();
+            if (rootTag != null && rootTag.getName().equals("Map")) {
+                XmlTag postProcess = (XmlTag) myElement.getParent().getParent().getParent();
+                if (postProcess.getName().equals("PostProcess")) {
+                    String tgt = rootTag.getAttributeValue("TgtFormKey");
+                    XmlAttributeValue formDefinition = FormIndex.findFormDefinition(myElement.getProject(), tgt);
+                    if (formDefinition != null) {
+                        containingFile = formDefinition.getContainingFile();
+                    }
+                } else {
+                    String srcFormKey = rootTag.getAttributeValue("SrcFormKey");
+                    XmlAttributeValue formDefinition = FormIndex.findFormDefinition(myElement.getProject(), srcFormKey);
+                    if (formDefinition != null) {
+                        containingFile = formDefinition.getContainingFile();
+                    }
+                }
+            }
             XmlFile currentXmlFile = (XmlFile) containingFile;
             // 在当前XML文件中查找宏定义
             PsiElement macroTag = findMacroTagInFile(currentXmlFile, macroName);
             if (macroTag != null) {
                 return new ResolveResult[]{new PsiElementResolveResult(macroTag)};
-            }else{
+            } else {
                 XmlTag macroDefinition = MacroNameIndex.findMacroDefinition(myElement.getProject(), macroName);
                 if (macroDefinition != null) {
                     return new ResolveResult[]{new PsiElementResolveResult(macroDefinition)};

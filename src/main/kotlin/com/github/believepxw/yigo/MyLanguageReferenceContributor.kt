@@ -414,7 +414,8 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                             if (elementType == MyLanguageTypes.MACRO_IDENTIFIER) {
                                 references.add(MacroReference(element, rangeInInjectedFragment, referencedName))
                             } else if (elementType == MyLanguageTypes.VARIABLE_REFERENCE) {
-                                references.add(VariableReference(element, rangeInInjectedFragment, referencedName))
+                                var formTag: XmlTag? = getExternalFile(element)
+                                references.add(VariableReference(element, rangeInInjectedFragment, referencedName, formTag))
                             } else if (elementType == MyLanguageTypes.JAVA_PATH_IDENTIFIER) {
                                 references.add(JavaMethodReference(element, rangeInInjectedFragment, referencedName))
                             } else if (elementType == MyLanguageTypes.IDENTIFIER) {
@@ -449,6 +450,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                                     )
                                                 )
                                             } else if (funcName.text == "SetValue" || funcName.text == "GetValue" || funcName.text == "Sum") {
+                                                var formTag: XmlTag? = getExternalFile(element)
                                                 references.add(
                                                     VariableReference(
                                                         element,
@@ -456,7 +458,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                                             rangeInInjectedFragment.startOffset + 1,
                                                             rangeInInjectedFragment.endOffset - 1
                                                         ),
-                                                        referencedName.substring(1, referencedName.length - 1)
+                                                        referencedName.substring(1, referencedName.length - 1), formTag
                                                     )
                                                 )
                                             } else if (funcName.text == "GetDictValue") {
@@ -502,5 +504,29 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
             current = current.parent
         }
         return null
+    }
+
+    fun getExternalFile(element: PsiElement): XmlTag? {
+        // 确保是XML文件
+        val xmlFile = element.containingFile as com.intellij.psi.xml.XmlFile
+        var formTag: XmlTag? = null
+        if (xmlFile.rootTag != null && xmlFile.rootTag?.localName == "Map") {
+            var mapTag: XmlTag? = findMapTag(element)
+            val postProcess = element.getParent().getParent().getParent() as XmlTag
+            if ((postProcess.getName() == "PostProcess")) {
+                val tgtFormKey = mapTag?.getAttributeValue("TgtFormKey")
+                if (tgtFormKey != null) {
+                    val formDef = FormIndex.findFormDefinition(element.project, tgtFormKey)
+                    formTag = formDef?.parent?.parent as? XmlTag
+                }
+            } else {
+                val srcFormKey = mapTag?.getAttributeValue("SrcFormKey")
+                if (srcFormKey != null) {
+                    val formDef = FormIndex.findFormDefinition(element.project, srcFormKey)
+                    formTag = formDef?.parent?.parent as? XmlTag
+                }
+            }
+        }
+        return formTag
     }
 }
