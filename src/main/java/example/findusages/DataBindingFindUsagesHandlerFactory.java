@@ -21,9 +21,12 @@ public class DataBindingFindUsagesHandlerFactory extends FindUsagesHandlerFactor
     }
 
     private boolean isDataBindingColumnKey(PsiElement element) {
-        XmlTag tag =(XmlTag) element.getParent().getParent();
-        if (tag.getName().equals("Column")) {
-            return true;
+        PsiElement parent = element.getParent().getParent();
+        if (parent instanceof XmlTag) {
+            XmlTag tag =(XmlTag) parent;
+            if (tag.getName().equals("Column")) {
+                return true;
+            }
         }
         return false;
     }

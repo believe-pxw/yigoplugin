@@ -22,7 +22,8 @@ class MyLanguageXmlInjector : MultiHostInjector {
         if (context.containingFile.virtualFile == null) {
             return
         }
-        if (context.containingFile.virtualFile.path.contains("/initializeData/")) {
+        var path = context.containingFile.virtualFile.path
+        if (path.contains("/initializeData/") || path.contains("/预定义数据/")) {
             return
         }
         if (context is XmlText) {
