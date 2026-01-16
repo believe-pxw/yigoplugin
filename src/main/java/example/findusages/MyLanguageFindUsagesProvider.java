@@ -1,11 +1,13 @@
 package example.findusages;
 
-import com.intellij.lang.cacheBuilder.DefaultWordsScanner;
-import com.intellij.lang.cacheBuilder.WordsScanner;
 import com.intellij.lang.findUsages.FindUsagesProvider;
+import com.intellij.lang.cacheBuilder.DefaultWordsScanner;
+import com.intellij.lang.cacheBuilder.WordOccurrence;
+import com.intellij.lang.cacheBuilder.WordsScanner;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.tree.TokenSet;
+import com.intellij.util.Processor;
 import example.MyLanguageLexerAdapter;
 import example.psi.MyLanguageTypes;
 import org.jetbrains.annotations.NotNull;
@@ -15,12 +17,25 @@ public class MyLanguageFindUsagesProvider implements FindUsagesProvider {
 
     // 定义哪些 token 是标识符、注释和字符串字面量，用于构建词语索引
     private static final TokenSet IDENTIFIERS = TokenSet.create(MyLanguageTypes.IDENTIFIER, MyLanguageTypes.MACRO_IDENTIFIER, MyLanguageTypes.JAVA_PATH_IDENTIFIER);
-    private static final TokenSet COMMENTS = TokenSet.EMPTY; // 你的语法中没有明确的注释，如果需要可以添加
+    private static final TokenSet COMMENTS = TokenSet.EMPTY; // 你的语法中没有明确的注释，如果需要添加可以添加
     private static final TokenSet LITERALS = TokenSet.create(MyLanguageTypes.SINGLE_QUOTED_STRING, MyLanguageTypes.DOUBLE_QUOTED_STRING, MyLanguageTypes.NUMBER);
 
     @Override
     public @Nullable WordsScanner getWordsScanner() {
-        return new DefaultWordsScanner(new MyLanguageLexerAdapter(), IDENTIFIERS, COMMENTS, LITERALS);
+        return new DefaultWordsScanner(new MyLanguageLexerAdapter(), IDENTIFIERS, COMMENTS, LITERALS) {
+            @Override
+            public void processWords(@NotNull CharSequence fileText, @NotNull Processor<? super WordOccurrence> processor) {
+                super.processWords(fileText, occurrence -> {
+                    String word = fileText.subSequence(occurrence.getStart(), occurrence.getEnd()).toString();
+                    if (word.contains(".")) {
+                        int lastDot = word.lastIndexOf('.');
+                        WordOccurrence methodOccurrence = new WordOccurrence(fileText, occurrence.getStart() + lastDot + 1, occurrence.getEnd(), WordOccurrence.Kind.CODE);
+                        processor.process(methodOccurrence);
+                    }
+                    return processor.process(occurrence);
+                });
+            }
+        };
     }
 
     // 判断给定 PSI 元素是否支持查找用法

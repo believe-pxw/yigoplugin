@@ -38,6 +38,19 @@ class JavaMethodReference(
         }
     }
 
+    override fun handleElementRename(newElementName: String): PsiElement {
+        return myElement
+    }
+
+    override fun getVariants(): Array<Any> {
+        return emptyArray()
+    }
+
+    override fun isReferenceTo(element: PsiElement): Boolean {
+        val resolved = resolve()
+        return element.manager.areElementsEquivalent(resolved, element)
+    }
+
     override fun isSoft(): Boolean {
         return true
     }
