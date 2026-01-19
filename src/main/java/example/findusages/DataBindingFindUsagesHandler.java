@@ -112,6 +112,11 @@ public class DataBindingFindUsagesHandler extends FindUsagesHandler {
             GlobalSearchScope globalSearchScope = GlobalSearchScope.notScope(GlobalSearchScope.moduleScope(moduleByName));
             options.searchScope = options.searchScope.intersectWith(globalSearchScope);
         }
+        moduleByName = moduleManager.findModuleByName("erp-entity-business");
+        if (moduleByName != null) {
+            GlobalSearchScope globalSearchScope = GlobalSearchScope.notScope(GlobalSearchScope.moduleScope(moduleByName));
+            options.searchScope = options.searchScope.intersectWith(globalSearchScope);
+        }
         return super.processElementUsages(element, processor, options);
     }
 }
