@@ -58,6 +58,7 @@
         <lang.formatter language="MyLanguage" implementationClass="example.formatting.MyLanguageFormattingModelBuilder"/>
         <codeInsight.inlayProvider language="XML" implementationClass="com.github.believepxw.yigo.inlay.LabelTypeInlayProvider"/>
         <codeInsight.inlayProvider language="XML" implementationClass="com.github.believepxw.yigo.inlay.YigoInlayProvider"/>
+        <codeInsight.lineMarkerProvider language="XML" implementationClass="com.github.believepxw.yigo.linemarker.DataBindingColumnLineMarkerProvider"/>
     </extensions>
     <applicationListeners>
     </applicationListeners>

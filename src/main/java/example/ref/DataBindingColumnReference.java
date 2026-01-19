@@ -24,6 +24,10 @@ public class DataBindingColumnReference extends PsiReferenceBase<PsiElement> {
         this.isDefinition = isDefinition;
     }
 
+    public boolean isDefinition() {
+        return isDefinition;
+    }
+
     @Override
     public @Nullable PsiElement resolve() {
         if (isDefinition) {
@@ -112,6 +116,9 @@ public class DataBindingColumnReference extends PsiReferenceBase<PsiElement> {
         XmlTag dataObjectTag;
         if (refKey != null) {
             XmlAttributeValue dataObjectDefinition = DataObjectIndex.findDataObjectDefinition(startElement.getProject(), refKey);
+            if (dataObjectDefinition == null) {
+                return null;
+            }
             dataObjectTag = (XmlTag) dataObjectDefinition.getParent().getParent();
         } else {
             dataObjectTag = findChildTagByName(dataSourceTag, "DataObject");
