@@ -12,6 +12,7 @@ import com.intellij.psi.PsiLiteralExpression;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
+import com.intellij.psi.search.SearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.psi.xml.XmlTag;
@@ -20,6 +21,7 @@ import com.intellij.util.Processor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -104,6 +106,36 @@ public class DataBindingFindUsagesHandler extends FindUsagesHandler {
         return elements.toArray(new PsiElement[0]);
     }
 
+    List<String> modules = new ArrayList<>(Arrays.asList("erp-entity-biz-appconfig",
+            "erp-entity-biz-archiveconfig",
+            "erp-entity-biz-authorityconfig",
+            "erp-entity-biz-basisconfig",
+            "erp-entity-biz-bcconfig",
+            "erp-entity-biz-bk_basic",
+            "erp-entity-biz-bokedee_management_config",
+            "erp-entity-biz-cmconfig",
+            "erp-entity-biz-coconfig",
+            "erp-entity-biz-common",
+            "erp-entity-biz-copaconfig",
+            "erp-entity-biz-dmconfig",
+            "erp-entity-biz-ficonfig",
+            "erp-entity-biz-fmconfig",
+            "erp-entity-biz-hrconfig",
+            "erp-entity-biz-imconfig",
+            "erp-entity-biz-internal_sds",
+            "erp-entity-biz-mmconfig",
+            "erp-entity-biz-pmconfig",
+            "erp-entity-biz-ppconfig",
+            "erp-entity-biz-psconfig",
+            "erp-entity-biz-qmconfig",
+            "erp-entity-biz-sdconfig",
+            "erp-entity-biz-solutions",
+            "erp-entity-biz-srmconfig",
+            "erp-entity-biz-tcmconfig",
+            "erp-entity-biz-tmconfig",
+            "erp-entity-biz-wmsconfig"
+            ));
+
     @Override
     public boolean processElementUsages(@NotNull PsiElement element, @NotNull Processor<? super UsageInfo> processor, @NotNull FindUsagesOptions options) {
         ModuleManager moduleManager = ModuleManager.getInstance(element.getProject());
@@ -114,8 +146,15 @@ public class DataBindingFindUsagesHandler extends FindUsagesHandler {
         }
         moduleByName = moduleManager.findModuleByName("erp-entity-business");
         if (moduleByName != null) {
-            GlobalSearchScope globalSearchScope = GlobalSearchScope.notScope(GlobalSearchScope.moduleScope(moduleByName));
-            options.searchScope = options.searchScope.intersectWith(globalSearchScope);
+            SearchScope searchScope = options.searchScope;
+            for (String module : modules) {
+                Module moduleByName1 = moduleManager.findModuleByName(module);
+                if (moduleByName1 != null) {
+                    GlobalSearchScope moduleScope = GlobalSearchScope.notScope(GlobalSearchScope.moduleScope(moduleByName1));
+                    searchScope = searchScope.intersectWith(moduleScope);
+                }
+            }
+            options.searchScope = searchScope;
         }
         return super.processElementUsages(element, processor, options);
     }

@@ -1,10 +1,16 @@
 package com.github.believepxw.yigo.linemarker
 
+import com.intellij.codeInsight.daemon.GutterIconNavigationHandler
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerInfo
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerProvider
-import com.intellij.codeInsight.navigation.NavigationGutterIconBuilder
+import com.intellij.codeInsight.daemon.impl.PsiElementListNavigator
+import com.intellij.codeInsight.hint.HintManager
 import com.intellij.icons.AllIcons
+import com.intellij.ide.highlighter.XmlFileType
+import com.intellij.ide.util.DefaultPsiElementCellRenderer
+import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.psi.PsiElement
+import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.searches.ReferencesSearch
 import com.intellij.psi.xml.XmlTag
 import example.ref.DataBindingColumnReference
@@ -50,13 +56,40 @@ class DataBindingColumnLineMarkerProvider : RelatedItemLineMarkerProvider() {
         
         val valueElement = keyAttr.valueElement ?: return
         
-        val builder = NavigationGutterIconBuilder.create(AllIcons.Gutter.ImplementedMethod)
-            .setTargets(com.intellij.openapi.util.NotNullLazyValue.createValue {
-                val references = ReferencesSearch.search(valueElement).findAll()
-                references.filter { it is DataBindingColumnReference && !it.isDefinition }.map { it.element }
-            })
-            .setTooltipText("Navigate to DataBinding Usage")
-            
-        result.add(builder.createLineMarkerInfo(element.firstChild))
+        val navigationHandler = GutterIconNavigationHandler<PsiElement> { e, elt ->
+            val scope = GlobalSearchScope.getScopeRestrictedByFileTypes(
+                GlobalSearchScope.projectScope(elt.project),
+                XmlFileType.INSTANCE
+            )
+            val references = ReferencesSearch.search(valueElement, scope).findAll()
+            val targets = references.filter { it is DataBindingColumnReference && !it.isDefinition }
+                .map { it.element }
+                .filterIsInstance<com.intellij.psi.NavigatablePsiElement>()
+
+            if (targets.isEmpty()) {
+                val editor = FileEditorManager.getInstance(elt.project).selectedTextEditor
+                if (editor != null) {
+                    HintManager.getInstance().showInformationHint(editor, "No DataBinding usages found")
+                }
+            } else {
+                PsiElementListNavigator.openTargets(
+                    e,
+                    targets.toTypedArray(),
+                    "DataBinding Usages",
+                    null,
+                    DefaultPsiElementCellRenderer()
+                )
+            }
+        }
+
+        result.add(RelatedItemLineMarkerInfo(
+            element.firstChild,
+            element.firstChild.textRange,
+            AllIcons.Gutter.ImplementedMethod,
+            { "Navigate to DataBinding Usage" },
+            navigationHandler,
+            com.intellij.openapi.editor.markup.GutterIconRenderer.Alignment.RIGHT,
+            { emptyList() }
+        ))
     }
 }
