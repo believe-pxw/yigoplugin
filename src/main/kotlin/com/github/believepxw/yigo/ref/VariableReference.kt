@@ -31,7 +31,7 @@ class VariableReference(
                 "Button", "NumberEditor", "Label", "TextButton", "RadioButton", "PasswordEditor",
                 "Image", "WebBrowser", "RichEditor", "HyperLink", "Separator", "DropdownButton",
                 "Icon", "Custom", "BPMGraph", "Dynamic", "Carousel", "EditView", "Gantt", // Existing usage tags
-                "Variable", "VarDef", "GridCell", "GridColumn"
+                "Variable", "VarDef", "GridCell"
             )
         )
     }

@@ -22,9 +22,11 @@ public class FieldFindUsagesHandlerFactory extends FindUsagesHandlerFactory {
     }
 
     private boolean isFieldKey(PsiElement element) {
-        XmlTag tag =(XmlTag) element.getParent().getParent();
-        if (VariableReference.Companion.getVariableDefinitionTagNames().contains(tag.getName())) {
-            return true;
+        PsiElement parent = element.getParent().getParent();
+        if(parent instanceof XmlTag tag) {
+            if (VariableReference.Companion.getVariableDefinitionTagNames().contains(tag.getName())) {
+                return true;
+            }
         }
         return false;
     }
