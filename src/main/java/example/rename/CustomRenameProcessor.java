@@ -9,20 +9,19 @@ import com.intellij.psi.PsiLiteralExpression;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.refactoring.listeners.RefactoringElementListener;
+import com.intellij.refactoring.rename.RenameProcessor;
 import com.intellij.refactoring.rename.RenamePsiElementProcessor;
-import com.intellij.refactoring.rename.RenameUtil;
 import com.intellij.usageView.UsageInfo;
 import com.intellij.util.IncorrectOperationException;
 import example.findusages.DataBindingFindUsagesHandler;
 import example.findusages.FieldFindUsagesHandler;
+import example.findusages.TableFindUsagesHandler;
 import example.ref.DataBindingColumnReference;
+import example.ref.TableReference;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class DataBindingColumnRenameProcessor extends RenamePsiElementProcessor {
+public class CustomRenameProcessor extends RenamePsiElementProcessor {
 
     @Override
     public boolean canProcessElement(@NotNull PsiElement element) {
@@ -33,7 +32,7 @@ public class DataBindingColumnRenameProcessor extends RenamePsiElementProcessor 
             // 最简单的方法是检查它的引用是否是 DataBindingColumnReference 并且是定义
             // 但是，对于重命名操作，通常是从定义处发起。
             // 简单起见，我们假设任何作为 DataBindingColumnReference 定义的 XmlAttributeValue 都可以被处理。
-            return element.getReference() instanceof DataBindingColumnReference || element.getReference() instanceof VariableReference;
+            return element.getReference() instanceof DataBindingColumnReference || element.getReference() instanceof VariableReference || element.getReference() instanceof TableReference;
         }
         return false;
     }
@@ -56,6 +55,8 @@ public class DataBindingColumnRenameProcessor extends RenamePsiElementProcessor 
         PsiElement[] psiElements;
         if (reference instanceof DataBindingColumnReference) {
             psiElements = DataBindingFindUsagesHandler.getPsiElements((XmlAttributeValue) element, true);
+        } else if (reference instanceof TableReference) {
+            psiElements = TableFindUsagesHandler.getPsiElements((XmlAttributeValue) element, true);
         } else {
             psiElements = FieldFindUsagesHandler.getPsiElements((XmlAttributeValue) element, true);
         }
@@ -91,9 +92,10 @@ public class DataBindingColumnRenameProcessor extends RenamePsiElementProcessor 
                         tmpNewName = newName;
                     }
                 }
-                Map<? extends PsiElement, String> allRenames = new HashMap<>();
-                UsageInfo[] usages = RenameUtil.findUsages(psiElement, tmpNewName, false, false, allRenames);
-                RenameUtil.doRename(psiElement, tmpNewName, usages, element.getProject(), null);
+                new RenameProcessor(element.getProject(), psiElement, tmpNewName, false, false).run();
+                //Map<? extends PsiElement, String> allRenames = new HashMap<>();
+                //UsageInfo[] usages = RenameUtil.findUsages(psiElement, tmpNewName, false, false, allRenames);
+                //RenameUtil.doRename(psiElement, tmpNewName, usages, element.getProject(), null);
             }
         }
     }

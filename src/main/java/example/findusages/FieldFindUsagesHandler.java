@@ -104,12 +104,7 @@ public class FieldFindUsagesHandler extends FindUsagesHandler {
 
     @Override
     public boolean processElementUsages(@NotNull PsiElement element, @NotNull Processor<? super UsageInfo> processor, @NotNull FindUsagesOptions options) {
-        ModuleManager moduleManager = ModuleManager.getInstance(element.getProject());
-        Module moduleByName = moduleManager.findModuleByName("erp-entity-core");
-        if (moduleByName != null) {
-            GlobalSearchScope globalSearchScope = GlobalSearchScope.notScope(GlobalSearchScope.moduleScope(moduleByName));
-            options.searchScope = options.searchScope.intersectWith(globalSearchScope);
-        }
+        ExcludeModuleUtil.enhanceFindUsagesOptions(element, options);
         return super.processElementUsages(element, processor, options);
     }
 }

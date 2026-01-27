@@ -176,6 +176,16 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
                                 references.add(DomainReference(element, TextRange(0 + 1, element.text.length - 1)))
                                 return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                            } else if (attrKey == "TableKey") {
+                                val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
+                                references.add(
+                                    TableReference(
+                                        element,
+                                        TextRange(0 + 1, element.text.length - 1),
+                                        false
+                                    )
+                                )
+                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
                             } else if (attrKey == "RefObjectKey") {
                                 val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
                                 references.add(
@@ -310,6 +320,17 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                         DataBindingColumnReference(
                                             element,
                                             TextRange(0 + 1, element.text.length - 1), true
+                                        )
+                                    )
+                                    return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+                                }
+                                if (tag.localName == "Table") {
+                                    val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
+                                    references.add(
+                                        TableReference(
+                                            element,
+                                            TextRange(0 + 1, element.text.length - 1),
+                                            true
                                         )
                                     )
                                     return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)

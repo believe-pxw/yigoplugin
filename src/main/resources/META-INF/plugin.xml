@@ -18,8 +18,9 @@
         <fileBasedIndex implementation="example.index.DataElementIndex"/>
         <fileBasedIndex implementation="example.index.DomainIndex"/>
         <findUsagesHandlerFactory implementation="example.findusages.DataBindingFindUsagesHandlerFactory"/>
+        <findUsagesHandlerFactory implementation="example.findusages.TableFindUsagesHandlerFactory"/>
         <findUsagesHandlerFactory implementation="example.findusages.FieldFindUsagesHandlerFactory"/>
-        <renamePsiElementProcessor implementation="example.rename.DataBindingColumnRenameProcessor"/>
+        <renamePsiElementProcessor implementation="example.rename.CustomRenameProcessor"/>
 
 
         <xml.schemaProvider
