@@ -46,11 +46,6 @@ class VariableReference(
         
         // 如果是 Key 属性本身发起的跳转
         if (element is XmlAttributeValue && element.parent.firstChild.text == "Key" && externalRootTag == null) {
-            val currentTag = element.parent.parent as? XmlTag ?: return null
-            if (currentTag.localName == "GridCell") {
-                // 如果是 GridCell，跳转到对应的 GridColumn
-                return findTagByKeyRecursive(rootTag, "GridColumn", variableName)
-            }
             // 其他标签的 Key 属性，默认返回自己（或者根据需要实现其他跳转）
             return element
         }
@@ -58,16 +53,6 @@ class VariableReference(
         return findVariableDefinitionRecursive(rootTag, variableName)
     }
 
-    private fun findTagByKeyRecursive(currentTag: XmlTag, tagName: String, key: String): PsiElement? {
-        if (currentTag.localName == tagName && currentTag.getAttributeValue("Key") == key) {
-            return currentTag.getAttribute("Key")?.lastChild
-        }
-        for (subTag in currentTag.subTags) {
-            val found = findTagByKeyRecursive(subTag, tagName, key)
-            if (found != null) return found
-        }
-        return null
-    }
 
     /**
      * 递归查找变量定义。

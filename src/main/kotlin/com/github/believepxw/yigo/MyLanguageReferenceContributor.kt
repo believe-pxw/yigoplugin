@@ -23,7 +23,6 @@ import example.ref.DomainDefinitionReference
 import example.ref.DomainReference
 import example.ref.FormDefinitionReference
 import example.ref.FormReference
-import example.ref.GridColumnReference
 import example.ref.MacroReference
 import example.ref.OperationRefKeyReference
 import example.ref.ParaGroupDefinitionReference
@@ -166,7 +165,6 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                          "Domain" -> references.add(DomainDefinitionReference(element, range, value))
                          "ParaGroup" -> references.add(ParaGroupDefinitionReference(element, range, value))
                          "Column" -> references.add(DataBindingColumnReference(element, range, true))
-                         "GridColumn" -> references.add(GridColumnReference(element, range, value))
                          "Table" -> references.add(TableReference(element, range, true))
                          "Operation" -> {
                              if (tag.containingFile.name == "CommonDef.xml") {
