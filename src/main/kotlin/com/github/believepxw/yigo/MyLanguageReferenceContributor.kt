@@ -256,19 +256,16 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                             val firstExpression = injectedElement.parent.parent
                             if (argumentList.firstChild == firstExpression) {
                                 val name = funcName.text
-                                val content = referencedName.substring(1, referencedName.length - 1)
-                                val contentRange = TextRange(rangeInInjectedFragment.startOffset + 1, rangeInInjectedFragment.endOffset - 1)
-                                
                                 when (name) {
                                     "ERPShowModal", "Open", "OpenDict", "New" -> {
-                                        references.add(FormReference(element, contentRange, content))
+                                        references.add(FormReference(element, rangeRemoveQuotation(rangeInInjectedFragment), removeQuotation(referencedName)))
                                     }
                                     "SetValue", "GetValue", "Sum" -> {
                                         val formTag = getExternalFile(element)
-                                        references.add(VariableReference(element, contentRange, content, formTag))
+                                        references.add(VariableReference(element, rangeRemoveQuotation(rangeInInjectedFragment), removeQuotation(referencedName), formTag))
                                     }
                                     "GetDictValue" -> {
-                                        references.add(DataObjectReference(element, contentRange, content))
+                                        references.add(DataObjectReference(element, rangeRemoveQuotation(rangeInInjectedFragment), removeQuotation(referencedName)))
                                     }
                                 }
                             }
@@ -279,6 +276,14 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
             }
         }
         return references
+    }
+
+    private fun removeQuotation(referencedName: String): String {
+        return referencedName.substring(1, referencedName.length - 1)
+    }
+
+    private fun rangeRemoveQuotation(rangeInInjectedFragment: TextRange): TextRange {
+        return TextRange(rangeInInjectedFragment.startOffset + 1, rangeInInjectedFragment.endOffset - 1)
     }
 
     private fun findMapTag(element: PsiElement): XmlTag? {
