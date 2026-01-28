@@ -34,12 +34,6 @@ public class TableReference extends PsiReferenceBase<PsiElement> {
             return getElement();
         }
         XmlAttributeValue element = (XmlAttributeValue) getElement();
-        XmlTag dataBindingTag = getParentDataBindingTag(element);
-
-        if (dataBindingTag == null) {
-            return null;
-        }
-
         // 在指定的Table中查找对应的Column
         return findTable(element, tableKey);
     }

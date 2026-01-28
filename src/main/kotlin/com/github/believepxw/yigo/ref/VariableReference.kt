@@ -47,10 +47,7 @@ class VariableReference(
         // 如果是 Key 属性本身发起的跳转
         if (element is XmlAttributeValue && element.parent.firstChild.text == "Key" && externalRootTag == null) {
             val currentTag = element.parent.parent as? XmlTag ?: return null
-            if (currentTag.localName == "GridColumn") {
-                // 如果是 GridColumn，跳转到对应的 GridCell
-                return findTagByKeyRecursive(rootTag, "GridCell", variableName)
-            } else if (currentTag.localName == "GridCell") {
+            if (currentTag.localName == "GridCell") {
                 // 如果是 GridCell，跳转到对应的 GridColumn
                 return findTagByKeyRecursive(rootTag, "GridColumn", variableName)
             }

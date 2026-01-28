@@ -91,7 +91,7 @@ public class TableFindUsagesHandler extends FindUsagesHandler {
                     // 将符合条件的引用包装成 UsageInfo 传给 IDE 面板
                     return processor.process(new UsageInfo(reference));
                 }
-            } else if (PsiTreeUtil.getParentOfType(refElement, XmlElement.class) != null) {
+            } else if (refElement != element && PsiTreeUtil.getParentOfType(refElement, XmlElement.class) != null) {
                 return processor.process(new UsageInfo(reference));
             }
             return true; // 继续下一个
