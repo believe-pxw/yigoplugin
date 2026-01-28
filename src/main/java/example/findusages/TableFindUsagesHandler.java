@@ -6,11 +6,13 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiField;
+import com.intellij.psi.PsiJavaCodeReferenceElement;
 import com.intellij.psi.PsiLiteralExpression;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.xml.XmlAttributeValue;
+import com.intellij.psi.xml.XmlElement;
 import com.intellij.usageView.UsageInfo;
 import com.intellij.util.Processor;
 import org.jetbrains.annotations.NotNull;
@@ -77,6 +79,22 @@ public class TableFindUsagesHandler extends FindUsagesHandler {
     @Override
     public boolean processElementUsages(@NotNull PsiElement element, @NotNull Processor<? super UsageInfo> processor, @NotNull FindUsagesOptions options) {
         ExcludeModuleUtil.enhanceFindUsagesOptions(element, options);
-        return super.processElementUsages(element, processor, options);
+        return com.intellij.psi.search.searches.ReferencesSearch.search(element, options.searchScope).forEach(reference -> {
+            PsiElement refElement = reference.getElement();
+
+            // --- 过滤逻辑开始 ---
+
+            if (PsiTreeUtil.getParentOfType(refElement, PsiJavaCodeReferenceElement.class) != null) {
+                PsiElement parent = refElement.getParent();
+                // 如果父级是一个引用表达式，且访问的是静态内容
+                if (parent instanceof com.intellij.psi.PsiReferenceExpression) {
+                    // 将符合条件的引用包装成 UsageInfo 传给 IDE 面板
+                    return processor.process(new UsageInfo(reference));
+                }
+            } else if (PsiTreeUtil.getParentOfType(refElement, XmlElement.class) != null) {
+                return processor.process(new UsageInfo(reference));
+            }
+            return true; // 继续下一个
+        });
     }
 }
