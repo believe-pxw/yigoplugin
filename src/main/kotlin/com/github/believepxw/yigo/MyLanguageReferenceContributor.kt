@@ -1,20 +1,34 @@
 package com.github.believepxw.yigo
 
-import com.github.believepxw.yigo.ref.JavaMethodReference
-import com.github.believepxw.yigo.ref.VariableReference
+import com.github.believepxw.yigo.ref.*
 import com.intellij.lang.injection.InjectedLanguageManager
 import com.intellij.openapi.util.Pair
 import com.intellij.openapi.util.TextRange
 import com.intellij.patterns.PlatformPatterns
 import com.intellij.psi.*
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
+import com.intellij.psi.xml.XmlFile
 import com.intellij.psi.xml.XmlTag
 import com.intellij.util.ProcessingContext
-import com.intellij.util.containers.toArray
 import example.index.FormIndex
 import example.psi.MyLanguageTypes
-import example.ref.*
+import example.ref.DataBindingColumnReference
+import example.ref.DataElementDefinitionReference
+import example.ref.DataElementReference
+import example.ref.DataObjectDefinitionReference
+import example.ref.DataObjectReference
+import example.ref.DomainDefinitionReference
+import example.ref.DomainReference
+import example.ref.FormDefinitionReference
+import example.ref.FormReference
+import example.ref.GridColumnReference
+import example.ref.MacroReference
+import example.ref.OperationRefKeyReference
+import example.ref.ParaGroupDefinitionReference
+import example.ref.ParaGroupReference
+import example.ref.TableReference
 
 class MyLanguageReferenceContributor : PsiReferenceContributor() {
     override fun registerReferenceProviders(registrar: PsiReferenceRegistrar) {
@@ -25,503 +39,256 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                 override fun getReferencesByElement(
                     element: PsiElement,
                     context: ProcessingContext
-                ): Array<PsiReference?> {
-                    var injectedFragments: MutableList<Pair<PsiElement?, TextRange?>>? = null
-                    if (element.getNode().getElementType().toString() == "XML_DATA_CHARACTERS") {
-                        val ancestor = element.parent.parent
-                        if (ancestor !is PsiLanguageInjectionHost) {
-                            return PsiReference.EMPTY_ARRAY
-                        }
-                        val host = ancestor
-                        // 获取所有注入片段
-                        injectedFragments = InjectedLanguageManager.getInstance(element.getProject())
-                            .getInjectedPsiFiles(host)
-                        if (injectedFragments == null || injectedFragments.isEmpty()) {
-                            return PsiReference.EMPTY_ARRAY
-                        }
+                ): Array<PsiReference> {
+                    val project = element.project
+                    val injectedFragments = if (element.node.elementType.toString() == "XML_DATA_CHARACTERS") {
+                        val host = element.parent.parent
+                        if (host is PsiLanguageInjectionHost) {
+                            InjectedLanguageManager.getInstance(project).getInjectedPsiFiles(host)
+                        } else null
                     } else if (element is XmlAttributeValue) {
-                        // 获取所有注入片段
-                        injectedFragments = InjectedLanguageManager.getInstance(element.getProject())
-                            .getInjectedPsiFiles(element)
-                        if (injectedFragments == null || injectedFragments.isEmpty()) {
-                            var attrKey = element.parent.firstChild.text
-                            if (attrKey == "SrcFormKey" || attrKey == "TgtFormKey") {
-                                var tag = element.parent.parent as XmlTag
-                                if (tag.localName == "Map") {
-                                    val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                    references.add(
-                                        FormReference(
-                                            element,
-                                            TextRange(0 + 1, element.text.length - 1),
-                                            element.value
-                                        )
-                                    )
-                                    return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                                }
-                            } else if (attrKey == "TgtDataObjectKey" || attrKey == "SrcDataObjectKey") {
-                                var tag = element.parent.parent as XmlTag
-                                if (tag.localName == "Map") {
-                                    val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                    references.add(
-                                        DataObjectReference(
-                                            element,
-                                            TextRange(0 + 1, element.text.length - 1),
-                                            element.value
-                                        )
-                                    )
-                                    return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                                }
-                            } else if (attrKey == "TargetFieldKey") {
-                                var tag = element.parent.parent as XmlTag
-                                if (tag.localName == "SourceField") {
-                                    var tag = element.parent.parent as XmlTag
-                                    if (tag.localName == "SourceField" || tag.localName == "SourceTable") {
-                                        val mapTag = findMapTag(element)
-                                        val tgtFormKey = mapTag?.getAttributeValue("TgtFormKey")
-                                        if (tgtFormKey != null) {
-                                            val formDef = FormIndex.findFormDefinition(element.project, tgtFormKey)
-                                            val formTag = formDef?.parent?.parent as? XmlTag
-                                            if (formTag != null) {
-                                                val references: MutableList<PsiReference?> =
-                                                    ArrayList<PsiReference?>()
-                                                references.add(
-                                                    VariableReference(
-                                                        element,
-                                                        TextRange(1, element.text.length - 1),
-                                                        element.value,
-                                                        formTag
-                                                    )
-                                                )
-                                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                                            }
-                                        }
-                                    }
-                                }
-                            } else if (attrKey == "Definition") {
-                                var tag = element.parent.parent as XmlTag
-                                if (tag.localName == "SourceField") {
-                                    val type = tag.getAttributeValue("Type")
-                                    if (type != "Formula") {
-                                        val mapTag = findMapTag(element)
-                                        val srcFormKey = mapTag?.getAttributeValue("SrcFormKey")
-                                        if (srcFormKey != null) {
-                                            val formDef =
-                                                FormIndex.findFormDefinition(element.project, srcFormKey)
-                                            val formTag = formDef?.parent?.parent as? XmlTag
-                                            if (formTag != null) {
-                                                val references: MutableList<PsiReference?> =
-                                                    ArrayList<PsiReference?>()
-                                                references.add(
-                                                    VariableReference(
-                                                        element,
-                                                        TextRange(1, element.text.length - 1),
-                                                        element.value,
-                                                        formTag
-                                                    )
-                                                )
-                                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                                            }
-                                        }
+                        InjectedLanguageManager.getInstance(project).getInjectedPsiFiles(element)
+                    } else null
 
-                                    }
-                                }
-                            }
-                            if (attrKey == "ItemKey") {
-                                val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                references.add(
-                                    DataObjectReference(
-                                        element,
-                                        TextRange(0 + 1, element.text.length - 1),
-                                        element.value
-                                    )
-                                )
-                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            } else if (attrKey == "DataElementKey") {
-                                val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                references.add(DataElementReference(element, TextRange(0 + 1, element.text.length - 1)))
-                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            } else if (attrKey == "FormKey") {
-                                val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                references.add(
-                                    FormReference(
-                                        element,
-                                        TextRange(0 + 1, element.text.length - 1),
-                                        element.value
-                                    )
-                                )
-                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            } else if (attrKey == "Parameters") {
-                                val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                var value = element.value
-                                if (value.contains("FormKey=")) {
-                                    var split = value.split(";")
-                                    split.forEach {
-                                        if (it.contains("FormKey=")) {
-                                            var split1 = it.split("=")
-                                            value = split1[1]
-                                            //找出FormKey在value中的offset
-                                            var startOffset = it.indexOf(value)
-                                            references.add(
-                                                FormReference(
-                                                    element,
-                                                    TextRange(startOffset + 1, startOffset + value.length - 1),
-                                                    value
-                                                )
-                                            )
-                                        }
-                                    }
-                                }
-                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            } else if (attrKey == "DomainKey") {
-                                val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                references.add(DomainReference(element, TextRange(0 + 1, element.text.length - 1)))
-                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            } else if (attrKey == "TableKey") {
-                                val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                references.add(
-                                    TableReference(
-                                        element,
-                                        TextRange(0 + 1, element.text.length - 1),
-                                        false
-                                    )
-                                )
-                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            } else if (attrKey == "RefObjectKey") {
-                                val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                references.add(
-                                    DataObjectReference(
-                                        element,
-                                        TextRange(0 + 1, element.text.length - 1),
-                                        element.value
-                                    )
-                                )
-                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            } else if (attrKey == "ColumnKey") {
-                                val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                references.add(
-                                    DataBindingColumnReference(
-                                        element,
-                                        TextRange(0 + 1, element.text.length - 1),
-                                        false
-                                    )
-                                )
-                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            } else if (attrKey == "BindingCellKey") {
-                                val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                references.add(
-                                    VariableReference(
-                                        element,
-                                        TextRange(0 + 1, element.text.length - 1),
-                                        element.value
-                                    )
-                                )
-                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            } else if (attrKey == "RefKey") {
-                                val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                references.add(
-                                    OperationRefKeyReference(
-                                        element,
-                                        TextRange(0 + 1, element.text.length - 1)
-                                    )
-                                )
-                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            } else if (attrKey == "GroupKey") {
-                                val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                references.add(
-                                    ParaGroupReference(
-                                        element,
-                                        TextRange(0 + 1, element.text.length - 1),
-                                        element.value
-                                    )
-                                )
-                                return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                            } else if (attrKey == "Key") {
-                                var tag = element.parent.parent as XmlTag
-                                if (tag.localName in VariableReference.variableDefinitionTagNames) {
-                                    val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                    references.add(
-                                        VariableReference(
-                                            element,
-                                            TextRange(0 + 1, element.text.length - 1),
-                                            element.value
-                                        )
-                                    )
-                                    return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                                } else
-                                    if (tag.localName == "Macro") {
-                                        val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                        references.add(
-                                            MacroReference(
-                                                element,
-                                                TextRange(0 + 1, element.text.length - 1),
-                                                element.value
-                                            )
-                                        )
-                                        return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                                    } else if (tag.localName == "DataObject") {
-                                        val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                        references.add(
-                                            DataObjectDefinitionReference(
-                                                element,
-                                                TextRange(0 + 1, element.text.length - 1),
-                                                element.value
-                                            )
-                                        )
-                                        return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                                    } else if (tag.localName == "Form") {
-                                        val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                        references.add(
-                                            FormDefinitionReference(
-                                                element,
-                                                TextRange(0 + 1, element.text.length - 1),
-                                                element.value
-                                            )
-                                        )
-                                        return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                                    } else if (tag.localName == "DataElement") {
-                                        val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                        references.add(
-                                            DataElementDefinitionReference(
-                                                element,
-                                                TextRange(0 + 1, element.text.length - 1),
-                                                element.value
-                                            )
-                                        )
-                                        return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                                    } else if (tag.localName == "Domain") {
-                                        val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                        references.add(
-                                            DomainDefinitionReference(
-                                                element,
-                                                TextRange(0 + 1, element.text.length - 1),
-                                                element.value
-                                            )
-                                        )
-                                        return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                                    } else if (tag.localName == "ParaGroup") {
-                                        val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                        references.add(
-                                            ParaGroupDefinitionReference(
-                                                element,
-                                                TextRange(0 + 1, element.text.length - 1),
-                                                element.value
-                                            )
-                                        )
-                                        return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                                    } else if (tag.localName == "Column") {
-                                        val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                        references.add(
-                                            DataBindingColumnReference(
-                                                element,
-                                                TextRange(0 + 1, element.text.length - 1), true
-                                            )
-                                        )
-                                        return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                                    } else if (tag.localName == "GridColumn") {
-                                        val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                        references.add(
-                                            GridColumnReference(
-                                                element,
-                                                TextRange(0 + 1, element.text.length - 1), element.value
-                                            )
-                                        )
-                                        return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                                    } else if (tag.localName == "Table") {
-                                        val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                        references.add(
-                                            TableReference(
-                                                element,
-                                                TextRange(0 + 1, element.text.length - 1),
-                                                true
-                                            )
-                                        )
-                                        return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                                    } else if (tag.localName == "Operation") {
-                                        if (tag.containingFile.name == "CommonDef.xml") {
-                                            val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                            references.add(
-                                                OperationRefKeyReference(
-                                                    element,
-                                                    TextRange(0 + 1, element.text.length - 1)
-                                                )
-                                            )
-                                            return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                                        }
-                                    } else if (tag.localName == "SourceField") {
-                                        if (tag.getAttribute("Definition") == null) {
-                                            val mapTag = findMapTag(element)
-                                            val srcFormKey = mapTag?.getAttributeValue("SrcFormKey")
-                                            if (srcFormKey != null) {
-                                                val formDef =
-                                                    FormIndex.findFormDefinition(element.project, srcFormKey)
-                                                val formTag = formDef?.parent?.parent as? XmlTag
-                                                if (formTag != null) {
-                                                    val references: MutableList<PsiReference?> =
-                                                        ArrayList<PsiReference?>()
-                                                    references.add(
-                                                        VariableReference(
-                                                            element,
-                                                            TextRange(1, element.text.length - 1),
-                                                            element.value,
-                                                            formTag
-                                                        )
-                                                    )
-                                                    return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                                                }
-                                            }
-                                        }
-                                    }
-                            } else if (attrKey == "ObjectKey") {
-                                var tag = element.parent.parent as XmlTag
-                                if (tag.localName == "EmbedTable") {
-                                    val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                                    references.add(
-                                        DataObjectReference(
-                                            element,
-                                            TextRange(0 + 1, element.text.length - 1),
-                                            element.value
-                                        )
-                                    )
-                                    return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
-                                }
-                            }
-                            return PsiReference.EMPTY_ARRAY
-                        }
-                    } else {
-                        return PsiReference.EMPTY_ARRAY
+                    if (!injectedFragments.isNullOrEmpty()) {
+                        return getInjectedReferences(element, injectedFragments).toTypedArray()
                     }
-                    val references: MutableList<PsiReference?> = ArrayList<PsiReference?>()
-                    for (fragment in injectedFragments) {
-                        val injectedPsiRoot: PsiElement = fragment.first!! // 这是注入语言的 PSI 根节点
 
-                        // 遍历注入语言的 PSI 树，查找需要添加引用的元素
-                        // 这里你需要根据你的注入语言的PSI结构来查找
-                        // 示例：查找 MyInjectedLanguageReferenceTarget 类型的元素
-                        PsiTreeUtil.processElements(
-                            injectedPsiRoot
-                        ) { injectedElement: PsiElement? ->
-                            val elementType = injectedElement!!.node.elementType
-                            val referencedName = injectedElement.text
-                            val injectedRange = injectedElement.textRange
-                            // 计算引用在宿主元素中的真实范围
-                            val rangeInInjectedFragment = TextRange(
-                                injectedRange.startOffset - injectedPsiRoot.textRange
-                                    .startOffset,
-                                injectedRange.endOffset - injectedPsiRoot.textRange.startOffset
-                            )
-                            val rootTagOriginal =
-                                (element.containingFile as? com.intellij.psi.xml.XmlFile)?.document?.rootTag
-                            if (rootTagOriginal?.localName == "Map" &&
-                                (elementType == MyLanguageTypes.IDENTIFIER ||
-                                        elementType == MyLanguageTypes.VARIABLE_REFERENCE)
-                            ) {
-                                val mapTag = findMapTag(element)
-                                val srcFormKey = mapTag?.getAttributeValue("SrcFormKey")
-                                if (srcFormKey != null) {
-                                    val formDef = FormIndex.findFormDefinition(element.project, srcFormKey)
-                                    val formTag = formDef?.parent?.parent as? XmlTag
-                                    if (formTag != null) {
-                                        references.add(
-                                            VariableReference(
-                                                element,
-                                                rangeInInjectedFragment,
-                                                referencedName,
-                                                formTag
-                                            )
-                                        )
-                                    }
-                                }
-                            }
-                            if (elementType == MyLanguageTypes.MACRO_IDENTIFIER) {
-                                references.add(MacroReference(element, rangeInInjectedFragment, referencedName))
-                            } else if (elementType == MyLanguageTypes.VARIABLE_REFERENCE) {
-                                var formTag: XmlTag? = getExternalFile(element)
-                                references.add(
-                                    VariableReference(
-                                        element,
-                                        rangeInInjectedFragment,
-                                        referencedName,
-                                        formTag
-                                    )
-                                )
-                            } else if (elementType == MyLanguageTypes.JAVA_PATH_IDENTIFIER) {
-                                references.add(JavaMethodReference(element, rangeInInjectedFragment, referencedName))
-                            } else if (elementType == MyLanguageTypes.IDENTIFIER) {
-                                val parentElementType = injectedElement.parent.node.elementType
-                                if (parentElementType == MyLanguageTypes.REGULAR_FUNCTION_CALL) {
-                                    references.add(
-                                        JavaMethodReference(
-                                            element,
-                                            rangeInInjectedFragment,
-                                            referencedName
-                                        )
-                                    )
-                                }
-                            } else if (elementType == MyLanguageTypes.CONSTANT) {
-                                val parentElementType =
-                                    injectedElement.parent.parent.parent.parent.node.elementType
-                                if (parentElementType == MyLanguageTypes.REGULAR_FUNCTION_CALL) {
-                                    var funcName = injectedElement.parent.parent.parent.parent.firstChild
-                                    if (funcName.node.elementType == MyLanguageTypes.IDENTIFIER) {
-                                        var argumentList = injectedElement.parent.parent.parent
-                                        var firstExpression = injectedElement.parent.parent
-                                        if (argumentList.firstChild == firstExpression) {
-                                            if (funcName.text == "ERPShowModal" || funcName.text == "Open" || funcName.text == "OpenDict" || funcName.text == "New") {
-                                                references.add(
-                                                    FormReference(
-                                                        element,
-                                                        TextRange(
-                                                            rangeInInjectedFragment.startOffset + 1,
-                                                            rangeInInjectedFragment.endOffset - 1
-                                                        ),
-                                                        referencedName.substring(1, referencedName.length - 1)
-                                                    )
-                                                )
-                                            } else if (funcName.text == "SetValue" || funcName.text == "GetValue" || funcName.text == "Sum") {
-                                                var formTag: XmlTag? = getExternalFile(element)
-                                                references.add(
-                                                    VariableReference(
-                                                        element,
-                                                        TextRange(
-                                                            rangeInInjectedFragment.startOffset + 1,
-                                                            rangeInInjectedFragment.endOffset - 1
-                                                        ),
-                                                        referencedName.substring(1, referencedName.length - 1), formTag
-                                                    )
-                                                )
-                                            } else if (funcName.text == "GetDictValue") {
-                                                references.add(
-                                                    DataObjectReference(
-                                                        element,
-                                                        TextRange(
-                                                            rangeInInjectedFragment.startOffset + 1,
-                                                            rangeInInjectedFragment.endOffset - 1
-                                                        ),
-                                                        referencedName.substring(1, referencedName.length - 1)
-                                                    )
-                                                )
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            true // 继续遍历
-                        }
+                    if (element is XmlAttributeValue && element.node.elementType.toString() != "XML_DATA_CHARACTERS") {
+                        // XML_DATA_CHARACTERS logic above defaults to empty if no injection.
+                        // But original code: if XML_DATA_CHARACTERS, if empty -> return empty (lines 39-40).
+                        // If XmlAttributeValue, if empty -> check attributes (line 46).
+                        // Note: XmlAttributeValue is NOT XML_DATA_CHARACTERS.
+                        return getAttributeReferences(element).toTypedArray()
                     }
-                    return references.toArray<PsiReference?>(PsiReference.EMPTY_ARRAY)
+
+                    return PsiReference.EMPTY_ARRAY
                 }
             })
     }
 
-    fun findMapTag(element: PsiElement): XmlTag? {
-        var current = element
+    private fun getAttributeReferences(element: XmlAttributeValue): List<PsiReference> {
+        val attr = element.parent as? XmlAttribute ?: return emptyList()
+        val attrKey = attr.name
+        val references = mutableListOf<PsiReference>()
+        val range = TextRange(1, element.textLength - 1)
+        val value = element.value
+        val project = element.project
+
+        when (attrKey) {
+            "SrcFormKey", "TgtFormKey" -> {
+                val tag = attr.parent
+                if (tag.localName == "Map") {
+                    references.add(FormReference(element, range, value))
+                }
+            }
+            "TgtDataObjectKey", "SrcDataObjectKey" -> {
+                val tag = attr.parent
+                if (tag.localName == "Map") {
+                    references.add(DataObjectReference(element, range, value))
+                }
+            }
+            "TargetFieldKey" -> {
+                val tag = attr.parent
+                if (tag.localName == "SourceField") {
+                    // Original code redundancy check: tag.localName == "SourceField" || tag.localName == "SourceTable"
+                    // Since we checked SourceField, this is guaranteed.
+                    val mapTag = findMapTag(element)
+                    val tgtFormKey = mapTag?.getAttributeValue("TgtFormKey")
+                    if (tgtFormKey != null) {
+                        val formDef = FormIndex.findFormDefinition(project, tgtFormKey)
+                        val formTag = formDef?.parent?.parent as? XmlTag
+                        if (formTag != null) {
+                            references.add(VariableReference(element, range, value, formTag))
+                        }
+                    }
+                }
+            }
+            "Definition" -> {
+                val tag = attr.parent
+                if (tag.localName == "SourceField") {
+                    val type = tag.getAttributeValue("Type")
+                    if (type != "Formula") {
+                        val mapTag = findMapTag(element)
+                        val srcFormKey = mapTag?.getAttributeValue("SrcFormKey")
+                        if (srcFormKey != null) {
+                            val formDef = FormIndex.findFormDefinition(project, srcFormKey)
+                            val formTag = formDef?.parent?.parent as? XmlTag
+                            if (formTag != null) {
+                                references.add(VariableReference(element, range, value, formTag))
+                            }
+                        }
+                    }
+                }
+            }
+            "ItemKey" -> references.add(DataObjectReference(element, range, value))
+            "DataElementKey" -> references.add(DataElementReference(element, range))
+            "FormKey" -> references.add(FormReference(element, range, value))
+            "Parameters" -> {
+                var currentValue = value
+                if (currentValue.contains("FormKey=")) {
+                    val split = currentValue.split(";")
+                    split.forEach { part ->
+                         if (part.contains("FormKey=")) {
+                             val split1 = part.split("=")
+                             // Logic from original code: value var reused
+                             currentValue = split1[1]
+                             val startOffset = part.indexOf(currentValue)
+                             references.add(
+                                 FormReference(
+                                     element,
+                                     TextRange(startOffset + 1, startOffset + currentValue.length - 1),
+                                     currentValue
+                                 )
+                             )
+                         }
+                    }
+                }
+            }
+            "DomainKey" -> references.add(DomainReference(element, range))
+            "TableKey" -> references.add(TableReference(element, range, false))
+            "RefObjectKey" -> references.add(DataObjectReference(element, range, value))
+            "ColumnKey" -> references.add(DataBindingColumnReference(element, range, false))
+            "BindingCellKey" -> references.add(VariableReference(element, range, value))
+            "RefKey" -> references.add(OperationRefKeyReference(element, range))
+            "GroupKey" -> references.add(ParaGroupReference(element, range, value))
+            "Key" -> {
+                 val tag = attr.parent
+                 val tagName = tag.localName
+                 if (tagName in VariableReference.variableDefinitionTagNames) {
+                     references.add(VariableReference(element, range, value))
+                 } else {
+                     when (tagName) {
+                         "Macro" -> references.add(MacroReference(element, range, value))
+                         "DataObject" -> references.add(DataObjectDefinitionReference(element, range, value))
+                         "Form" -> references.add(FormDefinitionReference(element, range, value))
+                         "DataElement" -> references.add(DataElementDefinitionReference(element, range, value))
+                         "Domain" -> references.add(DomainDefinitionReference(element, range, value))
+                         "ParaGroup" -> references.add(ParaGroupDefinitionReference(element, range, value))
+                         "Column" -> references.add(DataBindingColumnReference(element, range, true))
+                         "GridColumn" -> references.add(GridColumnReference(element, range, value))
+                         "Table" -> references.add(TableReference(element, range, true))
+                         "Operation" -> {
+                             if (tag.containingFile.name == "CommonDef.xml") {
+                                 references.add(OperationRefKeyReference(element, range))
+                             }
+                         }
+                         "SourceField" -> {
+                             if (tag.getAttribute("Definition") == null) {
+                                 val mapTag = findMapTag(element)
+                                 val srcFormKey = mapTag?.getAttributeValue("SrcFormKey")
+                                 if (srcFormKey != null) {
+                                     val formDef = FormIndex.findFormDefinition(project, srcFormKey)
+                                     val formTag = formDef?.parent?.parent as? XmlTag
+                                     if (formTag != null) {
+                                         references.add(VariableReference(element, range, value, formTag))
+                                     }
+                                 }
+                             }
+                         }
+                     }
+                 }
+            }
+            "ObjectKey" -> {
+                 val tag = attr.parent
+                 if (tag.localName == "EmbedTable") {
+                     references.add(DataObjectReference(element, range, value))
+                 }
+            }
+        }
+        return references
+    }
+
+    private fun getInjectedReferences(
+        element: PsiElement,
+        injectedFragments: List<Pair<PsiElement, TextRange>>
+    ): List<PsiReference> {
+        val references = mutableListOf<PsiReference>()
+        val project = element.project
+        
+        for (fragment in injectedFragments) {
+            val injectedPsiRoot = fragment.first ?: continue // Unsafe !! in original, ?: continue safer
+            
+            PsiTreeUtil.processElements(injectedPsiRoot) { injectedElement ->
+                val elementType = injectedElement.node.elementType
+                val referencedName = injectedElement.text
+                val injectedRange = injectedElement.textRange
+                val startOffsetInHost = injectedRange.startOffset - injectedPsiRoot.textRange.startOffset
+                val endOffsetInHost = injectedRange.endOffset - injectedPsiRoot.textRange.startOffset
+                val rangeInInjectedFragment = TextRange(startOffsetInHost, endOffsetInHost)
+                
+                val rootTagOriginal = (element.containingFile as? XmlFile)?.document?.rootTag
+                
+                if (rootTagOriginal?.localName == "Map" &&
+                    (elementType == MyLanguageTypes.IDENTIFIER || elementType == MyLanguageTypes.VARIABLE_REFERENCE)
+                ) {
+                    val mapTag = findMapTag(element)
+                    val srcFormKey = mapTag?.getAttributeValue("SrcFormKey")
+                    if (srcFormKey != null) {
+                        val formDef = FormIndex.findFormDefinition(project, srcFormKey)
+                        val formTag = formDef?.parent?.parent as? XmlTag
+                        if (formTag != null) {
+                            references.add(VariableReference(element, rangeInInjectedFragment, referencedName, formTag))
+                        }
+                    }
+                }
+                
+                if (elementType == MyLanguageTypes.MACRO_IDENTIFIER) {
+                    references.add(MacroReference(element, rangeInInjectedFragment, referencedName))
+                } else if (elementType == MyLanguageTypes.VARIABLE_REFERENCE) {
+                    val formTag = getExternalFile(element)
+                    references.add(VariableReference(element, rangeInInjectedFragment, referencedName, formTag))
+                } else if (elementType == MyLanguageTypes.JAVA_PATH_IDENTIFIER) {
+                    references.add(JavaMethodReference(element, rangeInInjectedFragment, referencedName))
+                } else if (elementType == MyLanguageTypes.IDENTIFIER) {
+                    val parentElementType = injectedElement.parent.node.elementType
+                    if (parentElementType == MyLanguageTypes.REGULAR_FUNCTION_CALL) {
+                        references.add(JavaMethodReference(element, rangeInInjectedFragment, referencedName))
+                    }
+                } else if (elementType == MyLanguageTypes.CONSTANT) {
+                    // Deep parent access check
+                    val callNode = injectedElement.parent?.parent?.parent?.parent?.node
+                    if (callNode?.elementType == MyLanguageTypes.REGULAR_FUNCTION_CALL) {
+                        val regularFuncCall = injectedElement.parent.parent.parent.parent
+                        val funcName = regularFuncCall.firstChild
+                        if (funcName.node.elementType == MyLanguageTypes.IDENTIFIER) {
+                            val argumentList = injectedElement.parent.parent.parent
+                            val firstExpression = injectedElement.parent.parent
+                            if (argumentList.firstChild == firstExpression) {
+                                val name = funcName.text
+                                val content = referencedName.substring(1, referencedName.length - 1)
+                                val contentRange = TextRange(rangeInInjectedFragment.startOffset + 1, rangeInInjectedFragment.endOffset - 1)
+                                
+                                when (name) {
+                                    "ERPShowModal", "Open", "OpenDict", "New" -> {
+                                        references.add(FormReference(element, contentRange, content))
+                                    }
+                                    "SetValue", "GetValue", "Sum" -> {
+                                        val formTag = getExternalFile(element)
+                                        references.add(VariableReference(element, contentRange, content, formTag))
+                                    }
+                                    "GetDictValue" -> {
+                                        references.add(DataObjectReference(element, contentRange, content))
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                true
+            }
+        }
+        return references
+    }
+
+    private fun findMapTag(element: PsiElement): XmlTag? {
+        var current: PsiElement? = element
         while (current != null) {
             if (current is XmlTag && current.localName == "Map") {
                 return current
             }
-            if (current is com.intellij.psi.PsiFile) {
-                // If we hit the file level, try to get the root tag
-                if (current is com.intellij.psi.xml.XmlFile) {
+            if (current is PsiFile) {
+                if (current is XmlFile) {
                     val root = current.document?.rootTag
                     if (root?.localName == "Map") {
                         return root
@@ -534,14 +301,14 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
         return null
     }
 
-    fun getExternalFile(element: PsiElement): XmlTag? {
-        // 确保是XML文件
-        val xmlFile = element.containingFile as com.intellij.psi.xml.XmlFile
+    private fun getExternalFile(element: PsiElement): XmlTag? {
+        val xmlFile = element.containingFile as? XmlFile ?: return null
         var formTag: XmlTag? = null
         if (xmlFile.rootTag != null && xmlFile.rootTag?.localName == "Map") {
-            var mapTag: XmlTag? = findMapTag(element)
-            val postProcess = element.getParent().getParent().getParent() as XmlTag
-            if ((postProcess.getName() == "PostProcess")) {
+            val mapTag = findMapTag(element)
+            // Original code: element.getParent().getParent().getParent() as XmlTag (Assuming PostProcess/other structure)
+            val postProcess = element.parent?.parent?.parent as? XmlTag
+            if (postProcess?.name == "PostProcess") {
                 val tgtFormKey = mapTag?.getAttributeValue("TgtFormKey")
                 if (tgtFormKey != null) {
                     val formDef = FormIndex.findFormDefinition(element.project, tgtFormKey)
