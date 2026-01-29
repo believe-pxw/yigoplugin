@@ -96,7 +96,10 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         EditorFactory.getInstance().eventMulticaster.addCaretListener(object : CaretListener {
             override fun caretPositionChanged(event: CaretEvent) {
                 if (event.editor.project == project) {
-                    highlightComponentAtCaret(event.editor)
+                     // Wrap in ReadAction as highlightComponentAtCaret accesses PSI
+                     ApplicationManager.getApplication().runReadAction {
+                         highlightComponentAtCaret(event.editor)
+                     }
                 }
             }
         }, toolWindow.contentManager)
@@ -127,14 +130,20 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                      val gridTag = findParentGridTag(tag)
                      if (gridTag != null && tagToComponent.containsKey(gridTag)) {
                          javax.swing.SwingUtilities.invokeLater {
-                             refreshGridComponent(gridTag)
+                             if (project.isDisposed) return@invokeLater
+                             ApplicationManager.getApplication().runReadAction {
+                                 refreshGridComponent(gridTag)
+                             }
                          }
                          return
                      }
                  }
                  
                  javax.swing.SwingUtilities.invokeLater {
-                    updateUIFromXml(preserveScroll = true) 
+                    if (project.isDisposed) return@invokeLater
+                    ApplicationManager.getApplication().runReadAction {
+                        updateUIFromXml(preserveScroll = true)
+                    }
                  }
             }
         }, toolWindow.contentManager)
@@ -243,12 +252,14 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
             return
         }
         
-        val validComponents = tagToComponent.entries.filter { it.key.isValid }
-        searchMatches = validComponents.filter { (tag, _) ->
-            val key = tag.getAttributeValue("Key")?.lowercase() ?: ""
-            val cap = tag.getAttributeValue("Caption")?.lowercase() ?: ""
-            key.contains(text) || cap.contains(text)
-        }.map { it.toPair() }.sortedBy { it.second.y }
+        ApplicationManager.getApplication().runReadAction {
+            val validComponents = tagToComponent.entries.filter { it.key.isValid }
+            searchMatches = validComponents.filter { (tag, _) ->
+                val key = tag.getAttributeValue("Key")?.lowercase() ?: ""
+                val cap = tag.getAttributeValue("Caption")?.lowercase() ?: ""
+                key.contains(text) || cap.contains(text)
+            }.map { it.toPair() }.sortedBy { it.second.y }
+        }
         
         currentMatchIndex = if (searchMatches.isNotEmpty()) 0 else -1
         updateSearchUI()
@@ -406,6 +417,12 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         var tag = PsiTreeUtil.getParentOfType(element, XmlTag::class.java, false)
         
         // Traverse up to find a registered component
+        // Note: PsiTreeUtil accesses PSI, needs read action. 
+        // This is called inside updateUIFromXml's invokeLater, BUT 
+        // updateUIFromXml now wraps itself in runReadAction.
+        // HOWEVER, highlightComponentAtCaret is also called from CaretListener (line 96) which might NOT be wrapped.
+        // Wait, line 96 calls it directly. CaretListener is often on EDT but NOT holding read lock.
+        
         while (tag != null && !tagToComponent.containsKey(tag)) {
             tag = tag.parentTag
             if (tag?.name == "Form" || tag?.name == "Body") break // Stop at top level
@@ -429,19 +446,31 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
     }
     
     private fun navigateToTag(tag: XmlTag, requestFocus: Boolean = true) {
-        if (!tag.isValid) return
-        val psiFile = tag.containingFile
-        val vFile = psiFile.virtualFile ?: return
+        if (project.isDisposed) return
+        
+        // Read PSI to get offset and file info
+        var offset = 0
+        var vFile: com.intellij.openapi.vfs.VirtualFile? = null
+        var psiFile: com.intellij.psi.PsiFile? = null
+        
+        ApplicationManager.getApplication().runReadAction {
+            if (tag.isValid) {
+                offset = tag.textOffset
+                psiFile = tag.containingFile
+                vFile = psiFile?.virtualFile
+            }
+        }
+        
+        if (vFile == null || psiFile == null) return
         
         val fileEditorHelper = FileEditorManager.getInstance(project)
         val currentEditor = fileEditorHelper.selectedTextEditor
         
-        if (currentEditor == null || currentEditor.document != PsiDocumentManager.getInstance(project).getDocument(psiFile)) {
-             fileEditorHelper.openFile(vFile, true)
+        if (currentEditor == null || currentEditor.document != PsiDocumentManager.getInstance(project).getDocument(psiFile!!)) {
+             fileEditorHelper.openFile(vFile!!, true)
         }
         
         val targetEditor = fileEditorHelper.selectedTextEditor ?: return
-        val offset = tag.textOffset
         targetEditor.caretModel.moveToOffset(offset)
         targetEditor.scrollingModel.scrollToCaret(ScrollType.MAKE_VISIBLE)
         if (requestFocus) {
@@ -563,7 +592,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         label.horizontalAlignment = SwingConstants.CENTER
         panel.add(label, BorderLayout.CENTER)
         
-        panel.preferredSize = Dimension(120, 30) 
+        panel.preferredSize = Dimension(80, 30)
         panel.putClientProperty(KEY_XML_TAG, tag)
         
         // attachNavigationListener call removed here because registerComponent does it
@@ -878,16 +907,18 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
              var targetTag: XmlTag? = null
              var insertBefore = false
              
-             for (comp in component.components) {
-                 if (comp.bounds.contains(dropLocation.dropPoint)) {
-                     // Optimization: Use client property instead of linear search in map
-                     val tag = (comp as? JComponent)?.getClientProperty(KEY_XML_TAG) as? XmlTag
-                     if (tag != null && tag.name == "GridColumn") {
-                         targetTag = tag
-                         val center = comp.x + comp.width / 2
-                         insertBefore = dropLocation.dropPoint.x < center
+             ApplicationManager.getApplication().runReadAction {
+                 for (comp in component.components) {
+                     if (comp.bounds.contains(dropLocation.dropPoint)) {
+                         // Optimization: Use client property instead of linear search in map
+                         val tag = (comp as? JComponent)?.getClientProperty(KEY_XML_TAG) as? XmlTag
+                         if (tag != null && tag.isValid && tag.name == "GridColumn") {
+                             targetTag = tag
+                             val center = comp.x + comp.width / 2
+                             insertBefore = dropLocation.dropPoint.x < center
+                         }
+                         break
                      }
-                     break
                  }
              }
              
