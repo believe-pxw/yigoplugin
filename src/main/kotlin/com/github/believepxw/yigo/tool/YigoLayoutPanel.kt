@@ -582,6 +582,31 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         val caption = tag.getAttributeValue("Caption")
         return if (!caption.isNullOrEmpty()) "$caption ($key)" else key.ifEmpty { tag.name }
     }
+    
+    private fun getIconForTag(tag: XmlTag): Icon? {
+        val tagName = tag.name
+        if (tagName == "GridCell") {
+            val cellType = tag.getAttributeValue("CellType")
+            return if (!cellType.isNullOrEmpty()) getIconForTag(cellType) else null
+        }
+        return getIconForTag(tagName)
+    }
+
+    private fun getIconForTag(tagName: String): Icon? {
+        return when (tagName) {
+            "CheckBox", "CheckListBox", "RadioButton" -> com.intellij.icons.AllIcons.Actions.Checked
+            "ComboBox", "DropdownButton" -> com.intellij.icons.AllIcons.General.ArrowDown
+            "Dict", "DynamicDict" -> com.intellij.icons.AllIcons.Actions.Find
+            "TextEditor", "TextArea", "RichEditor", "PasswordEditor" -> com.intellij.icons.AllIcons.FileTypes.Text
+            "NumberEditor" -> com.intellij.icons.AllIcons.Debugger.Db_array
+            "DatePicker", "UTCDatePicker", "MonthPicker", "TimePicker" -> com.intellij.icons.AllIcons.Vcs.History
+            "Button", "TextButton" -> null 
+            "Label" -> com.intellij.icons.AllIcons.General.Note
+            "Image", "Icon" -> com.intellij.icons.AllIcons.FileTypes.Image
+            "HyperLink" -> com.intellij.icons.AllIcons.Ide.Link
+            else -> null
+        }
+    }
 
     private fun createLeafComponent(tag: XmlTag): JComponent {
         val panel = object : JPanel(BorderLayout()) {
@@ -602,7 +627,9 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         panel.border = JBUI.Borders.empty(2, 5)
         
         val label = JLabel(getTitle(tag))
-        label.horizontalAlignment = SwingConstants.CENTER
+        label.icon = getIconForTag(tag)
+        label.iconTextGap = 8
+        label.horizontalAlignment = SwingConstants.LEFT // Align left to show icon properly
         label.foreground = com.intellij.ui.JBColor.foreground()
         label.font = JBUI.Fonts.label().deriveFont(12f)
         panel.add(label, BorderLayout.CENTER)
