@@ -1,0 +1,24 @@
+# Task List
+
+- [x] Create `LayoutToolWindowFactory.kt` <!-- id: 1 -->
+- [x] Create `YigoLayoutPanel.kt` with Tree UI <!-- id: 2 -->
+- [x] Register Tool Window in `plugin.xml` <!-- id: 3 -->
+- [x] Implement XML Parsing to Tree Nodes <!-- id: 4 -->
+- [x] Implement Drag and Drop Logic <!-- id: 5 -->
+- [x] Implement PSI Change Listener for Sync <!-- id: 6 -->
+- [x] Implement Visual Grid Wrapping <!-- id: 7 -->
+- [x] Implement Recursive Embedded Forms <!-- id: 8 -->
+- [x] Optimize Performance (Granular Refresh) <!-- id: 9 -->
+- [x] Implement Search Bar (Prev/Next/Count) <!-- id: 10 -->
+- [x] Refine Search UX (Ctrl+F Toggle) <!-- id: 11 -->
+- [x] Fix Focus Stability Bug (and TitledBorder fix) <!-- id: 12 -->
+- [x] Fix Missing Components (Hidden Span Overlap) <!-- id: 13 -->
+- [x] Fix Search Shortcut (Default Visible) <!-- id: 14 -->
+- [x] Fix EDT Violation (Async Embeds) <!-- id: 15 -->
+- [x] Implement Search-to-Editor Sync (Click triggers Nav) <!-- id: 16 -->
+- [x] Implement Editor-to-Layout Smart Sync (Child tags element) <!-- id: 17 -->
+- [x] Fix Search Focus Stealing <!-- id: 18 -->
+- [x] Fix Recursive Embed Crash (Too many read actions) <!-- id: 19 -->
+- [x] Fix Missing Nested Grids (GridLayoutPanel) <!-- id: 20 -->
+- [x] Optimize TableDropHandler (Remove flicker/lag) <!-- id: 21 -->
+- [x] Refine Rendering (Hide ToolBar, Conditional Search Click) <!-- id: 22 -->
