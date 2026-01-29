@@ -7,7 +7,7 @@ This plugin provides a real-time visualizer for Yigo Form XML files within Intel
 ### 1. Visual Layout Rendering
 - **Grid Layouts**: Correcly mimics `GridLayoutPanel` and `Grid` configurations, including row/column spans (ColSpan/RowSpan).
 - **Embedded Forms**: Recursively renders `Embed` components by resolving `FormKey` references and loading definitions in the background.
-- **Components**: Renders placeholders for standard Yigo components (TextEditor, Dict, etc.) with their keys and captions.
+- **Components**: Renders native-looking placeholders for Yigo components (TextEditor, Dict, etc.) with rounded corners, theme-aware colors, and clear captions.
 - **Hidden Items**: Respects `Visible="false"` (mostly) but ensures structural containers are still processed where necessary.
 
 ### 2. Live Synchronization
@@ -24,12 +24,12 @@ This plugin provides a real-time visualizer for Yigo Form XML files within Intel
 
 ## Technical Implementation Highlights
 
-- **`YigoLayoutPanel`**: The core UI component. It recursively parses XML PSI trees and builds a Swing `JPanel` hierarchy.
+- **`YigoLayoutPanel`**: The core UI component using pure Swing with `JBUI` scaling and `JBColor` for a native look.
 - **Async Loading**: Use `ReadAction.nonBlocking` with a `coalesceBy` throttling queue to load embedded forms without freezing the UI or crashing the IDE with too many threads.
+- **Thread Safety**: All PSI access is wrapped in `runReadAction` to prevent EDT violation exceptions.
 - **Performance**:
     - **O(1) Lookups**: Uses `putClientProperty` to tag Swing components with their XML tags, ensuring instant hit-testing during drag-and-drop.
     - **Atomic PSI Updates**: `moveColumnAndCells` performs surgical PSI edits (add/delete) instead of full re-parses, eliminating flicker.
-    - **Smart Rendering**: Skips non-visual tags like `ToolBar` and handles `GridLayoutPanel` recursion correctly.
 
 ## Status
-All planned features and reported bugs (Crash on Embeds, Flickering Drop, Missing Grids) have been resolved. The plugin is stable and performant.
+All planned features are complete. The visualizer is stable, performant, and follows modern IntelliJ UI guidelines.

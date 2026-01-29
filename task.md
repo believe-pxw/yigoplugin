@@ -23,3 +23,4 @@
 - [x] Optimize TableDropHandler (Remove flicker/lag) <!-- id: 21 -->
 - [x] Refine Rendering (Hide ToolBar, Conditional Search Click) <!-- id: 22 -->
 - [x] Fix ReadAccessViolation (Wrap PSI access in ReadAction) <!-- id: 23 -->
+- [x] Polish UI Aesthetics (Rounded, JBColor, Clean Look) <!-- id: 24 -->

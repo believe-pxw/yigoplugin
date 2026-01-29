@@ -584,19 +584,31 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
     }
 
     private fun createLeafComponent(tag: XmlTag): JComponent {
-        val panel = JPanel(BorderLayout())
-        panel.border = BorderFactory.createLineBorder(Color.GRAY)
-        panel.background = Color(240, 240, 240)
+        val panel = object : JPanel(BorderLayout()) {
+            override fun paintComponent(g: Graphics) {
+                // Rounded background
+                val g2 = g.create() as Graphics2D
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
+                g2.color = background
+                g2.fillRoundRect(0, 0, width - 1, height - 1, 8, 8)
+                g2.color = com.intellij.ui.JBColor.border()
+                g2.drawRoundRect(0, 0, width - 1, height - 1, 8, 8)
+                g2.dispose()
+                super.paintComponent(g) // Paint children (label)
+            }
+        }
+        panel.isOpaque = false // For rounded corners
+        panel.background = com.intellij.ui.JBColor(Color(245, 245, 245), Color(60, 63, 65))
+        panel.border = JBUI.Borders.empty(2, 5)
         
         val label = JLabel(getTitle(tag))
         label.horizontalAlignment = SwingConstants.CENTER
+        label.foreground = com.intellij.ui.JBColor.foreground()
+        label.font = JBUI.Fonts.label().deriveFont(12f)
         panel.add(label, BorderLayout.CENTER)
         
-        panel.preferredSize = Dimension(80, 30)
+        panel.preferredSize = Dimension(80, 32)
         panel.putClientProperty(KEY_XML_TAG, tag)
-        
-        // attachNavigationListener call removed here because registerComponent does it
-        // BUT drag source logic needs to stay
         
         val ds = DragSource.getDefaultDragSource()
         val listener = object : java.awt.dnd.DragGestureListener {
@@ -641,7 +653,8 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                  c.insets = JBUI.insets(2)
                  
                  val header = createLeafComponent(colTag)
-                 header.background = Color(220, 220, 240)
+                 header.background = com.intellij.ui.JBColor(Color(225, 230, 240), Color(60, 70, 80))
+                 (header.getComponent(0) as? JLabel)?.font = JBUI.Fonts.label().asBold() 
                  registerComponent(colTag, header)
                  mainPanel.add(header, c)
              }
@@ -794,7 +807,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                     } else {
                          val cellPanel = JPanel()
                          cellPanel.layout = BoxLayout(cellPanel, BoxLayout.Y_AXIS)
-                         cellPanel.border = BorderFactory.createLineBorder(Color.ORANGE) 
+                         cellPanel.border = BorderFactory.createLineBorder(com.intellij.ui.JBColor.ORANGE) 
                          compTags.forEach { 
                              val comp = createComponentForGridCell(it)
                              registerComponent(it, comp)
@@ -824,7 +837,8 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
     
     private fun createPlaceholder(x: Int, y: Int): JComponent {
         val panel = JPanel()
-        panel.border = BorderFactory.createDashedBorder(Color.LIGHT_GRAY)
+        panel.background = com.intellij.ui.JBColor(Color(250, 250, 250), Color(43, 43, 43))
+        panel.border = BorderFactory.createDashedBorder(com.intellij.ui.JBColor.border(), 1.0f, 3.0f, 3.0f, true)
         panel.toolTipText = "Empty Cell ($x, $y)"
         panel.name = "Placeholder:$x,$y" 
         return panel
