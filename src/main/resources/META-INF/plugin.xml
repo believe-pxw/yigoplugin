@@ -60,6 +60,7 @@
         <codeInsight.inlayProvider language="XML" implementationClass="com.github.believepxw.yigo.inlay.LabelTypeInlayProvider"/>
         <codeInsight.inlayProvider language="XML" implementationClass="com.github.believepxw.yigo.inlay.YigoInlayProvider"/>
         <codeInsight.lineMarkerProvider language="XML" implementationClass="com.github.believepxw.yigo.linemarker.DataBindingColumnLineMarkerProvider"/>
+        <toolWindow id="Yigo Layout" secondary="false" anchor="right" icon="AllIcons.General.Modified" factoryClass="com.github.believepxw.yigo.tool.LayoutToolWindowFactory"/>
     </extensions>
     <applicationListeners>
     </applicationListeners>
