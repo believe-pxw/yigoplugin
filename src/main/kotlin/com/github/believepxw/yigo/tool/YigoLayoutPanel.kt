@@ -61,11 +61,9 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
     private var searchMatches = listOf<Pair<XmlTag, JComponent>>()
     private var currentMatchIndex = -1
     
-    // Prevent recursive embedding infinite loops (Removed class-level state for async safety)
-    // private val renderStack = java.util.HashSet<String>()
-    
     // Constant for client property key
     private val KEY_ORIGINAL_BORDER = "YigoOriginalBorder"
+    private val KEY_XML_TAG = "YigoXmlTag"
     
     // Embed Loading Queue
     private val embedLoadQueue = java.util.ArrayDeque<() -> Unit>()
@@ -294,7 +292,12 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
             lastSearchHighlight = comp
             
             // Sync to XML
-            navigateToTag(tag, false)
+            val currentEditor = FileEditorManager.getInstance(project).selectedTextEditor
+            val currentPsi = if (currentEditor != null) PsiDocumentManager.getInstance(project).getPsiFile(currentEditor.document) else null
+            
+            if (currentPsi != null && tag.containingFile == currentPsi) {
+                navigateToTag(tag, false)
+            }
         }
     }
 
@@ -483,6 +486,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                 parentPanel.add(grid)
             }
              "SplitSize" -> {}
+             "ToolBar" -> {} // Skip rendering ToolBar
              "Embed" -> { 
                  val embedPanel = JPanel(BorderLayout())
                  embedPanel.border = BorderFactory.createTitledBorder(getTitle(tag) + " [Embedded]")
@@ -560,6 +564,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         panel.add(label, BorderLayout.CENTER)
         
         panel.preferredSize = Dimension(120, 30) 
+        panel.putClientProperty(KEY_XML_TAG, tag)
         
         // attachNavigationListener call removed here because registerComponent does it
         // BUT drag source logic needs to stay
@@ -875,9 +880,10 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
              
              for (comp in component.components) {
                  if (comp.bounds.contains(dropLocation.dropPoint)) {
-                     val targetEntry = tagToComponent.entries.find { it.value == comp }
-                     if (targetEntry != null && targetEntry.key.name == "GridColumn") {
-                         targetTag = targetEntry.key
+                     // Optimization: Use client property instead of linear search in map
+                     val tag = (comp as? JComponent)?.getClientProperty(KEY_XML_TAG) as? XmlTag
+                     if (tag != null && tag.name == "GridColumn") {
+                         targetTag = tag
                          val center = comp.x + comp.width / 2
                          insertBefore = dropLocation.dropPoint.x < center
                      }
@@ -892,11 +898,8 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                  WriteCommandAction.runWriteCommandAction(project) {
                      val parent = targetTag!!.parentTag
                      if (parent != null) {
-                         val copy = draggedTag.copy()
-                         draggedTag.delete()
-                         if (insertBefore) parent.addBefore(copy, targetTag)
-                         else parent.addAfter(copy, targetTag)
-                         syncGridCells(gridTag)
+                         // Perform atomic move of column and corresponding cells
+                         moveColumnAndCells(gridTag, draggedTag, targetTag!!, insertBefore)
                      }
                  }
              }
@@ -904,27 +907,41 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         }
     }
     
-    private fun syncGridCells(gridTag: XmlTag) {
-        val colCollection = gridTag.findFirstSubTag("GridColumnCollection") ?: return
-        val rowCollection = gridTag.findFirstSubTag("GridRowCollection") ?: return
+    private fun moveColumnAndCells(gridTag: XmlTag, draggedCol: XmlTag, targetCol: XmlTag, insertBefore: Boolean) {
+        val colCollection = draggedCol.parentTag ?: return
+        val rowCollection = gridTag.findFirstSubTag("GridRowCollection")
         
-        val keys = colCollection.findSubTags("GridColumn").mapNotNull { it.getAttributeValue("Key") }
+        // 1. Move Column
+        val newCopy = draggedCol.copy() as XmlTag
+        draggedCol.delete()
+        if (insertBefore) {
+            colCollection.addBefore(newCopy, targetCol)
+        } else {
+            colCollection.addAfter(newCopy, targetCol)
+        }
         
-        for (row in rowCollection.findSubTags("GridRow")) {
-            val cells = row.findSubTags("GridCell").toList()
-            val cellMap = cells.associateBy({it.getAttributeValue("Key")}, { it.copy() as XmlTag })
-            cells.forEach { it.delete() }
-            
-            for (key in keys) {
-                val cell = cellMap[key]
-                if (cell != null) row.add(cell)
-            }
-            for (c in cells) {
-                 if (c.getAttributeValue("Key") !in keys) {
-                     val orphan = cellMap[c.getAttributeValue("Key")]
-                     if (orphan != null) row.add(orphan)
+        // 2. Move correponding cells in each row (Optimization: Move only one cell per row)
+        val colKey = newCopy.getAttributeValue("Key") ?: return
+        val targetKey = targetCol.getAttributeValue("Key") ?: return
+        
+        if (rowCollection != null) {
+             for (row in rowCollection.findSubTags("GridRow")) {
+                 val cells = row.findSubTags("GridCell")
+                 val cellToMove = cells.find { it.getAttributeValue("Key") == colKey }
+                 val targetCell = cells.find { it.getAttributeValue("Key") == targetKey }
+                 
+                 if (cellToMove != null && targetCell != null) {
+                     val cellCopy = cellToMove.copy()
+                     cellToMove.delete()
+                     if (insertBefore) {
+                         row.addBefore(cellCopy, targetCell)
+                     } else {
+                         row.addAfter(cellCopy, targetCell)
+                     }
                  }
-            }
+             }
         }
     }
 }
+    
+
