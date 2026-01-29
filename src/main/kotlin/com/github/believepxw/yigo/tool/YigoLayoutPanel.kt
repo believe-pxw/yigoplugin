@@ -21,6 +21,9 @@ import com.intellij.ui.SearchTextField
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.util.ui.JBUI
 import example.index.FormIndex
+import com.intellij.openapi.application.ReadAction
+import com.intellij.openapi.application.ModalityState
+import com.intellij.util.concurrency.AppExecutorUtil
 import java.awt.*
 import java.awt.datatransfer.DataFlavor
 import java.awt.datatransfer.StringSelection
@@ -55,14 +58,19 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
     private var lastSelectedComponent: JComponent? = null // From Editor Caret
     private var lastSearchHighlight: JComponent? = null // From Search
     
-    private var searchMatches = listOf<JComponent>()
+    private var searchMatches = listOf<Pair<XmlTag, JComponent>>()
     private var currentMatchIndex = -1
     
-    // Prevent recursive embedding infinite loops
-    private val renderStack = java.util.HashSet<String>()
+    // Prevent recursive embedding infinite loops (Removed class-level state for async safety)
+    // private val renderStack = java.util.HashSet<String>()
     
     // Constant for client property key
     private val KEY_ORIGINAL_BORDER = "YigoOriginalBorder"
+    
+    // Embed Loading Queue
+    private val embedLoadQueue = java.util.ArrayDeque<() -> Unit>()
+    private var activeEmbedLoads = 0
+    private val MAX_CONCURRENT_EMBED_LOADS = 5
 
     init {
         setupSearchPanel()
@@ -137,7 +145,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
     private fun setupSearchPanel() {
         searchPanel = JPanel(BorderLayout())
         searchPanel.border = JBUI.Borders.empty(5)
-        searchPanel.isVisible = false 
+        searchPanel.isVisible = true  
         
         searchField.addDocumentListener(object : DocumentListener {
             override fun insertUpdate(e: DocumentEvent?) { runSearch() }
@@ -205,6 +213,30 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         }
     }
     // -------------------------------------------------------------
+    
+    private fun requestEmbedLoad(task: () -> Unit) {
+        embedLoadQueue.add(task)
+        processEmbedQueue()
+    }
+    
+    private fun processEmbedQueue() {
+        if (activeEmbedLoads >= MAX_CONCURRENT_EMBED_LOADS || embedLoadQueue.isEmpty()) return
+        
+        val task = embedLoadQueue.poll() ?: return
+        activeEmbedLoads++
+        
+        try {
+            task()
+        } catch (e: Exception) {
+            activeEmbedLoads--
+            processEmbedQueue()
+        }
+    }
+    
+    private fun onEmbedLoadFinished() {
+        activeEmbedLoads--
+        processEmbedQueue()
+    }
 
     private fun runSearch() {
         val text = searchField.text.trim().lowercase()
@@ -218,7 +250,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
             val key = tag.getAttributeValue("Key")?.lowercase() ?: ""
             val cap = tag.getAttributeValue("Caption")?.lowercase() ?: ""
             key.contains(text) || cap.contains(text)
-        }.map { it.value }.sortedBy { it.y }
+        }.map { it.toPair() }.sortedBy { it.second.y }
         
         currentMatchIndex = if (searchMatches.isNotEmpty()) 0 else -1
         updateSearchUI()
@@ -252,14 +284,17 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
             prevButton.isEnabled = true
             nextButton.isEnabled = true
             
-            if (lastSearchHighlight != null && lastSearchHighlight != searchMatches[currentMatchIndex]) {
+            if (lastSearchHighlight != null && lastSearchHighlight != searchMatches[currentMatchIndex].second) {
                  restoreBorder(lastSearchHighlight!!)
             }
             
-            val comp = searchMatches[currentMatchIndex]
+            val (tag, comp) = searchMatches[currentMatchIndex]
             setHighlightBorder(comp, Color.MAGENTA, 3)
             comp.scrollRectToVisible(comp.bounds)
             lastSearchHighlight = comp
+            
+            // Sync to XML
+            navigateToTag(tag, false)
         }
     }
 
@@ -299,7 +334,15 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
 
         rootPanel.removeAll()
         tagToComponent.clear()
-        renderStack.clear()
+        // renderStack.clear() // Removed
+        embedLoadQueue.clear() // Clear pending queue on refresh
+        // activeEmbedLoads is not reset to 0 because pending tasks might still come back. 
+        // But we are rebuilding UI, so we don't care about old results?
+        // Ideally we should cancel them, but ReadAction cancellation is via promise. 
+        // For now, allow them to finish and just update dead components? 
+        // Actually, finishOnUiThread updating 'embedPanel' which is removed from rootPanel. 
+        // So it's fine.
+        
         clearSearch() 
         
         val editor = FileEditorManager.getInstance(project).selectedTextEditor
@@ -327,11 +370,11 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         }
         
         val key = rootTag.getAttributeValue("Key") ?: ""
-        if (key.isNotEmpty()) renderStack.add(key)
+        val initialVisited = if (key.isNotEmpty()) setOf(key) else emptySet()
 
         val bodyTag = rootTag.findFirstSubTag("Body")
         if (bodyTag != null) {
-            renderTag(bodyTag, rootPanel)
+            renderTag(bodyTag, rootPanel, initialVisited)
         } else {
              rootPanel.add(JLabel("No Body tag found"))
         }
@@ -357,7 +400,13 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         val offset = editor.caretModel.offset
         val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(editor.document) ?: return
         val element = psiFile.findElementAt(offset)
-        val tag = PsiTreeUtil.getParentOfType(element, XmlTag::class.java, false)
+        var tag = PsiTreeUtil.getParentOfType(element, XmlTag::class.java, false)
+        
+        // Traverse up to find a registered component
+        while (tag != null && !tagToComponent.containsKey(tag)) {
+            tag = tag.parentTag
+            if (tag?.name == "Form" || tag?.name == "Body") break // Stop at top level
+        }
         
         if (tag != null) {
             val component = tagToComponent[tag]
@@ -376,7 +425,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         }
     }
     
-    private fun navigateToTag(tag: XmlTag) {
+    private fun navigateToTag(tag: XmlTag, requestFocus: Boolean = true) {
         if (!tag.isValid) return
         val psiFile = tag.containingFile
         val vFile = psiFile.virtualFile ?: return
@@ -392,7 +441,9 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         val offset = tag.textOffset
         targetEditor.caretModel.moveToOffset(offset)
         targetEditor.scrollingModel.scrollToCaret(ScrollType.MAKE_VISIBLE)
-        targetEditor.contentComponent.requestFocus()
+        if (requestFocus) {
+            targetEditor.contentComponent.requestFocus()
+        }
     }
 
     private fun attachNavigationListener(component: JComponent, tag: XmlTag) {
@@ -404,11 +455,11 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         })
     }
 
-    private fun renderTag(tag: XmlTag, parentPanel: JComponent) {
+    private fun renderTag(tag: XmlTag, parentPanel: JComponent, visitedForms: Set<String> = emptySet()) {
         when (tag.name) {
             "Body", "Block" -> {
                 for (subTag in tag.subTags) {
-                    renderTag(subTag, parentPanel)
+                    renderTag(subTag, parentPanel, visitedForms)
                 }
             }
             "GridLayoutPanel", "FlexGridLayoutPanel" -> {
@@ -423,7 +474,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                  registerComponent(tag, container)
                  parentPanel.add(container)
                  for (subTag in tag.subTags) {
-                     renderTag(subTag, container)
+                     renderTag(subTag, container, visitedForms)
                  }
             }
             "Grid" -> {
@@ -439,25 +490,45 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                  parentPanel.add(embedPanel)
                  
                  val formKey = tag.getAttributeValue("FormKey")
-                 if (!formKey.isNullOrEmpty() && !renderStack.contains(formKey)) {
-                     renderStack.add(formKey)
-                     val defAttr = FormIndex.findFormDefinition(project, formKey)
-                     if (defAttr != null) {
-                         val defTag = PsiTreeUtil.getParentOfType(defAttr, XmlTag::class.java) 
-                         val body = defTag?.findFirstSubTag("Body")
-                         if (body != null) {
-                             val innerPanel = JPanel()
-                             innerPanel.layout = BoxLayout(innerPanel, BoxLayout.Y_AXIS)
-                             embedPanel.add(innerPanel, BorderLayout.CENTER)
-                             renderTag(body, innerPanel)
-                         } else {
-                             embedPanel.add(JLabel("Empty Body in $formKey"), BorderLayout.CENTER)
+                 if (!formKey.isNullOrEmpty() && !visitedForms.contains(formKey)) {
+                     val placeholder = JLabel("Loading $formKey...")
+                     embedPanel.add(placeholder, BorderLayout.CENTER)
+                     
+                     requestEmbedLoad {
+                         ReadAction.nonBlocking<XmlTag?> {
+                             val defAttr = FormIndex.findFormDefinition(project, formKey)
+                             if (defAttr != null) {
+                                 PsiTreeUtil.getParentOfType(defAttr, XmlTag::class.java)
+                             } else null
                          }
-                     } else {
-                         embedPanel.add(JLabel("Form not found: $formKey"), BorderLayout.CENTER)
+                         .inSmartMode(project)
+                         .coalesceBy(this, formKey) 
+                         .finishOnUiThread(ModalityState.defaultModalityState()) { defTag ->
+                             try {
+                                 embedPanel.remove(placeholder)
+                                 if (defTag != null) {
+                                     val body = defTag.findFirstSubTag("Body")
+                                     if (body != null) {
+                                         val innerPanel = JPanel()
+                                         innerPanel.layout = BoxLayout(innerPanel, BoxLayout.Y_AXIS)
+                                         embedPanel.add(innerPanel, BorderLayout.CENTER)
+                                         renderTag(body, innerPanel, visitedForms + formKey)
+                                     } else {
+                                         embedPanel.add(JLabel("Empty Body in $formKey"), BorderLayout.CENTER)
+                                     }
+                                 } else {
+                                     embedPanel.add(JLabel("Form not found: $formKey"), BorderLayout.CENTER)
+                                 }
+                                 embedPanel.revalidate()
+                                 embedPanel.repaint()
+                             } finally {
+                                 onEmbedLoadFinished()
+                             }
+                         }
+                         .submit(AppExecutorUtil.getAppExecutorService())
+                         .onError { onEmbedLoadFinished() } 
                      }
-                     renderStack.remove(formKey)
-                 } else if (renderStack.contains(formKey)) {
+                 } else if (visitedForms.contains(formKey)) {
                      embedPanel.add(JLabel("Recursion detected: $formKey"), BorderLayout.CENTER)
                  } else {
                      val comp = createLeafComponent(tag)
@@ -601,6 +672,14 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         }
     }
 
+    private fun createComponentForGridCell(tag: XmlTag): JComponent {
+        return when (tag.name) {
+            "Grid" -> createWrappedGridTable(tag)
+            "GridLayoutPanel", "FlexGridLayoutPanel" -> createGridPanel(tag)
+            else -> createLeafComponent(tag)
+        }
+    }
+
     private fun createGridPanel(tag: XmlTag): JPanel {
         val panel = JPanel(GridBagLayout())
         panel.border = BorderFactory.createTitledBorder("Grid: ${getTitle(tag)}")
@@ -647,9 +726,13 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         
         for (y in 0 until rowCount) {
             for (x in 0 until colCount) {
-                if (occupied.getOrNull(y)?.getOrNull(x) == true) continue
-                
+                // FIX: Check if we have explicit components here.
                 val compTags = componentMap["$x,$y"]
+                
+                // If we have components here, we MUST render them, even if occupied says true from a previous span.
+                // Exception: If we are occupied AND no components here, then we skip.
+                if (occupied.getOrNull(y)?.getOrNull(x) == true && (compTags == null || compTags.isEmpty())) continue
+                
                 val c = GridBagConstraints()
                 c.gridx = x
                 c.gridy = y
@@ -659,6 +742,10 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                 c.insets = JBUI.insets(1)
 
                 if (compTags != null && compTags.isNotEmpty()) {
+                    // Sort tags: Visible=true first. This ensures strict layout uses the visible component's span.
+                    // If multiple visible, use first.
+                    compTags.sortByDescending { it.getAttributeValue("Visible") != "false" }
+                
                     val firstTag = compTags[0]
                     val xSpan = firstTag.getAttributeValue("XSpan")?.toIntOrNull() ?: 1
                     val ySpan = firstTag.getAttributeValue("YSpan")?.toIntOrNull() ?: 1
@@ -668,14 +755,14 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                     
                     val cellContent: Component
                     if (compTags.size == 1) {
-                         cellContent = createLeafComponent(firstTag)
+                         cellContent = createComponentForGridCell(firstTag)
                          registerComponent(firstTag, cellContent)
                     } else {
                          val cellPanel = JPanel()
                          cellPanel.layout = BoxLayout(cellPanel, BoxLayout.Y_AXIS)
                          cellPanel.border = BorderFactory.createLineBorder(Color.ORANGE) 
                          compTags.forEach { 
-                             val comp = createLeafComponent(it)
+                             val comp = createComponentForGridCell(it)
                              registerComponent(it, comp)
                              cellPanel.add(comp)
                          }
