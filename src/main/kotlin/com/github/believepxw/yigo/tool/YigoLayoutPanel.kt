@@ -397,15 +397,18 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         rootPanel.repaint()
         
         javax.swing.SwingUtilities.invokeLater {
-            if (preserveScroll) {
-                 scrollPane.verticalScrollBar.value = vScroll
-                 scrollPane.horizontalScrollBar.value = hScroll
-            } else {
-                 highlightComponentAtCaret(editor)
-            }
-            
-            if (searchPanel.isVisible && searchField.text.isNotBlank()) {
-                runSearch()
+            if (project.isDisposed) return@invokeLater
+            ApplicationManager.getApplication().runReadAction {
+                if (preserveScroll) {
+                     scrollPane.verticalScrollBar.value = vScroll
+                     scrollPane.horizontalScrollBar.value = hScroll
+                } else {
+                     highlightComponentAtCaret(editor)
+                }
+                
+                if (searchPanel.isVisible && searchField.text.isNotBlank()) {
+                    runSearch()
+                }
             }
         }
     }

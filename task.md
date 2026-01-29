@@ -22,5 +22,6 @@
 - [x] Fix Missing Nested Grids (GridLayoutPanel) <!-- id: 20 -->
 - [x] Optimize TableDropHandler (Remove flicker/lag) <!-- id: 21 -->
 - [x] Refine Rendering (Hide ToolBar, Conditional Search Click) <!-- id: 22 -->
-- [x] Fix ReadAccessViolation (Wrap PSI access in ReadAction) <!-- id: 23 -->
+- [x] Fix ReadAccessViolation (Wrap PSI access in ReadAction - All Call Sites) <!-- id: 23 -->
 - [x] Polish UI Aesthetics (Rounded, JBColor, Clean Look) <!-- id: 24 -->
+- [x] Enhance Component Icons (Type-based) <!-- id: 25 -->
