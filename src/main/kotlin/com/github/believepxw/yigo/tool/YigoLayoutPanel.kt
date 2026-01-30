@@ -1,6 +1,8 @@
 package com.github.believepxw.yigo.tool
 
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.application.ModalityState
+import com.intellij.openapi.application.ReadAction
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.EditorFactory
@@ -14,26 +16,20 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiManager
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.xml.XmlFile
 import com.intellij.psi.xml.XmlTag
-import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.ui.SearchTextField
 import com.intellij.ui.components.JBScrollPane
-import com.intellij.util.ui.JBUI
-import example.index.FormIndex
-import com.intellij.openapi.application.ReadAction
-import com.intellij.openapi.application.ModalityState
 import com.intellij.ui.components.JBTabbedPane
 import com.intellij.util.concurrency.AppExecutorUtil
+import com.intellij.util.ui.JBUI
+import example.index.FormIndex
 import java.awt.*
 import java.awt.datatransfer.StringSelection
 import java.awt.dnd.DnDConstants
 import java.awt.dnd.DragSource
-import java.awt.event.KeyAdapter
-import java.awt.event.KeyEvent
-import java.awt.event.ActionEvent
-import java.awt.event.MouseAdapter
-import java.awt.event.MouseEvent
+import java.awt.event.*
 import javax.swing.*
 import javax.swing.border.Border
 import javax.swing.event.DocumentEvent
@@ -561,184 +557,166 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                 }
                 return // Container-only tags, no component to resize
             }
-            "GridLayoutPanel", "FlexGridLayoutPanel" -> {
-                val gridPanel = createGridPanel(tag)
-                component = gridPanel
-                parentPanel.add(gridPanel)
-                // Recursive children added inside createGridPanel logic?? No, createGridPanel handles children logic internal?
-                // Wait, existing createGridPanel logic parses children. 
-                // We just need to register and add.
-                registerComponent(tag, gridPanel)
-            }
-            "SplitPanel" -> {
-                 val container = JPanel()
-                 // Default to Horizontal if not specified or not Vertical
-                 val orientation = tag.getAttributeValue("Orientation")
-                 val axis = if (orientation.equals("Vertical", ignoreCase = true)) BoxLayout.Y_AXIS else BoxLayout.X_AXIS
-                 container.layout = BoxLayout(container, axis)
-
-                 container.border = BorderFactory.createTitledBorder(getTitle(tag))
-                 registerComponent(tag, container)
-                 parentPanel.add(container)
-                 component = container
-                 for (subTag in tag.subTags) {
-                     renderTag(subTag, container, visitedForms)
-                 }
-            }
-            "TabPanel" -> {
-                 // Robust Dynamic Height TabbedPane with Recursion Guard
-                 val tabbedPane = object : JBTabbedPane() {
-                     var isCalculating = false
-
-                     override fun getPreferredSize(): Dimension {
-                         // Prevent recursive calls logic loops
-                         if (isCalculating) return super.getPreferredSize()
-
-                         isCalculating = true
-                         try {
-                             val baseSize = super.getPreferredSize()
-                             val selected = selectedComponent ?: return baseSize
-
-                             // Calculate Max Content Height currently known to the UI
-                             var maxContentHeight = 0
-                             for (i in 0 until tabCount) {
-                                 val c = getComponentAt(i)
-                                 // Ensure we get the fresh preferred size
-                                 val h = c.preferredSize.height
-                                 if (h > maxContentHeight) maxContentHeight = h
-                             }
-
-                             // Overhead = Total UI Height - Max Content Height
-                             // (e.g. Tab Strip, Borders)
-                             val overhead = baseSize.height - maxContentHeight
-
-                             // Target Height = Overhead + Selected Content Height
-                             val targetHeight = overhead + selected.preferredSize.height
-
-                             // Return strict dimension.
-                             // BoxLayout respects this.
-                             return Dimension(baseSize.width, targetHeight)
-                         } finally {
-                             isCalculating = false
-                         }
-                     }
-                 }
-
-                 tabbedPane.border = BorderFactory.createTitledBorder(getTitle(tag))
-                 // Register but DO NOT attach mouse listener to the pane itself to avoid conflict with tab switching
-                 tagToComponent[tag] = tabbedPane
-                 saveOriginalBorder(tabbedPane)
-
-                 parentPanel.add(tabbedPane)
-                 component = tabbedPane
-
-                 // Map to store child tags for navigation
-                 val tabTags = mutableListOf<XmlTag>()
-
-                 for (subTag in tag.subTags) {
-                     if(subTag.name == "ItemChanged") continue
-                     val tabContainer = JPanel()
-                     tabContainer.layout = BoxLayout(tabContainer, BoxLayout.Y_AXIS)
-                     renderTag(subTag, tabContainer, visitedForms)
-
-                     // Use standard title logic
-                     val title = getTitle(subTag)
-
-                     tabbedPane.addTab(title, tabContainer)
-                     tabTags.add(subTag)
-                 }
-
-                 // Navigate to child tag when tab is selected
-                 tabbedPane.addChangeListener {
-                     if (isProgrammaticSwitch) return@addChangeListener
-
-                     val index = tabbedPane.selectedIndex
-                     if (index >= 0 && index < tabTags.size) {
-                         navigateToTag(tabTags[index])
-                     }
-                 }
-            }
-            "FlexFlowLayoutPanel", "SubDetail" -> {
-                 val container = JPanel()
-                 container.layout = BoxLayout(container, BoxLayout.Y_AXIS)
-                 container.border = BorderFactory.createTitledBorder(getTitle(tag))
-                 registerComponent(tag, container)
-                 parentPanel.add(container)
-                 component = container
-                 for (subTag in tag.subTags) {
-                     renderTag(subTag, container, visitedForms)
-                 }
-            }
-            "Grid" -> {
-                val grid = createWrappedGridTable(tag)
-                registerComponent(tag, grid)
-                parentPanel.add(grid)
-                component = grid
-            }
-             "SplitSize" -> { return } // Handled by SplitPanel
-             "ToolBar" -> { return } // Skip rendering ToolBar
-             "Embed" -> {
-                 val embedPanel = JPanel(BorderLayout())
-                 embedPanel.border = BorderFactory.createTitledBorder(getTitle(tag) + " [Embedded]")
-                 registerComponent(tag, embedPanel)
-                 parentPanel.add(embedPanel)
-                 component = embedPanel
-
-                 val formKey = tag.getAttributeValue("FormKey")
-                 if (!formKey.isNullOrEmpty() && !visitedForms.contains(formKey)) {
-                     val placeholder = JLabel("Loading $formKey...")
-                     embedPanel.add(placeholder, BorderLayout.CENTER)
-
-                     requestEmbedLoad {
-                         ReadAction.nonBlocking<XmlTag?> {
-                             val defAttr = FormIndex.findFormDefinition(project, formKey)
-                             if (defAttr != null) {
-                                 PsiTreeUtil.getParentOfType(defAttr, XmlTag::class.java)
-                             } else null
-                         }
-                         .inSmartMode(project)
-                         .coalesceBy(this, formKey)
-                         .finishOnUiThread(ModalityState.defaultModalityState()) { defTag ->
-                             try {
-                                 embedPanel.remove(placeholder)
-                                 if (defTag != null) {
-                                     val body = defTag.findFirstSubTag("Body")
-                                     if (body != null) {
-                                         val innerPanel = JPanel()
-                                         innerPanel.layout = BoxLayout(innerPanel, BoxLayout.Y_AXIS)
-                                         embedPanel.add(innerPanel, BorderLayout.CENTER)
-                                         renderTag(body, innerPanel, visitedForms + formKey)
-                                     } else {
-                                         embedPanel.add(JLabel("Empty Body in $formKey"), BorderLayout.CENTER)
-                                     }
-                                 } else {
-                                     embedPanel.add(JLabel("Form not found: $formKey"), BorderLayout.CENTER)
-                                 }
-                                 embedPanel.revalidate()
-                                 embedPanel.repaint()
-                             } finally {
-                                 onEmbedLoadFinished()
-                             }
-                         }
-                         .submit(AppExecutorUtil.getAppExecutorService())
-                         .onError { onEmbedLoadFinished() }
-                     }
-                 } else if (visitedForms.contains(formKey)) {
-                     embedPanel.add(JLabel("Recursion detected: $formKey"), BorderLayout.CENTER)
-                 } else {
-                     val comp = createLeafComponent(tag)
-                     embedPanel.add(comp, BorderLayout.CENTER)
-                 }
-             }
-            "RowDefCollection", "ColumnDefCollection" -> { return }
             else -> {
-                val componentReq = createLeafComponent(tag)
-                registerComponent(tag, componentReq)
-                parentPanel.add(componentReq)
-                component = componentReq
+                val componentReq = createComponent(tag, visitedForms)
+                if (componentReq != null) {
+                    registerComponent(tag, componentReq)
+                    parentPanel.add(componentReq)
+                    component = componentReq
+                } else {
+                    component = null
+                }
             }
         }
+    }
+
+    private fun createComponent(tag: XmlTag, visitedForms: Set<String> = emptySet()): JComponent? {
+        val tagName = tag.name
+        return when (tagName) {
+             "GridLayoutPanel" -> createCoordinateGridPanel(tag, visitedForms)
+             "FlexGridLayoutPanel" -> createFlexGridPanel(tag, visitedForms)
+             "SplitPanel" -> createSplitPanel(tag, visitedForms)
+             "TabPanel" -> createTabPanel(tag, visitedForms)
+             "FlexFlowLayoutPanel", "SubDetail", "LinearLayoutPanel", "FlowLayoutPanel" -> createFlexFlowPanel(tag, visitedForms)
+             "Grid" -> createWrappedGridTable(tag)
+             "Embed" -> createEmbedPanel(tag, visitedForms)
+             "ToolBar", "SplitSize", "RowDefCollection", "ColumnDefCollection" -> null
+             else -> createLeafComponent(tag)
+        }
+    }
+
+    private fun createSplitPanel(tag: XmlTag, visitedForms: Set<String>): JPanel {
+         val container = JPanel()
+         val orientation = tag.getAttributeValue("Orientation")
+         val axis = if (orientation.equals("Vertical", ignoreCase = true)) BoxLayout.Y_AXIS else BoxLayout.X_AXIS
+         container.layout = BoxLayout(container, axis)
+         container.border = BorderFactory.createTitledBorder(getTitle(tag))
+         
+         for (subTag in tag.subTags) {
+             renderTag(subTag, container, visitedForms)
+         }
+         return container
+    }
+
+    private fun createTabPanel(tag: XmlTag, visitedForms: Set<String>): JBTabbedPane {
+         val tabbedPane = object : JBTabbedPane() {
+             var isCalculating = false
+             override fun getPreferredSize(): Dimension {
+                 if (isCalculating) return super.getPreferredSize()
+                 isCalculating = true
+                 try {
+                     val baseSize = super.getPreferredSize()
+                     val selected = selectedComponent ?: return baseSize
+                     var maxContentHeight = 0
+                     for (i in 0 until tabCount) {
+                         val c = getComponentAt(i)
+                         val h = c.preferredSize.height
+                         if (h > maxContentHeight) maxContentHeight = h
+                     }
+                     val overhead = baseSize.height - maxContentHeight
+                     val targetHeight = overhead + selected.preferredSize.height
+                     return Dimension(baseSize.width, targetHeight)
+                 } finally {
+                     isCalculating = false
+                 }
+             }
+         }
+
+         tabbedPane.border = BorderFactory.createTitledBorder(getTitle(tag))
+         saveOriginalBorder(tabbedPane)
+
+         val tabTags = mutableListOf<XmlTag>()
+         for (subTag in tag.subTags) {
+             if(subTag.name == "ItemChanged") continue
+             val tabContainer = JPanel()
+             tabContainer.layout = BoxLayout(tabContainer, BoxLayout.Y_AXIS)
+             renderTag(subTag, tabContainer, visitedForms)
+             val title = getTitle(subTag)
+             tabbedPane.addTab(title, tabContainer)
+             tabTags.add(subTag)
+         }
+
+         tabbedPane.addChangeListener {
+             if (isProgrammaticSwitch) return@addChangeListener
+             val index = tabbedPane.selectedIndex
+             if (index >= 0 && index < tabTags.size) {
+                 navigateToTag(tabTags[index])
+             }
+         }
+         return tabbedPane
+    }
+
+    private fun createFlexFlowPanel(tag: XmlTag, visitedForms: Set<String>): JPanel {
+         val container = JPanel()
+         container.layout = BoxLayout(container, BoxLayout.Y_AXIS)
+         container.border = BorderFactory.createTitledBorder(getTitle(tag))
+         for (subTag in tag.subTags) {
+             renderTag(subTag, container, visitedForms)
+         }
+         return container
+    }
+
+    private fun createEmbedPanel(tag: XmlTag, visitedForms: Set<String>): JPanel {
+         val embedPanel = JPanel(BorderLayout())
+         embedPanel.border = BorderFactory.createTitledBorder(getTitle(tag) + " [Embedded]")
+         
+         val formKey = tag.getAttributeValue("FormKey")
+         if (!formKey.isNullOrEmpty() && !visitedForms.contains(formKey)) {
+             val placeholder = JLabel("Loading $formKey...")
+             embedPanel.add(placeholder, BorderLayout.CENTER)
+             
+             requestEmbedLoad {
+                 ReadAction.nonBlocking<XmlTag?> {
+                     val defAttr = FormIndex.findFormDefinition(project, formKey)
+                     if (defAttr != null) {
+                         PsiTreeUtil.getParentOfType(defAttr, XmlTag::class.java)
+                     } else null
+                 }
+                 .inSmartMode(project)
+                 .coalesceBy(this, formKey)
+                 .finishOnUiThread(ModalityState.defaultModalityState()) { defTag ->
+                     try {
+                         embedPanel.remove(placeholder)
+                         if (defTag != null) {
+                             val body = defTag.findFirstSubTag("Body")
+                             if (body != null) {
+                                 val innerPanel = JPanel()
+                                 innerPanel.layout = BoxLayout(innerPanel, BoxLayout.Y_AXIS)
+                                 embedPanel.add(innerPanel, BorderLayout.CENTER)
+                                 renderTag(body, innerPanel, visitedForms + formKey)
+                             } else {
+                                 embedPanel.add(JLabel("Empty Body in $formKey"), BorderLayout.CENTER)
+                             }
+                         } else {
+                             embedPanel.add(JLabel("Form not found: $formKey"), BorderLayout.CENTER)
+                         }
+                         embedPanel.revalidate()
+                         embedPanel.repaint()
+                     } finally {
+                         onEmbedLoadFinished()
+                     }
+                 }
+                 .submit(AppExecutorUtil.getAppExecutorService())
+                 .onError { onEmbedLoadFinished() }
+             }
+         } else if (visitedForms.contains(formKey)) {
+             embedPanel.add(JLabel("Recursion detected: $formKey"), BorderLayout.CENTER)
+         } else {
+             val comp = createLeafComponent(tag)
+             embedPanel.add(comp, BorderLayout.CENTER)
+         }
+         return embedPanel
+        }
         
+
+
+    private fun isValidGridChild(tagName: String): Boolean {
+        if (tagName.endsWith("DefCollection")) return false
+        return com.github.believepxw.yigo.ref.VariableReference.variableDefinitionTagNames.contains(tagName) || 
+               tagName == "Grid" || tagName == "Embed" ||
+               tagName == "GridLayoutPanel" || tagName == "FlexGridLayoutPanel" || 
+               tagName == "FlexFlowLayoutPanel" || tagName == "LinearLayoutPanel" ||
+               tagName == "SplitPanel" || tagName == "TabPanel"
     }
 
     private fun getTitle(tag: XmlTag): String {
@@ -911,14 +889,135 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
     }
 
     private fun createComponentForGridCell(tag: XmlTag): JComponent {
-        return when (tag.name) {
-            "Grid" -> createWrappedGridTable(tag)
-            "GridLayoutPanel", "FlexGridLayoutPanel" -> createGridPanel(tag)
-            else -> createLeafComponent(tag)
+        // Now delegate to central createComponent which handles nested containers correcty
+        return createComponent(tag) ?: createLeafComponent(tag)
+    }
+
+    private fun createFlexGridPanel(tag: XmlTag, visitedForms: Set<String> = emptySet()): JPanel {
+        val layout = GridBagLayout()
+        val panel = JPanel(layout)
+        panel.border = BorderFactory.createTitledBorder("FlexGrid: ${getTitle(tag)}")
+        panel.transferHandler = FlexDropHandler(tag, project)
+        
+        val columnCount = tag.getAttributeValue("ColumnCount")?.toIntOrNull() ?: 1
+        
+        // Collect valid child components in order
+        // Collect valid child components in order
+        val children = tag.subTags.filter { isValidGridChild(it.name) }
+        
+        children.forEachIndexed { index, child ->
+            val x = index % columnCount
+            val y = index / columnCount
+            
+            val c = GridBagConstraints()
+            c.gridx = x
+            c.gridy = y
+            c.weightx = 1.0
+            c.weighty = 0.0 // Don't stretch vertically by default in flex
+            c.fill = GridBagConstraints.HORIZONTAL
+            c.insets = JBUI.insets(2)
+            c.anchor = GridBagConstraints.NORTHWEST
+            
+            // XSpan/YSpan support in Flex? Usually FlexGrid is 1x1, but let's clear if supported.
+            // Requirement says "reduce whitespace", implying simple flow. LayoutPanel usually supports spans. 
+            // If user adds XSpan/YSpan, we should respect it? 
+            // "FlexGridLayoutPanel" typically implies just sequential.
+            // Let's check attributs... assuming 1x1 for now as per "only ColumnCount determines".
+            // Actually, if a component HAS XSpan, it might take multiple slots. 
+            // But simplifying: Sequential filling usually ignores Span's impact on *position*, but Span impacts *size*.
+            // Let's respect XSpan if present, but calculating next slot becomes complex (bin packing).
+            // Request said "just ColumnCount determines how many columns... put elements one by one".
+            // So we stick to simple index-based mapping.
+            
+            val compCode = createComponent(child, visitedForms) ?: createLeafComponent(child)
+            registerComponent(child, compCode)
+            panel.add(compCode, c)
+        }
+        
+        // Add spacer to push content up/left
+        val spacer = JPanel()
+        val spacerC = GridBagConstraints()
+        spacerC.gridx = 0
+        spacerC.gridy = (children.size / columnCount) + 1
+        spacerC.weighty = 1.0
+        spacerC.fill = GridBagConstraints.VERTICAL
+        panel.add(spacer, spacerC)
+        
+        return panel
+    }
+
+    private inner class FlexDropHandler(private val parentTag: XmlTag, private val project: Project) : TransferHandler() {
+        override fun canImport(support: TransferSupport): Boolean {
+             // Check if dragging a tag
+             return DragContext.draggedTag != null
+        }
+        
+        override fun importData(support: TransferSupport): Boolean {
+             val draggedTag = DragContext.draggedTag ?: return false
+             // Confirm draggedTag is not an ancestor of parentTag (prevent cycle)
+             if (PsiTreeUtil.isAncestor(draggedTag, parentTag, false)) return false
+             
+             val dropLocation = support.dropLocation as? javax.swing.TransferHandler.DropLocation ?: return false
+             val panel = support.component as? Container ?: return false
+             
+             // Find insertion point
+             var targetIndex = -1
+             var insertBefore = false
+             
+             // Simple geometry check against children
+             val p = dropLocation.dropPoint
+             var closestDist = Double.MAX_VALUE
+             var closestComp: Component? = null
+             
+             for (comp in panel.components) {
+                 if (comp !is JComponent || comp.getClientProperty(KEY_XML_TAG) == null) continue
+                 
+                 val cx = comp.x + comp.width / 2
+                 val cy = comp.y + comp.height / 2
+                 val dist = Math.pow((p.x - cx).toDouble(), 2.0) + Math.pow((p.y - cy).toDouble(), 2.0)
+                 
+                 if (dist < closestDist) {
+                     closestDist = dist
+                     closestComp = comp
+                 }
+             }
+             
+             if (closestComp != null) {
+                 // Determine if before or after based on flow
+                 // FlexGrid flow is Left->Right, Top->Bottom
+                 val refTag = (closestComp as JComponent).getClientProperty(KEY_XML_TAG) as XmlTag
+                 
+                 // If point is to the LEFT of center, insert BEFORE
+                 val center = closestComp.x + closestComp.width / 2
+                 insertBefore = p.x < center
+                 
+                 ApplicationManager.getApplication().invokeLater {
+                     WriteCommandAction.runWriteCommandAction(project) {
+                         val newCopy = draggedTag.copy()
+                         draggedTag.delete()
+                         if (insertBefore) {
+                             parentTag.addBefore(newCopy, refTag)
+                         } else {
+                             parentTag.addAfter(newCopy, refTag)
+                         }
+                     }
+                 }
+                 return true
+             } else {
+                 // Append to end if empty or far away
+                 ApplicationManager.getApplication().invokeLater {
+                     WriteCommandAction.runWriteCommandAction(project) {
+                         val newCopy = draggedTag.copy()
+                         draggedTag.delete()
+                         parentTag.add(newCopy)
+                     }
+                 }
+                 return true
+             }
         }
     }
 
-    private fun createGridPanel(tag: XmlTag): JPanel {
+    private fun createCoordinateGridPanel(tag: XmlTag, visitedForms: Set<String> = emptySet()): JPanel {
         val layout = GridBagLayout()
         val panel = JPanel(layout)
         panel.border = BorderFactory.createTitledBorder("Grid: ${getTitle(tag)}")
@@ -988,9 +1087,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         val componentChildren = mutableListOf<XmlTag>()
         
         for (child in tag.subTags) {
-             if (child.name.endsWith("DefCollection")) continue
-             val name = child.name
-             if (com.github.believepxw.yigo.ref.VariableReference.variableDefinitionTagNames.contains(name) || name == "Grid" || name == "Embed") {
+             if (isValidGridChild(child.name)) {
                  componentChildren.add(child)
                  val x = child.getAttributeValue("X")?.toIntOrNull() ?: 0
                  val y = child.getAttributeValue("Y")?.toIntOrNull() ?: 0
@@ -1044,8 +1141,9 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                     c.gridheight = ySpan
                     
                     val cellContent: Component
+                    val childComp = createComponent(firstTag, visitedForms) ?: createLeafComponent(firstTag)
                     if (compTags.size == 1) {
-                         cellContent = createComponentForGridCell(firstTag)
+                         cellContent = childComp
                          registerComponent(firstTag, cellContent)
                     } else {
                          val cellPanel = JPanel()
