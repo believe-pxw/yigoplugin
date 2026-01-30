@@ -78,6 +78,9 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
     private val embedLoadQueue = java.util.ArrayDeque<() -> Unit>()
     private var activeEmbedLoads = 0
     private val MAX_CONCURRENT_EMBED_LOADS = 5
+    
+    // Flag to prevent recursive navigation updates
+    private var isProgrammaticSwitch = false
 
     init {
         setupSearchPanel()
@@ -308,7 +311,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
             
             val (tag, comp) = searchMatches[currentMatchIndex]
             setHighlightBorder(comp, Color.MAGENTA, 3)
-            comp.scrollRectToVisible(comp.bounds)
+            ensureComponentVisible(comp)
             lastSearchHighlight = comp
             
             // Sync to XML
@@ -461,13 +464,36 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                          setHighlightBorder(component, Color.BLUE, 2)
                     }
                     
-                    component.scrollRectToVisible(component.bounds)
+                    ensureComponentVisible(component)
                     lastSelectedComponent = component
                 }
             }
         }
     }
     
+        private fun ensureComponentVisible(component: JComponent) {
+        // 1. Walk up hierarchy to find JTabbedPane and switch tabs
+        var current: Container? = component
+        while (current != null) {
+            val parent = current.parent
+            if (parent is JTabbedPane) {
+                val index = parent.indexOfComponent(current)
+                if (index != -1 && parent.selectedIndex != index) {
+                    isProgrammaticSwitch = true
+                    try {
+                        parent.selectedIndex = index
+                    } finally {
+                        isProgrammaticSwitch = false
+                    }
+                }
+            }
+            current = parent
+        }
+        
+        // 2. Scroll to visible
+        component.scrollRectToVisible(component.bounds)
+    }
+
     private fun navigateToTag(tag: XmlTag, requestFocus: Boolean = true) {
         if (project.isDisposed) return
         
@@ -611,6 +637,8 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                  
                  // Navigate to child tag when tab is selected
                  tabbedPane.addChangeListener {
+                     if (isProgrammaticSwitch) return@addChangeListener
+
                      val index = tabbedPane.selectedIndex
                      if (index >= 0 && index < tabTags.size) {
                          navigateToTag(tabTags[index])
