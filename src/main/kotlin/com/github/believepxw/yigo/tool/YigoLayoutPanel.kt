@@ -81,6 +81,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
     
     // Flag to prevent recursive navigation updates
     private var isProgrammaticSwitch = false
+    private var isNavigatingToXml = false
 
     init {
         setupSearchPanel()
@@ -453,6 +454,9 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
             // The crash happened because of re-entrant layout.
             // Let's defer strict UI updates to invokeLater to break the layout cycle if strictly needed.
             
+            // Capture state immediately! invokeLater runs when flag is reset.
+            val shouldSuppressScroll = isNavigatingToXml
+            
             ApplicationManager.getApplication().invokeLater {
                 val component = tagToComponent[targetTag]
                 if (component != null && component != lastSelectedComponent) {
@@ -464,7 +468,9 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                          setHighlightBorder(component, Color.BLUE, 2)
                     }
                     
-                    ensureComponentVisible(component)
+                    if (!shouldSuppressScroll) {
+                        ensureComponentVisible(component)
+                    }
                     lastSelectedComponent = component
                 }
             }
@@ -517,13 +523,19 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         
         if (currentEditor == null || currentEditor.document != PsiDocumentManager.getInstance(project).getDocument(psiFile!!)) {
              fileEditorHelper.openFile(vFile!!, true)
+        } else {
+             isNavigatingToXml = true
         }
         
-        val targetEditor = fileEditorHelper.selectedTextEditor ?: return
-        targetEditor.caretModel.moveToOffset(offset)
-        targetEditor.scrollingModel.scrollToCaret(ScrollType.MAKE_VISIBLE)
-        if (requestFocus) {
-            targetEditor.contentComponent.requestFocus()
+        try {
+            val targetEditor = fileEditorHelper.selectedTextEditor ?: return
+            targetEditor.caretModel.moveToOffset(offset)
+            targetEditor.scrollingModel.scrollToCaret(ScrollType.MAKE_VISIBLE)
+            if (requestFocus) {
+                targetEditor.contentComponent.requestFocus()
+            }
+        } finally {
+            isNavigatingToXml = false
         }
     }
 
