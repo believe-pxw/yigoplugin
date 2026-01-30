@@ -198,7 +198,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         searchPanel.add(searchField, BorderLayout.CENTER)
         searchPanel.add(controls, BorderLayout.EAST)
         
-        add(searchPanel, BorderLayout.NORTH)
+        add(searchPanel, BorderLayout.SOUTH)
     }
     
     // --- Helper Methods to Register Component and Store Border ---
@@ -564,7 +564,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                  val orientation = tag.getAttributeValue("Orientation")
                  val axis = if (orientation.equals("Vertical", ignoreCase = true)) BoxLayout.Y_AXIS else BoxLayout.X_AXIS
                  container.layout = BoxLayout(container, axis)
-                 
+
                  container.border = BorderFactory.createTitledBorder(getTitle(tag))
                  registerComponent(tag, container)
                  parentPanel.add(container)
@@ -577,16 +577,16 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                  // Robust Dynamic Height TabbedPane with Recursion Guard
                  val tabbedPane = object : JBTabbedPane() {
                      var isCalculating = false
-                     
+
                      override fun getPreferredSize(): Dimension {
                          // Prevent recursive calls logic loops
                          if (isCalculating) return super.getPreferredSize()
-                         
+
                          isCalculating = true
                          try {
                              val baseSize = super.getPreferredSize()
                              val selected = selectedComponent ?: return baseSize
-                             
+
                              // Calculate Max Content Height currently known to the UI
                              var maxContentHeight = 0
                              for (i in 0 until tabCount) {
@@ -595,15 +595,15 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                                  val h = c.preferredSize.height
                                  if (h > maxContentHeight) maxContentHeight = h
                              }
-                             
+
                              // Overhead = Total UI Height - Max Content Height
                              // (e.g. Tab Strip, Borders)
                              val overhead = baseSize.height - maxContentHeight
-                             
+
                              // Target Height = Overhead + Selected Content Height
                              val targetHeight = overhead + selected.preferredSize.height
-                             
-                             // Return strict dimension. 
+
+                             // Return strict dimension.
                              // BoxLayout respects this.
                              return Dimension(baseSize.width, targetHeight)
                          } finally {
@@ -616,25 +616,26 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                  // Register but DO NOT attach mouse listener to the pane itself to avoid conflict with tab switching
                  tagToComponent[tag] = tabbedPane
                  saveOriginalBorder(tabbedPane)
-                 
+
                  parentPanel.add(tabbedPane)
                  component = tabbedPane
-                 
+
                  // Map to store child tags for navigation
                  val tabTags = mutableListOf<XmlTag>()
-                 
+
                  for (subTag in tag.subTags) {
+                     if(subTag.name == "ItemChanged") continue
                      val tabContainer = JPanel()
                      tabContainer.layout = BoxLayout(tabContainer, BoxLayout.Y_AXIS)
                      renderTag(subTag, tabContainer, visitedForms)
-                     
+
                      // Use standard title logic
                      val title = getTitle(subTag)
-                     
+
                      tabbedPane.addTab(title, tabContainer)
                      tabTags.add(subTag)
                  }
-                 
+
                  // Navigate to child tag when tab is selected
                  tabbedPane.addChangeListener {
                      if (isProgrammaticSwitch) return@addChangeListener
@@ -664,18 +665,18 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
             }
              "SplitSize" -> { return } // Handled by SplitPanel
              "ToolBar" -> { return } // Skip rendering ToolBar
-             "Embed" -> { 
+             "Embed" -> {
                  val embedPanel = JPanel(BorderLayout())
-                 embedPanel.border = BorderFactory.createTitledBorder(getTitle(tag) + " [Embedded]") 
+                 embedPanel.border = BorderFactory.createTitledBorder(getTitle(tag) + " [Embedded]")
                  registerComponent(tag, embedPanel)
                  parentPanel.add(embedPanel)
                  component = embedPanel
-                 
+
                  val formKey = tag.getAttributeValue("FormKey")
                  if (!formKey.isNullOrEmpty() && !visitedForms.contains(formKey)) {
                      val placeholder = JLabel("Loading $formKey...")
                      embedPanel.add(placeholder, BorderLayout.CENTER)
-                     
+
                      requestEmbedLoad {
                          ReadAction.nonBlocking<XmlTag?> {
                              val defAttr = FormIndex.findFormDefinition(project, formKey)
@@ -684,7 +685,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                              } else null
                          }
                          .inSmartMode(project)
-                         .coalesceBy(this, formKey) 
+                         .coalesceBy(this, formKey)
                          .finishOnUiThread(ModalityState.defaultModalityState()) { defTag ->
                              try {
                                  embedPanel.remove(placeholder)
@@ -708,7 +709,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                              }
                          }
                          .submit(AppExecutorUtil.getAppExecutorService())
-                         .onError { onEmbedLoadFinished() } 
+                         .onError { onEmbedLoadFinished() }
                      }
                  } else if (visitedForms.contains(formKey)) {
                      embedPanel.add(JLabel("Recursion detected: $formKey"), BorderLayout.CENTER)
