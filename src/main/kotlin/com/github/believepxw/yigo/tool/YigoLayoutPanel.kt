@@ -23,16 +23,14 @@ import com.intellij.util.ui.JBUI
 import example.index.FormIndex
 import com.intellij.openapi.application.ReadAction
 import com.intellij.openapi.application.ModalityState
+import com.intellij.ui.components.JBTabbedPane
 import com.intellij.util.concurrency.AppExecutorUtil
 import java.awt.*
-import java.awt.datatransfer.DataFlavor
 import java.awt.datatransfer.StringSelection
-import java.awt.datatransfer.Transferable
 import java.awt.dnd.DnDConstants
 import java.awt.dnd.DragSource
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
-import java.awt.event.ActionListener
 import java.awt.event.ActionEvent
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
@@ -43,7 +41,18 @@ import javax.swing.event.DocumentListener
 
 class YigoLayoutPanel(private val project: Project, private val toolWindow: ToolWindow) : JPanel(BorderLayout()) {
 
-    private val rootPanel = JPanel()
+    private val rootPanel = object : JPanel(), Scrollable {
+        // Implement Scrollable to force width to match viewport (no horizontal scroll)
+        override fun getScrollableTracksViewportWidth(): Boolean = true
+        
+        // Let height grow as needed
+        override fun getScrollableTracksViewportHeight(): Boolean = false
+        
+        // Standard Scrollable implementation
+        override fun getPreferredScrollableViewportSize(): Dimension = preferredSize
+        override fun getScrollableUnitIncrement(visibleRect: Rectangle?, orientation: Int, direction: Int): Int = 20
+        override fun getScrollableBlockIncrement(visibleRect: Rectangle?, orientation: Int, direction: Int): Int = 60
+    }
     private val scrollPane = JBScrollPane(rootPanel)
     
     // Search Components
@@ -415,35 +424,46 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
 
     private fun highlightComponentAtCaret(editor: Editor) {
         val offset = editor.caretModel.offset
+        // 1. Read PSI to find tag (Must be in ReadAction)
+        var targetTag: XmlTag? = null
+        
+        // Check if we are already in a read action? 
+        // If called from updateUIFromXml, we are. If called from Listener, maybe not.
+        // We will assume caller handles ReadAction for finding element, OR we wrap it.
+        // BUT, highlightComponentAtCaret is called from:
+        // 1. CaretListener (calls runReadAction explicitly)
+        // 2. updateUIFromXml (calls runReadAction explicitly)
+        
         val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(editor.document) ?: return
         val element = psiFile.findElementAt(offset)
         var tag = PsiTreeUtil.getParentOfType(element, XmlTag::class.java, false)
         
-        // Traverse up to find a registered component
-        // Note: PsiTreeUtil accesses PSI, needs read action. 
-        // This is called inside updateUIFromXml's invokeLater, BUT 
-        // updateUIFromXml now wraps itself in runReadAction.
-        // HOWEVER, highlightComponentAtCaret is also called from CaretListener (line 96) which might NOT be wrapped.
-        // Wait, line 96 calls it directly. CaretListener is often on EDT but NOT holding read lock.
-        
         while (tag != null && !tagToComponent.containsKey(tag)) {
             tag = tag.parentTag
-            if (tag?.name == "Form" || tag?.name == "Body") break // Stop at top level
+            if (tag?.name == "Form" || tag?.name == "Body") break 
         }
+        targetTag = tag
         
-        if (tag != null) {
-            val component = tagToComponent[tag]
-            if (component != null && component != lastSelectedComponent) {
-                if (lastSelectedComponent != null && lastSelectedComponent != lastSearchHighlight) {
-                    restoreBorder(lastSelectedComponent!!)
+        if (targetTag != null) {
+            // 2. Update UI (Must be on EDT, OUTSIDE ReadAction ideally, but ReadAction on EDT is allowed)
+            // However, modifying Swing components inside a ReadAction is fine as long as we are on EDT.
+            // The crash happened because of re-entrant layout.
+            // Let's defer strict UI updates to invokeLater to break the layout cycle if strictly needed.
+            
+            ApplicationManager.getApplication().invokeLater {
+                val component = tagToComponent[targetTag]
+                if (component != null && component != lastSelectedComponent) {
+                    if (lastSelectedComponent != null && lastSelectedComponent != lastSearchHighlight) {
+                        restoreBorder(lastSelectedComponent!!)
+                    }
+                    
+                    if (component != lastSearchHighlight) {
+                         setHighlightBorder(component, Color.BLUE, 2)
+                    }
+                    
+                    component.scrollRectToVisible(component.bounds)
+                    lastSelectedComponent = component
                 }
-                
-                if (component != lastSearchHighlight) {
-                     setHighlightBorder(component, Color.BLUE, 2)
-                }
-                
-                component.scrollRectToVisible(component.bounds)
-                lastSelectedComponent = component
             }
         }
     }
@@ -484,30 +504,126 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
     private fun attachNavigationListener(component: JComponent, tag: XmlTag) {
         component.addMouseListener(object : MouseAdapter() {
             override fun mouseClicked(e: MouseEvent) {
-                e.consume()
+                // Do NOT consume. Let Swing handle it (e.g. Tab selection).
+                // e.consume() 
                 navigateToTag(tag)
             }
         })
     }
 
     private fun renderTag(tag: XmlTag, parentPanel: JComponent, visitedForms: Set<String> = emptySet()) {
-        when (tag.name) {
+        val tagName = tag.name
+        val component: JComponent?
+        
+        // --- 1. Create Component based on Type ---
+        when (tagName) {
             "Body", "Block" -> {
                 for (subTag in tag.subTags) {
                     renderTag(subTag, parentPanel, visitedForms)
                 }
+                return // Container-only tags, no component to resize
             }
             "GridLayoutPanel", "FlexGridLayoutPanel" -> {
                 val gridPanel = createGridPanel(tag)
-                registerComponent(tag, gridPanel)
+                component = gridPanel
                 parentPanel.add(gridPanel)
+                // Recursive children added inside createGridPanel logic?? No, createGridPanel handles children logic internal?
+                // Wait, existing createGridPanel logic parses children. 
+                // We just need to register and add.
+                registerComponent(tag, gridPanel)
             }
-            "FlexFlowLayoutPanel", "SplitPanel", "TabPanel", "SubDetail" -> {
+            "SplitPanel" -> {
+                 val container = JPanel()
+                 // Default to Horizontal if not specified or not Vertical
+                 val orientation = tag.getAttributeValue("Orientation")
+                 val axis = if (orientation.equals("Vertical", ignoreCase = true)) BoxLayout.Y_AXIS else BoxLayout.X_AXIS
+                 container.layout = BoxLayout(container, axis)
+                 
+                 container.border = BorderFactory.createTitledBorder(getTitle(tag))
+                 registerComponent(tag, container)
+                 parentPanel.add(container)
+                 component = container
+                 for (subTag in tag.subTags) {
+                     renderTag(subTag, container, visitedForms)
+                 }
+            }
+            "TabPanel" -> {
+                 // Robust Dynamic Height TabbedPane with Recursion Guard
+                 val tabbedPane = object : JBTabbedPane() {
+                     var isCalculating = false
+                     
+                     override fun getPreferredSize(): Dimension {
+                         // Prevent recursive calls logic loops
+                         if (isCalculating) return super.getPreferredSize()
+                         
+                         isCalculating = true
+                         try {
+                             val baseSize = super.getPreferredSize()
+                             val selected = selectedComponent ?: return baseSize
+                             
+                             // Calculate Max Content Height currently known to the UI
+                             var maxContentHeight = 0
+                             for (i in 0 until tabCount) {
+                                 val c = getComponentAt(i)
+                                 // Ensure we get the fresh preferred size
+                                 val h = c.preferredSize.height
+                                 if (h > maxContentHeight) maxContentHeight = h
+                             }
+                             
+                             // Overhead = Total UI Height - Max Content Height
+                             // (e.g. Tab Strip, Borders)
+                             val overhead = baseSize.height - maxContentHeight
+                             
+                             // Target Height = Overhead + Selected Content Height
+                             val targetHeight = overhead + selected.preferredSize.height
+                             
+                             // Return strict dimension. 
+                             // BoxLayout respects this.
+                             return Dimension(baseSize.width, targetHeight)
+                         } finally {
+                             isCalculating = false
+                         }
+                     }
+                 }
+
+                 tabbedPane.border = BorderFactory.createTitledBorder(getTitle(tag))
+                 // Register but DO NOT attach mouse listener to the pane itself to avoid conflict with tab switching
+                 tagToComponent[tag] = tabbedPane
+                 saveOriginalBorder(tabbedPane)
+                 
+                 parentPanel.add(tabbedPane)
+                 component = tabbedPane
+                 
+                 // Map to store child tags for navigation
+                 val tabTags = mutableListOf<XmlTag>()
+                 
+                 for (subTag in tag.subTags) {
+                     val tabContainer = JPanel()
+                     tabContainer.layout = BoxLayout(tabContainer, BoxLayout.Y_AXIS)
+                     renderTag(subTag, tabContainer, visitedForms)
+                     
+                     // Use standard title logic
+                     val title = getTitle(subTag)
+                     
+                     tabbedPane.addTab(title, tabContainer)
+                     tabTags.add(subTag)
+                 }
+                 
+                 // Navigate to child tag when tab is selected
+                 tabbedPane.addChangeListener {
+                     val index = tabbedPane.selectedIndex
+                     if (index >= 0 && index < tabTags.size) {
+                         navigateToTag(tabTags[index])
+                     }
+                 }
+            }
+            "FlexFlowLayoutPanel", "SubDetail" -> {
                  val container = JPanel()
                  container.layout = BoxLayout(container, BoxLayout.Y_AXIS)
                  container.border = BorderFactory.createTitledBorder(getTitle(tag))
                  registerComponent(tag, container)
                  parentPanel.add(container)
+                 component = container
                  for (subTag in tag.subTags) {
                      renderTag(subTag, container, visitedForms)
                  }
@@ -516,14 +632,16 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                 val grid = createWrappedGridTable(tag)
                 registerComponent(tag, grid)
                 parentPanel.add(grid)
+                component = grid
             }
-             "SplitSize" -> {}
-             "ToolBar" -> {} // Skip rendering ToolBar
+             "SplitSize" -> { return } // Handled by SplitPanel
+             "ToolBar" -> { return } // Skip rendering ToolBar
              "Embed" -> { 
                  val embedPanel = JPanel(BorderLayout())
-                 embedPanel.border = BorderFactory.createTitledBorder(getTitle(tag) + " [Embedded]")
+                 embedPanel.border = BorderFactory.createTitledBorder(getTitle(tag) + " [Embedded]") 
                  registerComponent(tag, embedPanel)
                  parentPanel.add(embedPanel)
+                 component = embedPanel
                  
                  val formKey = tag.getAttributeValue("FormKey")
                  if (!formKey.isNullOrEmpty() && !visitedForms.contains(formKey)) {
@@ -571,19 +689,21 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                      embedPanel.add(comp, BorderLayout.CENTER)
                  }
              }
-            "RowDefCollection", "ColumnDefCollection" -> {}
+            "RowDefCollection", "ColumnDefCollection" -> { return }
             else -> {
                 val componentReq = createLeafComponent(tag)
                 registerComponent(tag, componentReq)
                 parentPanel.add(componentReq)
+                component = componentReq
             }
         }
+        
     }
 
     private fun getTitle(tag: XmlTag): String {
         val key = tag.getAttributeValue("Key") ?: ""
         val caption = tag.getAttributeValue("Caption")
-        return if (!caption.isNullOrEmpty()) "$caption ($key)" else key.ifEmpty { tag.name }
+        return if (!caption.isNullOrEmpty()) caption else key.ifEmpty { tag.name }
     }
     
     private fun getIconForTag(tag: XmlTag): Icon? {
@@ -758,18 +878,70 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
     }
 
     private fun createGridPanel(tag: XmlTag): JPanel {
-        val panel = JPanel(GridBagLayout())
+        val layout = GridBagLayout()
+        val panel = JPanel(layout)
         panel.border = BorderFactory.createTitledBorder("Grid: ${getTitle(tag)}")
         
+        // Add drop support
         panel.transferHandler = GridDropHandler(tag, project)
-
+        
+        // 1. Analyze Grid Dimensions and Weights
         var rowCount = 0
         var colCount = 0
-        val rowDefCollection = tag.findFirstSubTag("RowDefCollection")
-        if (rowDefCollection != null) rowCount = rowDefCollection.findSubTags("RowDef").size
-        val colDefCollection = tag.findFirstSubTag("ColumnDefCollection")
-        if (colDefCollection != null) colCount = colDefCollection.findSubTags("ColumnDef").size
         
+        val rowDefCollection = tag.findFirstSubTag("RowDefCollection")
+        if (rowDefCollection != null) {
+            val rows = rowDefCollection.findSubTags("RowDef")
+            rowCount = rows.size
+            
+            // Parse Row Heights / Weights
+            val heights = IntArray(rowCount)
+            val weights = DoubleArray(rowCount)
+            
+            rows.forEachIndexed { i, row ->
+                val hAttr = row.getAttributeValue("Height") ?: ""
+                if (hAttr.endsWith("%")) {
+                    weights[i] = hAttr.removeSuffix("%").toDoubleOrNull()?.div(100.0) ?: 0.0
+                    heights[i] = 0 // Weight determines size
+                } else if (hAttr.endsWith("px")) {
+                    heights[i] = hAttr.removeSuffix("px").toIntOrNull() ?: 0
+                    weights[i] = 0.0 // Fixed size
+                } else {
+                     // Default or explicit number without unit?
+                     val v = hAttr.toIntOrNull()
+                     if (v != null) heights[i] = v
+                }
+            }
+            layout.rowHeights = heights
+            layout.rowWeights = weights
+        }
+        
+        val colDefCollection = tag.findFirstSubTag("ColumnDefCollection")
+        if (colDefCollection != null) {
+            val cols = colDefCollection.findSubTags("ColumnDef")
+            colCount = cols.size
+            
+            // Parse Column Widths / Weights
+            val widths = IntArray(colCount)
+            val weights = DoubleArray(colCount)
+            
+            cols.forEachIndexed { i, col ->
+                val wAttr = col.getAttributeValue("Width") ?: ""
+                if (wAttr.endsWith("%")) {
+                    weights[i] = wAttr.removeSuffix("%").toDoubleOrNull()?.div(100.0) ?: 0.0
+                    widths[i] = 0
+                } else if (wAttr.endsWith("px")) {
+                    widths[i] = wAttr.removeSuffix("px").toIntOrNull() ?: 0
+                    weights[i] = 0.0
+                } else {
+                     val v = wAttr.toIntOrNull()
+                     if (v != null) widths[i] = v
+                }
+            }
+            layout.columnWidths = widths
+            layout.columnWeights = weights
+        }
+
         var maxX = 0
         var maxY = 0
         val componentChildren = mutableListOf<XmlTag>()
@@ -861,6 +1033,15 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                 }
             }
         }
+        
+        // Add a vertical spacer to push content to the top
+        val spacer = JPanel()
+        spacer.isOpaque = false
+        val spacerC = GridBagConstraints()
+        spacerC.gridx = 0
+        spacerC.gridy = rowCount
+        spacerC.weighty = 1.0 // Consume all vertical space
+        panel.add(spacer, spacerC)
         
         return panel
     }
