@@ -12,6 +12,9 @@ class LayoutToolWindowFactory : ToolWindowFactory, DumbAware {
         val toolWindowContent = YigoLayoutPanel(project, toolWindow)
         val content = ContentFactory.getInstance().createContent(toolWindowContent, "", false)
         toolWindow.contentManager.addContent(content)
+        
+        // Use SLIDING mode to allow independent width (decoupled from standard Docked windows like Maven)
+        toolWindow.setType(com.intellij.openapi.wm.ToolWindowType.SLIDING, null)
 
         // Focus Mode Logic: Hide other tool windows when this one is active
         project.messageBus.connect().subscribe(com.intellij.openapi.wm.ex.ToolWindowManagerListener.TOPIC, object : com.intellij.openapi.wm.ex.ToolWindowManagerListener {
