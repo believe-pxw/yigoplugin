@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Form Key="ObjectImpl_Classification" Caption="对象(物料、供应商等)-分类视图" FormType="Template" InitState="Default" Version="84">
+    <DataSource RefObjectKey="ObjectImpl_Classification"/>
+    <Body>
+        <Block>
+            <FlexFlowLayoutPanel Key="ObjectImpl_ClassificationRoot" Caption="对象(物料、供应商等)-分类视图">
+                <GridLayoutPanel Key="ObjectImpl_ClassificationTopGridLayoutPanel" Height="68px" Padding="8px" OverflowY="Auto" TopPadding="24px">
+                    <Dict Key="Head_CategoryTypeID" Caption="类别种类" LabelType="M" X="0" Y="0" Enable="IsEnableCategoryType" ItemKey="MM_CategoryType" OneTimeCompute="true">
+                        <DataBinding TableKey="EGS_CL20N_Head" ColumnKey="Head_CategoryTypeID"/>
+                        <ItemFilter ItemKey="MM_CategoryType">
+                            <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                <FilterValue Index="1" ParaValue="com.bokesoft.erp.basis.classification.ObjectClassificationFormula.getCategoryTypeFilter(GetSourceFormKey())"/>
+                            </Filter>
+                        </ItemFilter>
+                    </Dict>
+                    <CheckBox Key="IsEnableCategoryType" Caption="可编辑" LabelType="M" X="1" Y="0" Visible="false">
+                        <DataBinding TableKey="EGS_CL20N_Head" ColumnKey="IsEnableCategoryType" DefaultValue="1"/>
+                    </CheckBox>
+                    <RowDefCollection RowGap="24">
+                        <RowDef Height="32px"/>
+                    </RowDefCollection>
+                    <ColumnDefCollection ColumnGap="16">
+                        <ColumnDef Width="33%"/>
+                        <ColumnDef Width="33%"/>
+                        <ColumnDef Width="34%"/>
+                    </ColumnDefCollection>
+                </GridLayoutPanel>
+                <SplitPanel Key="ClassificationSplitPanel" Height="100%" Visible="true">
+                    <TabPanel Key="ObjectImpl_ClassificationDownTab">
+                        <Grid Key="ObjectImpl_ClassificationAssignGrid" Caption="分配" Enable="!ReadOnly()&amp;&amp;Head_CategoryTypeID&gt;0" DefaultFitWidth="true" SerialSeq="true" DisabledOption="sum,groupSum" Height="100%" Padding="8px">
+                            <GridColumnCollection>
+                                <GridColumn Key="CF_IsSelect" Width="32px"/>
+                                <GridColumn Key="CF_OID" Caption="CF_OID" Visible="Macro_DebugMode()" Width="80px"/>
+                                <GridColumn Key="CF_CategoryTypeID" Caption="类别种类" LabelType="M" Visible="Macro_DebugMode()" Width="80px"/>
+                                <GridColumn Key="CF_ClassificationID" Caption="类别" Width="120px"/>
+                                <GridColumn Key="ObjectClassificationID" Caption="类别" Visible="Macro_DebugMode()" Width="120px"/>
+                                <GridColumn Key="CF_ClassificationIDs" Caption="类别" LabelType="H" Visible="false" Enable="false" Width="120px"/>
+                                <GridColumn Key="CF_Description" Caption="描述" LabelType="H" Width="120px"/>
+                                <GridColumn Key="CF_CategoryStatus" Caption="状态" LabelType="M" Width="120px"/>
+                                <GridColumn Key="CF_IsStandardClass" Caption="标准类" LabelType="M" Width="120px"/>
+                                <GridColumn Key="CF_SOID" Visible="false" Width="80px"/>
+                                <GridColumn Key="CF_ObjectCode" Caption="对象" Visible="Macro_DebugMode()" Width="80px"/>
+                            </GridColumnCollection>
+                            <GridRowCollection>
+                                <GridRow Key="ObjectImpl_ClassificationAssignDtlRow" TableKey="EGS_Object_Classification">
+                                    <GridCell Key="CF_IsSelect" Caption="选择" CellType="CheckBox" IsSelect="true"/>
+                                    <GridCell Key="CF_OID" Caption="CF_OID" CellType="NumberEditor" Scale="0">
+                                        <DataBinding ColumnKey="OID"/>
+                                    </GridCell>
+                                    <GridCell Key="CF_CategoryTypeID" Caption="类别种类" CellType="Dict" ItemKey="MM_CategoryType">
+                                        <DataBinding ColumnKey="CategoryTypeID" DefaultFormulaValue="Head_CategoryTypeID" Required="true"/>
+                                        <ItemFilter ItemKey="MM_CategoryType">
+                                            <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                                <FilterValue Index="1" ParaValue="' IsAllow='&amp;SqlPara(1)"/>
+                                            </Filter>
+                                        </ItemFilter>
+                                    </GridCell>
+                                    <GridCell Key="CF_ClassificationID" Caption="类别" CellType="Dict" Enable="!ReadOnly()&amp;&amp;CF_ClassificationID&lt;=0" ItemKey="Classification">
+                                        <DataBinding ColumnKey="ClassificationID" Required="true">
+                                            <ValueChanged>
+                                                <![CDATA[SetValue('CF_Description', GetDictValue('Classification', CF_ClassificationID, 'Name'));com.bokesoft.erp.basis.classification.ObjectClassificationFormula.getCharacteristicByClassification(Head_CategoryTypeID,CF_ClassificationID,'CF_','CH_');
+                                                                                                                                                                                                                                                            com.bokesoft.erp.basis.classification.ObjectClassificationFormula.genClassificationIDS(false);]]>
+                                            </ValueChanged>
+                                        </DataBinding>
+                                        <ItemFilter ItemKey="Classification">
+                                            <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                                <FilterValue Index="1" ParaValue="IIF(CF_CategoryTypeID&gt;0, 'CategoryTypeID='&amp;SqlPara(CF_CategoryTypeID), '1=2')"/>
+                                            </Filter>
+                                        </ItemFilter>
+                                    </GridCell>
+                                    <GridCell Key="ObjectClassificationID" Caption="类别" CellType="Dict" Enable="!ReadOnly()&amp;&amp;ObjectClassificationID&lt;=0" ItemKey="Classification">
+                                        <DataBinding ColumnKey="ObjectClassificationID">
+                                            <ValueChanged>
+                                                <![CDATA[SetValue('CF_Description', GetDictValue('Classification', ObjectClassificationID, 'Name'));SetValue('CF_ClassificationID', ObjectClassificationID, false)]]>
+                                            </ValueChanged>
+                                        </DataBinding>
+                                        <ItemFilter ItemKey="Classification">
+                                            <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                                <FilterValue Index="1" ParaValue="IIF(CF_CategoryTypeID&gt;0, 'CategoryTypeID='&amp;SqlPara(CF_CategoryTypeID), '1=2')"/>
+                                            </Filter>
+                                        </ItemFilter>
+                                    </GridCell>
+                                    <GridCell Key="CF_ClassificationIDs" Caption="类别" CellType="TextEditor" Enable="true">
+                                        <DataBinding ColumnKey="ClassificationIDs"/>
+                                    </GridCell>
+                                    <GridCell Key="CF_Description" Caption="描述" CellType="TextEditor" Enable="false" MaxLength="100" Trim="true">
+                                        <DataBinding ColumnKey="Notes">
+                                            <DefaultFormulaValue>
+                                                <![CDATA[GetDictValue('Classification', CF_ClassificationID,'Name')]]>
+                                            </DefaultFormulaValue>
+                                        </DataBinding>
+                                    </GridCell>
+                                    <GridCell Key="CF_CategoryStatus" Caption="状态" CellType="ComboBox" IntegerValue="true">
+                                        <DataBinding ColumnKey="CategoryStatus" DefaultValue="1"/>
+                                        <Item Key="1" Caption="已发布" Value="1"/>
+                                        <Item Key="3" Caption="不完整" Value="3"/>
+                                        <Item Key="4" Caption="已锁定" Value="4"/>
+                                    </GridCell>
+                                    <GridCell Key="CF_IsStandardClass" Caption="标准类" CellType="CheckBox">
+                                        <DataBinding ColumnKey="IsStandardClass"/>
+                                    </GridCell>
+                                    <GridCell Key="CF_SOID" CellType="NumberEditor" Scale="0">
+                                        <DataBinding ColumnKey="SOID"/>
+                                    </GridCell>
+                                    <GridCell Key="CF_ObjectCode" Caption="对象" CellType="TextEditor" Enable="false" Case="Upper" CopyNew="false" Trim="true">
+                                        <DataBinding ColumnKey="ObjectCode">
+                                            <DefaultFormulaValue>
+                                                <![CDATA[IIFS(ExistField('UseCode'),UseCode,ExistField('Code'),Code,ExistField('DocumentNumber'),DocumentNumber,true,'')]]>
+                                            </DefaultFormulaValue>
+                                        </DataBinding>
+                                    </GridCell>
+                                </GridRow>
+                            </GridRowCollection>
+                            <OnRowDelete>
+                                <![CDATA[Macro_GenClassificationIDS();Macro_DeleteClassification(CF_SOID,Head_CategoryTypeID,CF_ClassificationID);DeleteRow();]]>
+                            </OnRowDelete>
+                            <GridFilter>
+                                <FilterValue Index="1" FieldKey="CF_CategoryTypeID" RefValue="Head_CategoryTypeID" Type="Field"/>
+                            </GridFilter>
+                        </Grid>
+                    </TabPanel>
+                    <TabPanel Key="ObjectImpl_ClassificationDown">
+                        <SplitPanel Key="ClassificationCharacteristicSplitPanel" Caption="一般" Visible="true">
+                            <Grid Key="ObjectImpl_ClassificationCharacteristicGrid" Caption="一般" NewEmptyRow="false" DefaultFitWidth="true" SerialSeq="true" DisabledOption="insert,delete,sum,groupSum" Height="100%" Padding="8px">
+                                <GridColumnCollection>
+                                    <GridColumn Key="CH_IsSelect" Width="32px"/>
+                                    <GridColumn Key="CH_POID" Caption="CH_POID" Visible="Macro_DebugMode()" Width="80px"/>
+                                    <GridColumn Key="CH_IsAdd" Caption="isAdd" Visible="Macro_DebugMode()" Width="80px"/>
+                                    <GridColumn Key="CH_CategoryTypeID" Caption="类别种类" LabelType="M" Visible="Macro_DebugMode()" Width="80px"/>
+                                    <GridColumn Key="CH_ClassificationID" Caption="类别" Width="80px"/>
+                                    <GridColumn Key="CH_CharacteristicID" Caption="特性" LabelType="M" Width="120px"/>
+                                    <GridColumn Key="CH_CharacteristicValue" Caption="值" Width="80px"/>
+                                    <GridColumn Key="CH_LimitValues" Caption="限定值" Width="80px"/>
+                                    <GridColumn Key="CH_CharacteristicValueDescription" Caption="值描述" LabelType="H" Width="120px"/>
+                                    <GridColumn Key="CH_ReferenceBill" Caption="引用单据" LabelType="H" Visible="Macro_DebugMode()" Width="80px"/>
+                                    <GridColumn Key="CH_CharacteristicValue_CheckRepeatOnly" Caption="特性值检查重复公式" Visible="Macro_DebugMode()" Width="80px"/>
+                                    <GridColumn Key="CH_IsDisplayAllowedValues" Caption="显示允许值" LabelType="M" Visible="Macro_DebugMode()" Width="100px"/>
+                                    <GridColumn Key="CH_IsOnlyDisplayValue" Caption="仅显示值" LabelType="H" Visible="Macro_DebugMode()" Width="80px"/>
+                                    <GridColumn Key="CH_CharacteristicOID" Visible="false" Width="80px"/>
+                                    <GridColumn Key="CH_CharacteristicSOID" Visible="false" Width="80px"/>
+                                </GridColumnCollection>
+                                <GridRowCollection>
+                                    <GridRow Key="ObjectImpl_ClassificationCharacteristicDtlRow" TableKey="EGS_Object_Characteristic">
+                                        <GridCell Key="CH_IsSelect" Caption="选择" CellType="CheckBox" IsSelect="true"/>
+                                        <GridCell Key="CH_POID" Caption="CH_POID" CellType="NumberEditor" Scale="0" UseGroupingSeparator="false">
+                                            <DataBinding ColumnKey="POID"/>
+                                        </GridCell>
+                                        <GridCell Key="CH_IsAdd" Caption="isAdd" CellType="CheckBox" Enable="false">
+                                            <DataBinding ColumnKey="IsAdd"/>
+                                        </GridCell>
+                                        <GridCell Key="CH_CategoryTypeID" Caption="类别种类" CellType="Dict" ItemKey="MM_CategoryType">
+                                            <DataBinding ColumnKey="CategoryTypeID">
+                                                <DefaultFormulaValue>
+                                                    <![CDATA[IIF(CH_CategoryTypeID>0,CH_CategoryTypeID,Head_CategoryTypeID)]]>
+                                                </DefaultFormulaValue>
+                                            </DataBinding>
+                                            <ItemFilter ItemKey="MM_CategoryType">
+                                                <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                                    <FilterValue Index="1" ParaValue="' IsAllow = '&amp;SqlPara(1)"/>
+                                                </Filter>
+                                            </ItemFilter>
+                                        </GridCell>
+                                        <GridCell Key="CH_ClassificationID" Caption="类别" CellType="Dict" Enable="false" ItemKey="Classification">
+                                            <DataBinding ColumnKey="ClassificationID" Required="true">
+                                                <DefaultFormulaValue>
+                                                    <![CDATA[IIF(CH_ClassificationID>0,CH_ClassificationID,CF_ClassificationID)]]>
+                                                </DefaultFormulaValue>
+                                            </DataBinding>
+                                        </GridCell>
+                                        <GridCell Key="CH_CharacteristicID" Caption="特性" CellType="Dict" Enable="false" ItemKey="MM_Characteristic">
+                                            <DataBinding ColumnKey="CharacteristicID" Required="true"/>
+                                        </GridCell>
+                                        <GridCell Key="CH_CharacteristicValue" Caption="值" CellType="TextEditor" Enable="!ReadOnly()&amp;&amp;CH_IsOnlyDisplayValue==0&amp;&amp;Macro_EnabledWhenCharacteristicValue()" Case="Upper" MaxLength="100" Trim="true">
+                                            <DataBinding ColumnKey="CharacteristicValue" DefaultValue="_">
+                                                <ValueChanged>
+                                                    <![CDATA[SetValue('CH_CharacteristicValue',com.bokesoft.erp.basis.classification.ObjectClassificationFormula.converCharacteristicValue(CH_CharacteristicID, CH_CharacteristicValue));com.bokesoft.erp.pp.vc.VariantConfigurationFormula.execCharacteristicHead4PreCondition('CH_CharacteristicID');com.bokesoft.erp.pp.vc.VariantConfigurationFormula.execClassification4Procedure('CH_ClassificationID','CH_CharacteristicID','CH_CharacteristicValue');com.bokesoft.erp.pp.vc.VariantConfigurationFormula.execCharacteristic4Procedure('CH_ClassificationID','CH_CharacteristicID','CH_CharacteristicValue');Macro_CheckRepeatCharacteristicValue(CH_CharacteristicSOID,Head_CategoryTypeID,'CH_CharacteristicValue_CheckRepeatOnly')]]>
+                                                </ValueChanged>
+                                                <CheckRule>
+                                                    <![CDATA[if(CH_IsOnlyDisplayValue==0)  {var CheckObjectCharacteristicValue = com.bokesoft.erp.basis.classification.ObjectClassificationFormula.checkObjectCharacteristicValue(CH_CharacteristicID, CH_ClassificationID, CH_CharacteristicValue); IIF(CH_CharacteristicValue_CheckRepeatOnly == '',IIFS(CheckObjectCharacteristicValue!='',CheckObjectCharacteristicValue,true,''), CH_CharacteristicValue_CheckRepeatOnly)} else {''}]]>
+                                                </CheckRule>
+                                            </DataBinding>
+                                        </GridCell>
+                                        <GridCell Key="CH_LimitValues" Caption="限定值" CellType="Button" Enable="!ReadOnly()&amp;&amp;(CH_IsOnlyDisplayValue==0||CH_IsAdd==0)&amp;&amp;Macro_EnabledWhenCharacteristicValue()" Type="Normal">
+                                            <DataBinding DefaultValue="+"/>
+                                            <OnClick>
+                                                <![CDATA[Macro_DisplayCharacteristicAllowableValue(CH_CharacteristicSOID, Head_CategoryTypeID, CH_ClassificationID, CH_CharacteristicID,'CH_',false)]]>
+                                            </OnClick>
+                                        </GridCell>
+                                        <GridCell Key="CH_CharacteristicValueDescription" Caption="值描述" CellType="TextEditor" Enable="false">
+                                            <DataBinding ColumnKey="CH_CharacteristicValueDescription">
+                                                <DefaultFormulaValue>
+                                                    <![CDATA[com.bokesoft.erp.basis.classification.ObjectClassificationFormula.getCharacteristicValueDescription(CH_ClassificationID, CH_CharacteristicID, CH_CharacteristicValue)]]>
+                                                </DefaultFormulaValue>
+                                            </DataBinding>
+                                        </GridCell>
+                                        <GridCell Key="CH_ReferenceBill" Caption="引用单据" CellType="TextEditor" InvalidChars=" " MaxLength="30" Trim="true">
+                                            <DataBinding ColumnKey="ReferenceBill" DefaultFormulaValue="GetSourceFormKey()"/>
+                                        </GridCell>
+                                        <GridCell Key="CH_CharacteristicValue_CheckRepeatOnly" Caption="特性值检查重复公式" CellType="TextEditor">
+                                            <DataBinding ColumnKey="CH_CharacteristicValue_CheckRepeatOnly"/>
+                                        </GridCell>
+                                        <GridCell Key="CH_IsDisplayAllowedValues" Caption="显示允许值" CellType="CheckBox">
+                                            <DataBinding ColumnKey="IsDisplayAllowedValue"/>
+                                        </GridCell>
+                                        <GridCell Key="CH_IsOnlyDisplayValue" Caption="仅显示值" CellType="CheckBox">
+                                            <DataBinding ColumnKey="IsOnlyDisplayValue"/>
+                                        </GridCell>
+                                        <GridCell Key="CH_CharacteristicOID" CellType="NumberEditor" Scale="0">
+                                            <DataBinding ColumnKey="OID"/>
+                                        </GridCell>
+                                        <GridCell Key="CH_CharacteristicSOID" CellType="NumberEditor" Scale="0">
+                                            <DataBinding ColumnKey="SOID"/>
+                                        </GridCell>
+                                    </GridRow>
+                                </GridRowCollection>
+                                <OnRowDelete>
+                                    <![CDATA[IIF(CH_IsAdd==0&&CH_IsOnlyDisplayValue==0,SetValue('CH_CharacteristicValue',''),'');if(CH_IsAdd==1&&CH_IsOnlyDisplayValue==0){DeleteRow();Macro_CheckRepeatCharacteristicValue(CH_CharacteristicSOID,Head_CategoryTypeID,'CH_CharacteristicValue_CheckRepeatOnly')}]]>
+                                </OnRowDelete>
+                                <TraceCollection>
+                                    <Trace Caption="添加特性值" Condition="!ReadOnly()">
+                                        <![CDATA[Macro_AddCharacteristicValue(Head_CategoryTypeID,CH_ClassificationID,CH_CharacteristicID,'CH_')]]>
+                                    </Trace>
+                                </TraceCollection>
+                                <GridFilter>
+                                    <FilterValue Index="1" FieldKey="CH_CategoryTypeID" RefValue="Head_CategoryTypeID" Type="Field"/>
+                                </GridFilter>
+                            </Grid>
+                            <SplitSize Size="90%"/>
+                        </SplitPanel>
+                    </TabPanel>
+                    <SplitSize Size="40%"/>
+                    <SplitSize Size="60%"/>
+                </SplitPanel>
+            </FlexFlowLayoutPanel>
+        </Block>
+    </Body>
+    <MacroCollection>
+        <Macro Key="Macro_GenClassificationIDS">
+            <![CDATA[com.bokesoft.erp.basis.classification.ObjectClassificationFormula.genClassificationIDS(true);]]>
+        </Macro>
+        <Macro Key="Macro_DeleteClassification" Args="ObjectID,CategoryTypeID,ClassificationID">
+            <![CDATA[com.bokesoft.erp.basis.classification.ObjectClassificationFormula.deleteObjectClassification(ObjectID,CH_CategoryTypeID,ClassificationID,'CF_','CH_')]]>
+        </Macro>
+        <Macro Key="Macro_EnabledWhenCharacteristicValue">
+            <![CDATA[com.bokesoft.erp.basis.classification.ObjectClassificationFormula.enabledWhenCharacteristicValue(CH_CharacteristicID)]]>
+        </Macro>
+    </MacroCollection>
+</Form>

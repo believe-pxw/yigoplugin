@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Form Key="V_Vendor" Caption="供应商" FormType="Dict" InitState="Default" Version="129">
+    <DataSource RefObjectKey="Vendor"/>
+    <OperationCollection>
+        <Operation Key="OrgDictListNew" Caption="新增" Visible="Length(GetPara('IsBusinessPartner'))==0" RefKey="OrgDictListNew" TCode="'XK01'" Activity="01"/>
+        <Operation Key="OrgDictListCopyNew" Caption="复制新增" Visible="Length(GetPara('IsBusinessPartner'))==0" RefKey="OrgDictListCopyNew" TCode="'XK01'" Activity="01"/>
+        <Operation Key="OrgDictListModify" Caption="修改" RefKey="OrgDictListModify" TCode="'XK02'" Activity="02"/>
+        <Operation Key="OrgDictListSave" Caption="保存" RefKey="OrgDictListSave"/>
+        <Operation Key="OrgDictListCancel" Caption="取消" RefKey="OrgDictListCancel"/>
+        <Operation Key="OrgDictListEnabled" Caption="启用" Visible="Length(GetPara('IsBusinessPartner'))==0" Enable="(Enable &lt;&gt; 1||Macro_HasOrgDel())&amp;&amp; GetDictOID('SRM_Supplier','Code',Code)==0" RefKey="OrgDictListEnabled" Activity="Y02"/>
+        <Operation Key="OrgDictListDisabled" Caption="停用" Visible="Length(GetPara('IsBusinessPartner'))==0" Enable="!(Enable&lt;&gt; 1||Macro_HasOrgDel()) &amp;&amp; GetDictOID('SRM_Supplier','Code',Code)==0" RefKey="OrgDictListDisabled" Activity="Y01"/>
+        <Operation Key="OrgDictListInvalid" Caption="作废" Visible="Length(GetPara('IsBusinessPartner'))==0" RefKey="OrgDictListInvalid" Activity="Y03"/>
+        <Operation Key="OrgDictListDelete" Caption="删除" Visible="Length(GetPara('IsBusinessPartner'))==0" RefKey="OrgDictListDelete" TCode="'XK06'" Activity="06"/>
+        <Operation Key="OrgDictListRefresh" Caption="刷新" Visible="Length(GetPara('IsBusinessPartner'))==0" RefKey="OrgDictListRefresh"/>
+        <Operation Key="ShowAlternativeData" Caption="附加数据" Visible="Length(GetPara('IsBusinessPartner'))==0">
+            <Action>
+                <![CDATA[Macro_ShowAlternativeData_RunAsExp()]]>
+            </Action>
+        </Operation>
+        <Operation Key="OrgDictListSign" Caption="分配" Visible="false" Enable="ReadOnly()&amp;&amp;Macro_DicSignEnable()&gt;0" Activity="01">
+            <Action>
+                <![CDATA[UICheck();Macro_DicSign_RunAsExp();RefreshOperation();]]>
+            </Action>
+        </Operation>
+        <Operation Key="Lang" Caption="多语言" Visible="Length(GetPara('IsBusinessPartner'))==0" RefKey="Lang" Activity="Y10"/>
+        <Operation Key="ShowDataLog" Caption="查看数据日志" Visible="Length(GetPara('IsBusinessPartner'))==0" RefKey="ShowDataLog" Activity="Y08"/>
+        <Operation Key="UIClose" Caption="关闭" RefKey="UIClose"/>
+    </OperationCollection>
+    <Body PopWidth="800px" PopHeight="800px">
+        <Block>
+            <FlexFlowLayoutPanel Key="root">
+                <ToolBar Key="ToolBar" Height="pref">
+                    <ToolBarItemCollection/>
+                </ToolBar>
+                <SplitPanel Key="main_container" Height="100%">
+                    <FlexFlowLayoutPanel Key="DictFlexFlowLayoutPanel">
+                        <GridLayoutPanel Key="HeadGridLayoutPanel" Padding="8px" OverflowY="Auto">
+                            <Dict Key="CompanyCodeID_NODB4Other" Caption="公司代码" X="2" Y="2" Visible="true" Enable="ReadOnly()&amp;&amp;ToInt(IsFI_NODB4Other)" Clearable="false" ItemKey="CompanyCode" XSpan="2" OneTimeCompute="true">
+                                <DataBinding>
+                                    <ValueChanged>
+                                        <![CDATA[com.bokesoft.erp.basis.masterdata.VendorDictionaryListImpl.changeOrgHeadValue();]]>
+                                    </ValueChanged>
+                                    <CheckRule>
+                                        <![CDATA[IIFS(ToInt(IsFI_NODB4Other)&&CompanyCodeID_NODB4Other<=0, MessageFacade('88007','请输入公司代码'), true, true)]]>
+                                    </CheckRule>
+                                </DataBinding>
+                                <Condition ColumnKey="CompanyCodeID" TableKey="EFI_Vendor_CpyCodeDtl" CondSign="none"/>
+                            </Dict>
+                            <Dict Key="PurchasingOrganizationID_NODB4Other" Caption="采购组织" X="0" Y="2" Visible="true" Enable="ReadOnly()&amp;&amp;(ToInt(IsPurchase_NODB4Other)||ToInt(IsPurOrgText_NODB4Other))" Clearable="false" ItemKey="PurchasingOrganization" OneTimeCompute="true" XSpan="2">
+                                <DataBinding>
+                                    <ValueChanged>
+                                        <![CDATA[com.bokesoft.erp.basis.masterdata.VendorDictionaryListImpl.changeOrgHeadValue();]]>
+                                    </ValueChanged>
+                                    <CheckRule>
+                                        <![CDATA[IIFS(ToInt(IsPurchase_NODB4Other)==1&&PurchasingOrganizationID_NODB4Other<=0, MessageFacade('A_A_MS_096000','请输入采购组织'), true, true)]]>
+                                    </CheckRule>
+                                </DataBinding>
+                                <Condition ColumnKey="PurchasingOrganizationID" TableKey="EMM_Vendor_PurchasingOrgDtl" CondSign="none"/>
+                            </Dict>
+                            <CheckBox Key="IsBasic_NODB4Other" Caption="基本" X="0" Y="0" Visible="true" Enable="ReadOnly()" OneTimeCompute="true">
+                                <DataBinding DefaultValue="1">
+                                    <ValueChanged>
+                                        <![CDATA[com.bokesoft.erp.basis.masterdata.VendorDictionaryListImpl.changeOrgHeadValue();]]>
+                                    </ValueChanged>
+                                </DataBinding>
+                            </CheckBox>
+                            <CheckBox Key="IsPurchase_NODB4Other" Caption="采购" X="2" Y="0" Visible="true" Enable="ReadOnly()" OneTimeCompute="true">
+                                <DataBinding>
+                                    <ValueChanged>
+                                        <![CDATA[com.bokesoft.erp.basis.masterdata.VendorDictionaryListImpl.changeOrgHeadValue();]]>
+                                    </ValueChanged>
+                                </DataBinding>
+                            </CheckBox>
+                            <CheckBox Key="IsFI_NODB4Other" Caption="财务" X="1" Y="0" Visible="true" Enable="ReadOnly()" OneTimeCompute="true">
+                                <DataBinding>
+                                    <ValueChanged>
+                                        <![CDATA[com.bokesoft.erp.basis.masterdata.VendorDictionaryListImpl.changeOrgHeadValue();]]>
+                                    </ValueChanged>
+                                </DataBinding>
+                            </CheckBox>
+                            <TextEditor Key="Code" Caption="代码" LabelType="M" X="0" Y="1" Visible="true" Enable="!ReadOnly()&amp;&amp;com.bokesoft.erp.mm.masterdata.VendorFormula.vendorCodeFieldEnable(VendorAccountGroupID)&amp;&amp;!IsSRMSuplier&amp;&amp;Macro_IsEnable('Code','V_Vendor')" Case="Upper" MaxLength="30" Trim="true">
+                                <DataBinding TableKey="BK_Vendor" ColumnKey="Code">
+                                    <CheckRule>
+                                        <![CDATA[IIFS(com.bokesoft.erp.mm.masterdata.VendorFormula.vendorCodeFieldEnable(VendorAccountGroupID)&&Code=='', MessageFacade('SYSTEM000','采用外部给号编码规则，请输入代码'), true, true)]]>
+                                    </CheckRule>
+                                    <DefaultFormulaValue>
+                                        <![CDATA[IIF(!com.bokesoft.erp.mm.masterdata.VendorFormula.vendorCodeFieldEnable(VendorAccountGroupID)&&SrcBusinessPartnerID==0,'',Code)]]>
+                                    </DefaultFormulaValue>
+                                </DataBinding>
+                            </TextEditor>
+                            <TextEditor Key="Name" Caption="名称" X="1" Y="1" Visible="true" Enable="!ReadOnly()&amp;&amp;!IsSRMSuplier&amp;&amp;Macro_IsEnable('Name','V_Vendor')" Trim="true" XSpan="3">
+                                <DataBinding DefaultFormulaValue="Macro_MultilLangText('BK_Vendor','Name')"/>
+                            </TextEditor>
+                            <CheckBox Key="IsPurOrgText_NODB4Other" Caption="采购组织文本" X="3" Y="0" Visible="false" Enable="ReadOnly()" OneTimeCompute="true"/>
+                            <TextEditor Key="SearchTerm" Caption="搜索项" LabelType="M" X="4" Y="1" Enable="!ReadOnly()&amp;&amp;Macro_IsEnable('SearchTerm','V_Vendor')" XSpan="2">
+                                <DataBinding TableKey="BK_Vendor" ColumnKey="SearchTerm"/>
+                            </TextEditor>
+                            <RowDefCollection RowGap="24">
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                            </RowDefCollection>
+                            <ColumnDefCollection ColumnGap="16">
+                                <ColumnDef Width="16%"/>
+                                <ColumnDef Width="16%"/>
+                                <ColumnDef Width="17%"/>
+                                <ColumnDef Width="17%"/>
+                                <ColumnDef Width="17%"/>
+                                <ColumnDef Width="17%"/>
+                            </ColumnDefCollection>
+                        </GridLayoutPanel>
+                        <TabPanel Key="ContainerRoot" Height="100%">
+                            <GridLayoutPanel Key="BasicInfoGridLayoutPanel" Caption="基本1" Padding="8px" OverflowY="Auto" Visible="ToInt(IsBasic_NODB4Other)">
+                                <Label Key="General" Caption="常规" X="0" Y="0" Visible="true" Enable="false" Class="erp-group-title" XSpan="4"/>
+                                <TextEditor Key="ResetPattern" Caption="流水号模式" LabelType="M" X="0" Y="1" Visible="false">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="ResetPattern"/>
+                                </TextEditor>
+                                <NumberEditor Key="SequenceValue" Caption="流水号" LabelType="M" X="0" Y="1" Visible="false" Scale="0" Precision="9">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="SequenceValue"/>
+                                </NumberEditor>
+                                <Dict Key="VendorAccountGroupID" Caption="账户组" LabelType="S" X="0" Y="1" Visible="true" Enable="!ReadOnly()&amp;&amp;IsNew()" ItemKey="VendorAccountGroup">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="VendorAccountGroupID" Required="true"/>
+                                </Dict>
+                                <TextEditor Key="VATRegNo" Caption="纳税人识别号" LabelType="M" X="1" Y="1" Visible="true" Enable="!ReadOnly()&amp;&amp;Macro_IsEnable('VATRegNo','V_Vendor')" MaxLength="100" Trim="true">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="VATRegNo"/>
+                                </TextEditor>
+                                <TextEditor Key="NameTwo" Caption="名称2" LabelType="M" X="2" Y="1" Visible="true" Enable="!ReadOnly()&amp;&amp;!IsSRMSuplier&amp;&amp;Macro_IsEnable('NameTwo','V_Vendor')" XSpan="2">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="NameTwo"/>
+                                </TextEditor>
+                                <ComboBox Key="NodeType" Caption="节点类型" LabelType="M" X="1" Y="8" Visible="false" SourceType="ParaGroup" IntegerValue="true" TextShowType="Caption" GroupKey="NodeType">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="NodeType" DefaultValue="0"/>
+                                </ComboBox>
+                                <Dict Key="CustomerID" Caption="对应客户" X="0" Y="2" Visible="true" Enable="!ReadOnly()&amp;&amp;SrcBusinessPartnerID==0" ItemKey="Customer" XSpan="2">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="CustomerID">
+                                        <ValueChanged>
+                                            <![CDATA[SetValue('TVIPurchase_CustomerID', CustomerID,false);]]>
+                                        </ValueChanged>
+                                    </DataBinding>
+                                </Dict>
+                                <Dict Key="TradePartnerID" Caption="贸易伙伴" LabelType="M" X="2" Y="2" Visible="true" Enable="!ReadOnly()&amp;&amp;Macro_IsEnable('TradePartnerID','V_Vendor')" ItemKey="Company" XSpan="2">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="TradePartnerID"/>
+                                </Dict>
+                                <Dict Key="VendorClassificationID" Caption="供应商分类" LabelType="M" X="0" Y="3" Visible="true" ItemKey="MM_VendorClassification">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="VendorClassificationID"/>
+                                </Dict>
+                                <Dict Key="CountryID" Caption="国家" LabelType="M" X="0" Y="5" Visible="true" Enable="!ReadOnly()&amp;&amp;!IsSRMSuplier&amp;&amp;Macro_IsEnable('CountryID','V_Vendor')" ItemKey="Country">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="CountryID"/>
+                                </Dict>
+                                <TextEditor Key="StreetAddress" Caption="街道地址" LabelType="M" X="0" Y="6" Visible="true" Enable="!ReadOnly()&amp;&amp;!IsSRMSuplier&amp;&amp;Macro_IsEnable('StreetAddress','V_Vendor')" Trim="true" XSpan="2">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="StreetAddress"/>
+                                </TextEditor>
+                                <TextEditor Key="RoomNumber" Caption="门牌号" LabelType="M" X="2" Y="6" Visible="true" Enable="!ReadOnly()&amp;&amp;Macro_IsEnable('RoomNumber','V_Vendor')" MaxLength="100" Trim="true">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="RoomNumber"/>
+                                </TextEditor>
+                                <TextEditor Key="PostalCode" Caption="邮政编码" LabelType="M" X="3" Y="5" Visible="true" Enable="!ReadOnly()&amp;&amp;Macro_IsEnable('PostalCode','V_Vendor')" MaxLength="100" Trim="true">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="PostalCode"/>
+                                </TextEditor>
+                                <TextEditor Key="City" Caption="城市" LabelType="M" X="2" Y="5" Visible="true" Enable="!ReadOnly()&amp;&amp;Macro_IsEnable('City','V_Vendor')" MaxLength="100" Trim="true">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="City"/>
+                                </TextEditor>
+                                <TextEditor Key="PostOfficeBox" Caption="邮政信箱" LabelType="M" X="2" Y="10" Visible="false" MaxLength="100" Trim="true">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="PostOfficeBox"/>
+                                </TextEditor>
+                                <TextEditor Key="PostalCodeDtl" Caption="邮政编码" LabelType="M" X="3" Y="10" Visible="false" MaxLength="100" Trim="true">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="PostalCodeDtl"/>
+                                </TextEditor>
+                                <TextEditor Key="Language" Caption="语言" X="0" Y="8" Visible="true" Enable="!ReadOnly()&amp;&amp;!IsSRMSuplier&amp;&amp;Macro_IsEnable('Language','V_Vendor')" MaxLength="100" Trim="true">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="Language"/>
+                                </TextEditor>
+                                <TextEditor Key="Telephone" Caption="电话" LabelType="M" X="0" Y="9" Visible="true" Enable="!ReadOnly()&amp;&amp;!IsSRMSuplier&amp;&amp;Macro_IsEnable('Telephone','V_Vendor')" MaxLength="100" Trim="true">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="Telephone"/>
+                                </TextEditor>
+                                <TextEditor Key="TelephoneExtension" Caption="分机" LabelType="M" X="1" Y="9" Visible="true" Enable="!ReadOnly()&amp;&amp;!IsSRMSuplier&amp;&amp;Macro_IsEnable('TelephoneExtension','V_Vendor')" MaxLength="100" Trim="true">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="TelephoneExtension"/>
+                                </TextEditor>
+                                <TextEditor Key="MobilePhone" Caption="移动电话" LabelType="M" X="3" Y="8" Visible="true" Enable="!ReadOnly()&amp;&amp;Macro_IsEnable('MobilePhone','V_Vendor')" MaxLength="100" Trim="true">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="MobilePhone"/>
+                                </TextEditor>
+                                <TextEditor Key="Fax" Caption="传真" LabelType="M" X="2" Y="9" Visible="true" Enable="!ReadOnly()&amp;&amp;!IsSRMSuplier&amp;&amp;Macro_IsEnable('Fax','V_Vendor')" MaxLength="100" Trim="true">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="Fax"/>
+                                </TextEditor>
+                                <TextEditor Key="FaxExtension" Caption="分机" LabelType="M" X="3" Y="9" Visible="true" Enable="!ReadOnly()&amp;&amp;!IsSRMSuplier&amp;&amp;Macro_IsEnable('FaxExtension','V_Vendor')" MaxLength="100" Trim="true">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="FaxExtension"/>
+                                </TextEditor>
+                                <Label Key="Tongxun" Caption="通讯" X="0" Y="7" Visible="true" Enable="false" Class="erp-group-title" XSpan="4"/>
+                                <Label Key="Jiedaodizhi" Caption="地址" X="0" Y="4" Visible="true" Enable="false" Class="erp-group-title" XSpan="4"/>
+                                <Dict Key="RegionID" Caption="地区" LabelType="M" X="1" Y="5" Visible="true" Enable="!ReadOnly()&amp;&amp;!IsSRMSuplier&amp;&amp;Macro_IsEnable('RegionID','V_Vendor')" ItemKey="Region">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="RegionID"/>
+                                    <ItemFilter>
+                                        <Filter Key="Filter" Type="FieldValue">
+                                            <FilterValue Index="1" FieldKey="NodeType" RefValue="1" DataType="Integer"/>
+                                        </Filter>
+                                    </ItemFilter>
+                                </Dict>
+                                <NumberEditor Key="Block_FI" Caption="中心记账冻结" LabelType="L" X="2" Y="1" Visible="false" IntegerValue="true" Precision="9" Scale="0" UseGroupingSeparator="false">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="Block_FI"/>
+                                </NumberEditor>
+                                <NumberEditor Key="Block_PO" Caption="中心施加的采购冻结" LabelType="M" X="1" Y="1" Visible="false" IntegerValue="true" Precision="9" Scale="0" UseGroupingSeparator="false">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="Block_PO"/>
+                                </NumberEditor>
+                                <ComboBox Key="Block_Value" Caption="将被冻结的功能" LabelType="M" X="1" Y="1" Visible="false" IntegerValue="true">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="Block_Value"/>
+                                    <Item Key="None" Caption="无" Value="0"/>
+                                </ComboBox>
+                                <TextEditor Key="Contact" Caption="联系人" LabelType="M" X="1" Y="8" Visible="true" Enable="!ReadOnly()&amp;&amp;Macro_IsEnable('Contact','V_Vendor')" MaxLength="100" Trim="true">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="Contact"/>
+                                </TextEditor>
+                                <CheckBox Key="IsSRMSuplier" Caption="SRM供应商" X="0" Y="1" Visible="false">
+                                    <DataBinding DefaultFormulaValue="GetDictOID(&quot;SRM_Supplier&quot;,&quot;Code&quot;,Code)!=0"/>
+                                </CheckBox>
+                                <Dict Key="TransportationZoneID" Caption="运输区域" LabelType="M" X="3" Y="6" Visible="true" Enable="!ReadOnly()&amp;&amp;Macro_IsEnable('TransportationZoneID','V_Vendor')" ItemKey="TM_TransportationZone">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="TransportationZoneID"/>
+                                </Dict>
+                                <TextEditor Key="Email" Caption="电子邮箱" LabelType="M" X="2" Y="8" Enable="!ReadOnly()&amp;&amp;Macro_IsEnable('Email','V_Vendor')" MaxLength="50">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="Email"/>
+                                </TextEditor>
+                                <Label Key="ReferLabel" Caption="参考" X="0" Y="10" Visible="true" Enable="false" Class="erp-group-title" XSpan="4"/>
+                                <Dict Key="IndustryID" Caption="行业" LabelType="M" X="1" Y="10" Visible="false" ItemKey="Industry">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="IndustryID"/>
+                                </Dict>
+                                <Dict Key="AuthorizationGroupID" Caption="权限组" LabelType="L" X="0" Y="11" ItemKey="AuthorizationGroup">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="AuthorizationGroupID"/>
+                                    <ItemFilter>
+                                        <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                            <FilterValue Index="1" ParaValue="&quot;ApplicationArea=&quot;&amp;SqlPara('Vendor')"/>
+                                        </Filter>
+                                    </ItemFilter>
+                                </Dict>
+                                <Dict Key="ForwardingAgentGroupID" Caption="服务代理过程组" LabelType="M" X="1" Y="11" Visible="true" ItemKey="TM_ServiceAgentGroup">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="ForwardingAgentGroupID"/>
+                                </Dict>
+                                <RowDefCollection RowGap="24">
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                </RowDefCollection>
+                                <ColumnDefCollection ColumnGap="16">
+                                    <ColumnDef Width="25%"/>
+                                    <ColumnDef Width="25%"/>
+                                    <ColumnDef Width="25%"/>
+                                    <ColumnDef Width="25%"/>
+                                </ColumnDefCollection>
+                            </GridLayoutPanel>
+                            <GridLayoutPanel Key="BasicInfoGridLayoutPanel2" Caption="基本2" Padding="8px" OverflowY="Auto" Visible="ToInt(IsBasic_NODB4Other)">
+                                <ComboBox Key="NatureEnterprise" Caption="企业性质" LabelType="M" X="0" Y="1" Visible="true" Enable="!ReadOnly()&amp;&amp;Macro_IsEnable('NatureEnterprise','V_Vendor')" SourceType="ParaGroup" IntegerValue="true" TextShowType="Caption" OneTimeCompute="true" GroupKey="NatureEnterprise">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="NatureEnterprise"/>
+                                </ComboBox>
+                                <Label Key="GeneralClassification" Caption="常规分类" X="0" Y="0" Visible="true" Enable="false" Class="erp-group-title" XSpan="4"/>
+                                <Dict Key="MM_ClientCustomerGroupID" Caption="业务伙伴集团组" LabelType="M" X="1" Y="1" ItemKey="MM_ClientCustomerGroup">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="MM_ClientCustomerGroupID"/>
+                                </Dict>
+                                <Dict Key="VendorLevelID" Caption="供应商等级" LabelType="M" X="2" Y="1" ItemKey="MM_VendorLevel">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="VendorLevelID"/>
+                                </Dict>
+                                <Dict Key="MM_CustomGroupID" Caption="自定义分组" LabelType="M" X="3" Y="1" ItemKey="MM_CustomGroup">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="MM_CustomGroupID"/>
+                                </Dict>
+                                <TextEditor Key="Notes" Caption="备注" X="3" Y="1" Visible="false" Trim="true">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="Notes"/>
+                                </TextEditor>
+                                <RowDefCollection RowGap="24">
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                </RowDefCollection>
+                                <ColumnDefCollection ColumnGap="16">
+                                    <ColumnDef Width="25%"/>
+                                    <ColumnDef Width="25%"/>
+                                    <ColumnDef Width="25%"/>
+                                    <ColumnDef Width="25%"/>
+                                </ColumnDefCollection>
+                            </GridLayoutPanel>
+                            <FlexFlowLayoutPanel Key="BasisTextInfoFlexFlowLayoutPanel" Caption="基本文本" Height="100%" Visible="false" Width="100%">
+                                <SplitPanel Key="BasisTextInfoSplitPanel" Caption="SplitPanel1" Height="100%" Width="100%">
+                                    <Grid Key="VBasisTextGrid" Caption="文本明细" DefaultFitWidth="true" Height="100%" Width="100%" Padding="8px">
+                                        <GridColumnCollection>
+                                            <GridColumn Key="IsSelect" Width="32px"/>
+                                            <GridColumn Key="LanguageID" Caption="语言" LabelType="H" Width="80px"/>
+                                            <GridColumn Key="TextTypeID" Caption="文本类" LabelType="H" Width="200px"/>
+                                            <GridColumn Key="Text" Caption="文本" LabelType="M" Visible="Macro_DebugMode()" Width="80px"/>
+                                            <GridColumn Key="Dtl_ExternalSystemPrimaryKey" Caption="外部系统关键字" LabelType="H" Visible="false" Width="100px"/>
+                                        </GridColumnCollection>
+                                        <GridRowCollection>
+                                            <GridRow Key="VBasisTextDtlRow" RowHeight="36" TableKey="EGS_VBasisText">
+                                                <GridCell Key="IsSelect" Caption="选择" CellType="CheckBox" IsSelect="true"/>
+                                                <GridCell Key="LanguageID" Caption="语言" CellType="Dict" ItemKey="Language">
+                                                    <DataBinding ColumnKey="LanguageID"/>
+                                                </GridCell>
+                                                <GridCell Key="TextTypeID" Caption="文本类" CellType="Dict" ItemKey="TextType">
+                                                    <DataBinding ColumnKey="TextTypeID"/>
+                                                    <ItemFilter ItemKey="TextType">
+                                                        <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                                            <FilterValue Index="1" ParaValue="&quot;TextTypeGroup=&quot;&amp;SqlPara('9')"/>
+                                                        </Filter>
+                                                    </ItemFilter>
+                                                </GridCell>
+                                                <GridCell Key="Text" Caption="文本" CellType="TextArea" MaxLength="1000">
+                                                    <DataBinding ColumnKey="Text"/>
+                                                </GridCell>
+                                                <GridCell Key="Dtl_ExternalSystemPrimaryKey" Caption="外部系统关键字" CellType="TextEditor">
+                                                    <DataBinding ColumnKey="ExternalSystemPrimaryKey"/>
+                                                </GridCell>
+                                            </GridRow>
+                                        </GridRowCollection>
+                                    </Grid>
+                                    <SubDetail Key="BasisTextInfoSubDetail" BindingGridKey="VBasisTextGrid" Height="100%" Width="100%">
+                                        <GridLayoutPanel Key="BasisTextInfoGridLayoutPanel" Height="100%" Padding="8px" TopPadding="24px" Width="100%">
+                                            <TextArea Key="Text__mirror" Caption="文本" X="0" Y="0" Visible="true" BindingCellKey="Text" MaxLength="1000"/>
+                                            <RowDefCollection RowGap="24">
+                                                <RowDef Height="90%"/>
+                                            </RowDefCollection>
+                                            <ColumnDefCollection ColumnGap="16">
+                                                <ColumnDef Width="100%"/>
+                                            </ColumnDefCollection>
+                                        </GridLayoutPanel>
+                                    </SubDetail>
+                                    <SplitSize Size="30%"/>
+                                    <SplitSize Size="70%"/>
+                                </SplitPanel>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="PurOrgTextInfoFlexFlowLayoutPanel" Caption="采购组织文本" Height="100%" Visible="false" Width="100%">
+                                <Embed Key="MM_VendorImpl_PurOrgText" Caption="MM_VendorImpl_PurOrgText" FormKey="MM_VendorImpl_PurOrgText" RootKey="MM_VendorImplPurOrgTextRootFlexFlowLayoutPanel" Height="100%" Width="100%"/>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="VendorBankInfoFlexFlowLayoutPanel" Caption="银行" Visible="ToInt(IsBasic_NODB4Other)" Padding="8px">
+                                <Embed Key="Vendor_BankImpl" FormKey="Vendor_BankImpl" RootKey="Vendor_BankImplVendorBankInfoGrid" Height="100%"/>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="PurchaseingOrgInfoFlexFlowLayoutPanel" Caption="采购" Visible="ToInt(IsPurchase_NODB4Other)">
+                                <Embed Key="MM_VendorImpl_Purchase" FormKey="MM_VendorImpl_Purchase" RootKey="MM_VendorImpl_PurchaseRoot" Height="100%"/>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="ClassificationInfoFlexFlowLayoutPanel" Caption="分类">
+                                <Embed Key="ObjectImpl_Classification" FormKey="ObjectImpl_Classification" RootKey="ObjectImpl_ClassificationRoot" Height="100%"/>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="PartnersInfoFlexFlowLayoutPanel" Caption="业务伙伴" Visible="ToInt(IsPurchase_NODB4Other)" Padding="8px">
+                                <Embed Key="MM_VendorImpl_Partners" FormKey="MM_VendorImpl_Partner" RootKey="MM_VendorImpl_PartnersRoot" Height="100%"/>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="CompanyCodeInfoFlexFlowLayoutPanel" Caption="财务" Visible="ToInt(IsFI_NODB4Other)">
+                                <Embed Key="FI_Vendor_Impl" FormKey="FI_Vendor_Impl" RootKey="Vendor_ImplRootFlexFlowLayoutPanel" Height="100%"/>
+                            </FlexFlowLayoutPanel>
+                            <GridLayoutPanel Key="AlternativeDataInfoGridLayoutPanel" Caption="附加数据" Padding="8px" OverflowY="Auto" Visible="ToInt(IsShowAlternativeData)==1">
+                                <Label Key="LblPlantAssignment" Caption="工厂分配" X="0" Y="0" Visible="true" Enable="false" Class="erp-group-title" XSpan="4"/>
+                                <Dict Key="PlantID" Caption="工厂" LabelType="M" X="0" Y="1" Visible="true" ItemKey="Plant">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="PlantID">
+                                        <CheckRule>
+                                            <![CDATA[IIFS(true, com.bokesoft.erp.mm.stock.STOFormula.checkVendorAssignmentPlant(), true, true)]]>
+                                        </CheckRule>
+                                    </DataBinding>
+                                </Dict>
+                                <RowDefCollection RowGap="24">
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                </RowDefCollection>
+                                <ColumnDefCollection ColumnGap="16">
+                                    <ColumnDef Width="25%"/>
+                                    <ColumnDef Width="25%"/>
+                                    <ColumnDef Width="25%"/>
+                                    <ColumnDef Width="25%"/>
+                                </ColumnDefCollection>
+                            </GridLayoutPanel>
+                            <FlexFlowLayoutPanel Key="NewDocumentVoucherLinkInfoFlexFlowLayoutPanel" Caption="凭证链接" Visible="Macro_DebugMode()" Padding="8px">
+                                <Embed Key="DMS_DocumentVoucherLink" FormKey="DMS_DocumentVoucherLink" RootKey="DMS_DocumentVoucherLinkRoot" Height="100%"/>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="BodySystem" Caption="系统信息" Padding="8px">
+                                <Embed Key="BodySystemEmbed" FormKey="BodySystemDict3Form" RootKey="SystemInfoPanel">
+                                    <Var Key="SystemInfoTableKey" Value="BK_Vendor"/>
+                                </Embed>
+                            </FlexFlowLayoutPanel>
+                            <FlexGridLayoutPanel Key="HiddenInformation" Caption="隐藏信息" ColumnCount="3" ColumnGap="16" OverflowY="Auto" RowGap="24" Visible="false">
+                                <CheckBox Key="IsShowAlternativeData" Caption="控制附加数据显示字段-隐藏" X="0" Y="8" Visible="Macro_DebugMode()" Enable="false" XSpan="2"/>
+                                <Dict Key="PartnerSchemaID" Caption="账户组采购组织级伙伴方案" X="0" Y="7" Visible="Macro_DebugMode()" Enable="false" ItemKey="MM_PartnerSchema">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="PartnerSchemaID">
+                                        <DefaultFormulaValue>
+                                            <![CDATA[com.bokesoft.erp.mm.masterdata.PartnersFormula.partnerSchemasOfVendor(VendorAccountGroupID,1)]]>
+                                        </DefaultFormulaValue>
+                                    </DataBinding>
+                                </Dict>
+                                <Dict Key="SrcBusinessPartnerID" Caption="业务伙伴" LabelType="M" X="0" Y="7" Visible="false" ItemKey="SD_BusinessPartner" OneTimeCompute="true">
+                                    <DataBinding TableKey="BK_Vendor" ColumnKey="SrcBusinessPartnerID"/>
+                                </Dict>
+                            </FlexGridLayoutPanel>
+                            <ItemChanged>
+                                <![CDATA[if (IsFocusTabByKey('PurchaseingOrgInfoFlexFlowLayoutPanel')) {!ReadOnly()&&Macro_Body_PurchaseingOrg_Trigger();} else {true};if (IsFocusTabByKey('PartnersInfoFlexFlowLayoutPanel')) {!ReadOnly()&&Macro_Body_PurchaseingOrg_Trigger();} else {true}]]>
+                            </ItemChanged>
+                        </TabPanel>
+                    </FlexFlowLayoutPanel>
+                    <SplitSize Size="18%"/>
+                    <SplitSize Size="82%"/>
+                </SplitPanel>
+            </FlexFlowLayoutPanel>
+        </Block>
+    </Body>
+    <OnLoad>
+        <![CDATA[CloseBeforeExpandLoadData();Macro_ChangeOrgHeadValue();]]>
+    </OnLoad>
+    <MacroCollection>
+        <Macro Key="Macro_DicFilter">
+            <![CDATA['1=1'&IIF(Length(NameFilter_NODB4Other)>0," and name like "&SqlPara("%"&NameFilter_NODB4Other&"%"),'')&IIF(Length(CodeFilter_NODB4Other)>0," and code like "&SqlPara("%"&CodeFilter_NODB4Other&"%"),'')&IIFS(StatusFilter_NODB4Other>1, ' and Enable = '&SqlPara(StatusFilter_NODB4Other-2), StatusFilter_NODB4Other==1, '', true, ' and Enable <>'&SqlPara(2))]]>
+        </Macro>
+        <Macro Key="Macro_ChangeOrgHeadValue">
+            <![CDATA[com.bokesoft.erp.basis.masterdata.VendorDictionaryListImpl.changeOrgHeadValue();]]>
+        </Macro>
+        <Macro Key="Macro_DictListSave_RunAsExp_Formula">
+            <![CDATA[com.bokesoft.erp.basis.masterdata.VendorDictionaryListImpl.save()]]>
+        </Macro>
+        <Macro Key="Macro_PreTriggers">
+            <![CDATA[com.bokesoft.erp.mm.masterdata.PartnersFormula.partnerDetermination4Vendor(PartnerSchemaID, PurchasingOrganizationID_NODB4Other);com.bokesoft.erp.mm.masterdata.VendorFormula.checkVATRegNo();com.bokesoft.erp.mm.masterdata.VendorFormula.CheckChangeReconAccountID();com.bokesoft.erp.mm.masterdata.VendorFormula.cleanVendorInCustomer();com.bokesoft.erp.mm.masterdata.VendorFormula.fillVendorToCustomer()]]>
+        </Macro>
+        <Macro Key="Macro_MidSave">
+            <![CDATA[Macro_PreTriggers();com.bokesoft.erp.mm.masterdata.VendorFormula.vender_genDocNumber();com.bokesoft.erp.function.DocumentFunction.saveObject();com.bokesoft.erp.dictionary.DataCopyRelationMidFunction.copyRelationData();Macro_PostTriggers()]]>
+        </Macro>
+        <Macro Key="Macro_PostTriggers">
+            <![CDATA[com.bokesoft.erp.mm.masterdata.PartnersFormula.savePartnerRoles4Vendor();]]>
+        </Macro>
+        <Macro Key="Macro_DictView_RowClick">
+            <![CDATA[com.bokesoft.erp.basis.masterdata.VendorDictionaryListImpl.load()]]>
+        </Macro>
+        <Macro Key="Macro_ShowAlternativeData_RunAsExp">
+            <![CDATA[SetValue('IsShowAlternativeData', 1)]]>
+        </Macro>
+        <Macro Key="Macro_DictListDelete_RunAsExp">
+            <![CDATA[SetPara('IsDelete', 1);ERPShowModal('Vendor_Delete')]]>
+        </Macro>
+        <Macro Key="Macro_DictListRecover_RunAsExp">
+            <![CDATA[SetPara('IsDelete', 0);ERPShowModal('Vendor_Delete')]]>
+        </Macro>
+        <Macro Key="Macro_DicSign_RunAsExp">
+            <![CDATA[ERPShowModal('VendorSign')]]>
+        </Macro>
+        <Macro Key="Macro_OrgDictListModify_RunAsExp">
+            <![CDATA[Macro_DicModify_RunAsExp_Formula();EditBill(true)]]>
+        </Macro>
+        <Macro Key="Macro_DicSignEnable">
+            <![CDATA[GetOID()]]>
+        </Macro>
+        <Macro Key="Macro_DictListDelete_RunAsExp_Formula">
+            <![CDATA[com.bokesoft.erp.basis.masterdata.VendorDictionaryListImpl.deleteNoOrg(1)]]>
+        </Macro>
+        <Macro Key="Macro_DictListRecover_RunAsExp_Formula">
+            <![CDATA[com.bokesoft.erp.basis.masterdata.VendorDictionaryListImpl.deleteNoOrg(0)]]>
+        </Macro>
+        <Macro Key="Macro_DicModify_RunAsExp_Formula">
+            <![CDATA[com.bokesoft.erp.basis.masterdata.VendorDictionaryListImpl.edit()]]>
+        </Macro>
+        <Macro Key="Macro_Body_PurchaseingOrg_Trigger">
+            <![CDATA[com.bokesoft.erp.mm.masterdata.PartnersFormula.partnerDetermination4Vendor(PartnerSchemaID, PurchasingOrganizationID_NODB4Other)]]>
+        </Macro>
+        <Macro Key="Macro_OrgDictListCopyNew_RunAsExp">
+            <![CDATA[ERPShowModal('VendorCopy')]]>
+        </Macro>
+        <Macro Key="Macro_NewOrgDic">
+            <![CDATA[com.bokesoft.erp.basis.masterdata.VendorDictionaryListImpl.newDic()]]>
+        </Macro>
+        <Macro Key="Macro_OrgDictListCancel_RunAsExp_Formula">
+            <![CDATA[com.bokesoft.erp.basis.masterdata.VendorDictionaryListImpl.cancel()]]>
+        </Macro>
+        <Macro Key="Macro_OrgDictListRefresh_RunAsExp_Formula">
+            <![CDATA[com.bokesoft.erp.basis.masterdata.VendorDictionaryListImpl.load(true)]]>
+        </Macro>
+        <Macro Key="Macro_HasOrgDel">
+            <![CDATA[com.bokesoft.erp.basis.masterdata.VendorDictionaryListImpl.hasOrgDel();]]>
+        </Macro>
+        <Macro Key="Macro_IsIncludeERPMap" Args="fieldKey,formKey">
+            <![CDATA[com.bokesoft.erp.sd.masterdata.BusinessPartnerFormula.isIncludeERPMap(fieldKey,formKey);]]>
+        </Macro>
+        <Macro Key="Macro_IsEnable" Args="fieldKey,formKey">
+            <![CDATA[!(Macro_IsIncludeERPMap(fieldKey,formKey)&&SrcBusinessPartnerID>0)]]>
+        </Macro>
+    </MacroCollection>
+</Form>

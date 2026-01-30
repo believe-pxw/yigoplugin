@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Form Key="PM_Equipment" Caption="设备" FormType="Entity" InitState="New" Version="52">
+    <DataSource RefObjectKey="MM_SNNumber"/>
+    <OperationCollection>
+        <Operation Key="BillEdit" Caption="修改" Visible="true" Enable="Macro_UIOpt_BillEdit_Enable()" TCode="'IE02'" Activity="02">
+            <Action>
+                <![CDATA[Macro_BillEdit()]]>
+            </Action>
+        </Operation>
+        <Operation Key="BillSave" Caption="保存" RefKey="BillSave"/>
+        <Operation Key="BillCancel" Caption="取消" RefKey="BillCancel"/>
+        <Operation Key="Custom_Refresh" Caption="刷新" Enable="true">
+            <Action>
+                <![CDATA[Macro_LoadObject()]]>
+            </Action>
+        </Operation>
+        <Operation Key="StructuralList" Caption="结构清单" Enable="!IsNew()">
+            <Action>
+                <![CDATA[UICheck();ERPShowModal('PM_FuncStructuralDisplay',GetCallFormula('Macro_PM_Equipment_ShowEvent',SOID),'newtab')]]>
+            </Action>
+        </Operation>
+        <Operation Key="ShowDataOriginList" Caption="数据源清单">
+            <Action>
+                <![CDATA[Macro_ShowDataOriginList()]]>
+            </Action>
+        </Operation>
+        <Operation Key="Classification" Caption="分类">
+            <Action>
+                <![CDATA[SetValue('Head_CategoryTypeID', Macro_setHeadCategoryTypeID());SetValue('IsClassification_NODB4Other', 1);]]>
+            </Action>
+        </Operation>
+        <Operation Key="UsageList" Caption="使用清单" Enable="!IsNew()">
+            <Action>
+                <![CDATA[PushPara('_IsUsageList',true);ERPShowModal('PM_EquipmentQuery',GetCallFormula('Macro_LoadUsageListShowEvent',GetOID()),'newtab')]]>
+            </Action>
+        </Operation>
+        <Operation Key="ObjectInformation" Caption="对象信息" Enable="!IsNew()">
+            <Action>
+                <![CDATA[Macro_ShowObjectInformation(GetOID(),0,GetDictValue('PM_EquipmentCategory',EquipmentCategoryID,'ObjectInfoParameterID'))]]>
+            </Action>
+        </Operation>
+        <OperationCollection Key="ActiveInactive" Caption="激活&lt;-&gt;未激活" SelfDisable="true">
+            <Operation Key="Activate" Caption="激活" Enable="!ReadOnly()&amp;&amp;!IsNew()&amp;&amp;Macro_IsINAC()&amp;&amp;!Macro_IsDLFL()">
+                <Action>
+                    <![CDATA[UICheck();Macro_Activate_RunAsExp();RefreshOperation()]]>
+                </Action>
+            </Operation>
+            <Operation Key="Deactivate" Caption="取消激活" Enable="!ReadOnly()&amp;&amp;!IsNew()&amp;&amp;!Macro_IsINAC()&amp;&amp;!Macro_IsDLFL()">
+                <Action>
+                    <![CDATA[UICheck();Macro_Deactivate_RunAsExp();RefreshOperation()]]>
+                </Action>
+            </Operation>
+        </OperationCollection>
+        <OperationCollection Key="DeleteSNFlag" Caption="删除标识" SelfDisable="true">
+            <Operation Key="SNSet" Caption="设置" Enable="IIF(Macro_IsDLFL(),true,!ReadOnly()&amp;&amp;!IsNew()&amp;&amp;!Macro_IsESTO())&amp;&amp;!Macro_IsDLFL()" TCode="'IE02'" Activity="02">
+                <Action>
+                    <![CDATA[UICheck();Macro_SNSet_RunAsExp();RefreshOperation()]]>
+                </Action>
+            </Operation>
+            <Operation Key="SNResett" Caption="重置" Enable="IIF(Macro_IsDLFL(),true,!ReadOnly()&amp;&amp;!IsNew()&amp;&amp;!Macro_IsESTO())&amp;&amp;Macro_IsDLFL()" TCode="'IE02'" Activity="02">
+                <Action>
+                    <![CDATA[UICheck();Macro_SNResett_RunAsExp();RefreshOperation()]]>
+                </Action>
+            </Operation>
+        </OperationCollection>
+        <Operation Key="Lang" Caption="多语言" RefKey="Lang" Activity="Y10"/>
+        <Operation Key="ERPExportExcel" Caption="导出" RefKey="ERPExportExcel" Activity="Y11"/>
+        <Operation Key="ShowDataLog" Caption="查看数据日志" RefKey="ShowDataLog" Activity="Y08"/>
+        <Operation Key="UIClose" Caption="关闭" RefKey="UIClose"/>
+    </OperationCollection>
+    <Body>
+        <Block>
+            <FlexFlowLayoutPanel Key="root">
+                <ToolBar Key="ToolBar1" Caption="ToolBar1" Height="pref">
+                    <ToolBarItemCollection/>
+                </ToolBar>
+                <SplitPanel Key="main_container" Orientation="Vertical" Height="100%">
+                    <TabPanel Key="EquipmentHeadDateTabPanel">
+                        <GridLayoutPanel Key="EquipmentHeadDateGridLayoutPanel" Caption="设备主数据" Padding="8px" OverflowY="Auto" TopPadding="24px" Visible="true">
+                            <UTCDatePicker Key="ValidStartDate" Caption="有效起始日" LabelType="M" X="2" Y="0" Visible="true" Enable="IsNew()" Format="yyyy-MM-dd">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="ValidStartDate" DefaultFormulaValue="DateLong()">
+                                    <CheckRule>
+                                        <![CDATA[IIF(ValidStartDate>DateLong(),MessageFacade('IS071','不能输入将来时间'),true)]]>
+                                    </CheckRule>
+                                </DataBinding>
+                            </UTCDatePicker>
+                            <UTCDatePicker Key="ValidEndDate" Caption="有效截止日" X="3" Y="0" Visible="true" Enable="false" Format="yyyy-MM-dd">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="ValidEndDate" DefaultFormulaValue="99991231"/>
+                            </UTCDatePicker>
+                            <Dict Key="EquipmentCategoryID" Caption="设备种类" LabelType="M" X="1" Y="0" Visible="true" Enable="false" ItemKey="PM_EquipmentCategory">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="EquipmentCategoryID"/>
+                            </Dict>
+                            <TextEditor Key="EquipmentNotes" Caption="设备描述" X="0" Y="1" Visible="true" MaxLength="100" Trim="true" XSpan="2">
+                                <DataBinding TableKey="EMM_SNNumberHead">
+                                    <DefaultFormulaValue>
+                                        <![CDATA[Macro_MultilLangText('EMM_SNNumberHead','EquipmentNotes')]]>
+                                    </DefaultFormulaValue>
+                                </DataBinding>
+                            </TextEditor>
+                            <TextEditor Key="EquipSNStatusText" Caption="系统状态" LabelType="M" X="2" Y="1" Visible="true" Enable="false" MaxLength="100" Trim="true">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="EquipSNStatusText" ValueDependency="SS_IsActive,SS_ERPSystemStatusID">
+                                    <DefaultFormulaValue>
+                                        <![CDATA[com.bokesoft.erp.basis.status.StatusFormula.getSysStatusLineHead('IEQ')]]>
+                                    </DefaultFormulaValue>
+                                </DataBinding>
+                            </TextEditor>
+                            <TextEditor Key="EquipUserStatusText" Caption="用户状态" LabelType="M" X="3" Y="1" Visible="true" Enable="false" MaxLength="100" Trim="true">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="EquipUserStatusText" ValueDependency="US_ERPUserStatusID,US_IsActive,EquipmentCategoryID,WU_ERPUserStatusID,WU_IsActive">
+                                    <DefaultFormulaValue>
+                                        <![CDATA[com.bokesoft.erp.basis.status.StatusFormula.getUserStatusLineHead('IEQ')]]>
+                                    </DefaultFormulaValue>
+                                </DataBinding>
+                            </TextEditor>
+                            <TextEditor Key="DocumentNumber" Caption="设备" X="0" Y="0" Visible="true" Enable="false" Case="Upper" MaxLength="50" Trim="true">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="DocumentNumber"/>
+                            </TextEditor>
+                            <Dict Key="HeadCategoryTypeID_NODB4Other" Caption="类别种类" LabelType="M" X="0" Y="1" Visible="false" Enable="false" ItemKey="MM_CategoryType" OneTimeCompute="true">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="HeadCategoryTypeID_NODB4Other">
+                                    <ValueChanged>
+                                        <![CDATA[SetValue('MM_CategoryTypeID', HeadCategoryTypeID_NODB4Other);]]>
+                                    </ValueChanged>
+                                </DataBinding>
+                            </Dict>
+                            <CheckBox Key="IsClassification_NODB4Other" Caption="分类视图" X="0" Y="1" Visible="false" OneTimeCompute="true">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="IsClassification_NODB4Other" DefaultValue="0"/>
+                            </CheckBox>
+                            <RowDefCollection RowGap="24">
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                            </RowDefCollection>
+                            <ColumnDefCollection ColumnGap="16">
+                                <ColumnDef Width="25%"/>
+                                <ColumnDef Width="25%"/>
+                                <ColumnDef Width="25%"/>
+                                <ColumnDef Width="25%"/>
+                            </ColumnDefCollection>
+                        </GridLayoutPanel>
+                        <FlexFlowLayoutPanel Key="BodySystem" Caption="系统信息" Padding="8px">
+                            <Embed Key="BodySystemEmbed" FormKey="BodySystemEntityForm" RootKey="SystemInfoPanel">
+                                <Var Key="SystemInfoTableKey" Value="EMM_SNNumberHead"/>
+                            </Embed>
+                        </FlexFlowLayoutPanel>
+                        <FlexGridLayoutPanel Key="HiddenInformation" Caption="隐藏信息" ColumnCount="3" ColumnGap="16" OverflowY="Auto" RowGap="24" Visible="false">
+                            <CheckBox Key="IsInheritance" Caption="继承标识" LabelType="M" X="0" Y="0" Visible="false" Enable="false">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="IsInheritance"/>
+                            </CheckBox>
+                            <CheckBox Key="IsInheriting" Caption="正在继承中" LabelType="M" X="0" Y="0" Visible="false" Enable="false">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="IsInheriting"/>
+                            </CheckBox>
+                            <ComboBox Key="EquipSerialNumberStatus" Caption="设备和序列号状态" LabelType="M" X="0" Y="0" Visible="true" SourceType="ParaGroup" GroupKey="EquipSerialNumberStatus" IntegerValue="true">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="EquipSerialNumberStatus" DefaultValue="1"/>
+                            </ComboBox>
+                            <TextEditor Key="SrcFormKey" Caption="SrcFormKey" X="0" Y="2" Visible="true" MaxLength="100" Trim="true">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="SrcFormKey" DefaultValue="Equipment"/>
+                            </TextEditor>
+                            <TextEditor Key="TreeID" Caption="TreeID" X="0" Y="3" Visible="true" MaxLength="100" Trim="true">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="TreeID" DefaultFormulaValue="SOID"/>
+                            </TextEditor>
+                            <NumberEditor Key="BatchCreateOID" Caption="批量创建行ID" LabelType="M" X="0" Y="1" Scale="0">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="BatchCreateOID"/>
+                                <Format HAlign="Right"/>
+                            </NumberEditor>
+                        </FlexGridLayoutPanel>
+                    </TabPanel>
+                    <TabPanel Key="EquipmentDetailInfoTabPanel">
+                        <FlexFlowLayoutPanel Key="GeneralDataFlexFlowLayoutPanel" Caption="一般的" Visible="true">
+                            <Embed Key="PM_GeneralData_Impl" FormKey="PM_GeneralData_Impl" RootKey="PM_GeneralData_ImplRoot" Height="100%"/>
+                        </FlexFlowLayoutPanel>
+                        <FlexFlowLayoutPanel Key="LocationDataFlexFlowLayoutPanel" Caption="位置" Visible="true">
+                            <Embed Key="PM_LocationData_Impl" FormKey="PM_LocationData_Impl" RootKey="PM_LocationData_ImplRoot" Height="100%"/>
+                        </FlexFlowLayoutPanel>
+                        <FlexFlowLayoutPanel Key="OrganizationDataFlexFlowLayoutPanel" Caption="组织结构" Visible="true">
+                            <Embed Key="PM_OrganizationData_Impl" FormKey="PM_OrganizationData_Impl" RootKey="PM_OrganizationData_ImplRoot" Height="100%"/>
+                        </FlexFlowLayoutPanel>
+                        <FlexFlowLayoutPanel Key="StructureFlexFlowLayoutPanel" Caption="结构" Visible="true">
+                            <Embed Key="PM_Structure_Impl" FormKey="PM_Structure_Impl" RootKey="PM_Structure_ImplRoot" Height="100%"/>
+                        </FlexFlowLayoutPanel>
+                        <FlexFlowLayoutPanel Key="ProductionResourceToolFlexFlowLayoutPanel" Caption="生产资源/工具" Visible="GetDictValue('PM_EquipmentCategory', EquipmentCategoryID, 'RreferenceCategory') == 'P'">
+                            <Embed Key="PP_ProductionResourceTool" FormKey="PP_ProductionResourceTool" RootKey="ProductionResourceToolGridLayoutPanel" Height="100%"/>
+                        </FlexFlowLayoutPanel>
+                        <GridLayoutPanel Key="SerialNumberGridLayoutPanel" Caption="序列号" Padding="8px" OverflowY="Auto" Visible="true">
+                            <Label Key="Normal" Caption="常规" X="0" Y="0" Visible="true" Enable="false" Class="erp-group-title" XSpan="4"/>
+                            <Dict Key="MaterialID" Caption="物料" LabelType="M" X="0" Y="1" Visible="true" Enable="!ReadOnly()&amp;&amp;com.bokesoft.erp.pm.function.EquipmentFormula.allocateSNNumber()" ItemKey="Material">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="MaterialID">
+                                    <CheckRule>
+                                        <![CDATA[IIF(SerialNumber!=''&&MaterialID<=0,MessageFacade('IS122','输入了序列号需关联物料'),true)]]>
+                                    </CheckRule>
+                                </DataBinding>
+                            </Dict>
+                            <Dict Key="UniquePlantID" Caption="唯一负责工厂" LabelType="M" X="1" Y="1" Visible="true" ItemKey="Plant">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="UniquePlantID"/>
+                            </Dict>
+                            <TextEditor Key="SerialNumber" Caption="序列号" LabelType="M" X="2" Y="1" Visible="true" Enable="!ReadOnly()&amp;&amp;com.bokesoft.erp.pm.function.EquipmentFormula.allocateSNNumber()" MaxLength="100" Trim="true">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="SerialNumber"/>
+                            </TextEditor>
+                            <TextEditor Key="UII" Caption="UII" LabelType="S" X="3" Y="1" Visible="true" MaxLength="100" Trim="true">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="UII"/>
+                            </TextEditor>
+                            <Label Key="StockInfo" Caption="库存信息" X="0" Y="2" Visible="true" Enable="false" Class="erp-group-title" XSpan="4"/>
+                            <Dict Key="PlantID" Caption="工厂" LabelType="M" X="0" Y="3" Visible="true" Enable="false" ItemKey="Plant">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="PlantID"/>
+                            </Dict>
+                            <ComboBox Key="StockType" Caption="库存类型" LabelType="M" X="1" Y="3" Visible="true" Enable="false" SourceType="ParaGroup" GroupKey="StockTypeGroup" IntegerValue="true">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="StockType"/>
+                            </ComboBox>
+                            <Dict Key="StorageLocationID" Caption="库存地点" LabelType="M" X="2" Y="3" Visible="true" Enable="false" ItemKey="StorageLocation">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="StorageLocationID"/>
+                            </Dict>
+                            <Dict Key="StoragePointID" Caption="子库" LabelType="M" X="3" Y="3" Visible="com.bokesoft.erp.wmsintegration.WMSIntegrationFormula.enabledWhenStoragePoint(PlantID,StorageLocationID)" Enable="false" ItemKey="StoragePoint">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="StoragePointID"/>
+                                <ItemFilter ItemKey="StoragePoint">
+                                    <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                        <FilterValue Index="1" ParaValue="IIF(StorageLocationID&gt;0, 'soid in ('&amp;com.bokesoft.erp.wmsintegration.WMSIntegrationFormula.getStoragePointFilter4StorageLocation(PlantID,StorageLocationID)&amp;')', '1=2')"/>
+                                    </Filter>
+                                </ItemFilter>
+                            </Dict>
+                            <TextEditor Key="BatchCode" Caption="批次" LabelType="M" X="0" Y="4" Visible="true" Enable="false" MaxLength="30" Trim="true">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="BatchCode"/>
+                            </TextEditor>
+                            <ComboBox Key="SpecialIdentity" Caption="特殊库存" LabelType="S" X="1" Y="4" Visible="true" Enable="false" SourceType="Formula">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="SpecialIdentity"/>
+                                <FormulaItems>
+                                    <![CDATA[Macro_GetAllSpecialIdentity()]]>
+                                </FormulaItems>
+                            </ComboBox>
+                            <Dict Key="PMWBSElementID" Caption="WBS元素" LabelType="M" X="0" Y="5" Visible="true" Enable="false" ItemKey="PS_WBSElement">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="WBSElementID"/>
+                            </Dict>
+                            <Dict Key="SaleOrderDtlOID" Caption="销售订单-行号" LabelType="M" X="1" Y="5" Visible="true" Enable="false" ItemKey="SD_SaleOrderDtl__Dic" StateMask="Enable|Disable|Discard">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="SaleOrderDtlOID"/>
+                            </Dict>
+                            <Dict Key="CustomerID" Caption="客户" LabelType="M" X="2" Y="5" Visible="true" Enable="false" ItemKey="Customer">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="CustomerID"/>
+                            </Dict>
+                            <Dict Key="VendorID" Caption="供应商" LabelType="M" X="3" Y="5" Visible="true" Enable="false" ItemKey="Vendor">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="VendorID"/>
+                            </Dict>
+                            <RowDefCollection RowGap="24">
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                            </RowDefCollection>
+                            <ColumnDefCollection ColumnGap="16">
+                                <ColumnDef Width="25%"/>
+                                <ColumnDef Width="25%"/>
+                                <ColumnDef Width="25%"/>
+                                <ColumnDef Width="25%"/>
+                            </ColumnDefCollection>
+                        </GridLayoutPanel>
+                        <Grid Key="EquipmentHistoryGrid" Caption="安装/拆卸历史记录" DefaultFitWidth="true" SerialSeq="true" Padding="8px">
+                            <GridColumnCollection>
+                                <GridColumn Key="HS_IsSelect" Width="32px"/>
+                                <GridColumn Key="HS_SOID" Caption="HS_SOID" Visible="Macro_DebugMode()" Width="80px"/>
+                                <GridColumn Key="HS_OID" Caption="HS_OID" Visible="Macro_DebugMode()" Width="80px"/>
+                                <GridColumn Key="HS_Direction" Caption="方向" LabelType="H" Width="80px"/>
+                                <GridColumn Key="HS_InstallCode" Caption="被安装位置" LabelType="H" Width="100px"/>
+                                <GridColumn Key="HS_DtlFunctionalLocationSOID" Caption="功能位置" LabelType="H" Visible="false" Width="80px"/>
+                                <GridColumn Key="HS_EquipmentSOID" Caption="设备" LabelType="H" Visible="false" Width="80px"/>
+                                <GridColumn Key="HS_InstallOrDismantDate" Caption="安装/拆卸日期" LabelType="H" Width="100px"/>
+                                <GridColumn Key="HS_InstallOrDismantTime" Caption="安装/拆卸时间" LabelType="H" Width="80px"/>
+                            </GridColumnCollection>
+                            <GridRowCollection>
+                                <GridRow Key="EquipmentHistoryGridRow" TableKey="EPM_EquipmentHistory">
+                                    <GridCell Key="HS_IsSelect" Caption="选择" CellType="CheckBox" IsSelect="true"/>
+                                    <GridCell Key="HS_SOID" Caption="HS_SOID" CellType="NumberEditor" Scale="0">
+                                        <DataBinding ColumnKey="SOID"/>
+                                    </GridCell>
+                                    <GridCell Key="HS_OID" Caption="HS_OID" CellType="NumberEditor" Scale="0">
+                                        <DataBinding ColumnKey="OID"/>
+                                    </GridCell>
+                                    <GridCell Key="HS_Direction" Caption="方向" CellType="ComboBox" IntegerValue="true">
+                                        <DataBinding ColumnKey="Direction"/>
+                                        <Item Key="1" Caption="安装" Value="1"/>
+                                        <Item Key="-1" Caption="拆卸" Value="-1"/>
+                                    </GridCell>
+                                    <GridCell Key="HS_InstallCode" Caption="被安装位置" CellType="TextEditor" MaxLength="100" Trim="true">
+                                        <DataBinding ColumnKey="HS_InstallCode">
+                                            <DefaultFormulaValue>
+                                                <![CDATA[IIFS(HS_DtlFunctionalLocationSOID>0, GetDictValue('PM_FunctionalLocation__Dic', HS_DtlFunctionalLocationSOID, 'Code'), HS_EquipmentSOID>0, GetDictValue('PM_Equipment__Dic', HS_EquipmentSOID, 'Code'), true, '')]]>
+                                            </DefaultFormulaValue>
+                                        </DataBinding>
+                                    </GridCell>
+                                    <GridCell Key="HS_DtlFunctionalLocationSOID" Caption="功能位置" CellType="Dict" ItemKey="PM_FunctionalLocation__Dic" StateMask="Enable|Disable|Discard">
+                                        <DataBinding ColumnKey="FunctionalLocationSOID"/>
+                                    </GridCell>
+                                    <GridCell Key="HS_EquipmentSOID" Caption="设备" CellType="Dict" ItemKey="PM_Equipment__Dic" StateMask="Enable|Disable|Discard">
+                                        <DataBinding ColumnKey="EquipmentSOID"/>
+                                    </GridCell>
+                                    <GridCell Key="HS_InstallOrDismantDate" Caption="安装/拆卸日期" CellType="UTCDatePicker" Format="yyyy-MM-dd">
+                                        <DataBinding ColumnKey="InstallOrDismantDate"/>
+                                    </GridCell>
+                                    <GridCell Key="HS_InstallOrDismantTime" Caption="安装/拆卸时间" CellType="TimePicker" Second="true">
+                                        <DataBinding ColumnKey="InstallOrDismantTime"/>
+                                    </GridCell>
+                                </GridRow>
+                            </GridRowCollection>
+                        </Grid>
+                        <FlexFlowLayoutPanel Key="body_Classification" Caption="分类" Visible="ToInt(IsClassification_NODB4Other)" Padding="8px">
+                            <Embed Key="ObjectImpl_Classification" FormKey="ObjectImpl_Classification" RootKey="ObjectImpl_ClassificationRoot" Height="100%"/>
+                        </FlexFlowLayoutPanel>
+                        <FlexFlowLayoutPanel Key="body_MeasuringPoint" Caption="计量点" Padding="8px">
+                            <Embed Key="PM_TechObjMeasuringPoint_Impl" FormKey="PM_TechObjMeasuringPoint_Impl" RootKey="PM_TechObjMeasuringPoint_Root" Height="100%"/>
+                        </FlexFlowLayoutPanel>
+                        <GridLayoutPanel Key="PM_DataOriginPanel" Caption="数据源清单" Height="100%" OverflowY="Auto" Visible="false">
+                            <TextEditor Key="Orig4WBSElementID" Caption="WBS元素数据源" LabelType="M" X="0" Y="0" MaxLength="2">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="Orig4WBSElementID" DefaultValue="D"/>
+                            </TextEditor>
+                            <TextEditor Key="Orig4LocationID" Caption="位置数据源" LabelType="M" X="1" Y="0" MaxLength="2">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="Orig4LocationID" DefaultValue="D"/>
+                            </TextEditor>
+                            <TextEditor Key="Orig4Room" Caption="房间数据源" LabelType="M" X="2" Y="0" MaxLength="2">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="Orig4Room" DefaultValue="D"/>
+                            </TextEditor>
+                            <TextEditor Key="Orig4PlantSectionID" Caption="工厂区域数据源" LabelType="M" X="0" Y="1" MaxLength="2">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="Orig4PlantSectionID" DefaultValue="D"/>
+                            </TextEditor>
+                            <TextEditor Key="Orig4WorkCenterID" Caption="工作中心数据源" LabelType="M" X="1" Y="1" MaxLength="2">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="Orig4WorkCenterID" DefaultValue="D"/>
+                            </TextEditor>
+                            <TextEditor Key="Orig4ABCIndicatorID" Caption="ABC标识数据源" LabelType="M" X="2" Y="1" MaxLength="2">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="Orig4ABCIndicatorID" DefaultValue="D"/>
+                            </TextEditor>
+                            <TextEditor Key="Orig4MaintPlantID" Caption="维护工厂数据源" LabelType="M" X="0" Y="2" MaxLength="2">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="Orig4MaintPlantID" DefaultValue="D"/>
+                            </TextEditor>
+                            <TextEditor Key="Orig4PlanningPlantID" Caption="计划工厂数据源" LabelType="M" X="2" Y="2" MaxLength="2">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="Orig4PlanningPlantID" DefaultValue="D"/>
+                            </TextEditor>
+                            <TextEditor Key="Orig4BusinessAreaID" Caption="业务范围数据源" LabelType="M" X="0" Y="3" MaxLength="2">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="Orig4BusinessAreaID" DefaultValue="D"/>
+                            </TextEditor>
+                            <TextEditor Key="Orig4CostCenterID" Caption="成本中心数据源" LabelType="M" X="1" Y="3" MaxLength="2">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="Orig4CostCenterID" DefaultValue="D"/>
+                            </TextEditor>
+                            <TextEditor Key="Orig4ControllingAreaID" Caption="控制范围数据源" LabelType="M" X="2" Y="3" MaxLength="2">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="Orig4ControllingAreaID" DefaultValue="D"/>
+                            </TextEditor>
+                            <TextEditor Key="Orig4PlannerGroupID" Caption="计划人员组数据源" LabelType="M" X="0" Y="4" MaxLength="2">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="Orig4PlannerGroupID" DefaultValue="D"/>
+                            </TextEditor>
+                            <TextEditor Key="Orig4MainWorkCenterID" Caption="主工作中心数据源" LabelType="M" X="2" Y="4" MaxLength="2">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="Orig4MainWorkCenterID" DefaultValue="D"/>
+                            </TextEditor>
+                            <TextEditor Key="Orig4CatalogProfileID" Caption="类别参数文件数据源" LabelType="M" X="0" Y="5" MaxLength="2">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="Orig4CatalogProfileID" DefaultValue="D"/>
+                            </TextEditor>
+                            <TextEditor Key="Orig4OrgCompanyCodeID" Caption="公司代码数据源" LabelType="M" X="1" Y="5" MaxLength="2">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="Orig4OrgCompanyCodeID" DefaultValue="D"/>
+                            </TextEditor>
+                            <TextEditor Key="Orig4SortField" Caption="分类字段数据源" LabelType="M" X="0" Y="6" MaxLength="2">
+                                <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="Orig4SortField" DefaultValue="D"/>
+                            </TextEditor>
+                            <RowDefCollection RowGap="24">
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                            </RowDefCollection>
+                            <ColumnDefCollection ColumnGap="16">
+                                <ColumnDef Width="80px"/>
+                                <ColumnDef Width="80px"/>
+                                <ColumnDef Width="80px"/>
+                            </ColumnDefCollection>
+                        </GridLayoutPanel>
+                        <FlexFlowLayoutPanel Key="NewEquipmentStatusTab" Caption="状态管理" Visible="true" Padding="8px">
+                            <Embed Key="HeadStatusManage" FormKey="HeadStatusManage" RootKey="HeadStatusManageRoot" Height="100%"/>
+                        </FlexFlowLayoutPanel>
+                        <FlexFlowLayoutPanel Key="NewDocumentVoucherLinkTab" Caption="凭证链接" Visible="Macro_DebugMode()" Padding="8px">
+                            <Embed Key="DMS_DocumentVoucherLink" FormKey="DMS_DocumentVoucherLink" RootKey="DMS_DocumentVoucherLinkRoot" Height="100%"/>
+                        </FlexFlowLayoutPanel>
+                    </TabPanel>
+                    <SplitSize Size="160px"/>
+                    <SplitSize Size="100%"/>
+                </SplitPanel>
+            </FlexFlowLayoutPanel>
+        </Block>
+    </Body>
+    <OnLoad>
+        <![CDATA[IIF(IsNew(),'',Macro_LoadObject())]]>
+    </OnLoad>
+    <OnClose>
+        <![CDATA[Macro_ResponseBatchCreate(true);]]>
+    </OnClose>
+    <OnPostShow>
+        <![CDATA[SetPara('Exclude_IEQ_Status','I0076');Macro_IsDisplayClassification()]]>
+    </OnPostShow>
+    <MacroCollection>
+        <Macro Key="Macro_ResponseBatchCreate" Args="argIsClose">
+            <![CDATA[com.bokesoft.erp.pm.function.EquipmentFormula.writeBackBatchCreate(argIsClose);]]>
+        </Macro>
+        <Macro Key="Macro_UIOpt_BillEdit_Enable">
+            <![CDATA[ReadOnly()&&!Macro_IsDLFL()&&ToLong(GetPara('_TimeSegmentID'))<=0]]>
+        </Macro>
+        <Macro Key="Macro_PM_EquipmentQuery_ShowEvent" Args="ArgSOID,argIsEdit">
+            <![CDATA[Macro_LoadObjectBySOID(ArgSOID); IIF(argIsEdit, Macro_EditEquipment(), false);]]>
+        </Macro>
+        <Macro Key="Macro_SNResett_RunAsExp">
+            <![CDATA[com.bokesoft.erp.pm.function.EquipmentFormula.recoverDevice();Macro_MidSave();]]>
+        </Macro>
+        <Macro Key="Macro_IsDLFL">
+            <![CDATA[com.bokesoft.erp.pm.function.EquipmentFormula.isContainStatus('I0076')]]>
+        </Macro>
+        <Macro Key="Macro_IsESTO">
+            <![CDATA[com.bokesoft.erp.pm.function.EquipmentFormula.isContainStatus('I0184')]]>
+        </Macro>
+        <Macro Key="Macro_SNSet_RunAsExp">
+            <![CDATA[com.bokesoft.erp.pm.function.EquipmentFormula.deleteDevice();Macro_MidSave();]]>
+        </Macro>
+        <Macro Key="Macro_Deactivate_RunAsExp">
+            <![CDATA[com.bokesoft.erp.pm.function.EquipmentFormula.deActiveDevice()]]>
+        </Macro>
+        <Macro Key="Macro_IsINAC">
+            <![CDATA[com.bokesoft.erp.pm.function.EquipmentFormula.isContainStatus('I0320')]]>
+        </Macro>
+        <Macro Key="Macro_Activate_RunAsExp">
+            <![CDATA[com.bokesoft.erp.pm.function.EquipmentFormula.activeDevice()]]>
+        </Macro>
+        <Macro Key="Macro_MidSave_PreTriggers">
+            <![CDATA[com.bokesoft.erp.pm.masterdata.EquipmentHistory.timeSegmentProcess();com.bokesoft.erp.pm.function.EquipmentFormula.checkEquipSNDataInfo();com.bokesoft.erp.pm.function.EquipmentInstallDismantlingFormula.updateChildrenSupTechObject();com.bokesoft.erp.pm.function.EquipmentInstallDismantlingFormula.updateSupTecoObject();com.bokesoft.erp.pm.masterdata.EquipAndFunc.genMeasuringPoints();]]>
+        </Macro>
+        <Macro Key="Macro_MidSave_PostTriggers">
+            <![CDATA[com.bokesoft.erp.fi.am.AssetsCardFormula.equipmentSyncToAssetCard();com.bokesoft.erp.pm.function.PMCommonFormula.doDelaySaveBill();com.bokesoft.erp.pm.function.EquipmentFormula.setChildEquipmentDefine();SetValue('Structure_IsInstallationEquip',0,true);com.bokesoft.erp.pm.datatransfer.DataOriginFormula.deleteTerminalObjectRecord();Macro_ResponseBatchCreate(false);]]>
+        </Macro>
+        <Macro Key="Macro_setHeadCategoryTypeID">
+            <![CDATA[com.bokesoft.erp.pm.function.EquipmentFormula.setHeadCategoryTypeID();]]>
+        </Macro>
+        <Macro Key="Macro_EditEquipment">
+            <![CDATA[EditBill();]]>
+        </Macro>
+        <Macro Key="Macro_BuildTransferDialog">
+            <![CDATA[com.bokesoft.erp.pm.datatransfer.DataOriginFormula.buildDialog4InsOrDisWithTransfer();]]>
+        </Macro>
+        <Macro Key="Macro_BillEdit">
+            <![CDATA[EditBill();Macro_DoDataTransferOnEdit()]]>
+        </Macro>
+        <Macro Key="Macro_IsDisplayClassification">
+            <![CDATA[com.bokesoft.erp.pm.function.EquipmentFormula.isDisplayClassification()]]>
+        </Macro>
+    </MacroCollection>
+</Form>

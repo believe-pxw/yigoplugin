@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Form Key="MM_StockOverview_Rpt" Caption="库存总览" FormType="Report" InitState="Default" Version="37">
+    <DataSource>
+        <DataObject Key="MM_StockOverview_Rpt" Caption="库存总览" Version="1">
+            <TableCollection>
+                <Table Key="EMM_MaterialStorage" Caption="物料存储主表" TableMode="Detail" Persist="false">
+                    <Column Key="OID" Caption="对象标识" DataElementKey="OID"/>
+                    <Column Key="VERID" Caption="对象版本" DataElementKey="VERID"/>
+                    <Column Key="StockType" Caption="库存类型" DataElementKey="StockType"/>
+                    <Column Key="StockBalanceQuantity" DataElementKey="StockBalanceQuantity"/>
+                    <Column Key="TreeCaption" Persist="false" DefaultValue="" IsPrimary="true" IgnoreQuery="true" DataElementKey="TextEditor_100"/>
+                    <Column Key="TreeLevel" Persist="false" IsPrimary="true" DefaultValue="" IgnoreQuery="true" DataElementKey="TreeLevel"/>
+                    <Column Key="TreeLevel2" Persist="false" DefaultValue="" IsPrimary="true" IgnoreQuery="true" DataElementKey="TextEditor_100"/>
+                    <Column Key="TreeRowLevel" Caption="显示层级" Persist="false" IgnoreQuery="true" DataElementKey="TreeRowLevel"/>
+                    <Column Key="TreeRowIndex" Caption="层级序号" Persist="false" IgnoreQuery="true" DataElementKey="TreeRowIndex"/>
+                    <Column Key="ParentTreeRowIndex" Caption="上一层级序号" Persist="false" IgnoreQuery="true" DataElementKey="ParentTreeRowIndex"/>
+                    <Column Key="PlantID" Caption="工厂" DataElementKey="PlantID"/>
+                    <Column Key="CompanyCodeID" DataElementKey="CompanyCodeID"/>
+                    <Column Key="StorageLocationID" DataElementKey="StorageLocationID"/>
+                    <Column Key="BatchCode" Caption="批次" DataElementKey="BatchCode"/>
+                    <Column Key="TotalQuantityBalance" Caption="总计" Persist="false" DataElementKey="StockBalanceQuantity" IgnoreQuery="true"/>
+                </Table>
+                <Table Key="EMM_StockOverview_Rpt_Head" Caption="库存总览的非持久化主表" SourceType="" Persist="false">
+                    <Column Key="OID" Caption="对象标识" DataElementKey="OID"/>
+                    <Column Key="SOID" Caption="主对象标识" DataElementKey="SOID"/>
+                    <Column Key="POID" Caption="父对象标识" DataElementKey="POID"/>
+                    <Column Key="MaterialID" Caption="物料" Persist="false" DataElementKey="MaterialID" IgnoreQuery="true"/>
+                    <Column Key="IsSelectSpecialStocks" Caption="含特殊库存" Persist="false" DataElementKey="IsSelectSpecialStocks" IgnoreQuery="true"/>
+                    <Column Key="BaseUnitID" Caption="基本单位" Persist="false" DataElementKey="UnitID" IgnoreQuery="true"/>
+                    <Column Key="UnitOfMeasureID" Caption="显示计量单位" Persist="false" DataElementKey="UnitID" IgnoreQuery="true"/>
+                    <Column Key="IsDevelopBatchCode" Caption="展开批次" Persist="false" DataElementKey="IsBatchCode_Cond" IgnoreQuery="true"/>
+                    <Column Key="IsDevelopSpecialIdentity" Caption="展开特殊库存" Persist="false" DataElementKey="IsNoSpecial_Cond" IgnoreQuery="true"/>
+                    <Column Key="SpecialIdentity" Caption="特殊库存" Persist="false" DataElementKey="SpecialIdentity_Formula" IgnoreQuery="true"/>
+                    <Column Key="PlantID" Caption="工厂" Persist="false" DataElementKey="PlantID" IgnoreQuery="true"/>
+                    <Column Key="StorageLocationID" Caption="库存地点" Persist="false" DataElementKey="StorageLocationID_Multi" IgnoreQuery="true"/>
+                    <Column Key="BatchCode" Caption="批次" Persist="false" DataElementKey="BatchCode" IgnoreQuery="true"/>
+                    <Column Key="MaterialTypeID" Caption="物料类型" Persist="false" DataElementKey="MaterialTypeID" IgnoreQuery="true"/>
+                </Table>
+            </TableCollection>
+        </DataObject>
+    </DataSource>
+    <OperationCollection>
+        <Operation Key="Refresh" Caption="查看数据">
+            <Action>
+                <![CDATA[UICheck();Macro_Query()]]>
+            </Action>
+        </Operation>
+        <Operation Key="ViewBatchCode" Caption="批次分类" Visible="Length(MS_BatchCode)&gt;0 &amp;&amp; MS_BatchCode!='_'">
+            <Action>
+                <![CDATA[Open('MM_BatchCode', Macro_GetBatchCodeID(MaterialID,MS_PlantID,MS_BatchCode))]]>
+            </Action>
+        </Operation>
+        <OperationCollection Key="NewPrint" Caption="打印" SelfDisable="true">
+            <Operation Key="NewPrintDefault" Caption="默认模板打印" RefKey="NewPrintDefault" Activity="04"/>
+            <Operation Key="NewPrintSelect" Caption="其他模板选择" RefKey="NewPrintSelect" Activity="04"/>
+            <Operation Key="ManagePrint" Caption="打印模板管理" RefKey="ManagePrint" Activity="04"/>
+        </OperationCollection>
+        <OperationCollection Key="NewPrePrint" Caption="打印预览" SelfDisable="true">
+            <Operation Key="NewPrePrintDefault" Caption="默认模板预览" RefKey="NewPrePrintDefault" Activity="Y09"/>
+            <Operation Key="NewPrePrintSelect" Caption="其他模板选择" RefKey="NewPrePrintSelect" Activity="Y09"/>
+        </OperationCollection>
+        <Operation Key="ERPExportExcel" Caption="导出" RefKey="ERPExportExcel" Activity="Y11"/>
+        <Operation Key="UIClose" Caption="关闭" RefKey="UIClose"/>
+    </OperationCollection>
+    <Body>
+        <Block>
+            <FlexFlowLayoutPanel Key="root">
+                <ToolBar Key="ToolBar" Caption="ToolBar1" Height="pref">
+                    <ToolBarItemCollection/>
+                </ToolBar>
+                <SplitPanel Key="main_container" Orientation="Vertical" Height="100%">
+                    <GridLayoutPanel Key="StockOverGridLayoutPanel" Padding="8px" OverflowY="Auto" TopPadding="24px">
+                        <Dict Key="PlantID" Caption="工厂" LabelType="M" X="0" Y="1" Visible="true" Enable="true" ItemKey="Plant" OneTimeCompute="true">
+                            <DataBinding TableKey="EMM_StockOverview_Rpt_Head" ColumnKey="PlantID"/>
+                        </Dict>
+                        <Dict Key="BaseUnitID" Caption="基本单位" X="2" Y="0" Visible="true" Enable="false" ItemKey="Unit">
+                            <DataBinding TableKey="EMM_StockOverview_Rpt_Head" ColumnKey="BaseUnitID" DefaultFormulaValue="GetDictValue('Material', MaterialID, 'BaseUnitID')"/>
+                        </Dict>
+                        <Dict Key="MaterialID" Caption="物料" LabelType="M" X="0" Y="0" Visible="true" Enable="true" ItemKey="Material">
+                            <DataBinding TableKey="EMM_StockOverview_Rpt_Head" ColumnKey="MaterialID" Required="true">
+                                <ValueChanged>
+                                    <![CDATA[SetValue('UnitOfMeasureID', GetDictValue('Material', MaterialID, 'BaseUnitID'));]]>
+                                </ValueChanged>
+                            </DataBinding>
+                        </Dict>
+                        <Dict Key="StorageLocationID" Caption="库存地点" LabelType="M" X="1" Y="1" Visible="true" Enable="true" AllowMultiSelection="true" ItemKey="StorageLocation" OneTimeCompute="true">
+                            <DataBinding TableKey="EMM_StockOverview_Rpt_Head" ColumnKey="StorageLocationID"/>
+                            <ItemFilter ItemKey="StorageLocation">
+                                <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                    <FilterValue Index="1" ParaValue="IIF(PlantID&gt;0, 'PlantID='&amp;SqlPara(PlantID), '1=1')"/>
+                                </Filter>
+                            </ItemFilter>
+                        </Dict>
+                        <TextEditor Key="BatchCode" Caption="批次" LabelType="M" X="3" Y="0" Visible="true" Enable="true" Case="Upper" MaxLength="100" Trim="true">
+                            <DataBinding TableKey="EMM_StockOverview_Rpt_Head" ColumnKey="BatchCode"/>
+                        </TextEditor>
+                        <CheckBox Key="IsSelectSpecialStocks" Caption="含特殊库存" LabelType="M" X="0" Y="2" Visible="true" Enable="true">
+                            <DataBinding TableKey="EMM_StockOverview_Rpt_Head" ColumnKey="IsSelectSpecialStocks" DefaultFormulaValue="1"/>
+                        </CheckBox>
+                        <ComboBox Key="SpecialIdentity" Caption="特殊库存" LabelType="S" X="2" Y="1" Visible="true" Enable="true" SourceType="Formula">
+                            <DataBinding TableKey="EMM_StockOverview_Rpt_Head" ColumnKey="SpecialIdentity" DefaultFormulaValue="'_'"/>
+                            <FormulaItems>
+                                <![CDATA[Macro_GetAllSpecialIdentity()]]>
+                            </FormulaItems>
+                        </ComboBox>
+                        <Dict Key="UnitOfMeasureID" Caption="显示计量单位" X="3" Y="1" Visible="true" Enable="true" ItemKey="Unit">
+                            <DataBinding TableKey="EMM_StockOverview_Rpt_Head" ColumnKey="UnitOfMeasureID"/>
+                            <ItemFilter ItemKey="Unit">
+                                <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                    <FilterValue Index="1" ParaValue="IIF(MaterialID&gt;0, 'soid in ('&amp;com.bokesoft.erp.basis.unit.UnitFormula.getUnitFmMaterial(MaterialID)&amp;')', '1=2')"/>
+                                </Filter>
+                            </ItemFilter>
+                        </Dict>
+                        <Dict Key="MaterialTypeID" Caption="物料类型" LabelType="M" X="1" Y="0" Visible="true" Enable="false" ItemKey="MaterialType">
+                            <DataBinding TableKey="EMM_StockOverview_Rpt_Head" ColumnKey="MaterialTypeID">
+                                <DefaultFormulaValue>
+                                    <![CDATA[GetDictValue('Material', MaterialID, 'MaterialTypeID')]]>
+                                </DefaultFormulaValue>
+                            </DataBinding>
+                        </Dict>
+                        <CheckBox Key="IsDevelopBatchCode" Caption="展开批次" X="1" Y="2" Visible="true" Enable="true">
+                            <DataBinding TableKey="EMM_StockOverview_Rpt_Head" ColumnKey="IsDevelopBatchCode" DefaultValue="1"/>
+                        </CheckBox>
+                        <CheckBox Key="IsDevelopSpecialIdentity" Caption="展开特殊库存" X="2" Y="2" Visible="true" Enable="true">
+                            <DataBinding TableKey="EMM_StockOverview_Rpt_Head" ColumnKey="IsDevelopSpecialIdentity" DefaultValue="1"/>
+                        </CheckBox>
+                        <RowDefCollection RowGap="24">
+                            <RowDef Height="32px"/>
+                            <RowDef Height="32px"/>
+                            <RowDef Height="32px"/>
+                        </RowDefCollection>
+                        <ColumnDefCollection ColumnGap="16">
+                            <ColumnDef Width="25%"/>
+                            <ColumnDef Width="25%"/>
+                            <ColumnDef Width="25%"/>
+                            <ColumnDef Width="25%"/>
+                        </ColumnDefCollection>
+                    </GridLayoutPanel>
+                    <TabPanel Key="Down">
+                        <Grid Key="MaterialStorageGrid" Caption="库存总览清单" DefaultFitWidth="true" SerialSeq="true" X="0" Y="0" DisabledOption="delete" Padding="8px">
+                            <GridColumnCollection>
+                                <GridColumn Key="TreeLevel2" Caption="TreeLevel2" Visible="Macro_DebugMode()" Width="80px"/>
+                                <GridColumn Key="TreeLevel" Caption="层级" Width="80px"/>
+                                <GridColumn Key="CompanyCodeID" Caption="公司" LabelType="H" Visible="false" Width="80px"/>
+                                <GridColumn Key="MS_PlantID" Caption="工厂" LabelType="H" Visible="false" Width="80px"/>
+                                <GridColumn Key="MS_StorageLocationID" Caption="库存地点" LabelType="M" Visible="false" Width="80px"/>
+                                <GridColumn Key="TreeCaption" Caption="系统环境/公司代码/工厂/库存地点/批次/特殊库存" Width="80px"/>
+                                <GridColumn Key="MS_BatchCode" Caption="批次" LabelType="H" Visible="Macro_DebugMode()" Width="80px"/>
+                                <GridColumn Key="StockBalanceQuantity" Caption="数量" LabelType="H" ColumnType="Detail" Width="80px">
+                                    <ColumnExpand ExpandType="Title">
+                                        <![CDATA[]]>
+                                    </ColumnExpand>
+                                    <GridColumnCollection>
+                                        <GridColumn Key="StockType" Caption="库存类型" Visible="true" Width="80px">
+                                            <ColumnExpand ColumnKey="StockType" TableKey="EMM_MaterialStorage">
+                                                <![CDATA[Macro_MM_StockOverview_ColumnExpandSource()]]>
+                                            </ColumnExpand>
+                                        </GridColumn>
+                                        <GridColumn Key="TotalQuantityBalance" Caption="总计" ColumnType="Total" Width="80px"/>
+                                    </GridColumnCollection>
+                                </GridColumn>
+                            </GridColumnCollection>
+                            <GridRowCollection>
+                                <GridRow Key="MaterialStorageRow" TableKey="EMM_MaterialStorage">
+                                    <GridCell Key="TreeLevel2" Caption="TreeLevel2" CellType="TextEditor" Enable="false" MaxLength="100" Trim="true">
+                                        <DataBinding ColumnKey="TreeLevel2"/>
+                                    </GridCell>
+                                    <GridCell Key="TreeLevel" Caption="TreeLevel" CellType="TextEditor" Enable="false">
+                                        <DataBinding ColumnKey="TreeLevel"/>
+                                    </GridCell>
+                                    <GridCell Key="CompanyCodeID" Caption="公司" CellType="Dict" ItemKey="CompanyCode">
+                                        <DataBinding ColumnKey="CompanyCodeID"/>
+                                    </GridCell>
+                                    <GridCell Key="MS_PlantID" Caption="工厂" CellType="Dict" ItemKey="Plant">
+                                        <DataBinding ColumnKey="PlantID"/>
+                                    </GridCell>
+                                    <GridCell Key="MS_StorageLocationID" Caption="库存地点" CellType="Dict" ItemKey="StorageLocation">
+                                        <DataBinding ColumnKey="StorageLocationID"/>
+                                    </GridCell>
+                                    <GridCell Key="TreeCaption" Caption="TreeCaption" CellType="TextEditor" Enable="false">
+                                        <DataBinding ColumnKey="TreeCaption"/>
+                                    </GridCell>
+                                    <GridCell Key="MS_BatchCode" Caption="批次" CellType="TextEditor" Enable="false">
+                                        <DataBinding ColumnKey="BatchCode"/>
+                                    </GridCell>
+                                    <GridCell Key="StockBalanceQuantity" Caption="StockBalanceQuantity" CellType="NumberEditor" Enable="false" Scale="3">
+                                        <DataBinding ColumnKey="StockBalanceQuantity"/>
+                                        <CellFormat HAlign="Right"/>
+                                    </GridCell>
+                                    <GridCell Key="TotalQuantityBalance" Caption="总计" CellType="NumberEditor" Scale="3">
+                                        <DataBinding ColumnKey="TotalQuantityBalance" ValueDependency="StockBalanceQuantity">
+                                            <DefaultFormulaValue>
+                                                <![CDATA[SumExpand('StockBalanceQuantity',"StockType!=101 && StockType!=105")]]>
+                                            </DefaultFormulaValue>
+                                        </DataBinding>
+                                        <CellFormat HAlign="Right"/>
+                                    </GridCell>
+                                    <RowTree CellKey="TreeLevel" Expand="true" Foreign="ParentTreeRowIndex" Parent="TreeRowIndex" TreeType="Common">
+                                        <![CDATA[]]>
+                                    </RowTree>
+                                </GridRow>
+                            </GridRowCollection>
+                        </Grid>
+                    </TabPanel>
+                    <SplitSize Size="160px"/>
+                    <SplitSize Size="100%"/>
+                </SplitPanel>
+            </FlexFlowLayoutPanel>
+        </Block>
+    </Body>
+    <OnLoad>
+        <![CDATA[Macro_SetTableFilter(1, '1=2')]]>
+    </OnLoad>
+    <MacroCollection>
+        <Macro Key="Macro_ShowModal" Args="PlantID,MaterialID">
+            <![CDATA[SetEntryPara('TCode','MMBE');SetValue("MaterialID",MaterialID);SetValue("PlantID",PlantID);IIF(MaterialID>0,UICheck()+Macro_Query(),'');]]>
+        </Macro>
+        <Macro Key="Macro_GetFilter">
+            <![CDATA[Join(' and ', IIF(MaterialID>0,'MaterialID='&SqlPara(MaterialID)&''), IIF(PlantID>0,'PlantID='&SqlPara(PlantID),''), IIF(Length(GetPara('_StorageLocationIDFilter'))>0,GetPara('_StorageLocationIDFilter'),''), IIF(Length(BatchCode)>0,"BatchCode="&SqlPara(BatchCode),''), Macro_GetSpecialIdentityFilter())]]>
+        </Macro>
+        <Macro Key="Macro_GetSpecialIdentityFilter">
+            <![CDATA[IIF(ToInt(IsSelectSpecialStocks)==0,"SpecialIdentity="&SqlPara('_'),IIFS(SpecialIdentity=='_'||Length(SpecialIdentity)==0, '', true, "SpecialIdentity IN ("&SqlPara('_')&","&SqlPara(SpecialIdentity)&")"))]]>
+        </Macro>
+        <Macro Key="Macro_CommonDef__ShowEvent">
+            <![CDATA[SetValue('MaterialID', parent.GetPara('_MaterialID'),true);SetValue('PlantID', parent.GetPara('_PlantID'),true);UICheck();Macro_Query();]]>
+        </Macro>
+        <Macro Key="Macro_Me2o_ShowEvent">
+            <![CDATA[SetValue('MaterialID', parent.GetPara('_MaterialID'),true);UICheck();Macro_Query();]]>
+        </Macro>
+        <Macro Key="Macro_ProcessMMBE">
+            <![CDATA[com.bokesoft.erp.mm.report.StockOverviewFormula.processMMBEDataSource()]]>
+        </Macro>
+        <Macro Key="Macro_MM_StockOverview_ColumnExpandSource">
+            <![CDATA[com.bokesoft.erp.mm.purchase.MigoFormula.getStockType4Expand('EMM_MaterialStorage','StockType')]]>
+        </Macro>
+        <Macro Key="Macro_Query">
+            <![CDATA[Macro_SetTableFilter(1, Macro_GetFilter());SetPara('_PlantID', PlantID);SetPara('_StorageLocationIDFilter', IIFS(StorageLocationID == '0', 'StorageLocationID > '&Macro_SqlPara(0), Length(StorageLocationID)>0,"StorageLocationID in ("&Macro_GetMultiValue4SqlString('StorageLocationID')&")" ,true, ''));SetPara('_BatchCode', BatchCode);Macro_ProcessMMBE()]]>
+        </Macro>
+        <Macro Key="Macro_GetBatchCodeID" Args="materialID,plantid,batchCode">
+            <![CDATA[com.bokesoft.erp.mm.report.StockOverviewFormula.getBatchCodeID(materialID,plantid,batchCode)]]>
+        </Macro>
+    </MacroCollection>
+</Form>

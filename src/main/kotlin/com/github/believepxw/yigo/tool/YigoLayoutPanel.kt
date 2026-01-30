@@ -38,8 +38,12 @@ import javax.swing.event.DocumentListener
 class YigoLayoutPanel(private val project: Project, private val toolWindow: ToolWindow) : JPanel(BorderLayout()) {
 
     private val rootPanel = object : JPanel(), Scrollable {
-        // Implement Scrollable to force width to match viewport (no horizontal scroll)
-        override fun getScrollableTracksViewportWidth(): Boolean = true
+        // Implement Scrollable with smart width tracking: 
+        // Expand to viewport if minimum content fits (true), but allow scroll if even minimum is wider (false).
+        override fun getScrollableTracksViewportWidth(): Boolean {
+            val viewport = parent as? javax.swing.JViewport ?: return true
+            return minimumSize.width <= viewport.width
+        }
         
         // Let height grow as needed
         override fun getScrollableTracksViewportHeight(): Boolean = false
@@ -195,7 +199,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         searchPanel.add(searchField, BorderLayout.CENTER)
         searchPanel.add(controls, BorderLayout.EAST)
         
-        add(searchPanel, BorderLayout.SOUTH)
+        add(searchPanel, BorderLayout.NORTH)
     }
     
     // --- Helper Methods to Register Component and Store Border ---
@@ -538,6 +542,14 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
     private fun attachNavigationListener(component: JComponent, tag: XmlTag) {
         component.addMouseListener(object : MouseAdapter() {
             override fun mouseClicked(e: MouseEvent) {
+                // Special handling for TabbedPane: 
+                // If user clicks a specific tab, let the ChangeListener handle navigation to the inner component.
+                // We only navigate to the TabPanel tag if clicking the empty background.
+                if (component is JTabbedPane) {
+                     val tabIndex = component.indexAtLocation(e.x, e.y)
+                     if (tabIndex != -1) return
+                }
+
                 // Do NOT consume. Let Swing handle it (e.g. Tab selection).
                 // e.consume() 
                 navigateToTag(tag)
@@ -561,13 +573,47 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                 val componentReq = createComponent(tag, visitedForms)
                 if (componentReq != null) {
                     registerComponent(tag, componentReq)
-                    parentPanel.add(componentReq)
+                    val finalComp = wrapWithScrollIfNeeded(tag, componentReq)
+                    parentPanel.add(finalComp)
                     component = componentReq
                 } else {
                     component = null
                 }
             }
         }
+    }
+
+    private fun wrapWithScrollIfNeeded(tag: XmlTag, component: JComponent): JComponent {
+        val overflowX = tag.getAttributeValue("OverflowX")
+        val overflowY = tag.getAttributeValue("OverflowY")
+        
+        val needScroll = (overflowX == "Auto" || overflowX == "Scroll" || 
+                          overflowY == "Auto" || overflowY == "Scroll")
+
+        if (needScroll) {
+             val scroll = JBScrollPane(component)
+             scroll.border = JBUI.Borders.empty() 
+             
+             // Set ScrollBar Policies
+             when(overflowX) {
+                 "Scroll" -> scroll.horizontalScrollBarPolicy = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS
+                 "Auto" -> scroll.horizontalScrollBarPolicy = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED
+                 "Hidden" -> scroll.horizontalScrollBarPolicy = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
+                 else -> scroll.horizontalScrollBarPolicy = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED // Default to As Needed if implicit
+             }
+             
+             when(overflowY) {
+                 "Scroll" -> scroll.verticalScrollBarPolicy = ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS
+                 "Auto" -> scroll.verticalScrollBarPolicy = ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED
+                 "Hidden" -> scroll.verticalScrollBarPolicy = ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER
+                 else -> scroll.verticalScrollBarPolicy = ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED
+             }
+             
+             // Pass through TitledBorder if intended? 
+             // No, the inner has the border.
+             return scroll
+        }
+        return component
     }
 
     private fun createComponent(tag: XmlTag, visitedForms: Set<String> = emptySet()): JComponent? {
@@ -777,6 +823,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         panel.add(label, BorderLayout.CENTER)
         
         panel.preferredSize = Dimension(80, 32)
+        panel.minimumSize = Dimension(20, 32) // Allow shrinking width to fit compact layouts
         panel.putClientProperty(KEY_XML_TAG, tag)
         
         val ds = DragSource.getDefaultDragSource()

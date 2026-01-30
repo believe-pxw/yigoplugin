@@ -1,0 +1,936 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Form Key="V_Material" Caption="物料" FormType="Dict" InitState="Default" Version="194">
+    <DataSource RefObjectKey="Material"/>
+    <OperationCollection>
+        <Operation Key="OrgDictListNew" Caption="新增" RefKey="OrgDictListNew" Activity="01" TCode="'MM01'"/>
+        <Operation Key="OrgDictListCopyNew" Caption="复制新增" RefKey="OrgDictListCopyNew" Activity="01" TCode="'MM01'"/>
+        <Operation Key="OrgDictListModify" Caption="修改" RefKey="OrgDictListModify" Activity="02" TCode="'MM02'"/>
+        <Operation Key="OrgDictListSave" Caption="保存" Enable="IsNewOrEdit()" NeedAccessLog="true">
+            <Action>
+                <![CDATA[if(Length(Macro_CheckPBF())>0)
+                {ConfirmMsg('COCOSTOBJECTUTIL006', '已存在业务数据或未清单据，请确认是否要修改？',
+                {}, 'YES_NO', {NO: {true}, YES: {Macro_UIOpt_DicSave_Exp()}})} else {Macro_UIOpt_DicSave_Exp()}]]>
+            </Action>
+        </Operation>
+        <Operation Key="OrgDictListCancel" Caption="取消" Enable="IsNewOrEdit()">
+            <Action>
+                <![CDATA[if(HasParent() && parent.GetFormKey()=='MM_ExtendMaterialView'){parent.Macro_OpenMaterialDict();Close('OK')}
+                else {ConfirmMsg('SYSTEM013','确认取消操作？',{},'YES_NO',{
+                YES:{
+                if(IsNew()){
+                    Close('OK');
+                }else{
+                    Macro_OrgDictListCancel_RunAsExp();
+                }
+                },
+                NO:{
+                }
+            })}]]>
+            </Action>
+        </Operation>
+        <Operation Key="OrgDictListEnabled" Caption="启用" RefKey="OrgDictListEnabled" Activity="Y02"/>
+        <Operation Key="OrgDictListDisabled" Caption="停用" RefKey="OrgDictListDisabled" Activity="Y01"/>
+        <Operation Key="OrgDictListInvalid" Caption="作废" RefKey="OrgDictListInvalid" Activity="Y03"/>
+        <Operation Key="OrgDictListDelete" Caption="删除" RefKey="OrgDictListDelete" Activity="06" TCode="'MM06'"/>
+        <Operation Key="OrgDictListRefresh" Caption="刷新" RefKey="OrgDictListRefresh"/>
+        <Operation Key="Lang" Caption="多语言" RefKey="Lang" Activity="Y10"/>
+        <Operation Key="ShowDataLog" Caption="查看数据日志" RefKey="ShowDataLog" Activity="Y08"/>
+        <Operation Key="UIClose" Caption="关闭" RefKey="UIClose"/>
+    </OperationCollection>
+    <Body PopWidth="1100px" PopHeight="1000px">
+        <Block>
+            <FlexFlowLayoutPanel Key="root">
+                <ToolBar Key="ToolBar" Height="pref">
+                    <ToolBarItemCollection/>
+                </ToolBar>
+                <SplitPanel Key="main_container" Height="100%">
+                    <FlexFlowLayoutPanel Key="DictFlexFlowLayoutPanel">
+                        <FlexFlowLayoutPanel Key="HeaderFlexFlowLayoutFlexFlowLayoutPanel" Height="pref">
+                            <GridLayoutPanel Key="HeaderGridLayoutPanel" Height="pref" Padding="8px" OverflowY="Auto">
+                                <CheckBox Key="IsBasic_NODB4Other" Caption="基本" X="0" Y="0" Visible="Macro_MaterialViewVisable('K',MaterialTypeID)" Enable="ReadOnly()" OneTimeCompute="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="IsBasic_NODB4Other" DefaultValue="1">
+                                        <ValueChanged>
+                                            <![CDATA[com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.changeOrgHeadValue();]]>
+                                        </ValueChanged>
+                                    </DataBinding>
+                                </CheckBox>
+                                <CheckBox Key="IsPurchase_NODB4Other" Caption="采购" LabelType="M" X="2" Y="0" Visible="Macro_MaterialViewVisable('E',MaterialTypeID)" Enable="ReadOnly()" OneTimeCompute="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="IsPurchase_NODB4Other">
+                                        <ValueChanged>
+                                            <![CDATA[com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.changeOrgHeadValue();]]>
+                                        </ValueChanged>
+                                    </DataBinding>
+                                </CheckBox>
+                                <CheckBox Key="IsMRP_NODB4Other" Caption="MRP" X="4" Y="0" Visible="Macro_MaterialViewVisable('D',MaterialTypeID)" Enable="ReadOnly()" OneTimeCompute="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="IsMRP_NODB4Other">
+                                        <ValueChanged>
+                                            <![CDATA[com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.changeOrgHeadValue();]]>
+                                        </ValueChanged>
+                                    </DataBinding>
+                                </CheckBox>
+                                <CheckBox Key="IsFI_NODB4Other" Caption="会计" X="9" Y="0" Visible="Macro_MaterialViewVisable('B',MaterialTypeID)" Enable="ReadOnly()" OneTimeCompute="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="IsFI_NODB4Other">
+                                        <ValueChanged>
+                                            <![CDATA[com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.changeOrgHeadValue();]]>
+                                        </ValueChanged>
+                                    </DataBinding>
+                                </CheckBox>
+                                <CheckBox Key="IsSD_NODB4Other" Caption="销售" LabelType="M" X="3" Y="0" Visible="Macro_MaterialViewVisable('V',MaterialTypeID)" Enable="ReadOnly()" OneTimeCompute="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="IsSD_NODB4Other">
+                                        <ValueChanged>
+                                            <![CDATA[IIF(ToInt(IsSD_NODB4Other)&&PlantID_NODB4Other>0,SetValue('IsSDPlant_NODB4Other', 1),SetValue('IsSDPlant_NODB4Other', 0));if (!ToInt(IsSD_NODB4Other)) {SetValue('SaleOrganizationID_NODB4Other', 0);SetValue('DistributionChannelID_NODB4Other', 0)} else {true};com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.changeOrgHeadValue();]]>
+                                        </ValueChanged>
+                                    </DataBinding>
+                                </CheckBox>
+                                <CheckBox Key="IsInventory_NODB4Other" Caption="库存" LabelType="M" X="7" Y="0" Visible="Macro_MaterialViewVisable('L',MaterialTypeID)" Enable="ReadOnly()" OneTimeCompute="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="IsInventory_NODB4Other">
+                                        <ValueChanged>
+                                            <![CDATA[com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.changeOrgHeadValue();]]>
+                                        </ValueChanged>
+                                    </DataBinding>
+                                </CheckBox>
+                                <CheckBox Key="IsCO_NODB4Other" Caption="成本" LabelType="M" X="10" Y="0" Visible="Macro_MaterialViewVisable('G',MaterialTypeID)" Enable="ReadOnly()" OneTimeCompute="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="IsCO_NODB4Other">
+                                        <ValueChanged>
+                                            <![CDATA[IIF(ToInt(IsCO_NODB4Other),SetValue('GlobalValuationTypeID_NODB4Other', 0),true);com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.changeOrgHeadValue();]]>
+                                        </ValueChanged>
+                                    </DataBinding>
+                                </CheckBox>
+                                <CheckBox Key="IsSDPlant_NODB4Other" Caption="销售工厂" LabelType="M" X="6" Y="1" Visible="false" Enable="false" OneTimeCompute="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="IsSDPlant_NODB4Other">
+                                        <ValueChanged>
+                                            <![CDATA[com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.changeOrgHeadValue();]]>
+                                        </ValueChanged>
+                                    </DataBinding>
+                                </CheckBox>
+                                <CheckBox Key="IsForcast_NODB4Other" Caption="预测" LabelType="M" X="6" Y="0" Visible="Macro_MaterialViewVisable('P',MaterialTypeID)" Enable="ReadOnly()" OneTimeCompute="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="IsForcast_NODB4Other">
+                                        <ValueChanged>
+                                            <![CDATA[com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.changeOrgHeadValue();]]>
+                                        </ValueChanged>
+                                    </DataBinding>
+                                </CheckBox>
+                                <CheckBox Key="IsQM_NODB4Other" Caption="质量" LabelType="M" X="8" Y="0" Visible="Macro_MaterialViewVisable('Q',MaterialTypeID)" Enable="ReadOnly()" OneTimeCompute="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="IsQM_NODB4Other">
+                                        <ValueChanged>
+                                            <![CDATA[com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.changeOrgHeadValue();]]>
+                                        </ValueChanged>
+                                    </DataBinding>
+                                </CheckBox>
+                                <CheckBox Key="IsClassification_NODB4Other" Caption="分类" LabelType="M" X="1" Y="0" Visible="Macro_MaterialViewVisable('C',MaterialTypeID)" Enable="ReadOnly()" OneTimeCompute="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="IsClassification_NODB4Other">
+                                        <ValueChanged>
+                                            <![CDATA[com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.changeOrgHeadValue();]]>
+                                        </ValueChanged>
+                                    </DataBinding>
+                                </CheckBox>
+                                <CheckBox Key="IsWorkingPlan_NODB4Other" Caption="计划" LabelType="M" X="5" Y="0" Visible="Macro_MaterialViewVisable('A',MaterialTypeID)" Enable="ReadOnly()" OneTimeCompute="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="IsWorkingPlan_NODB4Other">
+                                        <ValueChanged>
+                                            <![CDATA[com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.changeOrgHeadValue();]]>
+                                        </ValueChanged>
+                                    </DataBinding>
+                                </CheckBox>
+                                <CheckBox Key="IsPurchaseText_NODB4Other" Caption="采购文本" LabelType="M" X="3" Y="0" Visible="false" Enable="ReadOnly()" OneTimeCompute="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="IsPurchaseText_NODB4Other"/>
+                                </CheckBox>
+                                <CheckBox Key="IsSDText_NODB4Other" Caption="销售文本" LabelType="M" X="5" Y="1" Visible="false" Enable="ReadOnly()" OneTimeCompute="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="IsSDText_NODB4Other"/>
+                                </CheckBox>
+                                <Dict Key="PlantID_NODB4Other" Caption="工厂" LabelType="M" X="0" Y="2" Visible="true" Enable="ReadOnly()&amp;&amp;(ToInt(IsPurchase_NODB4Other)||ToInt(IsSD_NODB4Other)&amp;&amp;Macro_MaterialViewVisable('V',MaterialTypeID)||ToInt(IsMRP_NODB4Other)||ToInt(IsWorkingPlan_NODB4Other)||ToInt(IsForcast_NODB4Other)||ToInt(IsInventory_NODB4Other)||ToInt(IsQM_NODB4Other)||ToInt(IsFI_NODB4Other)||ToInt(IsCO_NODB4Other))" Clearable="false" ItemKey="Plant" XSpan="3" OneTimeCompute="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="PlantID_NODB4Other">
+                                        <ValueChanged>
+                                            <![CDATA[IIF(IsFI_NODB4Other==1, SetValue('GlobalValuationTypeID_NODB4Other', 0), true);IIF(ToInt(IsSD_NODB4Other)&&PlantID_NODB4Other>0,SetValue('IsSDPlant_NODB4Other', 1),SetValue('IsSDPlant_NODB4Other', 0));com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.changeOrgHeadValue();Macro_MaterialProfile2V_Material()]]>
+                                        </ValueChanged>
+                                        <CheckRule>
+                                            <![CDATA[IIFS((ToInt(IsPurchase_NODB4Other)||ToInt(IsForcast_NODB4Other)||ToInt(IsMRP_NODB4Other)||ToInt(IsInventory_NODB4Other)||ToInt(IsQM_NODB4Other)||ToInt(IsFI_NODB4Other)||ToInt(IsCO_NODB4Other)||ToInt(IsWorkingPlan_NODB4Other))&&PlantID_NODB4Other<=0, '请输入工厂', true, true)]]>
+                                        </CheckRule>
+                                    </DataBinding>
+                                </Dict>
+                                <Dict Key="SaleOrganizationID_NODB4Other" Caption="销售组织" LabelType="M" X="3" Y="2" Visible="true" Enable="ReadOnly()&amp;&amp;(ToInt(IsSD_NODB4Other)&amp;&amp;Macro_MaterialViewVisable('V',MaterialTypeID)||ToInt(IsSDText_NODB4Other))" Clearable="false" ItemKey="SaleOrganization" XSpan="3" OneTimeCompute="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="SaleOrganizationID_NODB4Other">
+                                        <ValueChanged>
+                                            <![CDATA[com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.changeOrgHeadValue();]]>
+                                        </ValueChanged>
+                                        <CheckRule>
+                                            <![CDATA[IIFS(Macro_MaterialViewVisable('V',MaterialTypeID)&&ToInt(IsSD_NODB4Other)&&SaleOrganizationID_NODB4Other<=0, MessageFacade('9J047','请输入销售组织'), true, true)]]>
+                                        </CheckRule>
+                                    </DataBinding>
+                                </Dict>
+                                <Dict Key="DistributionChannelID_NODB4Other" Caption="分销渠道" LabelType="M" X="6" Y="2" Visible="true" Enable="ReadOnly()&amp;&amp;(ToInt(IsSD_NODB4Other)&amp;&amp;Macro_MaterialViewVisable('V',MaterialTypeID)||ToInt(IsSDText_NODB4Other))" Clearable="false" ItemKey="DistributionChannel" XSpan="3" OneTimeCompute="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="DistributionChannelID_NODB4Other" ValueChanged="Macro_HeadDistributionChannelValueChanged();">
+                                        <CheckRule>
+                                            <![CDATA[IIFS(Macro_MaterialViewVisable('V',MaterialTypeID)&&ToInt(IsSD_NODB4Other)&&DistributionChannelID_NODB4Other<=0, MessageFacade('9J048','请输入分销渠道'), true, true)]]>
+                                        </CheckRule>
+                                    </DataBinding>
+                                    <ItemFilter ItemKey="DistributionChannel">
+                                        <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                            <FilterValue Index="1" ParaValue="IIF(SaleOrganizationID_NODB4Other&gt;0, 'soid in ('&amp;Macro_getDisChaIDBySaleOrgIDFilter()&amp;')', '1=2')"/>
+                                        </Filter>
+                                    </ItemFilter>
+                                </Dict>
+                                <Dict Key="GlobalValuationTypeID_NODB4Other" Caption="评估类型" LabelType="M" X="9" Y="2" Visible="ToInt(IsFI_NODB4Other)&amp;&amp;GlobalCategoryID&gt;0" Enable="ReadOnly()" Clearable="false" ItemKey="MM_GlobalValuationType" XSpan="3" OneTimeCompute="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="GlobalValuationTypeID_NODB4Other">
+                                        <ValueChanged>
+                                            <![CDATA[IIF(GlobalValuationTypeID_NODB4Other>0,SetValue('IsCO_NODB4Other', false),true);com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.changeOrgHeadValue();]]>
+                                        </ValueChanged>
+                                    </DataBinding>
+                                    <ItemFilter>
+                                        <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                            <FilterValue Index="1" ParaValue="IIF(Length(Trim(Code))&gt;0, 'soid in (select GlobalValuationTypeID From EMM_ValuationTypeToCategory Where IsActive= '&amp;SqlPara(1)&amp;' and soid='&amp;SqlPara(GlobalCategoryID)&amp;') And (MaterialID='&amp;SqlPara(0)&amp;' OR materialID='&amp;SqlPara(GetOID())&amp;') AND (PlantID = '&amp;SqlPara(0)&amp; ' OR PlantID = '&amp;SqlPara(PlantID_NODB4Other)&amp;')', '1=2')"/>
+                                        </Filter>
+                                    </ItemFilter>
+                                </Dict>
+                                <Dict Key="ControllingAreaID_NODB4Other" Caption="成本控制范围" X="7" Y="1" Visible="false" Enable="false" Clearable="false" ItemKey="ControllingArea" OneTimeCompute="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="ControllingAreaID_NODB4Other">
+                                        <ValueChanged>
+                                            <![CDATA[SetPara('LastHeadControllingAreaID', ControllingAreaID_NODB4Other);]]>
+                                        </ValueChanged>
+                                        <DefaultFormulaValue>
+                                            <![CDATA[com.bokesoft.erp.mm.purchase.PurchaseOrderFormula.getControllingAreaByCompanyCodeID(CompanyCodeID_NODB4Other)]]>
+                                        </DefaultFormulaValue>
+                                    </DataBinding>
+                                </Dict>
+                                <Dict Key="CompanyCodeID_NODB4Other" Caption="公司代码" LabelType="M" X="7" Y="1" Visible="false" Enable="false" Clearable="false" ItemKey="CompanyCode" OneTimeCompute="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="CompanyCodeID_NODB4Other">
+                                        <DefaultFormulaValue>
+                                            <![CDATA[GetDictValue('Plant', PlantID_NODB4Other, 'CompanyCodeID')]]>
+                                        </DefaultFormulaValue>
+                                    </DataBinding>
+                                </Dict>
+                                <NumberEditor Key="NoOrgView" Caption="无组织视图" LabelType="M" X="11" Y="1" Visible="false" IntegerValue="true" Precision="9" Scale="0">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="NoOrgView" DefaultValue="1"/>
+                                </NumberEditor>
+                                <TextEditor Key="Code" Caption="代码" LabelType="M" X="0" Y="1" Visible="true" Enable="!ReadOnly()&amp;&amp;com.bokesoft.erp.documentNumber.DocumentNumber.docNumberFieldEnable('Code')" Case="Upper" MaxLength="30" Trim="true" XSpan="3">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="Code">
+                                        <CheckRule>
+                                            <![CDATA[IIFS(Code==''&&com.bokesoft.erp.documentNumber.DocumentNumber.docNumberFieldEnable('Code'), '采用外部给号编码规则，请输入代码', true, true)]]>
+                                        </CheckRule>
+                                    </DataBinding>
+                                </TextEditor>
+                                <TextEditor Key="Name" Caption="名称" X="3" Y="1" Visible="true" Trim="true" XSpan="6">
+                                    <DataBinding DefaultFormulaValue="Macro_MultilLangText('BK_Material','Name')"/>
+                                </TextEditor>
+                                <Dict Key="BaseUnitID" Caption="基本单位" LabelType="M" X="9" Y="1" Visible="true" Enable="!ReadOnly()&amp;&amp;StockQuantity==0" ItemKey="Unit" XSpan="3">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="BaseUnitID" CheckRule="IIFS(BaseUnitID==0, '请输入基本单位', true, true)"/>
+                                </Dict>
+                                <RowDefCollection RowGap="24">
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                </RowDefCollection>
+                                <ColumnDefCollection ColumnGap="16">
+                                    <ColumnDef Width="8%"/>
+                                    <ColumnDef Width="8%"/>
+                                    <ColumnDef Width="9%"/>
+                                    <ColumnDef Width="8%"/>
+                                    <ColumnDef Width="8%"/>
+                                    <ColumnDef Width="9%"/>
+                                    <ColumnDef Width="8%"/>
+                                    <ColumnDef Width="8%"/>
+                                    <ColumnDef Width="9%"/>
+                                    <ColumnDef Width="8%"/>
+                                    <ColumnDef Width="8%"/>
+                                    <ColumnDef Width="9%"/>
+                                </ColumnDefCollection>
+                            </GridLayoutPanel>
+                        </FlexFlowLayoutPanel>
+                        <TabPanel Key="ContainerRoot" Height="100%">
+                            <FlexFlowLayoutPanel Key="body_BasicInfoFlexFlowLayoutFlexFlowLayoutPanel" Caption="基本1" Height="100%" OverflowY="Auto" Visible="ToInt(IsBasic_NODB4Other)">
+                                <GridLayoutPanel Key="BasicInfoGridLayoutPanel" Height="pref" Padding="8px">
+                                    <Dict Key="IndustrySectorID" Caption="行业" LabelType="S" X="0" Y="1" Visible="false" Enable="!ReadOnly()&amp;&amp;com.bokesoft.erp.basis.dictionary.DictionaryFunction.dicStatus()==1" ItemKey="IndustrySector">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="IndustrySectorID"/>
+                                    </Dict>
+                                    <ComboBox Key="NodeType" Caption="节点类型" LabelType="M" X="1" Y="7" Visible="false" Enable="!ReadOnly()&amp;&amp;Enable&lt;0" SourceType="ParaGroup" IntegerValue="true" TextShowType="Caption" GroupKey="NodeType">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="NodeType" DefaultValue="0"/>
+                                    </ComboBox>
+                                    <Dict Key="MaterialGroupID" Caption="物料组" LabelType="M" X="1" Y="1" Visible="true" ItemKey="MaterialGroup">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="MaterialGroupID" CheckRule="IIFS(MaterialGroupID==0, '请选择物料组', true, true)" ValueChanged="Macro_MaterialProfile2V_Material()"/>
+                                    </Dict>
+                                    <Dict Key="MaterialTypeID" Caption="物料类型" LabelType="M" X="0" Y="1" Visible="true" Enable="!ReadOnly()&amp;&amp;com.bokesoft.erp.basis.dictionary.DictionaryFunction.dicStatus()==1" ItemKey="MaterialType">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="MaterialTypeID" CheckRule="IIFS(MaterialTypeID==0, '请输入物料类型', true, true)"/>
+                                    </Dict>
+                                    <Dict Key="DivisionID" Caption="产品部门" LabelType="M" X="0" Y="2" Visible="true" ItemKey="Division">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="DivisionID" ValueChanged="SetValue('SaleOrg_DivisionID', DivisionID);"/>
+                                    </Dict>
+                                    <Dict Key="GeneralItemCategoryGroupID" Caption="普通项目类别组" LabelType="M" X="2" Y="2" Visible="true" ItemKey="SD_ItemCategoryGroup">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="GeneralItemCategoryGroupID">
+                                            <ValueChanged>
+                                                <![CDATA[SetValue('SaleOrg_GeneralItemCategoryGroupID', GeneralItemCategoryGroupID);]]>
+                                            </ValueChanged>
+                                            <DefaultFormulaValue>
+                                                <![CDATA[IIF(GeneralItemCategoryGroupID<=0,GetDictValue('MaterialType', MaterialTypeID, 'ItemCategoryGroupID'),GeneralItemCategoryGroupID)]]>
+                                            </DefaultFormulaValue>
+                                        </DataBinding>
+                                    </Dict>
+                                    <NumberEditor Key="LowLevelCode" Caption="低阶码" X="3" Y="8" Visible="false" CopyNew="false" IntegerValue="true" Precision="9" Scale="0" UseGroupingSeparator="false">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="LowLevelCode"/>
+                                    </NumberEditor>
+                                    <NumberEditor Key="Status_Base" Caption="基本视图" LabelType="M" X="3" Y="7" Visible="false" Precision="1" Scale="0">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="Status_Base" DefaultFormulaValue="IIF(ToInt(IsBasic_NODB4Other),1,0)"/>
+                                    </NumberEditor>
+                                    <Label Key="GeneralData" Caption="常规" X="0" Y="0" Visible="true" Enable="false" Class="erp-group-title" XSpan="4"/>
+                                    <Label Key="Dimensions" Caption="计量" X="0" Y="7" Visible="true" Enable="false" Class="erp-group-title" XSpan="4"/>
+                                    <NumberEditor Key="GrossWeight" Caption="毛重" LabelType="M" X="0" Y="9" Visible="true" Scale="3">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="GrossWeight">
+                                            <CheckRule>
+                                                <![CDATA[IIF(GrossWeight<0, MessageFacade('V_MATERIAL002', '毛重不能小于0'), true)]]>
+                                            </CheckRule>
+                                        </DataBinding>
+                                    </NumberEditor>
+                                    <NumberEditor Key="NetWeight" Caption="净重" LabelType="M" X="1" Y="9" Visible="true" Scale="3">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="NetWeight">
+                                            <CheckRule>
+                                                <![CDATA[IIFS(NetWeight<0,MessageFacade('V_MATERIAL003', '净重不能小于0'),GrossWeight<NetWeight,MessageFacade('V_MATERIAL004', '毛重必须大于净重！'),true, true)]]>
+                                            </CheckRule>
+                                        </DataBinding>
+                                    </NumberEditor>
+                                    <Dict Key="WeightUnitID" Caption="重量单位" LabelType="M" X="2" Y="9" Visible="true" ItemKey="Unit">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="WeightUnitID" ValueChanged="SetValue('SaleOrg_WeightUnitID', WeightUnitID);">
+                                            <CheckRule>
+                                                <![CDATA[IIFS(GrossWeight>0&&WeightUnitID<=0, MessageFacade('V_MATERIAL005', '请输入重量单位'), true, true)]]>
+                                            </CheckRule>
+                                        </DataBinding>
+                                        <ItemFilter>
+                                            <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                                <FilterValue Index="1" ParaValue="'soid in (SELECT soid FROM BK_Unit WHERE UnitSystemID IN (SELECT soid FROM BK_UnitSystem WHERE UnitMass = '&amp;SqlPara(1)&amp;' and UnitLength = '&amp;SqlPara(0)&amp;' and UnitTime = '&amp;SqlPara(0)&amp;' and UnitCurrent = '&amp;SqlPara(0)&amp;' and UnitTemperature = '&amp;SqlPara(0)&amp;' and UnitMoleQuantity = '&amp;SqlPara(0)&amp;' and UnitLuminosity = '&amp;SqlPara(0)&amp;'))'"/>
+                                            </Filter>
+                                        </ItemFilter>
+                                    </Dict>
+                                    <NumberEditor Key="Volume" Caption="体积" LabelType="M" X="0" Y="8" Visible="true" Scale="3">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="Volume" ValueChanged="SetValue('SaleOrg_Volume', Volume);">
+                                            <CheckRule>
+                                                <![CDATA[IIF(Volume<0, MessageFacade('V_MATERIAL006', '体积不能小于0'), true)]]>
+                                            </CheckRule>
+                                        </DataBinding>
+                                    </NumberEditor>
+                                    <Dict Key="VolumeUnitID" Caption="体积单位" LabelType="M" X="1" Y="8" Visible="true" ItemKey="Unit">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="VolumeUnitID" ValueChanged="SetValue('SaleOrg_VolumeUnitID', VolumeUnitID);">
+                                            <CheckRule>
+                                                <![CDATA[IIFS(Volume>0&&VolumeUnitID<=0, '请输入体积单位', true, true)]]>
+                                            </CheckRule>
+                                        </DataBinding>
+                                        <ItemFilter ItemKey="Unit">
+                                            <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                                <FilterValue Index="1" ParaValue="'soid in (SELECT soid FROM BK_Unit WHERE UnitSystemID IN (SELECT soid FROM BK_UnitSystem WHERE UnitLength = '&amp;SqlPara(3)&amp;'))'"/>
+                                            </Filter>
+                                        </ItemFilter>
+                                    </Dict>
+                                    <Dict Key="MaterialGroupPackMaterialID" Caption="物料组的包装物料" X="0" Y="6" Visible="true" XSpan="2" ItemKey="SD_PackMaterialGroup">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="MaterialGroupPackMaterialID">
+                                            <ValueChanged>
+                                                <![CDATA[SetValue('SaleOrg_MaterialGroupPackMaterialID', MaterialGroupPackMaterialID);]]>
+                                            </ValueChanged>
+                                        </DataBinding>
+                                    </Dict>
+                                    <Dict Key="RefMaterial4PackageID" Caption="包装的参考物料" LabelType="L" X="2" Y="6" Visible="true" XSpan="2" ItemKey="Material">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="RefMaterial4PackageID">
+                                            <ValueChanged>
+                                                <![CDATA[SetValue('SaleOrg_RefMaterial4PackageID', RefMaterial4PackageID);]]>
+                                            </ValueChanged>
+                                        </DataBinding>
+                                    </Dict>
+                                    <TextEditor Key="OldMaterialCode" Caption="旧物料号" LabelType="M" X="2" Y="1" Visible="true" MaxLength="100" Trim="true">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="OldMaterialCode"/>
+                                    </TextEditor>
+                                    <Dict Key="ProductHierarchyStructureID" Caption="产品层次" LabelType="M" X="1" Y="2" ItemKey="ProductHierarchyStructure">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="ProductHierarchyStructureID"/>
+                                    </Dict>
+                                    <Dict Key="MaterialStatusID" Caption="跨工厂物料状态" LabelType="M" X="0" Y="4" Visible="true" ItemKey="MaterialStatus">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="MaterialStatusID"/>
+                                    </Dict>
+                                    <UTCDatePicker Key="ValidStartDate" Caption="生效日期" X="1" Y="4">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="ValidStartDate">
+                                            <CheckRule>
+                                                <![CDATA[IIF(MaterialStatusID<=0&&ValidStartDate>0,MessageFacade('V_MATERIAL007', '请先输入跨工厂物料状态'),true);]]>
+                                            </CheckRule>
+                                        </DataBinding>
+                                    </UTCDatePicker>
+                                    <Dict Key="AllMaterialSaleStatusID" Caption="跨分销链销售状态" X="2" Y="4" ItemKey="SD_SaleStatus">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="AllMaterialSaleStatusID"/>
+                                    </Dict>
+                                    <UTCDatePicker Key="AllSaleStatusDate" Caption="生效日期" LabelType="M" X="3" Y="4">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="AllSaleStatusDate">
+                                            <CheckRule>
+                                                <![CDATA[IIFS(AllMaterialSaleStatusID<=0&&AllSaleStatusDate>0,MessageFacade('V_MATERIAL008', '请输入跨分销链状态'),AllMaterialSaleStatusID>0&&AllSaleStatusDate<=0,MessageFacade('V_MATERIAL009', '请指定生效日期！'))]]>
+                                            </CheckRule>
+                                        </DataBinding>
+                                    </UTCDatePicker>
+                                    <Label Key="Status1" Caption="状态" X="0" Y="3" Enable="false" Class="erp-group-title" XSpan="4"/>
+                                    <Label Key="Package1" Caption="包装" X="0" Y="5" Enable="false" Class="erp-group-title" XSpan="4"/>
+                                    <Dict Key="AuthorizationGroupID" Caption="权限组" LabelType="M" X="3" Y="1" ItemKey="AuthorizationGroup">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="AuthorizationGroupID"/>
+                                        <ItemFilter>
+                                            <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                                <FilterValue Index="1" ParaValue="&quot;ApplicationArea=&quot;&amp;SqlPara('Material')"/>
+                                            </Filter>
+                                        </ItemFilter>
+                                    </Dict>
+                                    <Dict Key="LogisticsAssistUnitID" Caption="物流辅助单位" LabelType="M" X="2" Y="8" ItemKey="Unit">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="LogisticsAssistUnitID"/>
+                                        <ItemFilter>
+                                            <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                                <FilterValue Index="1" ParaValue="'soid in (SELECT soid FROM BK_Unit WHERE UnitSystemID IN (SELECT soid FROM BK_UnitSystem WHERE (UnitMass = '&amp;SqlPara(1)&amp;' and UnitLength = '&amp;SqlPara(0)&amp;' and UnitTime = '&amp;SqlPara(0)&amp;' and UnitCurrent = '&amp;SqlPara(0)&amp;' and UnitTemperature = '&amp;SqlPara(0)&amp;' and UnitMoleQuantity = '&amp;SqlPara(0)&amp;' and UnitLuminosity = '&amp;SqlPara(0)&amp;') or UnitLength = '&amp;SqlPara(3)&amp;' or  IsNonSystem = '&amp;SqlPara(1)&amp;'))'"/>
+                                            </Filter>
+                                        </ItemFilter>
+                                    </Dict>
+                                    <CheckBox Key="IsFixedWeight" Caption="定重" LabelType="M" X="3" Y="9" Visible="false">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="IsFixedWeight" DefaultValue="1"/>
+                                    </CheckBox>
+                                    <CheckBox Key="IsWeightMeasurement" Caption="称重" LabelType="M" X="3" Y="9">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="IsWeightMeasurement">
+                                            <ValueChanged>
+                                                <![CDATA[IIF(IsWeightMeasurement==1,SetValue('IsFixedWeight',0),SetValue('IsFixedWeight',1));]]>
+                                            </ValueChanged>
+                                        </DataBinding>
+                                    </CheckBox>
+                                    <TextEditor Key="Notes" Caption="备注" X="3" Y="2" Visible="true" Trim="true">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="Notes"/>
+                                    </TextEditor>
+                                    <RowDefCollection RowGap="24">
+                                        <RowDef Height="32px"/>
+                                        <RowDef Height="32px"/>
+                                        <RowDef Height="32px"/>
+                                        <RowDef Height="32px"/>
+                                        <RowDef Height="32px"/>
+                                        <RowDef Height="32px"/>
+                                        <RowDef Height="32px"/>
+                                        <RowDef Height="32px"/>
+                                        <RowDef Height="32px"/>
+                                        <RowDef Height="32px"/>
+                                    </RowDefCollection>
+                                    <ColumnDefCollection ColumnGap="16">
+                                        <ColumnDef Width="25%"/>
+                                        <ColumnDef Width="25%"/>
+                                        <ColumnDef Width="25%"/>
+                                        <ColumnDef Width="25%"/>
+                                    </ColumnDefCollection>
+                                </GridLayoutPanel>
+                                <Grid Key="Material_UnitGrid" Caption="单位" DefaultFitWidth="true" Height="100%" SerialSeq="true" DisabledOption="sum,groupSum" Padding="8px">
+                                    <GridColumnCollection>
+                                        <GridColumn Key="Dtl_IsSelect" Width="32px"/>
+                                        <GridColumn Key="Dtl_UnitID" Caption="计量单位" LabelType="M" Width="80px"/>
+                                        <GridColumn Key="Dtl_Numerator" Caption="分子" Width="80px"/>
+                                        <GridColumn Key="Dtl_Denominator" Caption="分母" LabelType="H" Width="80px"/>
+                                        <GridColumn Key="DtlBaseUnitID" Caption="基本单位" Width="80px"/>
+                                        <GridColumn Key="ResultValue" Caption="分子/分母" Width="80px"/>
+                                        <GridColumn Key="Depict" Caption="描述" Width="80px"/>
+                                        <GridColumn Key="Dtl_UnitSystemID" Caption="维度" LabelType="H" Visible="false" Width="80px"/>
+                                        <GridColumn Key="Dtl_IsNonMetricSystem" Caption="非计量体系" Visible="false" Width="100px"/>
+                                        <GridColumn Key="Dtl_OID" Visible="false" Width="80px"/>
+                                        <GridColumn Key="Dtl_SOID" Visible="false" Width="80px"/>
+                                        <GridColumn Key="HelpCheckUnitID" Caption="计量单位检查辅助字段" Visible="false" Width="80px"/>
+                                        <GridColumn Key="Dtl_IsHelpEnableLine" Caption="存在比例/量产单位" LabelType="H" Visible="false" Enable="false" Width="80px"/>
+                                        <GridColumn Key="Dtl_ExternalSystemPrimaryKey" Caption="外部系统关键字" LabelType="H" Visible="false" Width="100px"/>
+                                    </GridColumnCollection>
+                                    <GridRowCollection>
+                                        <GridRow Key="Material_UnitDtlRow" TableKey="EGS_Material_Unit">
+                                            <GridCell Key="Dtl_IsSelect" Caption="选择" CellType="CheckBox" IsSelect="true"/>
+                                            <GridCell Key="Dtl_UnitID" Caption="计量单位" CellType="Dict" Enable="!ReadOnly()&amp;&amp;Dtl_IsHelpEnableLine == 0" ItemKey="Unit">
+                                                <DataBinding ColumnKey="UnitID" CheckRule="HelpCheckUnitID" Required="true">
+                                                    <ValueChanged>
+                                                        <![CDATA[Macro_CheckUnit();SetValue('Dtl_UnitSystemID', GetDictValue('Unit', Dtl_UnitID, 'UnitSystemID'));SetValue('Dtl_IsNonMetricSystem', GetDictValue('UnitSystem', Dtl_UnitSystemID, 'IsNonSystem'));]]>
+                                                    </ValueChanged>
+                                                </DataBinding>
+                                            </GridCell>
+                                            <GridCell Key="Dtl_Numerator" Caption="分子" CellType="NumberEditor" Enable="!ReadOnly()&amp;&amp;Dtl_IsHelpEnableLine == 0" Precision="9" Scale="0">
+                                                <DataBinding ColumnKey="Numerator" DefaultValue="1" Required="true">
+                                                    <ValueChanged>
+                                                        <![CDATA[IIF(Dtl_Denominator>0,SetValue('ResultValue', Dtl_Numerator/Dtl_Denominator),true);]]>
+                                                    </ValueChanged>
+                                                </DataBinding>
+                                            </GridCell>
+                                            <GridCell Key="Dtl_Denominator" Caption="分母" CellType="NumberEditor" Enable="!ReadOnly()&amp;&amp;Dtl_IsHelpEnableLine == 0" Precision="9" Scale="0">
+                                                <DataBinding ColumnKey="Denominator" DefaultValue="1" Required="true">
+                                                    <ValueChanged>
+                                                        <![CDATA[IIF(Dtl_Denominator>0,SetValue('ResultValue', Dtl_Numerator/Dtl_Denominator),true);]]>
+                                                    </ValueChanged>
+                                                </DataBinding>
+                                            </GridCell>
+                                            <GridCell Key="DtlBaseUnitID" Caption="基本单位" CellType="Dict" Enable="false" ItemKey="Unit">
+                                                <DataBinding ColumnKey="DtlBaseUnitID" DefaultFormulaValue="BaseUnitID"/>
+                                            </GridCell>
+                                            <GridCell Key="ResultValue" Caption="分子/分母" CellType="NumberEditor" Enable="false" Scale="4">
+                                                <DataBinding ColumnKey="ResultValue">
+                                                    <DefaultFormulaValue>
+                                                        <![CDATA[IIF(Dtl_Denominator>0,Dtl_Numerator/Dtl_Denominator,0)]]>
+                                                    </DefaultFormulaValue>
+                                                </DataBinding>
+                                                <CellFormat HAlign="Right"/>
+                                            </GridCell>
+                                            <GridCell Key="Depict" Caption="描述" CellType="TextEditor" Enable="false" MaxLength="100" Trim="true">
+                                                <DataBinding ColumnKey="Depict">
+                                                    <DefaultFormulaValue>
+                                                        <![CDATA[Dtl_Denominator&GetDictValue('Unit', Dtl_UnitID, 'Name')&'等于'&Dtl_Numerator&GetDictValue('Unit', BaseUnitID, 'Name')]]>
+                                                    </DefaultFormulaValue>
+                                                </DataBinding>
+                                            </GridCell>
+                                            <GridCell Key="Dtl_UnitSystemID" Caption="维度" CellType="Dict" Enable="true" ItemKey="UnitSystem">
+                                                <DataBinding ColumnKey="UnitSystemID"/>
+                                            </GridCell>
+                                            <GridCell Key="Dtl_IsNonMetricSystem" Caption="非计量体系" CellType="CheckBox" Enable="false">
+                                                <DataBinding ColumnKey="IsNonSystem"/>
+                                            </GridCell>
+                                            <GridCell Key="Dtl_OID" CellType="NumberEditor" Scale="0">
+                                                <DataBinding ColumnKey="OID"/>
+                                            </GridCell>
+                                            <GridCell Key="Dtl_SOID" CellType="NumberEditor" Scale="0">
+                                                <DataBinding ColumnKey="SOID"/>
+                                            </GridCell>
+                                            <GridCell Key="HelpCheckUnitID" Caption="计量单位检查辅助字段" CellType="TextEditor">
+                                                <DataBinding ColumnKey="HelpCheckUnitID"/>
+                                            </GridCell>
+                                            <GridCell Key="Dtl_IsHelpEnableLine" Caption="存在比例/量产单位" CellType="CheckBox" Enable="false">
+                                                <DataBinding ColumnKey="IsHelpEnableLine"/>
+                                            </GridCell>
+                                            <GridCell Key="Dtl_ExternalSystemPrimaryKey" Caption="外部系统关键字" CellType="TextEditor">
+                                                <DataBinding ColumnKey="ExternalSystemPrimaryKey"/>
+                                            </GridCell>
+                                        </GridRow>
+                                    </GridRowCollection>
+                                    <OnRowDelete>
+                                        <![CDATA[if(Dtl_IsHelpEnableLine == 0){DeleteRow();Macro_CheckUnit();}]]>
+                                    </OnRowDelete>
+                                </Grid>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="body_BasicInfo2FlexFlowLayoutPanel" Caption="基本2" Height="100%" OverflowY="Auto" Visible="ToInt(IsBasic_NODB4Other)">
+                                <GridLayoutPanel Key="body_BasicInfo2TopGridLayoutPanel" Height="100%" Padding="8px" OverflowY="Auto">
+                                    <Label Key="ClientSpecificConfiguration" Caption="配置" X="0" Y="0" Visible="true" Enable="false" Class="erp-group-title" XSpan="4"/>
+                                    <CheckBox Key="IsData2_Variant" Caption="变式" LabelType="M" X="0" Y="2" Visible="true" Enable="false">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="IsVariant"/>
+                                    </CheckBox>
+                                    <Dict Key="CrossConfigMaterialID" Caption="通用可配置物料" X="0" Y="1" Visible="true" Enable="!ReadOnly()&amp;&amp;ToInt(IsData2_Variant)==0" XSpan="2" CopyNew="false" ItemKey="Material">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="CrossConfigMaterialID">
+                                            <CheckRule>
+                                                <![CDATA[IIF(CrossConfigMaterialID>0, com.bokesoft.erp.mm.batchcode.BatchCodeFormula.checkConfigurableMaterialID(CrossConfigMaterialID,BaseUnitID,IsConfigurableMaterial), true)]]>
+                                            </CheckRule>
+                                        </DataBinding>
+                                        <ItemFilter ItemKey="Material">
+                                            <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                                <FilterValue Index="1" ParaValue="'IsConfigurableMaterial='&amp;SqlPara(1)"/>
+                                            </Filter>
+                                        </ItemFilter>
+                                    </Dict>
+                                    <CheckBox Key="IsConfigurableMaterial" Caption="物料是可配置的" LabelType="L" X="3" Y="1" Visible="true" Enable="!ReadOnly()&amp;&amp;GetDictValue('MaterialType', MaterialTypeID, 'IsConfigurable')!=1">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="IsConfigurableMaterial">
+                                            <CheckRule>
+                                                <![CDATA[com.bokesoft.erp.mm.batchcode.BatchCodeFormula.checkConfigurableMaterial(IsConfigurableMaterial,'Data2_')]]>
+                                            </CheckRule>
+                                            <DefaultFormulaValue>
+                                                <![CDATA[GetDictValue('MaterialType', MaterialTypeID, 'IsConfigurable')]]>
+                                            </DefaultFormulaValue>
+                                        </DataBinding>
+                                    </CheckBox>
+                                    <Dict Key="MaterialConfigProfileID" Caption="配置参数文件" LabelType="M" X="2" Y="1" Visible="true" Enable="!ReadOnly()&amp;&amp;ToInt(IsData2_Variant)==0" CopyNew="false" ItemKey="PP_MaterialConfigProfile">
+                                        <DataBinding TableKey="BK_Material" ColumnKey="MaterialConfigProfileID"/>
+                                        <ItemFilter ItemKey="PP_MaterialConfigProfile">
+                                            <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                                <FilterValue Index="1" ParaValue="IIF(CrossConfigMaterialID&gt;0, 'MaterialID='&amp;SqlPara(CrossConfigMaterialID)&amp;' and ConfigurationProfileStatus='&amp;SqlPara(1), '1=2')"/>
+                                            </Filter>
+                                        </ItemFilter>
+                                    </Dict>
+                                    <Button Key="ConfigurationVariables" Caption="配置变式" X="1" Y="2" Visible="true" Type="Normal">
+                                        <OnClick>
+                                            <![CDATA[if (MaterialConfigProfileID>0) {SetNewEmptyRow('CharacteristicValueAssignmentGrid', false);Macro_ConfigurationVariables_ButtonClickTrg()} else {true};]]>
+                                        </OnClick>
+                                    </Button>
+                                    <RowDefCollection RowGap="24">
+                                        <RowDef Height="32px"/>
+                                        <RowDef Height="32px"/>
+                                        <RowDef Height="32px"/>
+                                    </RowDefCollection>
+                                    <ColumnDefCollection ColumnGap="16">
+                                        <ColumnDef Width="25%"/>
+                                        <ColumnDef Width="25%"/>
+                                        <ColumnDef Width="25%"/>
+                                        <ColumnDef Width="25%"/>
+                                    </ColumnDefCollection>
+                                </GridLayoutPanel>
+                                <TabPanel Key="BasicInfo2Down">
+                                    <FlexFlowLayoutPanel Key="body_ConfigVaridentifyFlexFlowLayoutPanel" Caption="配置变式" Visible="Data2_ConfigVaridentify==1" Padding="8px">
+                                        <Embed Key="PP_CharacteristicValueAssignment_MaterialImpl" FormKey="PP_CharacteristicValueAssignment_MaterialImpl" RootKey="CharacteristicValueAssignmentFlexFlowLayoutPanel" Height="100%"/>
+                                    </FlexFlowLayoutPanel>
+                                </TabPanel>
+                            </FlexFlowLayoutPanel>
+                            <GridLayoutPanel Key="body_BasicInfo3GridLayoutPanel" Caption="基本3" Padding="8px" OverflowY="Auto" Visible="ToInt(IsBasic_NODB4Other)">
+                                <Label Key="ProductSegmentation" Caption="商品细分" X="0" Y="0" Enable="false" Class="erp-group-title" XSpan="4"/>
+                                <TextEditor Key="CommodityName" Caption="品名" LabelType="M" X="0" Y="1" MaxLength="100">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="CommodityName"/>
+                                </TextEditor>
+                                <TextEditor Key="Specification" Caption="规格" LabelType="M" X="1" Y="1" Visible="!Macro_IsActiveDM()&amp;&amp;!Macro_IsActiveCM()" MaxLength="100">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="Specification"/>
+                                </TextEditor>
+                                <Dict Key="BrandID" Caption="品牌" LabelType="M" X="2" Y="1" ItemKey="DM_Brand">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="BrandID"/>
+                                </Dict>
+                                <Dict Key="CommodityClassID" Caption="大类" LabelType="M" X="0" Y="2" ItemKey="DM_CommodityClass">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="CommodityClassID"/>
+                                </Dict>
+                                <Dict Key="CategoryID" Caption="品类" X="1" Y="2" ItemKey="DM_Category">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="CategoryID"/>
+                                </Dict>
+                                <Dict Key="SeriesID" Caption="品种" X="2" Y="2" ItemKey="DM_Series">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="SeriesID"/>
+                                    <ItemFilter>
+                                        <Filter Key="Filter" Type="FieldValue">
+                                            <FilterValue Index="1" FieldKey="BrandID" RefValue="BrandID" Type="Field" DataType="Long"/>
+                                        </Filter>
+                                    </ItemFilter>
+                                </Dict>
+                                <TextEditor Key="SKU" Caption="SKU条码" X="2" Y="4">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="SKU"/>
+                                </TextEditor>
+                                <Dict Key="SpecificationID" Caption="规格" LabelType="M" X="1" Y="1" Visible="Macro_IsActiveDM()||Macro_IsActiveCM()" ItemKey="DM_Specification">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="SpecificationID"/>
+                                </Dict>
+                                <Dict Key="OriginID" Caption="产地" LabelType="M" X="3" Y="1" ItemKey="DM_Origin">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="OriginID"/>
+                                </Dict>
+                                <Dict Key="OriginCountryID" Caption="原产国" LabelType="M" X="3" Y="2" ItemKey="Country">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="OriginCountryID"/>
+                                </Dict>
+                                <TextEditor Key="MPN" Caption="MPN" X="3" Y="4">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="MPN"/>
+                                </TextEditor>
+                                <Label Key="Code11" Caption="代码" X="0" Y="3" Enable="false" Class="erp-group-title" XSpan="4"/>
+                                <TextEditor Key="EAN" Caption="EAN码" LabelType="M" X="0" Y="4" MaxLength="100">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="EAN"/>
+                                </TextEditor>
+                                <TextEditor Key="UPC" Caption="UPC码" LabelType="M" X="1" Y="4" MaxLength="100">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="UPC"/>
+                                </TextEditor>
+                                <TextEditor Key="HS" Caption="HS编码" LabelType="M" X="0" Y="5" MaxLength="100">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="HS"/>
+                                </TextEditor>
+                                <TextEditor Key="CAS" Caption="CAS码" LabelType="M" X="1" Y="5" MaxLength="100">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="CAS"/>
+                                </TextEditor>
+                                <TextEditor Key="PRODCOM" Caption="PRODCOM码" LabelType="M" X="2" Y="5" MaxLength="100">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="PRODCOM"/>
+                                </TextEditor>
+                                <TextEditor Key="SheetNumber" Caption="图号" LabelType="M" X="3" Y="5" MaxLength="100">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="SheetNumber"/>
+                                </TextEditor>
+                                <Label Key="StorageAndTransportation" Caption="储运" X="0" Y="6" Enable="false" Class="erp-group-title" XSpan="4"/>
+                                <Dict Key="DangerousMaterialID" Caption="危险物料" LabelType="M" X="0" Y="7" XSpan="2" ItemKey="MM_DangerousMaterial">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="DangerousMaterialID"/>
+                                </Dict>
+                                <Dict Key="StorageConditionID" Caption="存储条件" LabelType="M" X="2" Y="7" ItemKey="MM_StorageCondition">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="StorageConditionID"/>
+                                </Dict>
+                                <Dict Key="TemperatureConditionID" Caption="温度条件" LabelType="S" X="3" Y="7" ItemKey="MM_TemperatureCondition">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="TemperatureConditionID"/>
+                                </Dict>
+                                <Label Key="Code12" Caption="分销" X="0" Y="8" Visible="Macro_IsActiveDM()" Enable="false" Class="erp-group-title"/>
+                                <TextEditor Key="Model" Caption="型号" LabelType="M" X="0" Y="9" Visible="Macro_IsActiveDM()" MaxLength="100">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="Model"/>
+                                </TextEditor>
+                                <RowDefCollection RowGap="24">
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                    <RowDef Height="32px"/>
+                                </RowDefCollection>
+                                <ColumnDefCollection ColumnGap="16">
+                                    <ColumnDef Width="25%"/>
+                                    <ColumnDef Width="25%"/>
+                                    <ColumnDef Width="25%"/>
+                                    <ColumnDef Width="25%"/>
+                                </ColumnDefCollection>
+                            </GridLayoutPanel>
+                            <FlexFlowLayoutPanel Key="body_ClassificationFlexFlowLayoutPanel" Caption="分类" Height="100%" OverflowY="Auto" Visible="ToInt(IsClassification_NODB4Other)">
+                                <GridLayoutPanel Key="body_ClassificationDownGridLayoutPanel" OverflowY="Auto" Visible="false">
+                                    <NumberEditor Key="Status_Classification" Caption="分类" LabelType="M" X="2" Y="0" Visible="false" Enable="false" IntegerValue="true" Precision="9" Scale="0" UseGroupingSeparator="false">
+                                        <DataBinding TableKey="EMM_Material_Classification" ColumnKey="Status_Classification" DefaultFormulaValue="IIF(IsClassification_NODB4Other,1,0)"/>
+                                    </NumberEditor>
+                                    <NumberEditor Key="Status_Classification_T" Caption="表状态" LabelType="M" X="2" Y="0" Visible="false" IntegerValue="true" Precision="9" Scale="0" UseGroupingSeparator="false">
+                                        <DataBinding TableKey="EMM_Material_Classification" ColumnKey="Status_Classification_T"/>
+                                    </NumberEditor>
+                                    <RowDefCollection RowGap="24">
+                                        <RowDef Height="32px"/>
+                                    </RowDefCollection>
+                                    <ColumnDefCollection ColumnGap="16">
+                                        <ColumnDef Width="60px"/>
+                                        <ColumnDef Width="206px"/>
+                                        <ColumnDef Width="206px"/>
+                                    </ColumnDefCollection>
+                                </GridLayoutPanel>
+                                <FlexFlowLayoutPanel Key="body_ClassificationTopFlexFlowLayoutPanel" Caption="分类" Height="100%" Visible="ToInt(IsClassification_NODB4Other)">
+                                    <Embed Key="ObjectImpl_Classification" FormKey="ObjectImpl_Classification" RootKey="ObjectImpl_ClassificationRoot" Height="100%"/>
+                                </FlexFlowLayoutPanel>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="body_UnitOfPerProFlexFlowLayoutPanel" Caption="比例/产量单位" Visible="ToInt(IsClassification_NODB4Other)&amp;&amp;CF_ClassificationID&gt;0&amp;&amp;com.bokesoft.erp.mm.batchcode.BatchCodeFormula.activateBatchSpecificMaterialUnitofMeasure()&amp;&amp;IIF(BatchLevel==0,IsBatchManagement_Plant==1,IsBatchManagement==1)" Padding="8px">
+                                <Embed Key="MM_MaterialImpl_UnitOfPerPro" FormKey="MM_MaterialImpl_UnitOfPerPro" RootKey="MM_MaterialImpl_UnitOfPerProRoot" Height="100%"/>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="body_SaleDataFlexFlowLayoutPanel" Caption="销售" Height="100%" Visible="ToInt(IsSD_NODB4Other) &amp;&amp; Macro_MaterialViewVisable('V',MaterialTypeID)" Padding="8px">
+                                <Embed Key="SD_SaleData_MaterialImpl" FormKey="SD_SaleOrganizationView_Material_Impl" RootKey="SaleDataFlexFlowLayoutPanel" Height="100%"/>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="body_SaleTextFlexFlowLayoutPanel" Caption="销售文本" Height="100%" Visible="Macro_DebugMode()" Padding="8px">
+                                <Embed Key="SD_SaleText_MaterialImpl" FormKey="SD_SaleText_Material_Impl" RootKey="SaleTextFlexFlowLayoutPanel" Height="100%"/>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="body_SalePlantDataFlexFlowLayoutPanel" Caption="销售工厂" Visible="ToInt(IsSDPlant_NODB4Other)" Padding="8px">
+                                <Embed Key="Material_SD_Impl3" FormKey="SD_SaleOrganizationView_MaterialPlant_Impl" RootKey="MaterialSaleFlexFlowLayoutPanel" Height="100%"/>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="body_PurchasingDataFlexFlowLayoutPanel" Caption="采购" Visible="ToInt(IsPurchase_NODB4Other)">
+                                <Embed Key="MM_MaterialImpl_Purchase" FormKey="MM_MaterialImpl_Purchase" RootKey="MM_MaterialImpl_PurchaseRoot" Height="100%"/>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="body_PurchaseTextFlexFlowLayoutPanel" Caption="采购文本" Height="100%" Visible="ToInt(IsPurchaseText_NODB4Other)" Width="100%" Padding="8px">
+                                <Embed Key="MM_MaterialImpl_PurchaseText" FormKey="MM_MaterialImpl_PurchaseText" RootKey="MM_MaterialImpl_PurchaseTextRoot" Height="100%" Width="100%"/>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="body_MRPDataFlexFlowLayoutPanel" Caption="MRP1" Visible="ToInt(IsMRP_NODB4Other)" OverflowY="Auto">
+                                <FlexFlowLayoutPanel Key="PP_MRP_MaterialImpl_1Panel" Caption="PP_MRP_MaterialImpl_1Panel" Visible="true" Padding="8px">
+                                    <Embed Key="PP_MRP_MaterialImpl_1" FormKey="PP_MRP_MaterialImpl_1" RootKey="MRPMaterialImpl1FlexFlowLayoutPanel" Height="100%"/>
+                                </FlexFlowLayoutPanel>
+                                <FlexFlowLayoutPanel Key="PP_MRPScope_MaterialImplPanel" Caption="PP_MRPScope_MaterialImplPanel" Visible="true" Padding="8px">
+                                    <Embed Key="PP_MRPScope_MaterialImpl" FormKey="PP_MRPScope_MaterialImpl" RootKey="mainTemplate" Height="100%"/>
+                                </FlexFlowLayoutPanel>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="body_MRPData1FlexFlowLayoutPanel" Caption="MRP2" Visible="ToInt(IsMRP_NODB4Other)" Padding="8px">
+                                <Embed Key="PP_MRP_MaterialImpl_2" FormKey="PP_MRP_MaterialImpl_2" RootKey="MRPMaterialImpl2FlexFlowLayoutPanel" Height="100%"/>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="body_MRPData2FlexFlowLayoutPanel" Caption="MRP3" Visible="ToInt(IsMRP_NODB4Other)">
+                                <Embed Key="PP_MRP_MaterialImpl_3" FormKey="PP_MRP_MaterialImpl_3" RootKey="MRPMaterialImpl3FlexFlowLayoutPanel" Height="100%"/>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="body_MRPData3FlexFlowLayoutPanel" Caption="MRP4" Visible="ToInt(IsMRP_NODB4Other)" Padding="8px">
+                                <Embed Key="PP_MRP_MaterialImpl_4" FormKey="PP_MRP_MaterialImpl_4" RootKey="MRPMaterialImpl4FlexFlowLayoutPanel" Height="100%"/>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="body_WokingPlanFlexFlowLayoutPanel" Caption="计划" Visible="ToInt(IsWorkingPlan_NODB4Other)" Padding="8px">
+                                <Embed Key="PP_MaterialImpl_WorkingPlan" FormKey="PP_MaterialImpl_WorkingPlan" RootKey="WorkingPlanFlexFlowLayoutPanel" Height="100%"/>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="body_PredictFlexFlowLayoutPanel" Caption="预测" Visible="ToInt(IsForcast_NODB4Other)" Padding="8px">
+                                <Embed Key="PP_Predict_MaterialImpl" FormKey="PP_Predict_MaterialImpl" RootKey="PredictFlexFlowLayoutPanel" Height="100%"/>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="body_InventoryViewFlexFlowLayoutPanel" Caption="库存" Visible="ToInt(IsInventory_NODB4Other)" Padding="8px">
+                                <Embed Key="MM_MaterialImpl_Inventory" FormKey="MM_MaterialImpl_Inventory" RootKey="MM_MaterialImpl_InventoryRoot" Height="100%"/>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="body_PlantInventoryViewFlexFlowLayoutPanel" Caption="工厂库存" Visible="ToInt(IsInventory_NODB4Other)&amp;&amp;ReadOnly()&amp;&amp;Macro_DebugMode()" Padding="8px">
+                                <Embed Key="MM_MaterialImpl_PlantInventory" FormKey="MM_MaterialImpl_PlantInventory" RootKey="MM_MaterialImpl_PlantInventoryRoot" Height="100%" IncludeDataTable="false"/>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="body_PlantQM_InspectionSetupViewFlexFlowLayoutPanel" Caption="质量" Visible="ToInt(IsQM_NODB4Other)">
+                                <Embed Key="QM_MaterialImpl_InspectionSetup" FormKey="QM_MaterialImpl_InspectionSetup" RootKey="QM_MaterialImpl_InspectionSetupRoot" Height="100%"/>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="body_CompanyCodeDataFlexFlowLayoutPanel" Caption="会计" Visible="ToInt(IsFI_NODB4Other)">
+                                <Embed Key="Material_FI_Impl" FormKey="Material_FI_Impl" RootKey="MaterialFIImplFlexFlowLayoutPanel" Height="100%"/>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="body_ControllingAreaDataFlexFlowLayoutPanel" Caption="成本" Visible="ToInt(IsCO_NODB4Other)" Padding="8px">
+                                <Embed Key="Material_CO_Impl" FormKey="Material_CO_Impl" RootKey="Material_CO_ImplRoot" Height="100%"/>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="NewDocumentVoucherLinkTabFlexFlowLayoutPanel" Caption="凭证链接" Visible="Macro_DebugMode()" Padding="8px">
+                                <Embed Key="DMS_DocumentVoucherLink" FormKey="DMS_DocumentVoucherLink" RootKey="DMS_DocumentVoucherLinkRoot" Height="100%"/>
+                            </FlexFlowLayoutPanel>
+                            <FlexFlowLayoutPanel Key="BodySystem" Caption="系统信息" Padding="8px">
+                                <Embed Key="BodySystemEmbed" FormKey="BodySystemDict3Form" RootKey="SystemInfoPanel">
+                                    <Var Key="SystemInfoTableKey" Value="BK_Material"/>
+                                </Embed>
+                            </FlexFlowLayoutPanel>
+                            <FlexGridLayoutPanel Key="HiddenInformation" Caption="隐藏信息" ColumnCount="3" ColumnGap="16" OverflowY="Auto" RowGap="24" Visible="false">
+                                <NumberEditor Key="SequenceValue" Caption="流水号" LabelType="M" X="1" Y="1" Visible="false" Precision="9">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="SequenceValue"/>
+                                </NumberEditor>
+                                <TextEditor Key="ResetPattern" Caption="流水号模式" LabelType="M" X="1" Y="0" Visible="false">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="ResetPattern"/>
+                                </TextEditor>
+                                <CheckBox Key="IsUnitPerPro" Caption="存在特性" LabelType="M" X="0" Y="0" Visible="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="IsUnitPerPro"/>
+                                </CheckBox>
+                                <CheckBox Key="IsHasUnit" Caption="存在物料单位换算" LabelType="M" X="0" Y="1" Visible="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="IsHasUnit"/>
+                                </CheckBox>
+                                <NumberEditor Key="Data2_ConfigVaridentify" Caption="配置变式标识" LabelType="M" X="0" Y="2" Visible="Macro_DebugMode()" IntegerValue="true" Precision="9" Scale="0" UseGroupingSeparator="false">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="Data2_ConfigVaridentify"/>
+                                </NumberEditor>
+                                <NumberEditor Key="MRP3_ConfigVaridentify" Caption="配置变式标识" LabelType="M" X="0" Y="3" Visible="Macro_DebugMode()" IntegerValue="true" Precision="9" Scale="0" UseGroupingSeparator="false">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="MRP3_ConfigVaridentify"/>
+                                </NumberEditor>
+                                <NumberEditor Key="MRP3_PlanConfigVaridentify" Caption="配置计划变式标识" LabelType="M" X="0" Y="4" Visible="Macro_DebugMode()" IntegerValue="true" Precision="9" Scale="0" UseGroupingSeparator="false">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="MRP3_PlanConfigVaridentify"/>
+                                </NumberEditor>
+                                <NumberEditor Key="PreSNNumber" Caption="PreSNNumber" LabelType="M" X="0" Y="2" Visible="true" IntegerValue="true" Precision="9" Scale="0" UseGroupingSeparator="false">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="PreSNNumber"/>
+                                </NumberEditor>
+                                <ComboBox Key="BatchLevel" Caption="批次级别" LabelType="M" X="0" Y="5" IntegerValue="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="BatchLevel">
+                                        <DefaultFormulaValue>
+                                            <![CDATA[com.bokesoft.erp.mm.batchcode.BatchCodeFormula.getBatchLevel()]]>
+                                        </DefaultFormulaValue>
+                                    </DataBinding>
+                                    <Item Key="0" Caption="位于工厂级的唯一批次" Value="0"/>
+                                    <Item Key="1" Caption="位于物料级的唯一批次" Value="1"/>
+                                    <Item Key="2" Caption="位于集团级某一物料的唯一批次" Value="2"/>
+                                </ComboBox>
+                                <Dict Key="DepartureCountryID_NODB4Other" Caption="发送国" X="0" Y="7" Visible="false" ItemKey="Country" OneTimeCompute="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="DepartureCountryID_NODB4Other">
+                                        <DefaultFormulaValue>
+                                            <![CDATA[IIF(SaleOrganizationID_NODB4Other > 0, GetDictValue('CompanyCode', GetDictValue('SaleOrganization', SaleOrganizationID_NODB4Other, 'CompanyCodeID'), 'CountryID'), 0)]]>
+                                        </DefaultFormulaValue>
+                                    </DataBinding>
+                                </Dict>
+                                <Dict Key="ConditionTypeID_NODB4Other" Caption="条件类型" LabelType="M" X="0" Y="8" Visible="false" ItemKey="ConditionType" OneTimeCompute="true">
+                                    <DataBinding TableKey="BK_Material" ColumnKey="ConditionTypeID_NODB4Other">
+                                        <DefaultFormulaValue>
+                                            <![CDATA[com.bokesoft.erp.sd.function.OrganizationFormula.getCountryTaxClassification(DepartureCountryID_NODB4Other)]]>
+                                        </DefaultFormulaValue>
+                                    </DataBinding>
+                                </Dict>
+                            </FlexGridLayoutPanel>
+                        </TabPanel>
+                    </FlexFlowLayoutPanel>
+                    <SplitSize Size="16%"/>
+                    <SplitSize Size="84%"/>
+                </SplitPanel>
+            </FlexFlowLayoutPanel>
+        </Block>
+    </Body>
+    <OnLoad>
+        <![CDATA[CloseBeforeExpandLoadData();Macro_ChangeOrgHeadValue();]]>
+    </OnLoad>
+    <MacroCollection>
+        <Macro Key="Macro_ChangeOrgHeadValue">
+            <![CDATA[com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.changeOrgHeadValue()]]>
+        </Macro>
+        <Macro Key="Macro_GetPriceTypeEnableByCO">
+            <![CDATA[com.bokesoft.erp.co.ml.formula.MaterialLedgerFormula.getPriceTypeEnableByCO(FIPlantID,ValuationClassID)]]>
+        </Macro>
+        <Macro Key="Macro_GetPriceTypeByCO">
+            <![CDATA[com.bokesoft.erp.co.ml.formula.MaterialLedgerFormula.getPriceTypeByCO(FIPlantID,ValuationClassID)]]>
+        </Macro>
+        <Macro Key="Macro_CheckActiveFullMonthPlant">
+            <![CDATA[com.bokesoft.erp.mm.masterdata.MaterialFormula.checkActiveFullMonthPlant(FIPlantID)]]>
+        </Macro>
+        <Macro Key="Macro_DicFilter">
+            <![CDATA['1=1'&IIF(Length(NameFilter_NODB4Other)>0," and name like "&SqlPara("%"&NameFilter_NODB4Other&"%"),'')&IIF(Length(CodeFilter_NODB4Other)>0," and code like "&SqlPara("%"&CodeFilter_NODB4Other&"%"),'')&IIFS(StatusFilter_NODB4Other>1, ' and Enable = '&SqlPara(StatusFilter_NODB4Other-2), StatusFilter_NODB4Other==1, '', true, ' and Enable <>'&SqlPara(2))]]>
+        </Macro>
+        <Macro Key="Macro_DicOrder">
+            <![CDATA['Code']]>
+        </Macro>
+        <Macro Key="Macro_UIDicDeletePretrigger">
+            <![CDATA[com.bokesoft.erp.mm.masterdata.MaterialFormula.checkDeleteUse()]]>
+        </Macro>
+        <Macro Key="Macro_DictView_RowClick">
+            <![CDATA[com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.load();com.bokesoft.erp.mm.batchcode.CharacteristicFormula.updateMaterialCharacteristicValue(Head_CategoryTypeID)]]>
+        </Macro>
+        <Macro Key="Macro_DictListSave_RunAsExp_Formula">
+            <![CDATA[Macro_ShowInfo();Macro_DicSave_RunSaveAsExp_Formula()]]>
+        </Macro>
+        <Macro Key="Macro_ShowInfo">
+            <![CDATA[if (ToInt(IsFI_NODB4Other)&&GetPara('IOOPERATOR')!=1&&PriceType=='V'&&MovingPrice==0) {ConfirmMsg('V_MATERIAL010','移动价等于0',{}, 'OK', {OK: {if (ToInt(IsFI_NODB4Other)&&GetPara('IOOPERATOR')!=1&&PriceType=='S'&&StandardPrice==0) {ConfirmMsg('V_MATERIAL011','标准价等于0',{}, 'OK'); return 0;} else {true}}}); return 0;} else {true};if (ToInt(IsFI_NODB4Other)&&GetPara('IOOPERATOR')!=1&&PriceType=='S'&&StandardPrice==0) {ConfirmMsg('V_MATERIAL011','标准价等于0',{},'OK'); return 0;} else {true}]]>
+        </Macro>
+        <Macro Key="Macro_DicSave_RunSaveAsExp_Formula">
+            <![CDATA[com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.save()]]>
+        </Macro>
+        <Macro Key="Macro_PreSave">
+            <![CDATA[com.bokesoft.erp.pp.function.MRPScopeFormula.checkDataByMRPScopeDelete();com.bokesoft.erp.qm.function.InspectionTypesFormula.checkRepeatInspectionType();com.bokesoft.erp.qm.function.InspectionTypesFormula.checkPreferredInspectionType();com.bokesoft.erp.mm.batchcode.BatchCodeFormula.checkRepeatClassificationID();com.bokesoft.erp.pp.vc.VariantConfigurationFormula.execCharacteristicHead4SelectCondition('EGS_Object_Characteristic');com.bokesoft.erp.pp.vc.VariantConfigurationFormula.execCharacteristicHead4SelectCondition('EPP_Mtl_CharValueAssignment','Data2_CharacteristicID');com.bokesoft.erp.pp.vc.VariantConfigurationFormula.execCharacteristicHead4SelectCondition('EPP_Mtl_Plant_ConfigVar','MRP3_CharacteristicID');com.bokesoft.erp.pp.vc.VariantConfigurationFormula.execCharacteristicHead4SelectCondition('EPP_Mtl_Plant_ConfigPlanVar','MRP3_PlanCharacteristicID');com.bokesoft.erp.mm.masterdata.MaterialFormula.checkPipelineMaterialView();com.bokesoft.erp.mm.masterdata.MaterialFormula.autoUpdateMaterialUnit();com.bokesoft.erp.mm.masterdata.MaterialFormula.materialUnitDemCheck();if (StatusMRP==1&&GetDictValue('PP_MRPType', PPMRPTypeID, 'PredictLogo')=='+'&&Status_Forcast==0) {RaiseErrMsg('V_MATERIAL012','基于预测的计划,预测视图必须维护')} else {true};if (TMPurchase_PurchasingGroupID<=0&&IsPurchase_NODB4Other>0) {RaiseErrMsg('V_MATERIAL013','请选择采购组！')} else {true};SetPara('HeadPlantID_View', PlantID_NODB4Other);SetPara('IsPurchase_View', ToInt(IsPurchase_NODB4Other));SetPara('IsMRP_View', ToInt(IsMRP_NODB4Other));SetPara('ISForcast_View', ToInt(IsForcast_NODB4Other));com.bokesoft.erp.mm.masterdata.MaterialFormula.dealFIViewMaterialPeroid();com.bokesoft.erp.mm.batchcode.BatchCodeFormula.checkRepeatAssignedValue();com.bokesoft.erp.mm.batchcode.BatchCodeFormula.checkCharacterValueInRange();com.bokesoft.erp.mm.masterdata.MaterialFormula.checkBatchManagement();DistinctRow('SaleOrg_CountryID:SaleOrg_ConditionTypeID');com.bokesoft.erp.mm.masterdata.MaterialFormula.creatMaterialUnit();SetValue('ResetSuggestion', com.bokesoft.erp.pp.function.MRPPlanFormula.setParaTable());com.bokesoft.erp.mm.masterdata.MaterialFormula.materialInventoryViewCheck()]]>
+        </Macro>
+        <Macro Key="Macro_MidSave">
+            <![CDATA[Macro_PreSave();com.bokesoft.erp.mm.masterdata.MaterialFormula.materialFIViewCheck();com.bokesoft.erp.mm.masterdata.MaterialFormula.proMaterialSave();com.bokesoft.erp.mm.masterdata.MaterialFormula.material_genDocNumber();com.bokesoft.erp.mm.batchcode.BatchCodeFormula.syncEGS_Material_PlantBatchManagement();com.bokesoft.erp.mm.batchcode.BatchCodeFormula.updateCharacteristicInfo4Material();com.bokesoft.erp.documentNumber.DocumentNumber.genDocNumber();com.bokesoft.erp.function.DocumentFunction.saveObject();
+if(FollowupItemID>0){
+com.bokesoft.erp.pp.function.DiscontinuationFormula.updateLowLevelCode(Code,FollowupItemID);
+};com.bokesoft.erp.pp.function.MRPPlanFormula.materialMRPPlan();if(ToInt(IsFI_NODB4Other)){com.bokesoft.erp.co.ml.formula.MaterialLedgerFormula.genCreateMaterial2MLStatus()}]]>
+        </Macro>
+        <Macro Key="Macro_OrgDictListModify_RunAsExp">
+            <![CDATA[if (Macro_DicModify_RunAsExp_Formula()) {RaiseErrMsg('V_MATERIAL014','自动批次不能增加评估类型')} else {true};Macro_DicModify_RunAsExp_Formula_Single();EditBill(true)]]>
+        </Macro>
+        <Macro Key="Macro_DicModify_RunAsExp_Formula_Single">
+            <![CDATA[Macro_DicModify_RunAsExp_Formula2();Macro_DicModify_RunAsExp_Formula3();IIF(IsSD_NODB4Other<=0, true, Macro_newTaxClassification());]]>
+        </Macro>
+        <Macro Key="Macro_DictListDelete_RunAsExp">
+            <![CDATA[SetPara('IsDelete', 1);ERPShowModal('MaterialDelete')]]>
+        </Macro>
+        <Macro Key="Macro_DictListRecover_RunAsExp">
+            <![CDATA[SetPara('IsDelete', 0);ERPShowModal('MaterialDelete')]]>
+        </Macro>
+        <Macro Key="Macro_DicSign_RunAsExp">
+            <![CDATA[ERPShowModal('MaterialSign')]]>
+        </Macro>
+        <Macro Key="Macro_PP_MaterialBOMCompare_ShowEvent" Args="MaterialID">
+            <![CDATA[Macro_PP_MaterialBOMCompare_ShowEvent_Formula(MaterialID);ResetEditBillShow()]]>
+        </Macro>
+        <Macro Key="Macro_MM_BatchMaterialMaintance_Rpt_ShowEvent" Args="oid">
+            <![CDATA[SetPara('DictOID', ToLong(oid));Macro_DictView_RowClick();]]>
+        </Macro>
+        <Macro Key="Macro_MM_PurchaseInfoRecord_Rpt_ShowEvent" Args="MaterialID">
+            <![CDATA[Macro_MM_PurchaseInfoRecord_Rpt_ShowEvent_Formula(MaterialID);ResetEditBillShow()]]>
+        </Macro>
+        <Macro Key="Macro_ConfigurationVariables_ButtonClickTrg">
+            <![CDATA[com.bokesoft.erp.mm.batchcode.BatchCodeFormula.getConfigurationVariablesData2(CrossConfigMaterialID,MaterialConfigProfileID,'Data2_')]]>
+        </Macro>
+        <Macro Key="Macro_DicModify_RunAsExp_Formula">
+            <![CDATA[com.bokesoft.erp.mm.masterdata.MaterialFormula.getAutoSetValuationType()]]>
+        </Macro>
+        <Macro Key="Macro_DicModify_RunAsExp_Formula2">
+            <![CDATA[com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.addEmptyOrgData()]]>
+        </Macro>
+        <Macro Key="Macro_DicModify_RunAsExp_Formula3">
+            <![CDATA[com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.edit()]]>
+        </Macro>
+        <Macro Key="Macro_PP_MaterialBOMCompare_ShowEvent_Formula" Args="MaterialID">
+            <![CDATA[com.bokesoft.erp.function.DocumentFunction.loadObjectBySOID(MaterialID)]]>
+        </Macro>
+        <Macro Key="Macro_MM_PurchaseInfoRecord_Rpt_ShowEvent_Formula" Args="MaterialID">
+            <![CDATA[com.bokesoft.erp.function.DocumentFunction.loadObjectBySOID(MaterialID)]]>
+        </Macro>
+        <Macro Key="Macro_NewOrgDic">
+            <![CDATA[com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.newDic();SetValue('GlobalValuationTypeID_NODB4Other', 0);IIF(IsSD_NODB4Other<=0, true, Macro_newTaxClassification());]]>
+        </Macro>
+        <Macro Key="Macro_OrgDictListCancel_RunAsExp_Formula">
+            <![CDATA[com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.cancel()]]>
+        </Macro>
+        <Macro Key="Macro_OrgDictListRefresh_RunAsExp_Formula">
+            <![CDATA[com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.load(true)]]>
+        </Macro>
+        <Macro Key="Macro_getDisChaIDBySaleOrgIDFilter">
+            <![CDATA[com.bokesoft.erp.sd.function.OrganizationFormula.getDisChaIDBySaleOrgIDFilter(SaleOrganizationID_NODB4Other)]]>
+        </Macro>
+        <Macro Key="Macro_AfterPredictDataSave" Args="SafetyStock,RecordPoint">
+            <![CDATA[if(IsMRP_NODB4Other==1){SetValue('PPSafeStock',SafetyStock);SetValue('ReorderPoint',RecordPoint)}]]>
+        </Macro>
+        <Macro Key="Macro_HasOrgDel">
+            <![CDATA[com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.hasOrgDel();]]>
+        </Macro>
+        <Macro Key="Macro_CheckDictDelete">
+            <![CDATA[SetPara('_ignoreFormKeys', 'EPP_MRPPlanProfile;ECO_MLPriceAnalyseHead');com.bokesoft.erp.basis.dictionary.DictionaryFunction.checkDictionaryReference();]]>
+        </Macro>
+        <Macro Key="Macro_MidDelete_PreTriggers">
+            <![CDATA[com.bokesoft.erp.pp.function.MRPPlanFormula.deleteMRPPlan();com.bokesoft.erp.co.ml.formula.MaterialLedgerFormula.deleteCreateMaterial2MLStatus()]]>
+        </Macro>
+        <Macro Key="Macro_CheckUnit">
+            <![CDATA[com.bokesoft.erp.mm.masterdata.MaterialFormula.checkUnitID();]]>
+        </Macro>
+        <Macro Key="Macro_GetRoutingGroupItemsFirstValue">
+            <![CDATA[com.bokesoft.erp.pp.masterdata.RoutingFormula.getRoutingGroupItems(CO_PlantID,CO_MaterialID,0,0,"N",0)]]>
+        </Macro>
+        <Macro Key="Macro_CheckMaterialLedgerPriceAnalysEnable">
+            <![CDATA[com.bokesoft.erp.mm.masterdata.MaterialFormula.checkMaterialIsActiveFI(GetDictOID('Material','Code',Code), PlantID_NODB4Other, GlobalValuationTypeID);]]>
+        </Macro>
+        <Macro Key="Macro_CheckUpdateFIPriceEnable" Args="isCheckValuationClass">
+            <![CDATA[com.bokesoft.erp.mm.masterdata.MaterialFormula.checkMLDataStatusForFIUpdate(GetDictOID('Material','Code',Code), PlantID_NODB4Other, GlobalValuationTypeID, isCheckValuationClass);]]>
+        </Macro>
+        <Macro Key="Macro_MaterialProfile2V_Material">
+            <![CDATA[IIF(PlantID_NODB4Other>0,com.bokesoft.erp.mm.masterdata.MaterialProfileFormula.materialProfile2V_Material(PlantID_NODB4Other,MaterialGroupID),true)]]>
+        </Macro>
+        <Macro Key="Macro_newTaxClassification">
+            <![CDATA[com.bokesoft.erp.mm.masterdata.MaterialFormula.newMaterialTaxClassification(DepartureCountryID_NODB4Other, ConditionTypeID_NODB4Other);]]>
+        </Macro>
+        <Macro Key="Macro_HeadDistributionChannelValueChanged">
+            <![CDATA[com.bokesoft.erp.sd.function.SDDefineCommonFunction.checkDistributionChannelCommonData(SaleOrganizationID_NODB4Other,DistributionChannelID_NODB4Other);com.bokesoft.erp.basis.masterdata.MaterialDictionaryListImpl.changeOrgHeadValue();]]>
+        </Macro>
+        <Macro Key="Macro_MaterialViewVisable" Args="viewType,materialTypeID">
+            <![CDATA[com.bokesoft.erp.mm.masterdata.MaterialFormula.viewVisableContral(viewType,materialTypeID)]]>
+        </Macro>
+        <Macro Key="Macro_UIOpt_DicSave_Exp">
+            <![CDATA[UICheck();Macro_DictListSave_RunAsExp_Formula();if(HasParent() && parent.GetFormKey()=='MM_ExtendMaterialView'){parent.Macro_OpenMaterialDict();Close('OK')}else{RemoveCache();ResetEditBillShow()}]]>
+        </Macro>
+        <Macro Key="Macro_CheckPBF">
+            <![CDATA[com.bokesoft.erp.co.common.CheckAndFilterFormula.checkPBF4Material()]]>
+        </Macro>
+        <Macro Key="Macro_OrgDictListCopyNew_RunAsExp">
+            <![CDATA[ERPShowModal('MaterialCopy')]]>
+        </Macro>
+    </MacroCollection>
+</Form>

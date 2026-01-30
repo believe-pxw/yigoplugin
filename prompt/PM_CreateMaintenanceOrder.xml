@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Form Key="PM_CreateMaintenanceOrder" Caption="创建维护订单" InitState="New" Version="56">
+    <DataSource>
+        <DataObject Key="PM_CreateMaintenanceOrder" Caption="创建维护订单" PrimaryType="Entity">
+            <TableCollection>
+                <Table Key="EPM_CreateMaintenanceOrder_Head" Caption="创建维护订单的非持久化主表" SourceType="" Persist="false">
+                    <Column Key="OID" Caption="对象标识" DataElementKey="OID"/>
+                    <Column Key="SOID" Caption="主对象标识" DataElementKey="SOID"/>
+                    <Column Key="POID" Caption="父对象标识" DataElementKey="POID"/>
+                    <Column Key="MaterialID" Caption="物料号" Persist="false" DataElementKey="MaterialID" IgnoreQuery="true"/>
+                    <Column Key="PlanningPlantID" Caption="计划工厂" Persist="false" DataElementKey="PlanningPlantID" IgnoreQuery="true"/>
+                    <Column Key="BusinessAreaID" Caption="业务范围" Persist="false" DataElementKey="BusinessAreaID" IgnoreQuery="true"/>
+                    <Column Key="EquipmentID" Caption="设备" Persist="false" DataElementKey="EquipmentSOID" IgnoreQuery="true"/>
+                    <Column Key="ParentOrderSOID" Caption="上级订单" Persist="false" IgnoreQuery="true" DataElementKey="ParentOrderSOID"/>
+                    <Column Key="IsCopySettlementRule" Caption="复制工序级的结算规则" Persist="false" DataElementKey="IsCopySettlementRule" IgnoreQuery="true"/>
+                    <Column Key="IsCopyRelation" Caption="复制工序之间的关系" Persist="false" DataElementKey="IsCopyRelation" IgnoreQuery="true"/>
+                    <Column Key="NotificationSOID" Caption="通知单" Persist="false" IgnoreQuery="true" DataElementKey="NotificationSOID"/>
+                    <Column Key="UII" Caption="唯一项目标识符" Persist="false" DataElementKey="UII" IgnoreQuery="true"/>
+                    <Column Key="SerialNumber" Caption="序列号" Persist="false" DataElementKey="SerialNumber" IgnoreQuery="true"/>
+                    <Column Key="OrderTypeID" Caption="订单类型" Persist="false" DataElementKey="PM_OrderTypeID" IgnoreQuery="true"/>
+                    <Column Key="FunctionalLocationSOID" Caption="功能位置" Persist="false" IgnoreQuery="true" DataElementKey="FunctionalLocationSOID"/>
+                    <Column Key="SrcMaintenanceOrderSOID" Caption="源维护订单" Persist="false" DataElementKey="MaintenanceOrderID" IgnoreQuery="true"/>
+                    <Column Key="PriorityID" Caption="优先级" Persist="false" IgnoreQuery="true" DataElementKey="PriorityID"/>
+                </Table>
+            </TableCollection>
+        </DataObject>
+    </DataSource>
+    <Body>
+        <Block>
+            <FlexFlowLayoutPanel Key="root">
+                <ToolBar Key="ToolBar1" Caption="ToolBar1" Height="pref">
+                    <ToolBarItemCollection/>
+                </ToolBar>
+                <GridLayoutPanel Key="CreateMaintenanceOrderGridLayoutPanel" Caption="HeadGridLayoutPanel1" TopPadding="24px">
+                    <FlexFlowLayoutPanel Key="CreateMaintenanceOrderFlexFlowLayoutPanel" Caption="HeadFlexFlowLayoutPanel1" Width="pref" X="0" XSpan="2" Y="0">
+                        <FlexGridLayoutPanel Key="CreateMaintenanceOrderFlexGridLayoutPanel" Caption="HeadFlexGridLayoutPanel1" Height="pref" RowGap="24" RowHeight="32" Padding="8px">
+                            <Label Key="CreateMaintenanceOrder" Caption="建立维护订单" X="0" Y="0" Visible="true" Enable="false" Class="erp-group-title"/>
+                            <Dict Key="OrderTypeID" Caption="订单类型" LabelType="M" X="0" Y="1" Visible="true" Enable="true" ItemKey="PM_OrderType" XSpan="2" OneTimeCompute="true">
+                                <DataBinding TableKey="EPM_CreateMaintenanceOrder_Head" ColumnKey="OrderTypeID" Required="true"/>
+                                <ItemFilter ItemKey="PM_OrderType">
+                                    <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                        <FilterValue Index="1" ParaValue="IIF(GetEntryPara('TCode')=='IW81','soid in ('&amp;com.bokesoft.erp.pm.function.MaintenanceOrderFormula.getPmOrderTypesIDFilter()&amp;')','soId not in ('&amp;com.bokesoft.erp.pm.function.MaintenanceOrderFormula.getPmOrderTypesIDFilter()&amp;')')"/>
+                                    </Filter>
+                                </ItemFilter>
+                            </Dict>
+                            <Dict Key="PriorityID" Caption="优先级" LabelType="M" X="0" Y="2" Visible="true" Enable="true" ItemKey="QM_Priority__Dic" XSpan="2" StateMask="Enable|Disable|Discard">
+                                <DataBinding TableKey="EPM_CreateMaintenanceOrder_Head" ColumnKey="PriorityID"/>
+                                <ItemFilter ItemKey="QM_Priority__Dic">
+                                    <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                        <FilterValue Index="1" ParaValue="'PriorityTypeID = '&amp;SqlPara(GetDictValue('PM_OrderType', OrderTypeID, 'PriorityTypeID'))"/>
+                                    </Filter>
+                                </ItemFilter>
+                            </Dict>
+                            <Dict Key="FunctionalLocationSOID" Caption="功能位置" LabelType="M" X="0" Y="3" Visible="GetEntryPara('TCode')=='IW31'" Enable="EquipmentID&lt;=0" ItemKey="PM_FunctionalLocation__Dic" StateMask="Enable|Disable|Discard" XSpan="2">
+                                <DataBinding TableKey="EPM_CreateMaintenanceOrder_Head" ColumnKey="FunctionalLocationSOID">
+                                    <CheckRule>
+                                        <![CDATA[com.bokesoft.erp.pm.function.MaintenanceOrderFormula.checkAvailable(false, FunctionalLocationSOID)]]>
+                                    </CheckRule>
+                                    <DefaultFormulaValue>
+                                        <![CDATA[com.bokesoft.erp.pm.function.MaintenanceOrderFormula.getEquipmentProp(EquipmentID, 'Structure_FunctionalLocationSOID')]]>
+                                    </DefaultFormulaValue>
+                                </DataBinding>
+                            </Dict>
+                            <Dict Key="MaterialID" Caption="物料号" X="0" Y="3" Visible="GetEntryPara('TCode')=='IW81'" Enable="true" ItemKey="Material" XSpan="2">
+                                <DataBinding TableKey="EPM_CreateMaintenanceOrder_Head" ColumnKey="MaterialID" CheckRule="IIF(IsVisible('MaterialID'),MaterialID&gt;0,true)"/>
+                                <ItemFilter>
+                                    <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                        <FilterValue Index="1" ParaValue="IIF(PlanningPlantID&gt;0, 'OID IN ( Select BK_Material.OID FROM BK_Material  left join EGS_Material_Plant on BK_Material.SOID = EGS_Material_Plant.SOID  where EGS_Material_Plant.PlantID='&amp;SqlPara(PlanningPlantID)&amp;' And BK_Material.Enable = '&amp;SqlPara(1)&amp;' And StatusMRP='&amp;SqlPara(1)&amp;' and BK_Material.MaterialTypeID in(select soid from BK_MaterialType where ProductOrder&gt;'&amp;SqlPara(0)&amp;') )', '1=2')"/>
+                                    </Filter>
+                                </ItemFilter>
+                            </Dict>
+                            <Dict Key="NotificationSOID" Caption="通知单" LabelType="M" X="0" Y="3" Visible="GetEntryPara('TCode')=='IW34'" Enable="true" ItemKey="PM_Notification__Dic" StateMask="Enable|Disable|Discard" XSpan="2">
+                                <DataBinding TableKey="EPM_CreateMaintenanceOrder_Head" ColumnKey="NotificationSOID">
+                                    <CheckRule>
+                                        <![CDATA[IIF(IsVisible('NotificationSOID'),NotificationSOID>0,true)]]>
+                                    </CheckRule>
+                                </DataBinding>
+                                <ItemFilter>
+                                    <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                        <FilterValue Index="1" ParaValue="'MaintenanceOrderSOID &lt;= ' + SqlPara(0) + ' and ' + Macro_GetOrderItemFilter('PMM3', 'QMI')"/>
+                                    </Filter>
+                                </ItemFilter>
+                            </Dict>
+                            <Dict Key="EquipmentID" Caption="设备" LabelType="M" X="0" Y="4" Visible="GetEntryPara('TCode')=='IW31'||GetEntryPara('TCode')=='IW81'" Enable="true" ItemKey="PM_Equipment__Dic" StateMask="Enable|Disable|Discard" XSpan="2">
+                                <DataBinding TableKey="EPM_CreateMaintenanceOrder_Head" ColumnKey="EquipmentID">
+                                    <CheckRule>
+                                        <![CDATA[com.bokesoft.erp.pm.function.MaintenanceOrderFormula.checkAvailable(true, EquipmentID)]]>
+                                    </CheckRule>
+                                    <DefaultFormulaValue>
+                                        <![CDATA[com.bokesoft.erp.pm.function.MaintenanceOrderFormula.getEquipmentIDByMaterial(MaterialID)]]>
+                                    </DefaultFormulaValue>
+                                </DataBinding>
+                            </Dict>
+                            <TextEditor Key="SerialNumber" Caption="序列号" LabelType="M" X="0" Y="5" Visible="GetEntryPara('TCode')=='IW81'" Enable="true" MaxLength="100" Trim="true" XSpan="2">
+                                <DataBinding TableKey="EPM_CreateMaintenanceOrder_Head" ColumnKey="SerialNumber">
+                                    <DefaultFormulaValue>
+                                        <![CDATA[IIF(GetEntryPara('TCode')=='IW81',GetDictValue('PM_Equipment__Dic', EquipmentID, 'SerialNumber'),'')]]>
+                                    </DefaultFormulaValue>
+                                </DataBinding>
+                            </TextEditor>
+                            <TextEditor Key="UII" Caption="唯一项目标识符" LabelType="L" X="0" Y="6" Visible="GetEntryPara('TCode')=='IW31'||GetEntryPara('TCode')=='IW81'" Enable="true" MaxLength="100" Trim="true" XSpan="2">
+                                <DataBinding TableKey="EPM_CreateMaintenanceOrder_Head" ColumnKey="UII"/>
+                            </TextEditor>
+                            <Dict Key="ParentOrderSOID" Caption="上级订单" LabelType="M" X="0" Y="7" Visible="Macro_IsSubOrderCreate()" Enable="true" ItemKey="PM_MaintenanceOrder__Dic" XSpan="2" StateMask="Enable|Disable|Discard">
+                                <DataBinding TableKey="EPM_CreateMaintenanceOrder_Head" ColumnKey="ParentOrderSOID" ValueChanged="Macro_SetFieldByParentOrderID()">
+                                    <CheckRule>
+                                        <![CDATA[IIF(Macro_IsSubOrderCreate()&&ParentOrderSOID<=0,MessageFacade('PM_CREATEMAINTENANCEORDER001','上级订单号不能为空'),true);]]>
+                                    </CheckRule>
+                                </DataBinding>
+                            </Dict>
+                            <Dict Key="PlanningPlantID" Caption="计划工厂" LabelType="M" X="0" Y="8" Visible="true" Enable="true" ItemKey="Plant" XSpan="2">
+                                <DataBinding TableKey="EPM_CreateMaintenanceOrder_Head" ColumnKey="PlanningPlantID" Required="true">
+                                    <DefaultFormulaValue>
+                                        <![CDATA[IIFS(FunctionalLocationSOID>0, com.bokesoft.erp.pm.function.FunctionalLocationFormula.getFunctionalLocationPlanPlant(FunctionalLocationSOID), EquipmentID>0, com.bokesoft.erp.pm.function.EquipmentFormula.getEquipmentProp(EquipmentID,'Organization_PlanningPlantID'), true, PlanningPlantID)]]>
+                                    </DefaultFormulaValue>
+                                </DataBinding>
+                                <ItemFilter>
+                                    <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                        <FilterValue Index="1" ParaValue="'oid in (select MaintPlanningPlantID from EPM_MaintPlanningPlant)'"/>
+                                    </Filter>
+                                </ItemFilter>
+                            </Dict>
+                            <Dict Key="BusinessAreaID" Caption="业务范围" LabelType="M" X="0" Y="9" Visible="true" Enable="true" ItemKey="BusinessArea" XSpan="2" OneTimeCompute="true">
+                                <DataBinding TableKey="EPM_CreateMaintenanceOrder_Head" ColumnKey="BusinessAreaID"/>
+                            </Dict>
+                            <Label Key="Lab_CopyReferenceArea" Caption="参照" X="0" Y="10" Visible="Macro_IsReproducible()" Enable="false" Class="erp-group-title"/>
+                            <Dict Key="SrcMaintenanceOrderSOID" Caption="源维护订单" X="0" Y="11" Visible="Macro_IsReproducible()" Enable="true" ItemKey="PM_MaintenanceOrder__Dic" XSpan="2" StateMask="Enable|Disable|Discard">
+                                <DataBinding TableKey="EPM_CreateMaintenanceOrder_Head" ColumnKey="SrcMaintenanceOrderSOID"/>
+                            </Dict>
+                            <LinearLayoutPanel Key="IsCopyLinearLayoutPanel" X="0" Y="12">
+                                <CheckBox Key="IsCopyRelation" Caption="复制工序之间的关系" LabelType="M" Visible="Macro_IsReproducible()&amp;&amp;!Macro_IsSubOrderCreate()" Width="50%">
+                                    <DataBinding TableKey="EPM_CreateMaintenanceOrder_Head" ColumnKey="IsCopyRelation"/>
+                                </CheckBox>
+                                <CheckBox Key="IsCopySettlementRule" Caption="复制工序级的结算规则" LabelType="M" Visible="Macro_IsReproducible()" Width="50%">
+                                    <DataBinding TableKey="EPM_CreateMaintenanceOrder_Head" ColumnKey="IsCopySettlementRule"/>
+                                </CheckBox>
+                            </LinearLayoutPanel>
+                        </FlexGridLayoutPanel>
+                    </FlexFlowLayoutPanel>
+                    <Button Key="OK" Caption="确定" X="1" Y="1" Visible="true" Enable="true" Type="Primary">
+                        <OnClick>
+                            <![CDATA[UICheck();Macro_OKClickTrigger();]]>
+                        </OnClick>
+                    </Button>
+                    <RowDefCollection RowGap="6">
+                        <RowDef Height="pref"/>
+                        <RowDef Height="32px"/>
+                    </RowDefCollection>
+                    <ColumnDefCollection ColumnGap="20">
+                        <ColumnDef Width="17%"/>
+                        <ColumnDef Width="8%"/>
+                        <ColumnDef Width="25%"/>
+                        <ColumnDef Width="25%"/>
+                        <ColumnDef Width="25%"/>
+                    </ColumnDefCollection>
+                </GridLayoutPanel>
+            </FlexFlowLayoutPanel>
+        </Block>
+    </Body>
+    <OnLoad>
+        <![CDATA[NewBill()]]>
+    </OnLoad>
+    <MacroCollection>
+        <Macro Key="Macro_OKClickTrigger">
+            <![CDATA[com.bokesoft.erp.pm.function.MaintenanceOrderFormula.createMaintenanceOrder()]]>
+        </Macro>
+        <Macro Key="Macro_ShowEvent" Args="argEquipment,argFunctionalLocation">
+            <![CDATA[NewBill();IIFS(argEquipment>0,SetValue('EquipmentID', argEquipment),argFunctionalLocation>0,SetValue('FunctionalLocationSOID', argFunctionalLocation));SetPara('TCode', 'IW31');]]>
+        </Macro>
+        <Macro Key="Macro_IsReproducible">
+            <![CDATA[IIFS(GetEntryPara('TCode') == 'IW31', true, GetEntryPara('TCode') == 'IW34', true, GetEntryPara('TCode') == 'IW36',true, GetEntryPara('TCode') == 'IW81', false, true, true)]]>
+        </Macro>
+        <Macro Key="Macro_IsSubOrderCreate">
+            <![CDATA[GetEntryPara('TCode') == 'IW36']]>
+        </Macro>
+        <Macro Key="Macro_SetFieldByParentOrderID">
+            <![CDATA[com.bokesoft.erp.pm.function.MaintenanceOrderFormula.setFieldByParentOrderID()]]>
+        </Macro>
+    </MacroCollection>
+</Form>
