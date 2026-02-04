@@ -18,7 +18,7 @@ class LayoutToolWindowFactory : ToolWindowFactory, DumbAware {
         project.messageBus.connect().subscribe(com.intellij.openapi.wm.ex.ToolWindowManagerListener.TOPIC, object : com.intellij.openapi.wm.ex.ToolWindowManagerListener {
             var expanded = false
             var resetOriginal = false
-            var originalWidth = 300
+            var originalWidth = 400
             var previousVisibleIds: Set<String>? = null
 
             override fun stateChanged(toolWindowManager: com.intellij.openapi.wm.ToolWindowManager) {
@@ -69,7 +69,7 @@ class LayoutToolWindowFactory : ToolWindowFactory, DumbAware {
 
                             if (sibling != null) {
                                 val current = sibling.component.width
-                                val target = if (originalWidth > 100) originalWidth else 300
+                                val target = if (originalWidth > 100) originalWidth else 400
                                 (sibling as? com.intellij.openapi.wm.ex.ToolWindowEx)?.stretchWidth(target - current)
                             }
                         } catch (e: Exception) {
@@ -84,13 +84,16 @@ class LayoutToolWindowFactory : ToolWindowFactory, DumbAware {
                             if (toolWindowManager.activeToolWindowId != toolWindow.id) {
                                 val activeToolWindow =
                                     toolWindowManager.getToolWindow(toolWindowManager.activeToolWindowId) ?: return
-                                if (activeToolWindow.anchor == ToolWindowAnchor.RIGHT) {
+                                if (activeToolWindow.anchor == toolWindow.anchor) {
+                                    val current = activeToolWindow.component.width
+                                    val target = if (originalWidth > 100) originalWidth else 400
                                     (activeToolWindow as? com.intellij.openapi.wm.ex.ToolWindowEx)?.stretchWidth(
-                                        originalWidth
+                                        target - current
                                     )
+                                    resetOriginal = true
                                 }
                             }
-                            resetOriginal = true
+
                         }
                     }
                     // If my window is hidden (closed/minimized) and we have state, restore
