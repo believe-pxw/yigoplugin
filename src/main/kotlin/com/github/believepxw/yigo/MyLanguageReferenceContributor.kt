@@ -146,6 +146,12 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
             }
             "DomainKey" -> references.add(DomainReference(element, range))
             "TableKey" -> references.add(TableReference(element, range, false))
+            "TableKeys" -> {
+                val tag = attr.parent
+                if (tag.localName == "EmbedTable") {
+                    references.add(TableReference(element, range, false))
+                }
+            }
             "RefObjectKey" -> references.add(DataObjectReference(element, range, value))
             "ColumnKey" -> references.add(DataBindingColumnReference(element, range, false))
             "BindingCellKey" -> references.add(VariableReference(element, range, value))
