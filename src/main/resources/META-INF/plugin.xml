@@ -64,4 +64,13 @@
     </extensions>
     <applicationListeners>
     </applicationListeners>
+
+    <actions>
+        <action id="ActivateYigoLayoutToolWindow"
+                class="com.github.believepxw.yigo.tool.ActivateYigoLayoutAction"
+                text="Activate Yigo Layout"
+                description="Toggles the Yigo Layout tool window">
+            <keyboard-shortcut first-keystroke="alt Y" keymap="$default"/>
+        </action>
+    </actions>
 </idea-plugin>

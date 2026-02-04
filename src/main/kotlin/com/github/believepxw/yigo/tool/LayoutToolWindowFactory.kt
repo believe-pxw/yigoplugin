@@ -13,26 +13,35 @@ class LayoutToolWindowFactory : ToolWindowFactory, DumbAware {
         val content = ContentFactory.getInstance().createContent(toolWindowContent, "", false)
         toolWindow.contentManager.addContent(content)
         toolWindow.setType(com.intellij.openapi.wm.ToolWindowType.DOCKED, null)
-        // Focus Mode Logic: Hide other tool windows when this one is active
+
         project.messageBus.connect().subscribe(com.intellij.openapi.wm.ex.ToolWindowManagerListener.TOPIC, object : com.intellij.openapi.wm.ex.ToolWindowManagerListener {
+            var expanded = false
+            var originalWidth = 400
             var previousVisibleIds: Set<String>? = null
 
             override fun stateChanged(toolWindowManager: com.intellij.openapi.wm.ToolWindowManager) {
-                // Check if our window is visible
                 val myWindow = toolWindowManager.getToolWindow(toolWindow.id) ?: return
 
                 if (myWindow.isVisible) {
-                    // If we haven't saved state yet, save and hide others
-                    if (previousVisibleIds == null) {
+                    if (!expanded) {
                         try {
-                            // Hack: Force width to half screen when opening
-                             val width = java.awt.Toolkit.getDefaultToolkit().screenSize.width / 2
-                             val current = myWindow.component.width
-                             if (current < width) {
-                                 (myWindow as? com.intellij.openapi.wm.ex.ToolWindowEx)?.stretchWidth(width - current)
-                             }
-                        } catch (e: Exception) { /* Ignore resize errors */ }
+                            val screenSize = java.awt.Toolkit.getDefaultToolkit().screenSize
+                            val targetWidth = screenSize.width / 2
+                            val currentWidth = myWindow.component.width
 
+                            if (currentWidth < targetWidth - 20) {
+                                originalWidth = currentWidth
+                            }
+
+                            if (currentWidth < targetWidth) {
+                                (myWindow as? com.intellij.openapi.wm.ex.ToolWindowEx)?.stretchWidth(targetWidth - currentWidth)
+                            }
+                            expanded = true
+                        } catch (e: Exception) {
+                            // ignore
+                        }
+                    }
+                    if (previousVisibleIds == null) {
                         val idsToHide = toolWindowManager.toolWindowIds
                             .filter { it != toolWindow.id && toolWindowManager.getToolWindow(it)?.isVisible == true }
                             .toSet()
@@ -48,20 +57,29 @@ class LayoutToolWindowFactory : ToolWindowFactory, DumbAware {
                         }
                     }
                 } else {
-                    // If my window is hidden (closed/minimized) and we have state, restore
-                    if (previousVisibleIds != null) {
-                         try {
-                            // Hack: Restore smaller width (e.g. 300) so other windows don't look huge
-                             val current = myWindow.component.width
-                             if (current > 350) {
-                                 (myWindow as? com.intellij.openapi.wm.ex.ToolWindowEx)?.stretchWidth(300 - current)
-                             }
-                        } catch (e: Exception) { /* Ignore resize errors */ }
+                    if (expanded) {
+                        try {
+                            // Find any visible tool window on the same anchor
+                            val sibling = toolWindowManager.toolWindowIds
+                                .mapNotNull { toolWindowManager.getToolWindow(it) }
+                                .firstOrNull { it.isVisible && it.anchor == myWindow.anchor && it.id != myWindow.id }
 
-                        previousVisibleIds?.forEach { id ->
-                             toolWindowManager.getToolWindow(id)?.show(null)
+                            if (sibling != null) {
+                                val current = sibling.component.width
+                                val target = if (originalWidth > 100) originalWidth else 400
+                                (sibling as? com.intellij.openapi.wm.ex.ToolWindowEx)?.stretchWidth(target - current)
+                            }
+                        } catch (e: Exception) {
+                            // ignore
                         }
-                        previousVisibleIds = null
+                        expanded = false
+                        // If my window is hidden (closed/minimized) and we have state, restore
+                        if (previousVisibleIds != null) {
+                            previousVisibleIds?.forEach { id ->
+                                toolWindowManager.getToolWindow(id)?.show(null)
+                            }
+                            previousVisibleIds = null
+                        }
                     }
                 }
             }
