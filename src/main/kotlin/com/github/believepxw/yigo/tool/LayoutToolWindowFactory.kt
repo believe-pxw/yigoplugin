@@ -3,6 +3,7 @@ package com.github.believepxw.yigo.tool
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
+import com.intellij.openapi.wm.ToolWindowAnchor
 import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.content.ContentFactory
 
@@ -16,7 +17,8 @@ class LayoutToolWindowFactory : ToolWindowFactory, DumbAware {
 
         project.messageBus.connect().subscribe(com.intellij.openapi.wm.ex.ToolWindowManagerListener.TOPIC, object : com.intellij.openapi.wm.ex.ToolWindowManagerListener {
             var expanded = false
-            var originalWidth = 400
+            var resetOriginal = false
+            var originalWidth = 300
             var previousVisibleIds: Set<String>? = null
 
             override fun stateChanged(toolWindowManager: com.intellij.openapi.wm.ToolWindowManager) {
@@ -56,6 +58,7 @@ class LayoutToolWindowFactory : ToolWindowFactory, DumbAware {
                             previousVisibleIds = emptySet()
                         }
                     }
+                    resetOriginal = false
                 } else {
                     if (expanded) {
                         try {
@@ -66,20 +69,36 @@ class LayoutToolWindowFactory : ToolWindowFactory, DumbAware {
 
                             if (sibling != null) {
                                 val current = sibling.component.width
-                                val target = if (originalWidth > 100) originalWidth else 400
+                                val target = if (originalWidth > 100) originalWidth else 300
                                 (sibling as? com.intellij.openapi.wm.ex.ToolWindowEx)?.stretchWidth(target - current)
                             }
                         } catch (e: Exception) {
                             // ignore
                         }
                         expanded = false
-                        // If my window is hidden (closed/minimized) and we have state, restore
-                        if (previousVisibleIds != null) {
-                            previousVisibleIds?.forEach { id ->
-                                toolWindowManager.getToolWindow(id)?.show(null)
+                    } else {
+                        if (!resetOriginal) {
+                            if (toolWindowManager.activeToolWindowId == null) {
+                                return
                             }
-                            previousVisibleIds = null
+                            if (toolWindowManager.activeToolWindowId != toolWindow.id) {
+                                val activeToolWindow =
+                                    toolWindowManager.getToolWindow(toolWindowManager.activeToolWindowId) ?: return
+                                if (activeToolWindow.anchor == ToolWindowAnchor.RIGHT) {
+                                    (activeToolWindow as? com.intellij.openapi.wm.ex.ToolWindowEx)?.stretchWidth(
+                                        originalWidth
+                                    )
+                                }
+                            }
+                            resetOriginal = true
                         }
+                    }
+                    // If my window is hidden (closed/minimized) and we have state, restore
+                    if (previousVisibleIds != null) {
+                        previousVisibleIds?.forEach { id ->
+                            toolWindowManager.getToolWindow(id)?.show(null)
+                        }
+                        previousVisibleIds = null
                     }
                 }
             }
