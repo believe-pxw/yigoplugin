@@ -788,7 +788,8 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
             "TextEditor", "TextArea", "RichEditor", "PasswordEditor" -> com.intellij.icons.AllIcons.FileTypes.Text
             "NumberEditor" -> com.intellij.icons.AllIcons.Debugger.Db_array
             "DatePicker", "UTCDatePicker", "MonthPicker", "TimePicker" -> com.intellij.icons.AllIcons.Vcs.History
-            "Button", "TextButton" -> null 
+            "Button" -> com.intellij.icons.AllIcons.Gutter.Mnemonic
+            "TextButton" -> com.intellij.icons.AllIcons.Scope.ChangedFiles
             "Label" -> com.intellij.icons.AllIcons.General.Note
             "Image", "Icon" -> com.intellij.icons.AllIcons.FileTypes.Image
             "HyperLink" -> com.intellij.icons.AllIcons.Ide.Link
