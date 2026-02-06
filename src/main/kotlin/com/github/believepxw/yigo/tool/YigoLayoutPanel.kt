@@ -426,38 +426,94 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         }
     }
 
+    // Track the currently highlighted grid to clear it later
+    private var lastHighlightedGrid: TransparentHighlightPanel? = null
+    
     private fun highlightComponentAtCaret(editor: Editor) {
         val offset = editor.caretModel.offset
         // 1. Read PSI to find tag (Must be in ReadAction)
         var targetTag: XmlTag? = null
-        
-        // Check if we are already in a read action? 
-        // If called from updateUIFromXml, we are. If called from Listener, maybe not.
-        // We will assume caller handles ReadAction for finding element, OR we wrap it.
-        // BUT, highlightComponentAtCaret is called from:
-        // 1. CaretListener (calls runReadAction explicitly)
-        // 2. updateUIFromXml (calls runReadAction explicitly)
+        var highlightRowToSet = -1
+        var highlightColToSet = -1
+        var targetGridTag: XmlTag? = null
         
         val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(editor.document) ?: return
         val element = psiFile.findElementAt(offset)
         var tag = PsiTreeUtil.getParentOfType(element, XmlTag::class.java, false)
         
+        // --- Highlighting Logic for RowDef / ColumnDef ---
+        // Check if we are inside a RowDef or ColumnDef
+        var current = tag
+        while (current != null) {
+            if (current.name == "RowDef") {
+                // Find index
+                var index = 0
+                var sibling = current.prevSibling
+                while (sibling != null) {
+                    if (sibling is XmlTag && sibling.name == "RowDef") index++
+                    sibling = sibling.prevSibling
+                }
+                highlightRowToSet = index
+                // Find parent GridLayoutPanel (RowDef -> RowDefCollection -> GridLayoutPanel)
+                targetGridTag = current.parentTag?.parentTag
+                break
+            } else if (current.name == "ColumnDef") {
+                 // Find index
+                var index = 0
+                var sibling = current.prevSibling
+                while (sibling != null) {
+                    if (sibling is XmlTag && sibling.name == "ColumnDef") index++
+                    sibling = sibling.prevSibling
+                }
+                highlightColToSet = index
+                targetGridTag = current.parentTag?.parentTag
+                break
+            }
+            // Stop if we hit Form/Body or a mapped component to avoid walking too far
+            if (tagToComponent.containsKey(current) || current.name == "Form") break
+            current = current.parentTag
+        }
+        // -----------------------------------------------
+
         while (tag != null && !tagToComponent.containsKey(tag)) {
             tag = tag.parentTag
             if (tag?.name == "Form" || tag?.name == "Body") break 
         }
         targetTag = tag
         
-        if (targetTag != null) {
-            // 2. Update UI (Must be on EDT, OUTSIDE ReadAction ideally, but ReadAction on EDT is allowed)
-            // However, modifying Swing components inside a ReadAction is fine as long as we are on EDT.
-            // The crash happened because of re-entrant layout.
-            // Let's defer strict UI updates to invokeLater to break the layout cycle if strictly needed.
+        // Update UI
+        val finalGridTag = targetGridTag
+        val finalRow = highlightRowToSet
+        val finalCol = highlightColToSet
+        val shouldSuppressScroll = isNavigatingToXml
+        
+        ApplicationManager.getApplication().invokeLater {
+            if (project.isDisposed) return@invokeLater
             
-            // Capture state immediately! invokeLater runs when flag is reset.
-            val shouldSuppressScroll = isNavigatingToXml
-            
-            ApplicationManager.getApplication().invokeLater {
+            // 1. Handle Grid Highlighting
+            if (finalGridTag != null && (finalRow != -1 || finalCol != -1)) {
+                 val gridComponent = tagToComponent[finalGridTag]
+                 if (gridComponent is TransparentHighlightPanel) {
+                     gridComponent.setHighlight(finalRow, finalCol)
+                     if (lastHighlightedGrid != null && lastHighlightedGrid != gridComponent) {
+                         lastHighlightedGrid?.setHighlight(-1, -1)
+                     }
+                     lastHighlightedGrid = gridComponent
+                     
+                     if (!shouldSuppressScroll) {
+                        ensureComponentVisible(gridComponent)
+                     }
+                 }
+            } else {
+                // Clear previous highlight if we moved away from Row/Col def
+                if (lastHighlightedGrid != null) {
+                    lastHighlightedGrid?.setHighlight(-1, -1)
+                    lastHighlightedGrid = null
+                }
+            }
+
+            // 2. Handle Normal Component Highlighting
+            if (targetTag != null) {
                 val component = tagToComponent[targetTag]
                 if (component != null && component != lastSelectedComponent) {
                     if (lastSelectedComponent != null && lastSelectedComponent != lastSearchHighlight) {
@@ -842,7 +898,11 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
     
     private fun createWrappedGridTable(tag: XmlTag): JComponent {
         val mainPanel = JPanel(GridBagLayout())
-        mainPanel.border = BorderFactory.createTitledBorder("Table: ${getTitle(tag)}")
+        val rowCollection = tag.findFirstSubTag("GridRowCollection")
+        val rows = rowCollection?.findSubTags("GridRow") ?: emptyArray()
+        val firstRow = rows.firstOrNull()
+        val tableKey = firstRow?.getAttributeValue("TableKey")
+        mainPanel.border = BorderFactory.createTitledBorder("Table ${getTitle(tag)} [$tableKey]")
         mainPanel.transferHandler = TableDropHandler(tag, project)
         populateWrappedGridTable(tag, mainPanel)
         return mainPanel
@@ -1067,11 +1127,14 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
 
     private fun createCoordinateGridPanel(tag: XmlTag, visitedForms: Set<String> = emptySet()): JPanel {
         val layout = GridBagLayout()
-        val panel = JPanel(layout)
+        val panel = TransparentHighlightPanel(layout) // Use custom panel for highlighting
         panel.border = BorderFactory.createTitledBorder("Grid: ${getTitle(tag)}")
         
         // Add drop support
         panel.transferHandler = GridDropHandler(tag, project)
+        
+        // Add Context Menu
+        addGridContextMenu(panel, tag)
         
         // 1. Analyze Grid Dimensions and Weights
         var rowCount = 0
@@ -1150,6 +1213,9 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         if (colCount == 0) colCount = if (maxX > 0) maxX else 4
         if (maxX > colCount) colCount = maxX
         if (maxY > rowCount) rowCount = maxY
+        
+        // Pass grid dimensions to panel for validation
+        panel.setGridDimensions(rowCount, colCount)
 
         val occupied = Array(rowCount) { BooleanArray(colCount) }
         val componentMap = mutableMapOf<String, MutableList<XmlTag>>()
@@ -1231,6 +1297,135 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         panel.add(spacer, spacerC)
         
         return panel
+    }
+    
+    // Custom JPanel to support drawing highlights over/under children
+    private class TransparentHighlightPanel(layout: LayoutManager) : JPanel(layout) {
+        var highlightRow = -1
+        var highlightCol = -1
+        private var rowCount = 0
+        private var colCount = 0
+        
+        fun setGridDimensions(rows: Int, cols: Int) {
+            this.rowCount = rows
+            this.colCount = cols
+        }
+        
+        fun setHighlight(row: Int, col: Int) {
+            if (highlightRow != row || highlightCol != col) {
+                highlightRow = row
+                highlightCol = col
+                repaint()
+            }
+        }
+
+        override fun paintChildren(g: Graphics) {
+            super.paintChildren(g) // Paint components first
+            
+            if (highlightRow >= 0 || highlightCol >= 0) {
+                val layout = layout as? GridBagLayout ?: return
+                
+                // Use getLayoutDimensions to calculate exact grid lines
+                // dimensions[0] = column widths
+                // dimensions[1] = row heights
+                val dimensions = layout.getLayoutDimensions()
+                val origin = layout.getLayoutOrigin()
+                val columnWidths = dimensions[0]
+                val rowHeights = dimensions[1]
+                
+                var x = origin.x
+                var y = origin.y
+                var w = 0
+                var h = 0
+                
+                // Calculate Total Size if needed or specific component location
+                // We want to highlight the entire "Strip".
+                
+                val totalW = columnWidths.sum()
+                val totalH = rowHeights.sum()
+                
+                val g2 = g.create() as Graphics2D
+                g2.color = Color(255, 255, 0, 40) // Semi-transparent yellow
+                
+                if (highlightCol >= 0 && highlightCol < columnWidths.size) {
+                    // Calculate X start and Width of the column
+                    var colX = origin.x
+                    for (i in 0 until highlightCol) {
+                        colX += columnWidths[i]
+                    }
+                    val colW = columnWidths[highlightCol]
+                    
+                    // Highlight Column Strip (Full Height)
+                    g2.fillRect(colX, origin.y, colW, totalH)
+                    g2.color = Color(255, 200, 0, 180)
+                    g2.stroke = BasicStroke(2f)
+                    g2.drawRect(colX, origin.y, colW, totalH)
+                    // Reset color for next draw
+                    g2.color = Color(255, 255, 0, 40)
+                }
+                
+                if (highlightRow >= 0 && highlightRow < rowHeights.size) {
+                    // Calculate Y start and Height of the row
+                    var rowY = origin.y
+                    for (i in 0 until highlightRow) {
+                        rowY += rowHeights[i]
+                    }
+                    val rowH = rowHeights[highlightRow]
+                    
+                    // Highlight Row Strip (Full Width)
+                    g2.fillRect(origin.x, rowY, totalW, rowH)
+                    g2.color = Color(255, 200, 0, 180)
+                    g2.stroke = BasicStroke(2f)
+                    g2.drawRect(origin.x, rowY, totalW, rowH)
+                }
+                
+                g2.dispose()
+            }
+        }
+    }
+
+    private fun addGridContextMenu(panel: JPanel, tag: XmlTag) {
+        panel.addMouseListener(object : MouseAdapter() {
+            override fun mousePressed(e: MouseEvent) { handlePopup(e) }
+            override fun mouseReleased(e: MouseEvent) { handlePopup(e) }
+            
+            private fun handlePopup(e: MouseEvent) {
+                if (e.isPopupTrigger) {
+                    val menu = JPopupMenu()
+                    
+                    val itemRow = JMenuItem("Go to RowDefCollection") // No icon for now
+                    itemRow.addActionListener {
+                        findChildTag(tag, "RowDefCollection")?.let { navigateToTag(it) }
+                    }
+                    menu.add(itemRow)
+                    
+                    val itemCol = JMenuItem("Go to ColumnDefCollection")
+                    itemCol.addActionListener {
+                         findChildTag(tag, "ColumnDefCollection")?.let { navigateToTag(it) }
+                    }
+                    menu.add(itemCol)
+                    
+                    menu.show(e.component, e.x, e.y)
+                }
+            }
+        })
+    }
+    
+    // Helper search because tag.findFirstSubTag is sometimes not enough if we need recursive? 
+    // No, standard subtag is fine for this structure.
+    private fun findChildTag(parent: XmlTag, name: String): XmlTag? {
+        // Need to be cautious about ReadAction? navigateToTag handles read action for offsets.
+        // But finding the tag here requires read access if called from EDT action info?
+        // navigateToTag will re-resolve, but here we need the tag object or offset.
+        // Actually, let's look it up inside a ReadAction just to be safe immediately.
+        
+        var result: XmlTag? = null
+        ApplicationManager.getApplication().runReadAction {
+            if (parent.isValid) {
+                result = parent.findFirstSubTag(name)
+            }
+        }
+        return result
     }
     
     private fun createPlaceholder(x: Int, y: Int): JComponent {
