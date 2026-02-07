@@ -1155,7 +1155,9 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                     weights[i] = hAttr.removeSuffix("%").toDoubleOrNull()?.div(100.0) ?: 0.0
                     heights[i] = 0 // Weight determines size
                 } else if (hAttr.endsWith("px")) {
-                    heights[i] = hAttr.removeSuffix("px").toIntOrNull() ?: 0
+                    //走自动列宽，固定列宽显示效果太差，特别是小屏幕
+//                    heights[i] = hAttr.removeSuffix("px").toIntOrNull() ?: 0
+                    heights[i] = 0
                     weights[i] = 0.0 // Fixed size
                 } else {
                      // Default or explicit number without unit?
@@ -1182,7 +1184,9 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                     weights[i] = wAttr.removeSuffix("%").toDoubleOrNull()?.div(100.0) ?: 0.0
                     widths[i] = 0
                 } else if (wAttr.endsWith("px")) {
-                    widths[i] = wAttr.removeSuffix("px").toIntOrNull() ?: 0
+//                    widths[i] = wAttr.removeSuffix("px").toIntOrNull() ?: 0
+                    //走自动列宽，固定列宽显示效果太差，特别是小屏幕
+                    widths[i] = 0
                     weights[i] = 0.0
                 } else {
                      val v = wAttr.toIntOrNull()
