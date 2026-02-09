@@ -1292,13 +1292,13 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         }
         
         // Add a vertical spacer to push content to the top
-        val spacer = JPanel()
+        /*val spacer = JPanel()
         spacer.isOpaque = false
         val spacerC = GridBagConstraints()
         spacerC.gridx = 0
         spacerC.gridy = rowCount
         spacerC.weighty = 1.0 // Consume all vertical space
-        panel.add(spacer, spacerC)
+        panel.add(spacer, spacerC)*/
         
         return panel
     }
