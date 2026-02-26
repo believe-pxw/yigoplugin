@@ -64,7 +64,7 @@
         <codeInsight.inlayProvider language="XML" implementationClass="com.github.believepxw.yigo.inlay.YigoInlayProvider"/>
         <codeInsight.lineMarkerProvider language="XML" implementationClass="com.github.believepxw.yigo.linemarker.DataBindingColumnLineMarkerProvider"/>
         <toolWindow id="Yigo Layout" secondary="false" anchor="right" icon="com.github.believepxw.yigo.icons.YigoIcons.Logo" factoryClass="com.github.believepxw.yigo.tool.LayoutToolWindowFactory"/>
-        <toolWindow id="Trac" secondary="false" anchor="right" icon="com.github.believepxw.yigo.icons.YigoIcons.Logo" factoryClass="com.github.believepxw.yigo.tool.trac.TracToolWindowFactory"/>
+        <toolWindow id="Trac" secondary="false" anchor="right" icon="com.github.believepxw.yigo.icons.YigoIcons.Trac" factoryClass="com.github.believepxw.yigo.tool.trac.TracToolWindowFactory"/>
     </extensions>
     <applicationListeners>
     </applicationListeners>
