@@ -89,12 +89,17 @@ object TracDatabaseGenerator {
         // Resolve Driver
         val driverManager = com.intellij.database.dataSource.DatabaseDriverManager.getInstance()
         var driver = driverManager.getDriver(driverName.lowercase())
-        if (driver == null) {
+        if (driver == null|| !driver.hasDriverFiles()) {
             // Fallback search by name if explicit ID didn't match
-            driver = driverManager.drivers.find { it.name.contains(driverName, ignoreCase = true) }
+            driver = driverManager.drivers.find { it.name.contains(driverName, ignoreCase = true) && it.hasDriverFiles() }
         }
         if (driver != null) {
             dataSource.databaseDriver = driver
+        }else{
+            javax.swing.SwingUtilities.invokeLater {
+                Messages.showErrorDialog("Driver not found or missing driver files for: $driverName", "Database Error")
+            }
+            return
         }
 
         // In LocalDataSource, password storage is delegated to DatabaseCredentials.
