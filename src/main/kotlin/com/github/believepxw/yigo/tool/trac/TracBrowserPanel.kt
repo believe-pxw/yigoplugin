@@ -26,7 +26,7 @@ class TracBrowserPanel(private val project: Project) {
         }
 
         fun saveCookies(state: TracSettingsState) {
-            state.serializedCookies = cachedCookies.entries.joinToString(";") { "\${it.key}=\${it.value}" }
+            state.serializedCookies = cachedCookies.entries.joinToString(";") { "${it.key}=${it.value}" }
         }
     }
 
