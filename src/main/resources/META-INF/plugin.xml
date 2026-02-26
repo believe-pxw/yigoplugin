@@ -8,10 +8,13 @@
     <depends>com.intellij.modules.java</depends>
     <depends>com.intellij.modules.xml</depends>
     <depends>com.intellij.modules.json</depends>
+    <depends>com.intellij.spring.boot</depends>
+    <depends>com.intellij.database</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
+        <projectService serviceImplementation="com.github.believepxw.yigo.tool.trac.TracSettingsState"/>
         <fileBasedIndex implementation="example.index.MacroNameIndex"/>
         <fileBasedIndex implementation="example.index.FormIndex"/>
         <fileBasedIndex implementation="example.index.DataObjectIndex"/>
@@ -61,6 +64,7 @@
         <codeInsight.inlayProvider language="XML" implementationClass="com.github.believepxw.yigo.inlay.YigoInlayProvider"/>
         <codeInsight.lineMarkerProvider language="XML" implementationClass="com.github.believepxw.yigo.linemarker.DataBindingColumnLineMarkerProvider"/>
         <toolWindow id="Yigo Layout" secondary="false" anchor="right" icon="com.github.believepxw.yigo.icons.YigoIcons.Logo" factoryClass="com.github.believepxw.yigo.tool.LayoutToolWindowFactory"/>
+        <toolWindow id="Trac" secondary="false" anchor="right" icon="com.github.believepxw.yigo.icons.YigoIcons.Logo" factoryClass="com.github.believepxw.yigo.tool.trac.TracToolWindowFactory"/>
     </extensions>
     <applicationListeners>
     </applicationListeners>
