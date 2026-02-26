@@ -2,11 +2,14 @@ package com.github.believepxw.yigo.tool.trac
 
 import com.intellij.credentialStore.OneTimeString
 import com.intellij.database.access.DatabaseCredentials
+import com.intellij.database.dataSource.DatabaseDriverManagerImpl
 import com.intellij.database.dataSource.LocalDataSource
 import com.intellij.database.dataSource.LocalDataSource.Storage
 import com.intellij.database.dataSource.LocalDataSourceManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
+import org.jdom.Content
+import org.jdom.Element
 
 object TracDatabaseGenerator {
     fun generate(project: Project, data: TracTicketData) {
@@ -88,10 +91,23 @@ object TracDatabaseGenerator {
 
         // Resolve Driver
         val driverManager = com.intellij.database.dataSource.DatabaseDriverManager.getInstance()
+        var state = (driverManager as DatabaseDriverManagerImpl).state
+        state?.content?.forEach {
+            if (it.cType == Content.CType.Element) {
+                var element = it as Element
+                var value = element.getAttribute("id")?.value
+                var driver = driverManager.getDriver(value)
+
+                if (value?.contains(driverName, ignoreCase = true) == true || driver?.name?.contains(driverName, ignoreCase = true) == true) {
+                    driverName = value ?: ""
+                }
+            }
+        }
         var driver = driverManager.getDriver(driverName.lowercase())
-        if (driver == null|| !driver.hasDriverFiles()) {
+
+        if (driver == null) {
             // Fallback search by name if explicit ID didn't match
-            driver = driverManager.drivers.find { it.name.contains(driverName, ignoreCase = true) && it.hasDriverFiles() }
+            driver = driverManager.drivers.find { it.name.contains(driverName, ignoreCase = true)  }
         }
         if (driver != null) {
             dataSource.databaseDriver = driver

@@ -9,7 +9,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlFile
 import com.intellij.psi.xml.XmlTag
-import com.intellij.ui.layout.panel
+import com.intellij.ui.dsl.builder.panel
 import javax.swing.JComponent
 
 @Suppress("UnstableApiUsage")

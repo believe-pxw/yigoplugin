@@ -227,7 +227,7 @@ class TracBrowserPanel(private val project: Project) {
                 } catch (e: Exception) {
                     e.printStackTrace()
                     SwingUtilities.invokeLater {
-                        Messages.showErrorDialog("Failed to fetch or parse ticket: \${e.message}", "Error")
+                        Messages.showErrorDialog("Failed to fetch or parse ticket: ${e.message}", "Error")
                     }
                 }
             }.start()

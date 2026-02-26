@@ -1,6 +1,5 @@
 package com.github.believepxw.yigo.tool.trac
 
-import ai.grazie.detector.ngram.main
 import com.intellij.execution.RunManager
 import com.intellij.execution.RunnerAndConfigurationSettings
 import com.intellij.execution.configurations.ConfigurationTypeUtil
