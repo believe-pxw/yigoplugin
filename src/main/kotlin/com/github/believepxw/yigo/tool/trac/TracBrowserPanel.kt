@@ -52,7 +52,7 @@ class TracBrowserPanel(private val project: Project) {
         val inputPanel = JPanel(GridLayout(7, 2, 5, 5))
         inputPanel.border = BorderFactory.createEmptyBorder(10, 10, 10, 10)
 
-        val urlField = JTextField("http://dev.bokesoft.com:8000/trac/eri-erp/ticket/164384")
+        val urlField = JTextField()
         val usernameField = JTextField(state.tracUsername)
         val passwordField = JPasswordField(state.tracPassword)
         val mainClassField = JTextField(state.defaultMainClass)
