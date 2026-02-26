@@ -97,12 +97,9 @@ class TracBrowserPanel(private val project: Project) {
         inputPanel.add(JLabel("Extra Env Vars (k=v;...):"))
         inputPanel.add(envVarsField)
 
-        val fetchButton = JButton("Fetch & Generate Service Config")
+        val fetchButton = JButton("Generate Service Config")
         val dbButton = JButton("Generate Database Source")
-        
-        val buttonPanel = JPanel(GridLayout(1, 2, 5, 0))
-        buttonPanel.add(fetchButton)
-        buttonPanel.add(dbButton)
+
 
         val executeExtraction = { isGenerateDb: Boolean ->
             saveAction()
@@ -239,8 +236,8 @@ class TracBrowserPanel(private val project: Project) {
         fetchButton.addActionListener { executeExtraction(false) }
         dbButton.addActionListener { executeExtraction(true) }
         
-        inputPanel.add(JLabel(""))
-        inputPanel.add(buttonPanel)
+        inputPanel.add(fetchButton)
+        inputPanel.add(dbButton)
 
         mainPanel.add(inputPanel, BorderLayout.NORTH)
         mainPanel.add(JPanel(), BorderLayout.CENTER) // Empty filler
