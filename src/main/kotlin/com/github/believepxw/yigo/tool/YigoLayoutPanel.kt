@@ -55,20 +55,10 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
     }
     private val scrollPane = JBScrollPane(rootPanel)
     
-    // Search Components
-    private lateinit var searchPanel: JPanel
-    private val searchField = SearchTextField()
-    private val prevButton = JButton("Prev")
-    private val nextButton = JButton("Next")
-    private val countLabel = JLabel("0/0")
-
     // State
     private val tagToComponent = java.util.WeakHashMap<XmlTag, JComponent>()
     private var lastSelectedComponent: JComponent? = null // From Editor Caret
-    private var lastSearchHighlight: JComponent? = null // From Search
-    
-    private var searchMatches = listOf<Pair<XmlTag, JComponent>>()
-    private var currentMatchIndex = -1
+    internal var lastSearchHighlight: JComponent? = null // From Search
     
     // Constant for client property key
     private val KEY_ORIGINAL_BORDER = "YigoOriginalBorder"
@@ -84,8 +74,6 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
     private var isNavigatingToXml = false
 
     init {
-        setupSearchPanel()
-
         rootPanel.layout = BoxLayout(rootPanel, BoxLayout.Y_AXIS)
         rootPanel.border = JBUI.Borders.empty(10)
         
@@ -94,9 +82,11 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         // Register Search Shortcut (Ctrl+F / Cmd+F)
         val searchAction = object : AbstractAction() {
             override fun actionPerformed(e: ActionEvent?) {
-                searchPanel.isVisible = true
-                searchField.requestFocusInWindow()
-                searchField.textEditor.selectAll()
+                val currentEditor = FileEditorManager.getInstance(project).selectedTextEditor ?: return
+                val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(currentEditor.document) as? XmlFile ?: return
+                val rootTag = psiFile.rootTag ?: return
+                val bodyTag = rootTag.findFirstSubTag("Body") ?: rootTag
+                ScopeSearchDialog(bodyTag).showDialog()
             }
         }
         val keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().menuShortcutKeyMaskEx)
@@ -162,45 +152,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         }, toolWindow.contentManager)
     }
 
-    private fun setupSearchPanel() {
-        searchPanel = JPanel(BorderLayout())
-        searchPanel.border = JBUI.Borders.empty(5)
-        searchPanel.isVisible = true  
-        
-        searchField.addDocumentListener(object : DocumentListener {
-            override fun insertUpdate(e: DocumentEvent?) { runSearch() }
-            override fun removeUpdate(e: DocumentEvent?) { runSearch() }
-            override fun changedUpdate(e: DocumentEvent?) { runSearch() }
-        })
-        
-        searchField.addKeyboardListener(object : KeyAdapter() {
-            override fun keyPressed(e: KeyEvent) {
-                if (e.keyCode == KeyEvent.VK_ENTER) {
-                    if (e.isShiftDown) moveSelection(-1) else moveSelection(1)
-                } else if (e.keyCode == KeyEvent.VK_ESCAPE) {
-                    searchPanel.isVisible = false
-                    clearSearch()
-                    rootPanel.requestFocusInWindow()
-                }
-            }
-        })
-        
-        val controls = JPanel(FlowLayout(FlowLayout.RIGHT, 5, 0))
-        prevButton.margin = Insets(0, 5, 0, 5)
-        nextButton.margin = Insets(0, 5, 0, 5)
-        
-        prevButton.addActionListener { moveSelection(-1) }
-        nextButton.addActionListener { moveSelection(1) }
-        
-        controls.add(countLabel)
-        controls.add(prevButton)
-        controls.add(nextButton)
-        
-        searchPanel.add(searchField, BorderLayout.CENTER)
-        searchPanel.add(controls, BorderLayout.EAST)
-        
-        add(searchPanel, BorderLayout.NORTH)
-    }
+
     
     // --- Helper Methods to Register Component and Store Border ---
     private fun registerComponent(tag: XmlTag, component: JComponent) {
@@ -258,72 +210,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         processEmbedQueue()
     }
 
-    private fun runSearch() {
-        val text = searchField.text.trim().lowercase()
-        if (text.isEmpty()) {
-            clearSearch()
-            return
-        }
-        
-        ApplicationManager.getApplication().runReadAction {
-            val validComponents = tagToComponent.entries.filter { it.key.isValid }
-            searchMatches = validComponents.filter { (tag, _) ->
-                val key = tag.getAttributeValue("Key")?.lowercase() ?: ""
-                val cap = tag.getAttributeValue("Caption")?.lowercase() ?: ""
-                key.contains(text) || cap.contains(text)
-            }.map { it.toPair() }.sortedBy { it.second.y }
-        }
-        
-        currentMatchIndex = if (searchMatches.isNotEmpty()) 0 else -1
-        updateSearchUI()
-    }
-    
-    private fun clearSearch() {
-        searchMatches = emptyList()
-        currentMatchIndex = -1
-        updateSearchUI()
-    }
-    
-    private fun moveSelection(direction: Int) {
-        if (searchMatches.isEmpty()) return
-        currentMatchIndex = (currentMatchIndex + direction).mod(searchMatches.size)
-        updateSearchUI()
-    }
-    
-    private fun updateSearchUI() {
-        if (searchMatches.isEmpty()) {
-            countLabel.text = "0/0"
-            countLabel.foreground = Color.RED
-            prevButton.isEnabled = false
-            nextButton.isEnabled = false
-            if (lastSearchHighlight != null) {
-                restoreBorder(lastSearchHighlight!!)
-                lastSearchHighlight = null
-            }
-        } else {
-            countLabel.text = "${currentMatchIndex + 1}/${searchMatches.size}"
-            countLabel.foreground = Color.BLACK
-            prevButton.isEnabled = true
-            nextButton.isEnabled = true
-            
-            if (lastSearchHighlight != null && lastSearchHighlight != searchMatches[currentMatchIndex].second) {
-                 restoreBorder(lastSearchHighlight!!)
-            }
-            
-            val (tag, comp) = searchMatches[currentMatchIndex]
-            setHighlightBorder(comp, Color.MAGENTA, 3)
-            ensureComponentVisible(comp)
-            lastSearchHighlight = comp
-            
-            // Sync to XML
-            val currentEditor = FileEditorManager.getInstance(project).selectedTextEditor
-            val currentPsi = if (currentEditor != null) PsiDocumentManager.getInstance(project).getPsiFile(currentEditor.document) else null
-            
-            if (currentPsi != null && tag.containingFile == currentPsi) {
-                navigateToTag(tag, false)
-            }
-        }
-    }
+
 
     private fun findParentGridTag(startTag: XmlTag): XmlTag? {
         var current: XmlTag? = startTag
@@ -370,7 +257,10 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         // Actually, finishOnUiThread updating 'embedPanel' which is removed from rootPanel. 
         // So it's fine.
         
-        clearSearch() 
+        if (lastSearchHighlight != null) {
+            restoreBorder(lastSearchHighlight!!)
+            lastSearchHighlight = null
+        }
         
         val editor = FileEditorManager.getInstance(project).selectedTextEditor
         if (editor == null) {
@@ -419,9 +309,6 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                      highlightComponentAtCaret(editor)
                 }
                 
-                if (searchPanel.isVisible && searchField.text.isNotBlank()) {
-                    runSearch()
-                }
             }
         }
     }
@@ -693,6 +580,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
          val axis = if (orientation.equals("Vertical", ignoreCase = true)) BoxLayout.Y_AXIS else BoxLayout.X_AXIS
          container.layout = BoxLayout(container, axis)
          container.border = BorderFactory.createTitledBorder(getTitle(tag))
+         addContainerContextMenu(container, tag)
          
          for (subTag in tag.subTags) {
              renderTag(subTag, container, visitedForms)
@@ -726,6 +614,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
 
          tabbedPane.border = BorderFactory.createTitledBorder(getTitle(tag))
          saveOriginalBorder(tabbedPane)
+         addContainerContextMenu(tabbedPane, tag)
 
          val tabTags = mutableListOf<XmlTag>()
          for (subTag in tag.subTags) {
@@ -752,6 +641,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
          val container = JPanel()
          container.layout = BoxLayout(container, BoxLayout.Y_AXIS)
          container.border = BorderFactory.createTitledBorder(getTitle(tag))
+         addContainerContextMenu(container, tag)
          for (subTag in tag.subTags) {
              renderTag(subTag, container, visitedForms)
          }
@@ -904,6 +794,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         val tableKey = firstRow?.getAttributeValue("TableKey")
         mainPanel.border = BorderFactory.createTitledBorder("Table ${getTitle(tag)} [$tableKey]")
         mainPanel.transferHandler = TableDropHandler(tag, project)
+        addContainerContextMenu(mainPanel, tag)
         populateWrappedGridTable(tag, mainPanel)
         return mainPanel
     }
@@ -1006,6 +897,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         val panel = JPanel(layout)
         panel.border = BorderFactory.createTitledBorder("FlexGrid: ${getTitle(tag)}")
         panel.transferHandler = FlexDropHandler(tag, project)
+        addContainerContextMenu(panel, tag)
         
         val columnCount = tag.getAttributeValue("ColumnCount")?.toIntOrNull() ?: 1
         
@@ -1134,7 +1026,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         panel.transferHandler = GridDropHandler(tag, project)
         
         // Add Context Menu
-        addGridContextMenu(panel, tag)
+        addContainerContextMenu(panel, tag)
         
         // 1. Analyze Grid Dimensions and Weights
         var rowCount = 0
@@ -1388,7 +1280,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         }
     }
 
-    private fun addGridContextMenu(panel: JPanel, tag: XmlTag) {
+    private fun addContainerContextMenu(panel: JComponent, tag: XmlTag) {
         panel.addMouseListener(object : MouseAdapter() {
             override fun mousePressed(e: MouseEvent) { handlePopup(e) }
             override fun mouseReleased(e: MouseEvent) { handlePopup(e) }
@@ -1397,17 +1289,26 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                 if (e.isPopupTrigger) {
                     val menu = JPopupMenu()
                     
-                    val itemRow = JMenuItem("Go to RowDefCollection") // No icon for now
-                    itemRow.addActionListener {
-                        findChildTag(tag, "RowDefCollection")?.let { navigateToTag(it) }
+                    if (tag.name == "GridLayoutPanel" || tag.name == "Grid") {
+                        val itemRow = JMenuItem("Go to RowDefCollection") // No icon for now
+                        itemRow.addActionListener {
+                            findChildTag(tag, "RowDefCollection")?.let { navigateToTag(it) }
+                        }
+                        menu.add(itemRow)
+                        
+                        val itemCol = JMenuItem("Go to ColumnDefCollection")
+                        itemCol.addActionListener {
+                             findChildTag(tag, "ColumnDefCollection")?.let { navigateToTag(it) }
+                        }
+                        menu.add(itemCol)
+                        menu.addSeparator()
                     }
-                    menu.add(itemRow)
                     
-                    val itemCol = JMenuItem("Go to ColumnDefCollection")
-                    itemCol.addActionListener {
-                         findChildTag(tag, "ColumnDefCollection")?.let { navigateToTag(it) }
+                    val itemSearch = JMenuItem("Search in this container...")
+                    itemSearch.addActionListener {
+                        ScopeSearchDialog(tag).showDialog()
                     }
-                    menu.add(itemCol)
+                    menu.add(itemSearch)
                     
                     menu.show(e.component, e.x, e.y)
                 }
@@ -1552,7 +1453,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
     private fun moveColumnAndCells(gridTag: XmlTag, draggedCol: XmlTag, targetCol: XmlTag, insertBefore: Boolean) {
         val colCollection = draggedCol.parentTag ?: return
         val rowCollection = gridTag.findFirstSubTag("GridRowCollection")
-        
+
         // 1. Move Column
         val newCopy = draggedCol.copy() as XmlTag
         draggedCol.delete()
@@ -1561,29 +1462,225 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         } else {
             colCollection.addAfter(newCopy, targetCol)
         }
-        
+
         // 2. Move correponding cells in each row (Optimization: Move only one cell per row)
         val colKey = newCopy.getAttributeValue("Key") ?: return
         val targetKey = targetCol.getAttributeValue("Key") ?: return
-        
+
         if (rowCollection != null) {
-             for (row in rowCollection.findSubTags("GridRow")) {
-                 val cells = row.findSubTags("GridCell")
-                 val cellToMove = cells.find { it.getAttributeValue("Key") == colKey }
-                 val targetCell = cells.find { it.getAttributeValue("Key") == targetKey }
-                 
-                 if (cellToMove != null && targetCell != null) {
-                     val cellCopy = cellToMove.copy()
-                     cellToMove.delete()
-                     if (insertBefore) {
-                         row.addBefore(cellCopy, targetCell)
-                     } else {
-                         row.addAfter(cellCopy, targetCell)
-                     }
-                 }
-             }
+            for (row in rowCollection.findSubTags("GridRow")) {
+                val cells = row.findSubTags("GridCell")
+                val cellToMove = cells.find { it.getAttributeValue("Key") == colKey }
+                val targetCell = cells.find { it.getAttributeValue("Key") == targetKey }
+
+                if (cellToMove != null && targetCell != null) {
+                    val cellCopy = cellToMove.copy()
+                    cellToMove.delete()
+                    if (insertBefore) {
+                        row.addBefore(cellCopy, targetCell)
+                    } else {
+                        row.addAfter(cellCopy, targetCell)
+                    }
+                }
+            }
+        }
+    }
+
+    inner class ScopeSearchDialog(private val scopeTag: XmlTag) : JDialog(SwingUtilities.getWindowAncestor(this@YigoLayoutPanel), "Search in ${getTitle(scopeTag)}", Dialog.ModalityType.MODELESS) {
+        private val searchField = SearchTextField()
+        private val prevButton = JButton("Prev")
+        private val nextButton = JButton("Next")
+        private val findAllButton = JButton("Find All")
+        private val countLabel = JLabel("0/0")
+        private val resultsList = com.intellij.ui.components.JBList<Pair<XmlTag, JComponent>>()
+        private val resultsScrollPane = JBScrollPane(resultsList)
+
+        private var searchMatches = listOf<Pair<XmlTag, JComponent>>()
+        private var currentMatchIndex = -1
+
+        init {
+            layout = BorderLayout()
+            val topPanel = JPanel(BorderLayout())
+            topPanel.border = JBUI.Borders.empty(5)
+
+            val controls = JPanel(FlowLayout(FlowLayout.RIGHT, 5, 0))
+            prevButton.margin = Insets(0, 5, 0, 5)
+            nextButton.margin = Insets(0, 5, 0, 5)
+            findAllButton.margin = Insets(0, 5, 0, 5)
+
+            controls.add(countLabel)
+            controls.add(prevButton)
+            controls.add(nextButton)
+            controls.add(findAllButton)
+
+            topPanel.add(searchField, BorderLayout.CENTER)
+            topPanel.add(controls, BorderLayout.EAST)
+
+            add(topPanel, BorderLayout.NORTH)
+
+            resultsScrollPane.isVisible = false
+            resultsScrollPane.preferredSize = Dimension(400, 200)
+            add(resultsScrollPane, BorderLayout.CENTER)
+
+            // Set up renderer for the list
+            resultsList.cellRenderer = object : DefaultListCellRenderer() {
+                override fun getListCellRendererComponent(list: JList<*>, value: Any?, index: Int, isSelected: Boolean, cellHasFocus: Boolean): Component {
+                    val comp = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus)
+                    if (value is Pair<*, *>) {
+                        val tag = value.first as? XmlTag
+                        if (tag != null) {
+                            val key = tag.getAttributeValue("Key") ?: ""
+                            val caption = tag.getAttributeValue("Caption") ?: ""
+                            val parentTag = findParentGridTag(tag) ?: tag.parentTag
+                            val parentKey = parentTag?.getAttributeValue("Key") ?: parentTag?.name ?: ""
+                            val parentCaption = parentTag?.getAttributeValue("Caption") ?: ""
+
+                            val itemText = "[$key] $caption"
+                            val contextText = " in [$parentKey] $parentCaption"
+                            text = "$itemText - $contextText"
+                            icon = getIconForTag(tag)
+                        }
+                    }
+                    return comp
+                }
+            }
+
+            // Single-click navigation for list items
+            resultsList.addMouseListener(object : MouseAdapter() {
+                override fun mouseClicked(e: MouseEvent) {
+                    val index = resultsList.locationToIndex(e.point)
+                    if (index >= 0 && index < searchMatches.size) {
+                        currentMatchIndex = index
+                        updateSearchUI(true)
+                    }
+                }
+            })
+
+            // Search actions
+            searchField.addKeyboardListener(object : KeyAdapter() {
+                override fun keyPressed(e: KeyEvent) {
+                    if (e.keyCode == KeyEvent.VK_ENTER) {
+                        runSearch()
+                        if (e.isShiftDown) moveSelection(-1) else moveSelection(1)
+                    } else if (e.keyCode == KeyEvent.VK_ESCAPE) {
+                        clearHighlight()
+                        dispose()
+                    }
+                }
+            })
+
+            prevButton.addActionListener {
+                runSearch()
+                moveSelection(-1)
+            }
+            nextButton.addActionListener {
+                runSearch()
+                moveSelection(1)
+            }
+            findAllButton.addActionListener {
+                runSearch()
+                showAllResults()
+            }
+
+            pack()
+            isAlwaysOnTop = true
+            setLocationRelativeTo(this@YigoLayoutPanel)
+
+            addWindowListener(object : WindowAdapter() {
+                override fun windowClosing(e: WindowEvent?) {
+                    clearHighlight()
+                }
+            })
+        }
+
+        fun showDialog() {
+            isVisible = true
+            searchField.requestFocusInWindow()
+        }
+
+        private fun runSearch() {
+            val text = searchField.text.trim().lowercase()
+            if (text.isEmpty()) {
+                searchMatches = emptyList()
+                currentMatchIndex = -1
+                updateSearchUI(false)
+                return
+            }
+
+            ApplicationManager.getApplication().runReadAction {
+                val validComponents = tagToComponent.entries.filter { it.key.isValid }
+                searchMatches = validComponents.filter { (tag, _) ->
+                    PsiTreeUtil.isAncestor(scopeTag, tag, false) && (
+                            (tag.getAttributeValue("Key")?.lowercase()?.contains(text) == true) ||
+                                    (tag.getAttributeValue("Caption")?.lowercase()?.contains(text) == true)
+                            )
+                }.map { it.toPair() }.sortedBy { it.second.y }
+            }
+
+            if (searchMatches.isEmpty()) {
+                currentMatchIndex = -1
+            } else if (currentMatchIndex < 0 || currentMatchIndex >= searchMatches.size) {
+                currentMatchIndex = 0
+            }
+        }
+
+        private fun moveSelection(direction: Int) {
+            if (searchMatches.isEmpty()) return
+            currentMatchIndex = (currentMatchIndex + direction).mod(searchMatches.size)
+            updateSearchUI(true)
+        }
+
+        private fun showAllResults() {
+            if (searchMatches.isNotEmpty()) {
+                val model = DefaultListModel<Pair<XmlTag, JComponent>>()
+                searchMatches.forEach { model.addElement(it) }
+                resultsList.model = model
+                resultsScrollPane.isVisible = true
+                pack() // resize to fit list
+            } else {
+                resultsScrollPane.isVisible = false
+                pack()
+            }
+        }
+
+        private fun updateSearchUI(highlight: Boolean) {
+            if (searchMatches.isEmpty()) {
+                countLabel.text = "0/0"
+                countLabel.foreground = Color.RED
+                prevButton.isEnabled = false
+                nextButton.isEnabled = false
+                clearHighlight()
+            } else {
+                countLabel.text = "${currentMatchIndex + 1}/${searchMatches.size}"
+                countLabel.foreground = Color.BLACK
+                prevButton.isEnabled = true
+                nextButton.isEnabled = true
+
+                if (highlight) {
+                    clearHighlight()
+                    val (tag, comp) = searchMatches[currentMatchIndex]
+                    setHighlightBorder(comp, Color.MAGENTA, 3)
+                    ensureComponentVisible(comp)
+                    lastSearchHighlight = comp
+
+                    val currentEditor = FileEditorManager.getInstance(project).selectedTextEditor
+                    val currentPsi = if (currentEditor != null) PsiDocumentManager.getInstance(project).getPsiFile(currentEditor.document) else null
+
+                    if (currentPsi != null && tag.containingFile == currentPsi) {
+                        navigateToTag(tag, false)
+                    }
+                }
+            }
+        }
+
+        private fun clearHighlight() {
+            if (lastSearchHighlight != null) {
+                restoreBorder(lastSearchHighlight!!)
+                lastSearchHighlight = null
+            }
         }
     }
 }
+
     
 
