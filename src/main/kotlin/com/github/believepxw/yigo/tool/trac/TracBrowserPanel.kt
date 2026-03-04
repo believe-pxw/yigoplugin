@@ -2,6 +2,7 @@ package com.github.believepxw.yigo.tool.trac
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
+import com.intellij.openapi.wm.ex.ToolWindowManagerListener
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import java.awt.BorderLayout
@@ -52,11 +53,49 @@ class TracBrowserPanel(private val project: Project) {
         val inputPanel = JPanel(GridLayout(7, 2, 5, 5))
         inputPanel.border = BorderFactory.createEmptyBorder(10, 10, 10, 10)
 
-        val urlField = JTextField()
+        val ticketIDField = JTextField()
         val usernameField = JTextField(state.tracUsername)
         val passwordField = JPasswordField(state.tracPassword)
         val mainClassField = JTextField(state.defaultMainClass)
         val envVarsField = JTextField(state.defaultEnvVars)
+
+        val checkClipboard = {
+            try {
+                val contents = com.intellij.openapi.ide.CopyPasteManager.getInstance().contents
+                if (contents != null && contents.isDataFlavorSupported(java.awt.datatransfer.DataFlavor.stringFlavor)) {
+                    val text = contents.getTransferData(java.awt.datatransfer.DataFlavor.stringFlavor) as? String
+                    if (!text.isNullOrBlank()) {
+                        val trimmed = text.trim()
+                        val ticketId = if (trimmed.startsWith("http")) {
+                            trimmed.substringAfterLast("/")
+                        } else if (trimmed.startsWith("#")) {
+                            trimmed.substring(1)
+                        } else {
+                            trimmed
+                        }
+                        
+                        if (ticketIDField.text != ticketId) {
+                            ticketIDField.text = ticketId
+                        }
+                    }
+                }
+            } catch (ignore: Exception) {}
+        }
+
+        mainPanel.addAncestorListener(object : javax.swing.event.AncestorListener {
+            override fun ancestorAdded(event: javax.swing.event.AncestorEvent?) = checkClipboard()
+            override fun ancestorRemoved(event: javax.swing.event.AncestorEvent?) {}
+            override fun ancestorMoved(event: javax.swing.event.AncestorEvent?) {}
+        })
+
+        project.messageBus.connect(project).subscribe(ToolWindowManagerListener.TOPIC, object : ToolWindowManagerListener {
+            override fun stateChanged(toolWindowManager: com.intellij.openapi.wm.ToolWindowManager) {
+                val toolWindow = toolWindowManager.getToolWindow("Trac")
+                if (toolWindow != null && toolWindow.isActive) {
+                    checkClipboard()
+                }
+            }
+        })
 
         val saveAction = {
             state.tracUsername = usernameField.text
@@ -86,8 +125,8 @@ class TracBrowserPanel(private val project: Project) {
             override fun changedUpdate(e: javax.swing.event.DocumentEvent?) = saveAction()
         })
 
-        inputPanel.add(JLabel("Ticket URL:"))
-        inputPanel.add(urlField)
+        inputPanel.add(JLabel("Ticket ID:"))
+        inputPanel.add(ticketIDField)
         inputPanel.add(JLabel("Trac Username:"))
         inputPanel.add(usernameField)
         inputPanel.add(JLabel("Trac Password:"))
@@ -103,13 +142,12 @@ class TracBrowserPanel(private val project: Project) {
 
         val executeExtraction = { isGenerateDb: Boolean ->
             saveAction()
-            var url = urlField.text.trim()
+            var url = ticketIDField.text.trim()
             if (url.isEmpty()) {
                 Messages.showErrorDialog("Please enter a valid Trac Ticket", "Error")
             }
-            if (!url.startsWith("http")) { // support plain ticket numbers like "164384"
-                url = "http://dev.bokesoft.com:8000/trac/eri-erp/ticket/" + url
-            }
+            // support plain ticket numbers like "164384"
+            url = "http://dev.bokesoft.com:8000/trac/eri-erp/ticket/$url"
             
             val username = state.tracUsername
             val password = state.tracPassword
