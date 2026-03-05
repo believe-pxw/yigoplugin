@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="restriction/AttributeRestriction.xsd"/>
+    <xs:include schemaLocation="restriction/APPAttributeRestriction.xsd"/>
+    <xs:include schemaLocation="restriction/PanelAttributeRestriction.xsd"/>
+    <xs:include schemaLocation="PanelAttributeGroupDefinition.xsd"/>
+    <xs:include schemaLocation="ControlAttributeGroupDefinition.xsd"/>
+
+    <xs:annotation>
+        <xs:documentation>ERP系统通用属性组的定义</xs:documentation>
+    </xs:annotation>
+
+    <xs:attributeGroup name="yigo-Key-Caption">
+        <xs:annotation>
+            <xs:documentation>Key和Caption属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Key" type="yigo-Key" use="required">
+            <xs:annotation>
+                <xs:documentation>标识，唯一标识一个元素</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Caption" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>标题，显示名称</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-Key-Caption30">
+        <xs:annotation>
+            <xs:documentation>Key(限制30字符)和Caption属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Key" type="yigo-Key-Restriction30" use="required">
+            <xs:annotation>
+                <xs:documentation>标识，限制30字符</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Caption" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>标题，显示名称</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-Key-Caption50">
+        <xs:annotation>
+            <xs:documentation>Key(限制50字符)和Caption属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Key" type="yigo-Key-Restriction50" use="required">
+            <xs:annotation>
+                <xs:documentation>标识，限制50字符</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Caption" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>标题，显示名称</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-Visible-Enable">
+        <xs:annotation>
+            <xs:documentation>可见性和可用性属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Visible" type="yigo-Boolean-Formula">
+            <xs:annotation>
+                <xs:documentation>是否可见</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Enable" type="yigo-Boolean-Formula">
+            <xs:annotation>
+                <xs:documentation>是否可用</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="VisibleDependency" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>可见性依赖项</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="EnableDependency" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>可用性依赖项</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup> 
+    
+    <xs:attributeGroup name="yigo-Component-XY">
+        <xs:annotation>
+            <xs:documentation>组件XY坐标属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="X" type="yigo-Int-GreaterThan_EqualTo_Zero">
+            <xs:annotation>
+                <xs:documentation>X坐标</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Y" type="yigo-Int-GreaterThan_EqualTo_Zero">
+            <xs:annotation>
+                <xs:documentation>Y坐标</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="XSpan" type="yigo-Int-GreaterThan_EqualTo_Zero">
+            <xs:annotation>
+                <xs:documentation>X方向跨度</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="YSpan" type="yigo-Int-GreaterThan_EqualTo_Zero">
+            <xs:annotation>
+                <xs:documentation>Y方向跨度</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+
+    <xs:attributeGroup name="yigo-Operation-Attr">
+        <xs:annotation>
+            <xs:documentation>界面操作属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attributeGroup ref="yigo-Key-Caption"/>
+        <xs:attribute name="CaptionEn" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>英语标题</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attributeGroup ref="yigo-Visible-Enable"/>
+        <xs:attribute name="RefKey" type="yigo-Key">
+            <xs:annotation>
+                <xs:documentation>引用标识</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute ref="Icon"/>
+        <xs:attribute name="ShortCuts" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>快捷键</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="SelfDisable" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否自动禁用</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="NeedAccessLog" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否需要访问日志</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="CssClass" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>CSS类名</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="IconCode" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>图标编码</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="TCode" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>交易码</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Activity" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>活动标识</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Tag" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>标签</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="ExpandSource" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>展开来源</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Expand" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否展开</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="IsTransfer" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否转换</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+
+
+    <xs:attributeGroup name="yigo-Gantt-Relationship-Attr">
+        <xs:annotation>
+            <xs:documentation>甘特图关系属性</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="TableKey" type="yigo-TableKey-Restriction50">
+            <xs:annotation>
+                <xs:documentation>关系表名称</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Predecessor" type="yigo-Key">
+            <xs:annotation>
+                <xs:documentation>前任</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Successor" type="yigo-Key">
+            <xs:annotation>
+                <xs:documentation>继任者</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Type" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>关系类型</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+
+    <xs:attributeGroup name="yigo-GanttRow-Attr">
+        <xs:annotation>
+            <xs:documentation>甘特图行属性</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Key" type="yigo-Key">
+            <xs:annotation>
+                <xs:documentation>行标识</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="StartTime" type="yigo-Key">
+            <xs:annotation>
+                <xs:documentation>计划开始时间</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="EndTime" type="yigo-Key">
+            <xs:annotation>
+                <xs:documentation>计划结束时间</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="CssClass" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>样式</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Visible" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>可见性表达式</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Shape" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>形状</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Text" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>第一行尾部显示的文本</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="ShowRelation" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>显示关系</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+
+    <xs:attributeGroup name="yigo-GanttColumn-Attr">
+        <xs:annotation>
+            <xs:documentation>甘特图列属性</xs:documentation>
+        </xs:annotation>
+        <xs:attributeGroup ref="yigo-Key-Caption"/>
+        <xs:attribute name="ColumnKey" type="yigo-Key">
+            <xs:annotation>
+                <xs:documentation>数据列标识</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="ColumnType" type="yigo-Key">
+            <xs:annotation>
+                <xs:documentation>列类型</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Visible" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>可见性</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Tree" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>树形列</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Format" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>单元格格式化字符串</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="DateFormat" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>日期格式化字符串</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="DateTimeFormat" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>带时分秒格式化字符串</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Width" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>宽度</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+
+</xs:schema>

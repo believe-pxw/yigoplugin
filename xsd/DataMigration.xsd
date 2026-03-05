@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:include schemaLocation="attribute/restriction/AttributeRestriction.xsd"/>
+    <xs:include schemaLocation="attribute/AttributeGroupDefinition.xsd"/>
+    <xs:include schemaLocation="element/complex/DataMigrationDefine.xsd"/>
+
+    <xs:annotation>
+		<xs:documentation>ERP系统DataMigration的属性检查规则</xs:documentation>
+	</xs:annotation>
+
+    <xs:element name="DataMigration">
+        <xs:annotation>
+            <xs:documentation>DataMigration元素</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="SourceTableCollection" type="yigo-SourceTableCollection"/>
+                <xs:element name="TargetTableCollection" type="yigo-TargetTableCollection"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="yigo-Key-Caption"/>
+            <xs:attribute name="Description" type="xs:string"/>
+            <xs:attribute name="SrcDataObjectKey" type="xs:string"/>
+            <xs:attribute name="TgtDataObjectKey" type="xs:string"/>
+            <xs:attribute name="StatusFieldKey" type="xs:string"/>
+            <xs:attribute name="StatusValue" type="xs:string"/>
+            <xs:attribute name="HeadCondition" type="xs:string"/>
+            <xs:attribute name="Condition" type="xs:string"/>
+            <xs:attribute name="ReMigrationFromPartInSql" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

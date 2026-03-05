@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="attribute/AttributeGroupDefinition.xsd"/>
+	<xs:include schemaLocation="element/simple/FormDefine.xsd"/>
+	<xs:include schemaLocation="DataObject.xsd"/>
+	<xs:include schemaLocation="element/complex/PanelDefine.xsd"/>
+	<xs:include schemaLocation="element/complex/MacroCollection.xsd"/>
+	<xs:include schemaLocation="element/complex/BaseScriptDefinition.xsd"/>
+	<xs:include schemaLocation="element/complex/CommonDefDefine.xsd"/>
+	<xs:include schemaLocation="element/complex/OperationCollection.xsd"/>
+	<xs:include schemaLocation="element/complex/FormRelationCollection.xsd"/>
+	<xs:include schemaLocation="element/APPElementDefination.xsd"/>
+
+	<xs:element name="Form">
+		<xs:annotation>
+			<xs:documentation>窗口配置对象，是从配置文件中读取生成的一个完整的界面结构，包含：数据源配置对象、操作定义集合和组件对象集合</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="DataSource" type="yigo-DataSource" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>窗口的数据源配置对象</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="OperationCollection" type="yigo-OperationCollection-Top" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>窗口的操作定义集合</xs:documentation>
+					</xs:annotation>
+					<xs:unique name="uniqueOperationCollectionKey1">
+						<xs:selector xpath="Operation"/>
+						<xs:field xpath="@Key"/>
+					</xs:unique>
+				</xs:element>
+				<xs:element name="ScriptCollection" type="yigo-ScriptCollection" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>脚本集合</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Body" type="yigo-Body" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>表单窗体对象</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="NavigationBar" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>移动端导航条设置</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="OnLoad" type="yigo-BaseScript2" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>OnLoad事件定义</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="OnClose" type="yigo-BaseScript2" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>OnClose事件定义</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="OnPostShow" type="yigo-BaseScript2" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>onPostShow事件定义</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="MacroCollection" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>宏公式集合</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="FormRelationCollection" type="yigo-FormRelationCollection" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>数据源表单关系（复合字典用）</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attributeGroup ref="yigo-Key-Caption50"/>
+			<xs:attribute name="CaptionEn" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>窗口配置对象的英文说明</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="FormType" type="yigo-FormType">
+				<xs:annotation>
+					<xs:documentation>表单的类型</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="InitState" type="yigo-InitState">
+				<xs:annotation>
+					<xs:documentation>表单从菜单树打开的状态</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="FormulaCaption" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>表单的表达式名称</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="AbbrCaption" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>表单的缩写名称</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="FormulaAbbrCaption" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>表单的表达式缩写名称</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="ConfirmClose" type="yigo-Boolean">
+				<xs:annotation>
+					<xs:documentation>弹框关闭确认</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="HasNavigationBar" type="yigo-Boolean">
+				<xs:annotation>
+					<xs:documentation>是否持有导航条</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="ViewKey" type="yigo-Key-Restriction50">
+				<xs:annotation>
+					<xs:documentation>关联的View</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="Version" type="yigo-Version">
+				<xs:annotation>
+					<xs:documentation>配置版本</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="Extend" type="yigo-Key-Restriction50">
+				<xs:annotation>
+					<xs:documentation>继承的表单标识</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="SourceForm" type="yigo-Key-Restriction50">
+				<xs:annotation>
+					<xs:documentation>扩展表单使用，指向源表单标识</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="Platform" type="yigo-Platform-Type">
+				<xs:annotation>
+					<xs:documentation>支持的平台列表</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="FullscreenType" type="yigo-FullscreenType">
+				<xs:annotation>
+					<xs:documentation>全屏类型</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="Authenticate" type="yigo-Boolean">
+				<xs:annotation>
+					<xs:documentation>是否认证登录</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="DeliveryClass" type="yigo-DeliveryClass">
+				<xs:annotation>
+					<xs:documentation>交付类，定义数据表的传输和复制属性</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="TransFormKey" type="yigo-Key">
+				<xs:annotation>
+					<xs:documentation>传输关联FormKey</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:assert id="有View的必须是实体表单" test="if(exists(@ViewKey)) then @FormType='Entity' else true()"></xs:assert>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="yigo-DataSource">
+		<xs:sequence>
+			<xs:element name="DataObject" type="yigo-DataObject" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>数据对象</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="RefObjectKey" type="yigo-Key-Restriction50" use="optional">
+			<xs:annotation>
+				<xs:documentation>引用对象标识</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="yigo-Body">
+		<xs:sequence>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="Block" type="yigo-Block">
+					<xs:annotation>
+						<xs:documentation>块元素</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="ViewCollection"/>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="PopWidth" type="yigo-Dimension">
+			<xs:annotation>
+				<xs:documentation>弹出宽度</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="PopHeight" type="yigo-Dimension">
+			<xs:annotation>
+				<xs:documentation>弹出高度</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Resizable" type="yigo-Boolean">
+			<xs:annotation>
+				<xs:documentation>是否可调整大小</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attributeGroup ref="yigo-Panel-layout-collection"/>
+	</xs:complexType>
+
+</xs:schema>

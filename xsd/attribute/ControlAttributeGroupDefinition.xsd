@@ -1,0 +1,1036 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="AttributeGroupDefinition.xsd"/>
+
+    <xs:annotation>
+        <xs:documentation>ERP系统控件属性组的定义</xs:documentation>
+    </xs:annotation>
+    
+    <xs:attributeGroup name="yigo-Control-layout-collection">
+        <xs:annotation>
+            <xs:documentation>控件布局属性集合</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Height" type="yigo-Dimension">
+            <xs:annotation>
+                <xs:documentation>组件本身的高度</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="MinHeight" type="yigo-Dimension">
+            <xs:annotation>
+                <xs:documentation>组件的最小高度</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Width" type="yigo-Dimension">
+            <xs:annotation>
+                <xs:documentation>组件本身的宽度</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="MinWidth" type="yigo-Dimension">
+            <xs:annotation>
+                <xs:documentation>组件的最小宽度</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Weight" type="xs:float">
+            <xs:annotation>
+                <xs:documentation>Android线性布局权重</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Padding" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>内边距</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="LeftPadding" type="yigo-Dimension">
+            <xs:annotation>
+                <xs:documentation>左内边距的宽度</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="RightPadding" type="yigo-Dimension">
+            <xs:annotation>
+                <xs:documentation>右内边距的宽度</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="TopPadding" type="yigo-Dimension">
+            <xs:annotation>
+                <xs:documentation>上内边距的宽度</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="BottomPadding" type="yigo-Dimension">
+            <xs:annotation>
+                <xs:documentation>下内边距的宽度</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Margin" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>外边距</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="LeftMargin" type="yigo-Dimension">
+            <xs:annotation>
+                <xs:documentation>左外边距的宽度</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="RightMargin" type="yigo-Dimension">
+            <xs:annotation>
+                <xs:documentation>右外边距的宽度</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="TopMargin" type="yigo-Dimension">
+            <xs:annotation>
+                <xs:documentation>上外边距的宽度</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="BottomMargin" type="yigo-Dimension">
+            <xs:annotation>
+                <xs:documentation>下外边距的宽度</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="HAlign" type="yigo-HAlignment">
+            <xs:annotation>
+                <xs:documentation>水平对齐方式</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="VAlign" type="yigo-VAlignment">
+            <xs:annotation>
+                <xs:documentation>垂直对齐方式</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Class" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>样式类名</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="CssClass" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>CSS类名</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="BorderColor" type="yigo-Color">
+            <xs:annotation>
+                <xs:documentation>边框的颜色</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="BorderRadius" type="yigo-Int-GreaterThan_EqualTo_Zero">
+            <xs:annotation>
+                <xs:documentation>边框圆角半径</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="BorderWidth" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>边框宽度</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="BorderStyle" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>边框样式</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Area" type="yigo-DirectionType">
+            <xs:annotation>
+                <xs:documentation>组件所在的区域代码</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-BaseControl-Attr">
+        <xs:annotation>
+            <xs:documentation>基础控件属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attributeGroup ref="yigo-Key-Caption"/>
+        <xs:attribute name="CaptionEn" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>英语语言下的显示名称简称</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="LabelType" type="yigo-BaseComponent-LabelType">
+            <xs:annotation>
+                <xs:documentation>标签类型</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="FormulaCaption" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>表达式标题</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Clearable" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否在初始化值以后重新加载不清除，默认是可以清除</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="AsQuery" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否为叙时簿查询字段</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="OnlyShow" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>仅显示(移动端使用)</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="OneTimeCompute" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>默认值仅在界面打开时计算一次</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="CompStyle" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>组件样式</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Tip" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>控件的鼠标放置时的提示信息</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="FormulaTip" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>控件的鼠标放置时的提示信息，可动态使用表达式赋值</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attributeGroup ref="yigo-Control-layout-collection"/>
+        <xs:attributeGroup ref="yigo-Component-XY"/>
+        <xs:attributeGroup ref="yigo-Component-biz"/>
+        <xs:attributeGroup ref="yigo-ParameterID-Attr"/>
+    </xs:attributeGroup>
+
+    <xs:attributeGroup name="yigo-ParameterID-Attr">
+        <xs:annotation>
+            <xs:documentation>参数ID属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="ParameterID" type="yigo-Key">
+            <xs:annotation>
+                <xs:documentation>配置参数ID信息</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="GetParameter" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否获取参数</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="SetParameter" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否设置参数</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-Precision-Scale">
+        <xs:annotation>
+            <xs:documentation>数值精度和小数位数属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Precision" type="yigo-Int-GreaterThan_EqualTo_Zero">
+            <xs:annotation>
+                <xs:documentation>数值精度，整数位数+小数位数</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Scale" type="yigo-Int-GreaterThan_EqualTo_Zero">
+            <xs:annotation>
+                <xs:documentation>小数位数</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-Component-DictView-Properties">
+        <xs:annotation>
+            <xs:documentation>字典视图属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Key" type="yigo-Key">
+            <xs:annotation>
+                <xs:documentation>字典项标识</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Enable" type="yigo-Boolean-Formula">
+            <xs:annotation>
+                <xs:documentation>是否可用</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="FormulaItemKey" type="yigo-Formula">
+            <xs:annotation>
+                <xs:documentation>表达式项标识</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Height" type="yigo-Dimension">
+            <xs:annotation>
+                <xs:documentation>高度</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-Filter-Attr">
+        <xs:annotation>
+            <xs:documentation>过滤器属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Key" type="yigo-Key-Restriction">
+            <xs:annotation>
+                <xs:documentation>过滤器标识</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Impl" type="yigo-ItemFilter-Impl">
+            <xs:annotation>
+                <xs:documentation>过滤器实现类</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Query" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>过滤器查询条件</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Type" type="yigo-DictFilterType">
+            <xs:annotation>
+                <xs:documentation>过滤器类型</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Op" type="yigo-Filter-OptSign">
+            <xs:annotation>
+                <xs:documentation>过滤操作符</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="FilterDependency" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>过滤器依赖项</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Condition" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>过滤条件</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-FilterValue-Attr">
+        <xs:annotation>
+            <xs:documentation>过滤值属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Index" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>索引</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="ParaValue" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>参数值</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="FieldKey" type="yigo-Key-Restriction50">
+            <xs:annotation>
+                <xs:documentation>字段标识</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="RefValue" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>引用值</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="DataType" type="yigo-DataType">
+            <xs:annotation>
+                <xs:documentation>数据类型</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="CondSign" type="yigo-CondSign">
+            <xs:annotation>
+                <xs:documentation>条件符号</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Type" type="yigo-SourceType">
+            <xs:annotation>
+                <xs:documentation>来源类型</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-Component-biz">
+        <xs:annotation>
+            <xs:documentation>组件通用业务属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attributeGroup ref="yigo-Visible-Enable"/>
+        <xs:attributeGroup ref="yigo-Mirror-Attr"/>
+        <xs:attribute name="InitEnable" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>初始是否可用</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="InitVisible" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>初始是否可见</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="CopyNew" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>新增时是否复制</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-ComboBox-Common-Properties">
+        <xs:annotation>
+            <xs:documentation>ComboBox和CheckListBox控件的共用属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="TextShowType" type="yigo-ComboBox-TextShowType">
+            <xs:annotation>
+                <xs:documentation>文本显示类型</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute ref="ItemsDependency">
+            <xs:annotation>
+                <xs:documentation>下拉项依赖项</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Cache" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否缓存</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attribute name="IntegerValue" type="yigo-Boolean">
+        <xs:annotation>
+            <xs:documentation>是否为整数值</xs:documentation>
+        </xs:annotation>
+    </xs:attribute>
+    
+    <xs:attribute name="PromptText" type="xs:string">
+        <xs:annotation>
+            <xs:documentation>提示文本</xs:documentation>
+        </xs:annotation>
+    </xs:attribute>
+    
+    <xs:attribute name="ItemsDependency" type="xs:string">
+        <xs:annotation>
+            <xs:documentation>下拉项依赖项</xs:documentation>
+        </xs:annotation>
+    </xs:attribute>
+    
+    <xs:attribute name="SourceType" type="yigo-ComboBox-SourceType">
+        <xs:annotation>
+            <xs:documentation>下拉项来源类型</xs:documentation>
+        </xs:annotation>
+    </xs:attribute>
+    
+    <xs:attribute name="GroupKey" type="xs:string">
+        <xs:annotation>
+            <xs:documentation>分组标识</xs:documentation>
+        </xs:annotation>
+    </xs:attribute>
+    
+    <xs:attributeGroup name="yigo-ComboBox-Properties">
+        <xs:annotation>
+            <xs:documentation>ComboBox控件的属性组</xs:documentation>
+        </xs:annotation>
+    </xs:attributeGroup>
+    
+    <xs:attribute name="Editable" type="yigo-Boolean"/>
+    
+    <xs:attributeGroup name="yigo-CheckListBox-Properties">
+        <xs:annotation>
+            <xs:documentation>CheckListBox控件的属性组</xs:documentation>
+        </xs:annotation>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-RadioButton-Properties">
+        <xs:annotation>
+            <xs:documentation>RadioButton控件属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Value" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>单选按钮的值</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="IsGroupHead" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否为分组头部</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-NumberEditor-Properties">
+        <xs:annotation>
+            <xs:documentation>NumberEditor控件属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attributeGroup ref="yigo-Precision-Scale"/>
+        <xs:attribute name="ZeroString" type="yigo-NumberEditor-ZeroString">
+            <xs:annotation>
+                <xs:documentation>零值显示字符串</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="UseGroupingSeparator" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否使用分组分隔符</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="StripTrailingZeros" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否去除尾部零</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="ShowZero" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否显示零值</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="SelectOnFocus" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>获得焦点时是否全选</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="RoundingMode" type="yigo-RoundingMode">
+            <xs:annotation>
+                <xs:documentation>舍入模式</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-CheckBox-Properties">
+        <xs:annotation>
+            <xs:documentation>CheckBox控件属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="CheckedType" type="yigo-CheckBox-CheckedType">
+            <xs:annotation>
+                <xs:documentation>选中联动类型</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="UnCheckedType" type="yigo-CheckBox-UnCheckedType">
+            <xs:annotation>
+                <xs:documentation>取消选中联动类型</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="CheckOnClickNode" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>点击节点时是否选中</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-Label-Properties">
+        <xs:annotation>
+            <xs:documentation>Label控件的属性组</xs:documentation>
+        </xs:annotation>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-TextComponent-Common-Properties">
+        <xs:annotation>
+            <xs:documentation>文本组件共用属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="MaxLength" type="yigo-Int-GreaterThan_EqualTo_NegativeOne">
+            <xs:annotation>
+                <xs:documentation>最大长度</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Trim" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否去除首尾空格</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="EmbedText" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>嵌入文本</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="InvalidChars" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>无效字符</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute ref="Case">
+            <xs:annotation>
+                <xs:documentation>大小写转换</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute ref="PromptText">
+            <xs:annotation>
+                <xs:documentation>提示文本</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="HoldFocus" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否保持焦点</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="PreIcon" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>前置图标</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-TextEditor-Properties">
+        <xs:annotation>
+            <xs:documentation>TextEditor控件属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="MaxLength" type="yigo-Int-GreaterThan_EqualTo_NegativeOne">
+            <xs:annotation>
+                <xs:documentation>最大长度</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Trim" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否去除首尾空格</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="EmbedText" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>嵌入文本</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="InvalidChars" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>无效字符</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute ref="Case">
+            <xs:annotation>
+                <xs:documentation>大小写转换</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute ref="PromptText">
+            <xs:annotation>
+                <xs:documentation>提示文本</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="PreIcon" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>前置图标</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="DisableKeyboard" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否禁用键盘</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attribute name="Case" type="yigo-TextEditor-Case">
+        <xs:annotation>
+            <xs:documentation>大小写转换类型</xs:documentation>
+        </xs:annotation>
+    </xs:attribute>
+    
+    <xs:attributeGroup name="yigo-TextArea-Properties">
+        <xs:annotation>
+            <xs:documentation>TextArea控件的属性组</xs:documentation>
+        </xs:annotation>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-PasswordEditor-Properties">
+        <xs:annotation>
+            <xs:documentation>PasswordEditor控件的属性组</xs:documentation>
+        </xs:annotation>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-RichEditor-Properties">
+        <xs:annotation>
+            <xs:documentation>RichEditor控件的属性组</xs:documentation>
+        </xs:annotation>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-WebBrowser-Properties">
+        <xs:annotation>
+            <xs:documentation>WebBrowser控件属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="UrlPrefix" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>URL前缀</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-Button-Properties">
+        <xs:annotation>
+            <xs:documentation>Button控件属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="NeedAccessLog" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否需要访问日志</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="OnlyIcon" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否仅显示图标</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="ClickAnim" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>点击动画</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Activity" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>活动标识</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="TCode" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>交易码</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Type" type="yigo-Button-Type">
+            <xs:annotation>
+                <xs:documentation>按钮类型</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-TextButton-Properties">
+        <xs:annotation>
+            <xs:documentation>TextButton控件属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="UseFormulaModel" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否使用表达式模型</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-Dict-Common-Properties">
+        <xs:annotation>
+            <xs:documentation>Dict(单选、多选、动态、复合字典)控件共用属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute ref="ItemKey">
+            <xs:annotation>
+                <xs:documentation>字典项标识</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="StateMask" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>状态掩码</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Independent" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否独立</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="AllowMultiSelection" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否允许多选</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="FormulaText" type="yigo-Formula">
+            <xs:annotation>
+                <xs:documentation>表达式文本</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:attribute name="ItemKey" type="yigo-Key-Restriction50">
+        <xs:annotation>
+            <xs:documentation>字典项标识</xs:documentation>
+        </xs:annotation>
+    </xs:attribute>
+    
+    <xs:attributeGroup name="yigo-Dict-Properties">
+        <xs:annotation>
+            <xs:documentation>Dict控件属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Root" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>字典根节点</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="TextField" type="yigo-TextField">
+            <xs:annotation>
+                <xs:documentation>文本字段</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="LoadType" type="yigo-LoadType">
+            <xs:annotation>
+                <xs:documentation>加载策略</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="EditValue" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否可编辑值</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="QueryMatchType" type="yigo-QueryMatchType">
+            <xs:annotation>
+                <xs:documentation>模糊匹配类型</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    
+    <xs:attributeGroup name="yigo-Mirror-Attr">
+        <xs:annotation>
+            <xs:documentation>镜像属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="BindingCellKey" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>绑定单元格标识</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-DynamicDict-Properties">
+        <xs:annotation>
+            <xs:documentation>DynamicDict控件属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="RefKey" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>引用标识</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="RefDataElementKey" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>引用数据元素标识</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="IsDynamic" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否动态</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-Picker-Common-Properties">
+        <xs:annotation>
+            <xs:documentation>各种Picker控件共用属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Format" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>格式</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="EditType" type="yigo-DatePicker-EditType">
+            <xs:annotation>
+                <xs:documentation>编辑样式</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-DatePicker-Common-Properties">
+        <xs:annotation>
+            <xs:documentation>各种DatePicker控件共用属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="OnlyDate" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否仅显示日期</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-DatePicker-Properties">
+        <xs:annotation>
+            <xs:documentation>DatePicker控件的属性组</xs:documentation>
+        </xs:annotation>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-UTCDatePicker-Properties">
+        <xs:annotation>
+            <xs:documentation>UTCDatePicker控件的属性组</xs:documentation>
+        </xs:annotation>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-MonthPicker-Properties">
+        <xs:annotation>
+            <xs:documentation>MonthPicker控件的属性组</xs:documentation>
+        </xs:annotation>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-TimePicker-Properties">
+        <xs:annotation>
+            <xs:documentation>TimePicker控件属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Second" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否显示秒</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-Image-Properties">
+        <xs:annotation>
+            <xs:documentation>Image控件属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="ShowThumbnail" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否显示缩略图</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Stretch" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>是否拉伸</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-Custom-Properties">
+        <xs:annotation>
+            <xs:documentation>Custom控件属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="UserData" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>用户数据</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Impl" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>实现类</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Tag" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>标签</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-Dynamic-Properties">
+        <xs:annotation>
+            <xs:documentation>Dynamic控件属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="TypeDependency" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>类型依赖项</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="TypeFormula" type="yigo-Formula">
+            <xs:annotation>
+                <xs:documentation>类型表达式</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attribute name="Icon" type="xs:string">
+        <xs:annotation>
+            <xs:documentation>图标</xs:documentation>
+        </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="ImageScaleType" type="yigo-Image-ScaleType">
+        <xs:annotation>
+            <xs:documentation>图片拉伸缩放类型</xs:documentation>
+        </xs:annotation>
+    </xs:attribute>
+    
+    <xs:attributeGroup name="yigo-Icon-Properties">
+        <xs:annotation>
+            <xs:documentation>Icon控件属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="URL" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>图标URL</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-HyperLink-Properties">
+        <xs:annotation>
+            <xs:documentation>HyperLink控件属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="FormulaURL" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>表达式URL</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-Separator-Properties">
+        <xs:annotation>
+            <xs:documentation>Separator控件的属性组</xs:documentation>
+        </xs:annotation>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-DropdownButton-Properties">
+        <xs:annotation>
+            <xs:documentation>DropdownButton控件的属性组</xs:documentation>
+        </xs:annotation>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-BPMGraph-Properties">
+        <xs:annotation>
+            <xs:documentation>BPMGraph控件的属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="ProcessKey" type="xs:string"/>
+        <xs:attribute name="ProcessPath" type="xs:string"/>
+        <xs:attribute name="ProcessVer" type="xs:string"/>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-Embed-Properties">
+        <xs:annotation>
+            <xs:documentation>Embed的属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="IncludeDataTable" type="yigo-Boolean"/>
+        <xs:attribute name="FormKey" type="xs:string"/>
+        <xs:attribute name="RootKey" type="xs:string"/>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-DataBinding-Attr">
+        <xs:annotation>
+            <xs:documentation>DataBinding元素的属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="TableKey" type="yigo-TableKey-Restriction50"/>
+        <xs:attribute name="ColumnKey" type="xs:string"/>
+        <xs:attribute name="DefaultValue" type="xs:string"/>
+        <xs:attribute name="DefaultFormulaValue" type="xs:string"/>
+        <xs:attribute name="CheckDependency" type="xs:string"/>
+        <xs:attribute name="Required" type="yigo-Boolean"/>
+        <xs:attribute name="CheckRule" type="xs:string"/>
+        <xs:attribute name="ValueChanged" type="xs:string"/>
+        <xs:attribute name="ValueDependency" type="xs:string"/>
+        <xs:attribute name="ValueChangeAction" type="xs:string"/>
+        <xs:attribute name="ErrorInfo" type="xs:string"/>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-Condition-Attr">
+        <xs:annotation>
+            <xs:documentation>Condition元素的属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="CondSign" type="yigo-CondSign"/>
+        <xs:attribute name="TableKey" type="yigo-TableKey-Restriction50"/>
+        <xs:attribute name="ColumnKey" type="yigo-Key"/>
+        <xs:attribute name="LoadHistoryInput" type="yigo-Boolean"/>
+        <xs:attribute name="Target" type="xs:string"/>
+        <xs:attribute name="UseAdvancedQuery" type="yigo-Boolean"/>
+        <xs:attribute name="OnlyFilter" type="yigo-Boolean"/>
+        <xs:attribute name="Group" type="xs:string"/>
+        <xs:attribute name="GroupHead" type="yigo-Boolean"/>
+        <xs:attribute name="GroupTail" type="yigo-Boolean"/>
+        <xs:attribute name="Impl" type="yigo-Condition-Impl"/>
+        <xs:attribute name="NeedReset" type="yigo-Boolean"/>
+        <xs:attribute name="LimitToSource" type="yigo-Boolean"/>
+        <xs:attribute name="SubTableKey" type="yigo-TableKey-Restriction50"/>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-CustomCondition-Attr">
+        <xs:annotation>
+            <xs:documentation>CustomCondition元素的属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Condition" type="xs:string"/>
+        <xs:attribute name="Filter" type="xs:string"/>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-CustomConditionPara-Attr">
+        <xs:annotation>
+            <xs:documentation>CustomCondition元素的属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Key" type="yigo-Key"/>
+        <xs:attribute name="Formula" type="xs:string"/>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-ConditionTarget-Attr">
+        <xs:annotation>
+            <xs:documentation>CustomCondition元素的属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="TableKey" type="yigo-TableKey-Restriction50"/>
+        <xs:attribute name="ColumnKey" type="yigo-Key"/>
+        <xs:attribute name="Target" type="xs:string"/>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-Item-Attr">
+        <xs:attribute name="Key" type="xs:string" use="required"/>
+        <xs:attribute name="Caption" type="xs:string"/>
+        <xs:attribute name="Value" type="xs:string"/>
+    </xs:attributeGroup>
+    
+    <!-- 和Item的区别是key caption可以不必填-->
+    <xs:attributeGroup name="yigo-ComboFilter-Item-Attr">
+        <xs:attribute name="Key" type="xs:string"/>
+        <xs:attribute name="Caption" type="xs:string"/>
+        <xs:attribute name="Value" type="xs:string"/>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-ComboFilter-Attr">
+        <xs:attribute ref="SourceType"/>
+        <xs:attribute name="Type" type="yigo-ComboFilter-Type"/>
+        <xs:attribute ref="ItemsDependency"/>
+    </xs:attributeGroup>
+    
+</xs:schema>

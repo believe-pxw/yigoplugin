@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="AttributeGroupDefinition.xsd"/>
+
+    <xs:annotation>
+        <xs:documentation>ERP系统布局属性组的定义</xs:documentation>
+    </xs:annotation>
+
+    <xs:attributeGroup name="yigo-Panel-layout-collection">
+        <xs:annotation>
+            <xs:documentation>Panel布局的属性</xs:documentation>
+        </xs:annotation>        
+        <xs:attributeGroup ref="yigo-Control-layout-collection"/>
+        <xs:attribute name="OverflowX" type="yigo-ScrollType"/>
+        <xs:attribute name="OverflowY" type="yigo-ScrollType"/>
+        <xs:attribute name="BackImageRepeatX" type="yigo-Boolean"/>
+        <xs:attribute name="BackImageRepeatY" type="yigo-Boolean"/>
+        <xs:attribute name="BackImage" type="xs:string"/>
+        <xs:attribute name="BackImagePosition" type="yigo-DirectionType"/>
+        <xs:attribute name="LayoutAnim" type="xs:string"/>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-SplitPanel-SplitSize-Attr">
+        <xs:attribute name="Size" type="yigo-Dimension"/>
+        <xs:attribute name="CollapaseType" type="yigo-SplitSize-CollapaseType"/>
+        <xs:attribute name="ForwardCollapased" type="yigo-Boolean"/>
+        <xs:attribute name="ReverseCollapased" type="yigo-Boolean"/>
+    </xs:attributeGroup>    
+    
+    <xs:attribute name="Height" type="yigo-Dimension"/>
+    <xs:attribute name="Width" type="yigo-Dimension"/>
+    <xs:attribute name="MinWidth" type="yigo-Dimension"/>
+
+    <xs:attributeGroup name="yigo-ExtraLayout-Group-Attr">
+        <xs:attributeGroup ref="yigo-Key-Caption"/>
+        <xs:attribute name="StartRow" type="xs:int"/>
+        <xs:attribute name="EndRow" type="xs:int"/>
+        <xs:attribute name="Expanded" type="yigo-Boolean-Formula"/>
+    </xs:attributeGroup>
+    
+</xs:schema>

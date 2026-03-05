@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	
+	<xs:annotation>
+		<xs:documentation>ERP系统Form专有属性定义</xs:documentation>
+	</xs:annotation> 
+
+	<!-- FormType 的定义 -->
+	<xs:simpleType name="yigo-FormType">
+		<xs:annotation>
+			<xs:documentation>表单类型，用于区分不同的表单用途</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Normal">
+				<xs:annotation>
+					<xs:documentation>普通表单，为所有表单的基础，可以实现任何一种</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Entity">
+				<xs:annotation>
+					<xs:documentation>实体表单</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="View">
+				<xs:annotation>
+					<xs:documentation>视图表单</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Dict">
+				<xs:annotation>
+					<xs:documentation>字典表单</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Detail">
+				<xs:annotation>
+					<xs:documentation>明细表单</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Report">
+				<xs:annotation>
+					<xs:documentation>报表表单</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ChainDict">
+				<xs:annotation>
+					<xs:documentation>链式字典表单</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CompDict">
+				<xs:annotation>
+					<xs:documentation>复合字典表单</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Template">
+				<xs:annotation>
+					<xs:documentation>模板表单</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Extension">
+				<xs:annotation>
+					<xs:documentation>扩展表单</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	 
+	<xs:simpleType name="yigo-InitState">
+		<xs:annotation>
+			<xs:documentation>表单从菜单树打开的初始状态</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Default">
+				<xs:annotation>
+					<xs:documentation>默认状态</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="New">
+				<xs:annotation>
+					<xs:documentation>新增状态</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Edit">
+				<xs:annotation>
+					<xs:documentation>修改状态</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>	
+	
+	<xs:simpleType name="yigo-FullscreenType">
+		<xs:annotation>
+			<xs:documentation>全屏类型，移动端使用</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Fullscreen">
+				<xs:annotation>
+					<xs:documentation>全屏，不显示状态栏</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Immersive">
+				<xs:annotation>
+					<xs:documentation>沉浸式，状态栏透明仅显示文本</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Normal">
+				<xs:annotation>
+					<xs:documentation>默认类型</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>	
+	
+	<xs:simpleType name="yigo-Platform-Type">
+		<xs:annotation>
+			<xs:documentation>支持的平台类型</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PC">
+				<xs:annotation>
+					<xs:documentation>PC(电脑客户端)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Android">
+				<xs:annotation>
+					<xs:documentation>Android(安卓移动端)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IOS">
+				<xs:annotation>
+					<xs:documentation>IOS(IOS移动端)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="H5">
+				<xs:annotation>
+					<xs:documentation>H5</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Mobile">
+				<xs:annotation>
+					<xs:documentation>Mobile(所有移动端)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="All">
+				<xs:annotation>
+					<xs:documentation>All(所有平台)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>	
+	 
+</xs:schema>

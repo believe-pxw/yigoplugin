@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:include schemaLocation="../../attribute/restriction/AttributeRestriction.xsd"/>
+
+	<xs:annotation>
+		<xs:documentation>ERP系统映射Map专有属性定义</xs:documentation>
+	</xs:annotation>
+
+    <xs:attributeGroup name="yigo-Map-Position">
+        <xs:annotation>
+            <xs:documentation>大小与坐标</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Height" type="xs:integer"/>
+        <xs:attribute name="Width" type="xs:integer"/>
+        <xs:attribute name="X" type="xs:integer"/>
+        <xs:attribute name="Y" type="xs:integer"/>
+    </xs:attributeGroup>
+
+    <xs:complexType name="yigo-SourceTableCollection">
+        <xs:annotation>
+            <xs:documentation>Map的子元素SourceTableCollection</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="SourceTable" type="yigo-SourceTable" maxOccurs="unbounded" minOccurs="1"/>
+        </xs:sequence>
+        <xs:attributeGroup ref="yigo-Map-Position"/>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-SourceTable">
+        <xs:annotation>
+            <xs:documentation>SourceTable</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="SourceField" type="yigo-SourceField" maxOccurs="unbounded" minOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="Key" type="yigo-Key-Restriction50"/>
+        <xs:attribute name="IsPrimary" type="yigo-Boolean"/>
+        <xs:attribute name="TargetTableKey" type="yigo-TableKey-Restriction50"/>
+        <xs:attribute name="Condition" type="xs:string"/>
+        <xs:attribute name="Type">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Table"/>
+                    <xs:enumeration value="SERVICE"/>
+                    <xs:enumeration value="SQL"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="SourceTableKey" type="yigo-TableKey-Restriction50"/>
+        <xs:attribute name="DataSource" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-SourceField">
+        <xs:annotation>
+            <xs:documentation>SourceField</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Key" type="xs:string"/>
+        <xs:attribute name="TargetFieldKey" type="xs:string"/>
+        <xs:attribute name="Definition" type="xs:string"/>
+        <xs:attribute name="Type">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Field"/>
+                    <xs:enumeration value="Formula"/>
+                    <xs:enumeration value="Const"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="TargetTableKey" type="yigo-TableKey-Restriction50"/>
+        <xs:attribute name="Condition" type="xs:string"/>
+        <xs:attribute name="EdgeType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Normal"/>
+                    <xs:enumeration value="Focus"/>
+                    <xs:enumeration value="QUANTITYFOCUS_QUANTITY"/>
+                    <xs:enumeration value="QUANTITYFOCUS_UNITID"/>
+                    <xs:enumeration value="QUANTITYFOCUS_BASEQUANTITY"/>
+                    <xs:enumeration value="QUANTITYFOCUS_BASEUNITID"/>
+                    <xs:enumeration value="QUANTITYFOCUS_NUMERATOR"/>
+                    <xs:enumeration value="QUANTITYFOCUS_DENOMINATOR"/>
+                    <xs:enumeration value="MapKey"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="TargetDirectionFieldKey" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-TargetTableCollection">
+        <xs:annotation>
+            <xs:documentation>Map的子元素TargetTableCollection</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="TargetTable" type="yigo-TargetTable" maxOccurs="unbounded" minOccurs="1"/>
+        </xs:sequence>
+        <xs:attributeGroup ref="yigo-Map-Position"/>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-TargetTable">
+        <xs:annotation>
+            <xs:documentation>TargetTable元素</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="TargetField" type="yigo-TargetField" maxOccurs="unbounded" minOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="Key" type="yigo-Key-Restriction50"/>
+        <xs:attribute name="IsPrimary" type="yigo-Boolean"/>
+        <xs:attribute name="RowTrigger" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-TargetField">
+        <xs:annotation>
+            <xs:documentation>TargetField元素</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Feedback" type="yigo-Feedback" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="Definition" type="xs:string"/>
+        <xs:attribute name="OriginalDefinition" type="xs:string"/>
+        <xs:attribute name="Type" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-Feedback">
+        <xs:annotation>
+            <xs:documentation>Feedback元素</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Condition" type="xs:string"/>
+        <xs:attribute name="DataObjectKey" type="yigo-Key-Restriction50"/>
+        <xs:attribute name="FeedFormKey" type="yigo-Key-Restriction50"/>
+        <xs:attribute name="FieldKey" type="yigo-Key-Restriction50"/>
+        <xs:attribute name="OpSign">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="AddDelta"/>
+                    <xs:enumeration value="Assign"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="TableKey" type="yigo-TableKey-Restriction50"/>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-PostProcess">
+        <xs:annotation>
+            <xs:documentation>Map的子元素PostProcess</xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string"/>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-FeedbackCollection">
+        <xs:annotation>
+            <xs:documentation>Map的子元素FeedbackCollection</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="FeedbackObject" type="yigo-FeedbackObject"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-FeedbackObject">
+        <xs:annotation>
+            <xs:documentation>FeedbackObject元素</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="FeedbackTable" type="yigo-FeedbackTable" maxOccurs="unbounded" minOccurs="1"/>
+        </xs:sequence>
+        <xs:attributeGroup ref="yigo-Map-Position"/>
+        <xs:attribute name="ObjectKey" type="yigo-Key-Restriction50"/>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-FeedbackTable">
+        <xs:annotation>
+            <xs:documentation>FeedbackTable元素</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="FeedbackField" type="yigo-FeedbackField" maxOccurs="unbounded" minOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="TableKey" type="yigo-TableKey-Restriction50"/>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-FeedbackField">
+        <xs:annotation>
+            <xs:documentation>FeedbackField元素</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="FieldKey" type="yigo-Key-Restriction50"/>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-RelateDataMapCollection">
+        <xs:annotation>
+            <xs:documentation>Map的子元素RelateDataMapCollection</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="RelateDataMap" type="yigo-RelateDataMap" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-RelateDataMap">
+        <xs:annotation>
+            <xs:documentation>RelateDataMap元素</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Key" type="xs:string"/>
+    </xs:complexType>
+</xs:schema>

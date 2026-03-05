@@ -1,0 +1,662 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:annotation>
+        <xs:documentation>ERP系统通用控件属性组的定义</xs:documentation>
+    </xs:annotation>
+    
+    <xs:include schemaLocation="../../attribute/AttributeGroupDefinition.xsd"/>
+    <xs:include schemaLocation="BaseControlChildElementDefinition.xsd"/>
+    <xs:include schemaLocation="APPBaseControlDefinition.xsd"/>
+    <xs:include schemaLocation="../../attribute/APPControlAttributeGroupDefinition.xsd"/>
+
+    <xs:group name="ControlBaseChildGroup">
+        <xs:annotation>
+            <xs:documentation>控件基础子元素组</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element ref="DataBinding" minOccurs="0"/>
+            <xs:element ref="Format" minOccurs="0"/>
+            <xs:element ref="Condition" minOccurs="0"/>
+        </xs:sequence>
+    </xs:group>
+
+    <xs:element name="Dict">
+        <xs:annotation>
+            <xs:documentation>字典控件，用于选择字典项</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:group ref="ControlBaseChildGroup"/>
+                <xs:element ref="ItemFilter" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute ref="Editable"/> 
+            <xs:attribute ref="PromptText"/> 
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attributeGroup ref="yigo-Dict-Common-Properties"/>
+            <xs:attributeGroup ref="yigo-Dict-Properties"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="DynamicDict">
+        <xs:annotation>
+            <xs:documentation>动态字典控件，用于选择动态加载的字典项</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:group ref="ControlBaseChildGroup"/>
+                <xs:element ref="ItemFilter" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute ref="Editable"/> 
+            <xs:attribute ref="PromptText"/> 
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attributeGroup ref="yigo-Dict-Common-Properties"/>
+            <xs:attributeGroup ref="yigo-DynamicDict-Properties"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="TextEditor">
+        <xs:annotation>
+            <xs:documentation>文本编辑器控件，用于输入单行文本</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:group ref="ControlBaseChildGroup"/>
+                <xs:element ref="KeyEnter" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attributeGroup ref="yigo-TextEditor-Properties"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="CheckBox">
+        <xs:annotation>
+            <xs:documentation>复选框控件，用于选择是/否</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:group ref="ControlBaseChildGroup"/>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attribute name="IconLocation" type="yigo-Icon-LocationType">
+                <xs:annotation>
+                    <xs:documentation>图标位置，仅Icon或SelectedIcon不为空时有效</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attributeGroup ref="yigo-CheckBox-Properties"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ComboBox">
+        <xs:annotation>
+            <xs:documentation>下拉框控件，用于从列表中选择一项</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:group ref="ControlBaseChildGroup"/>
+                <xs:element ref="Item" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="FormulaItems" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="ComboFilter" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+            <xs:attribute ref="IntegerValue"/>
+            <xs:attribute ref="PromptText"/>
+            <xs:attribute ref="Editable"/> 
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attributeGroup ref="yigo-ComboBox-Common-Properties"/>
+            <xs:attribute ref="SourceType"/>
+            <xs:attribute ref="GroupKey"/>
+            <xs:attributeGroup ref="yigo-ComboBox-Properties"/>
+            
+            <xs:assert id="Formula属性需要配置FormulaItems元素" test="if(@SourceType='Formula') then FormulaItems else true()"></xs:assert>
+            <xs:assert id="ParaGroup属性需要配置GroupKey属性" test="if(@SourceType='ParaGroup') then string-length(@GroupKey)>0 else true()"></xs:assert>
+             
+        </xs:complexType>
+        <xs:unique name="ComboBoxItemUnique">
+            <xs:selector xpath="Item"/>
+            <xs:field xpath="@Key"/>                        
+        </xs:unique>
+    </xs:element>
+    <xs:element name="DatePicker">
+        <xs:annotation>
+            <xs:documentation>日期选择器控件，用于选择日期</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:all>
+                <xs:element ref="DataBinding" minOccurs="0"/>
+                <xs:element ref="Condition" minOccurs="0"/>
+                <xs:element ref="Format" minOccurs="0"/>
+            </xs:all>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attributeGroup ref="yigo-Picker-Common-Properties"/>
+            <xs:attributeGroup ref="yigo-DatePicker-Common-Properties"/>
+            <xs:attributeGroup ref="yigo-DatePicker-Properties"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Button">
+        <xs:annotation>
+            <xs:documentation>按钮控件，用于触发操作</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:group ref="ControlBaseChildGroup"/>
+                <xs:element ref="OnClick" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/> 
+            <xs:attribute ref="Icon"/>
+            <xs:attribute name="IconLocation" type="yigo-Icon-LocationType">
+                <xs:annotation>
+                    <xs:documentation>图标位置</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attributeGroup ref="yigo-Button-Properties"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Embed">
+        <xs:annotation>
+            <xs:documentation>嵌入控件，用于嵌入其他表单</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Var" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>变量集合</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="yigo-Key-Caption"/>
+            <xs:attributeGroup ref="yigo-Component-XY"/>
+            <xs:attributeGroup ref="yigo-Visible-Enable"/>
+            <xs:attribute name="InitEnable" type="yigo-Boolean">
+                <xs:annotation>
+                    <xs:documentation>初始可用状态</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="InitVisible" type="yigo-Boolean">
+                <xs:annotation>
+                    <xs:documentation>初始可见状态</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attributeGroup ref="yigo-Panel-layout-collection"/>
+            <xs:attribute name="RootKey" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>根组件标识</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="FormKey" type="yigo-Key-Restriction50">
+                <xs:annotation>
+                    <xs:documentation>表单标识</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="IncludeDataTable" type="yigo-Boolean">
+                <xs:annotation>
+                    <xs:documentation>嵌入数据表标志</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+        <xs:unique name="uniqueEmbedControlKey">
+            <xs:selector xpath="./*"/>
+            <xs:field xpath="@Key"/>
+        </xs:unique>
+    </xs:element>
+    
+    <xs:element name="UTCDatePicker">
+        <xs:annotation>
+            <xs:documentation>UTC日期选择器控件，用于选择UTC日期</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:all>
+                <xs:element ref="DataBinding" minOccurs="0"/>
+                <xs:element ref="Condition" minOccurs="0"/>
+                <xs:element ref="Format" minOccurs="0"/>
+            </xs:all>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attributeGroup ref="yigo-Picker-Common-Properties"/>
+            <xs:attributeGroup ref="yigo-DatePicker-Common-Properties"/>
+            <xs:attributeGroup ref="yigo-UTCDatePicker-Properties"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="NumberEditor">
+        <xs:annotation>
+            <xs:documentation>数字编辑器控件，用于输入数值</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:all>
+                <xs:element ref="DataBinding" minOccurs="0"/>
+                <xs:element ref="Condition" minOccurs="0"/>
+                <xs:element ref="Format" minOccurs="0"/>
+            </xs:all>
+            <xs:attribute ref="IntegerValue"/>
+            <xs:attribute ref="PromptText"/> 
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attributeGroup ref="yigo-NumberEditor-Properties"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Label">
+        <xs:annotation>
+            <xs:documentation>标签控件，用于显示静态文本</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:group ref="ControlBaseChildGroup"/>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attributeGroup ref="yigo-Label-Properties"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="TextButton">
+        <xs:annotation>
+            <xs:documentation>文本按钮控件，结合文本输入和按钮功能</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:all>
+                <xs:element ref="DataBinding" minOccurs="0"/>
+                <xs:element ref="OnClick" minOccurs="0"/>
+                <xs:element ref="Condition" minOccurs="0"/>
+                <xs:element ref="Format" minOccurs="0"/>
+                <xs:element ref="KeyEnter" minOccurs="0"/>
+            </xs:all>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attributeGroup ref="yigo-TextComponent-Common-Properties"/>
+            <xs:attributeGroup ref="yigo-TextButton-Properties"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="TimePicker">
+        <xs:annotation>
+            <xs:documentation>时间选择器控件，用于选择时间</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:all>
+                <xs:element ref="DataBinding" minOccurs="0"/>
+                <xs:element ref="Condition" minOccurs="0"/>
+                <xs:element ref="Format" minOccurs="0"/>
+            </xs:all>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attributeGroup ref="yigo-Picker-Common-Properties"/>
+            <xs:attributeGroup ref="yigo-TimePicker-Properties"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="RadioButton">
+        <xs:annotation>
+            <xs:documentation>单选按钮控件，用于从多个选项中选择一项</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:all>
+                <xs:element ref="DataBinding" minOccurs="0"/>
+                <xs:element ref="Condition" minOccurs="0"/>
+                <xs:element ref="Format" minOccurs="0"/>
+            </xs:all>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attribute ref="GroupKey"/>
+            <xs:attributeGroup ref="yigo-RadioButton-Properties"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="TextArea">
+        <xs:annotation>
+            <xs:documentation>多行文本编辑器控件，用于输入多行文本</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:all>
+                <xs:element ref="DataBinding" minOccurs="0"/>
+                <xs:element ref="Condition" minOccurs="0"/>
+                <xs:element ref="Format" minOccurs="0"/>
+                <xs:element ref="KeyEnter" minOccurs="0"/>
+            </xs:all>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attributeGroup ref="yigo-TextEditor-Properties"/>
+            <xs:attributeGroup ref="yigo-TextArea-Properties"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="MonthPicker">
+        <xs:annotation>
+            <xs:documentation>月份选择器控件，用于选择月份</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:all>
+                <xs:element ref="DataBinding" minOccurs="0"/>
+                <xs:element ref="Condition" minOccurs="0"/>
+                <xs:element ref="Format" minOccurs="0"/>
+            </xs:all>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attributeGroup ref="yigo-Picker-Common-Properties"/>
+            <xs:attributeGroup ref="yigo-MonthPicker-Properties"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="CheckListBox">
+        <xs:annotation>
+            <xs:documentation>复选列表框控件，用于从列表中选择多项</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:group ref="ControlBaseChildGroup"/>
+                <xs:element ref="Item" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="FormulaItems" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="ComboFilter" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+            <xs:attribute ref="Editable"/> 
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attributeGroup ref="yigo-ComboBox-Common-Properties"/>
+            <xs:attributeGroup ref="yigo-CheckListBox-Properties"/>
+            <xs:attribute ref="SourceType"/>
+            <xs:attribute ref="GroupKey"/>
+            <xs:attribute ref="PromptText"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="PasswordEditor">
+        <xs:annotation>
+            <xs:documentation>密码编辑器控件，用于输入密码</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:all>
+                <xs:element ref="DataBinding" minOccurs="0"/>
+                <xs:element ref="Condition" minOccurs="0"/>
+                <xs:element ref="Format" minOccurs="0"/>
+            </xs:all>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attributeGroup ref="yigo-TextComponent-Common-Properties"/>
+            <xs:attributeGroup ref="yigo-PasswordEditor-Properties"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Image">
+        <xs:annotation>
+            <xs:documentation>图片控件，用于显示图片</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:group ref="ControlBaseChildGroup"/>
+                <xs:element ref="OnClick" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute name="SourceType" type="yigo-Image-SourceType">
+                <xs:annotation>
+                    <xs:documentation>图片来源类型</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attribute ref="Icon"/>
+            <xs:attribute name="Image" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>图片相对路径，仅SourceType为Resource时生效</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute ref="ImageScaleType"/>
+            <xs:attributeGroup ref="yigo-Image-Properties"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="WebBrowser">
+        <xs:annotation>
+            <xs:documentation>网页浏览器控件，用于显示网页内容</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:all>
+                <xs:element ref="DataBinding" minOccurs="0"/>
+            </xs:all>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attribute name="SourceType" type="yigo-WebBrowser-SourceType">
+                <xs:annotation>
+                    <xs:documentation>来源类型：URL类型及HTML类型</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attributeGroup ref="yigo-WebBrowser-Properties"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="RichEditor">
+        <xs:annotation>
+            <xs:documentation>富文本编辑器控件，用于编辑富文本内容</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:all>
+                <xs:element ref="DataBinding" minOccurs="0"/>
+            </xs:all>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attributeGroup ref="yigo-RichEditor-Properties"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="HyperLink">
+        <xs:annotation>
+            <xs:documentation>超链接控件，用于显示可点击的链接</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:group ref="ControlBaseChildGroup"/>
+                <xs:element ref="OnClick" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attributeGroup ref="yigo-HyperLink-Properties"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Separator">
+        <xs:annotation>
+            <xs:documentation>分隔符控件，用于在界面上创建视觉分隔</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attributeGroup ref="yigo-Separator-Properties"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="DropdownButton">
+        <xs:annotation>
+            <xs:documentation>下拉按钮控件，点击后显示下拉菜单</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:group ref="ControlBaseChildGroup"/>
+                <xs:element name="DropdownItem" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>下拉菜单项</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:all>
+                            <xs:element ref="OnClick">
+                                <xs:annotation>
+                                    <xs:documentation>下拉项点击事件</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                        </xs:all>
+                        <xs:attribute name="Key" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>下拉项标识</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="Text" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>下拉项文本</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attributeGroup ref="yigo-DropdownButton-Properties"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Icon">
+        <xs:annotation>
+            <xs:documentation>图标控件，用于显示图标</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attribute ref="Icon"/>
+            <xs:attribute ref="ImageScaleType"/>
+            <xs:attributeGroup ref="yigo-Icon-Properties"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="BPMGraph">
+        <xs:annotation>
+            <xs:documentation>BPM流程图控件，用于显示工作流程图</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attributeGroup ref="yigo-BPMGraph-Properties"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="Dynamic">
+        <xs:annotation>
+            <xs:documentation>动态控件，根据条件动态显示不同类型的控件</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:group ref="ControlBaseChildGroup"/>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attributeGroup ref="yigo-Dynamic-Properties"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="Custom">
+        <xs:annotation>
+            <xs:documentation>自定义控件，用于扩展自定义功能</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:group ref="ControlBaseChildGroup"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attributeGroup ref="yigo-Custom-Properties"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Gantt">
+        <xs:annotation>
+            <xs:documentation>甘特图控件，用于显示项目进度</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="GanttTable"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="GanttTable">
+        <xs:annotation>
+            <xs:documentation>甘特图表格控件</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="GanttColumnCollection">
+                    <xs:annotation>
+                        <xs:documentation>列定义集合</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element ref="GanttRowCollection">
+                    <xs:annotation>
+                        <xs:documentation>行定义集合</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element ref="Relationship">
+                    <xs:annotation>
+                        <xs:documentation>关系数据来源</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="RowDblClick" type="yigo-BaseScript2" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>行双击事件</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="TableKey" type="yigo-TableKey-Restriction50">
+                <xs:annotation>
+                    <xs:documentation>表标识</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="GanttColumnCollection">
+        <xs:annotation>
+            <xs:documentation>甘特图列集合</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="GanttColumn" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="GanttColumn">
+        <xs:annotation>
+            <xs:documentation>甘特图列</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attributeGroup ref="yigo-GanttColumn-Attr"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="GanttRowCollection">
+        <xs:annotation>
+            <xs:documentation>甘特图行集合</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="GanttRow" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute name="Title" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>标题</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="ShapeId" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>形状标识</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="Type" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>类型</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="Parent" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>父节点</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="GanttRow">
+        <xs:annotation>
+            <xs:documentation>甘特图行</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attributeGroup ref="yigo-GanttRow-Attr"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Relationship">
+        <xs:annotation>
+            <xs:documentation>关系数据来源</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attributeGroup ref="yigo-Gantt-Relationship-Attr"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:group name="BaseControlGroup">
+        <xs:choice>
+            <xs:element ref="Dict"/>
+            <xs:element ref="DynamicDict"/>
+            <xs:element ref="TextEditor"/>
+            <xs:element ref="TextArea"/>
+            <xs:element ref="CheckBox"/>
+            <xs:element ref="ComboBox"/>
+            <xs:element ref="CheckListBox"/>
+            <xs:element ref="DatePicker"/>
+            <xs:element ref="UTCDatePicker"/>
+            <xs:element ref="MonthPicker"/>
+            <xs:element ref="TimePicker"/>
+            <xs:element ref="Button"/>
+            <xs:element ref="NumberEditor"/>
+            <xs:element ref="Label"/>
+            <xs:element ref="TextButton"/>
+            <xs:element ref="RadioButton"/>
+            <xs:element ref="PasswordEditor"/>
+            <xs:element ref="Image"/>
+            <xs:element ref="WebBrowser"/>
+            <xs:element ref="RichEditor"/>
+            <xs:element ref="HyperLink"/>
+            <xs:element ref="Separator"/>
+            <xs:element ref="DropdownButton"/>
+            <xs:element name="Activate"/>
+            <xs:element ref="Icon"/>
+            <xs:element ref="Custom"/>
+            <xs:element ref="BPMGraph"/>
+            <xs:element ref="Dynamic"/>
+            <xs:element ref="Carousel"/>
+            <xs:element ref="EditView"/>
+            <xs:element ref="Gantt"/>
+        </xs:choice>
+    </xs:group>
+</xs:schema>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:include schemaLocation="../../attribute/restriction/AttributeRestriction.xsd"/>
+
+    <xs:annotation>
+		<xs:documentation>ERP系统DataMigration专有属性定义</xs:documentation>
+	</xs:annotation>
+
+    <xs:complexType name="yigo-SourceTableCollection">
+        <xs:annotation>
+            <xs:documentation>DataMigration元素下的SourceTableCollection</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="SourceTable" type="yigo-SourceTable" maxOccurs="unbounded" minOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="Height" type="xs:integer"/>
+        <xs:attribute name="Width" type="xs:integer"/>
+        <xs:attribute name="X" type="xs:integer"/>
+        <xs:attribute name="Y" type="xs:integer"/>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-SourceTable">
+        <xs:annotation>
+            <xs:documentation>DataMigration元素下的SourceTable</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="SourceField" type="yigo-SourceField" maxOccurs="unbounded" minOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="Key" type="xs:string"/>
+        <xs:attribute name="IsPrimary" type="xs:string"/>
+        <xs:attribute name="TableKey" type="yigo-TableKey-Restriction50"/>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-SourceField">
+        <xs:annotation>
+            <xs:documentation>DataMigration元素下的SourceField</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Key" type="xs:string"/>
+        <xs:attribute name="OpSign" type="xs:string"/>
+        <xs:attribute name="PeriodValue" type="yigo-SourceField-PeriodValue"/>
+        <xs:attribute name="TargetFieldKey" type="xs:string"/>
+        <xs:attribute name="TargetTableKey" type="yigo-TableKey-Restriction50"/>
+        <xs:attribute name="Definition" type="xs:string"/>
+        <xs:attribute name="Type" type="yigo-SourceField-Type"/>
+        <xs:attribute name="GroupingPolicy" type="xs:string"/>
+        <xs:attribute name="IsNegtive" type="yigo-Boolean"/>
+    </xs:complexType>
+    
+    <xs:simpleType name="yigo-SourceField-PeriodValue">
+        <xs:annotation>
+            <xs:documentation>DataMigration元素下的SourceField的PeriodValue属性</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Default"/>
+            <xs:enumeration value="Value"/>
+            <xs:enumeration value="Map"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-SourceField-Type">
+        <xs:annotation>
+            <xs:documentation>DataMigration元素下的SourceField的Type属性</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Field"/>
+            <xs:enumeration value="Formula"/>
+            <xs:enumeration value="Const"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="yigo-TargetTableCollection">
+        <xs:annotation>
+            <xs:documentation>DataMigration元素下的TargetTableCollection</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="TargetTable" type="yigo-TargetTable" maxOccurs="unbounded" minOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="Height" type="xs:string"/>
+        <xs:attribute name="Width" type="xs:string"/>
+        <xs:attribute name="X" type="xs:integer"/>
+        <xs:attribute name="Y" type="xs:integer"/>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-TargetTable">
+        <xs:annotation>
+            <xs:documentation>DataMigration元素下的TargetTable</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="TargetField" type="yigo-TargetField" maxOccurs="unbounded" minOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="TableKey" type="yigo-TableKey-Restriction50"/>
+        <xs:attribute name="IsPrimary" type="yigo-Boolean"/>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-TargetField">
+        <xs:annotation>
+            <xs:documentation>DataMigration元素下的TargetField</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="FieldKey" type="xs:string"/>
+    </xs:complexType>
+</xs:schema>

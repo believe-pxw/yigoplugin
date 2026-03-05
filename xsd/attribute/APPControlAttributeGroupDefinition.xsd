@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:annotation>
+        <xs:documentation>ERP系统APP控件属性组的定义</xs:documentation>
+    </xs:annotation>   
+    
+    <xs:include schemaLocation="AttributeGroupDefinition.xsd"/>     
+    
+    <xs:attributeGroup name="yigo-EditView-Properties">
+        <xs:annotation>
+            <xs:documentation>EditView控件的属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="SourceType" type="yigo-Carousel-SourceType"/>
+        <xs:attribute name="Autoplay" type="yigo-Boolean"/>
+        <xs:attribute name="Infinite" type="yigo-Boolean"/>
+        <xs:attribute name="AutoplayInterval" type="yigo-Int-GreaterThan_EqualTo_Zero"/>
+        <xs:attribute name="ShowDots" type="yigo-Boolean"/>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-EditViewColumn-Properties">
+        <xs:annotation>
+            <xs:documentation>EditViewColumnl控件的属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="ColumnType" type="yigo-ControlType-Biz"/>
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="yigo-Carousel-Properties">
+        <xs:annotation>
+            <xs:documentation>Carousel控件的属性组</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="SourceType" type="yigo-Carousel-SourceType"/>
+        <xs:attribute name="Autoplay" type="yigo-Boolean"/>
+        <xs:attribute name="Infinite" type="yigo-Boolean"/>
+        <xs:attribute name="AutoplayInterval" type="yigo-Int-GreaterThan_EqualTo_Zero"/>
+        <xs:attribute name="ShowDots" type="yigo-Boolean"/>
+    </xs:attributeGroup>
+    
+</xs:schema>

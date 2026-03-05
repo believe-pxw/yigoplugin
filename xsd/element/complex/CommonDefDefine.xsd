@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:include schemaLocation="../../attribute/AttributeGroupDefinition.xsd"/>
+
+	<xs:annotation>
+		<xs:documentation>ERP系统CommonDef专有属性定义</xs:documentation>
+	</xs:annotation> 
+
+    <xs:element name="ParaTable">
+        <xs:annotation>
+            <xs:documentation>ParaTable</xs:documentation>
+        </xs:annotation>
+        <xs:complexType> 
+            <xs:sequence  minOccurs="0" maxOccurs="unbounded">		
+                <xs:element ref="ParaGroup"/>
+            </xs:sequence>
+        </xs:complexType>
+        <xs:unique name="uniqueParaTableKey">
+            <xs:selector xpath="ParaGroup"/>
+            <xs:field xpath="@Key"/>
+        </xs:unique>
+    </xs:element>	
+    
+    <xs:complexType name="yigo-ParaTable">
+        <xs:annotation>
+            <xs:documentation>CommonDef的子元素ParaTable</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element ref="ParaGroup" maxOccurs="unbounded" minOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="ParaGroup">
+        <xs:annotation>
+            <xs:documentation>ParaTable</xs:documentation>
+        </xs:annotation>
+        <xs:complexType> 
+            <xs:sequence minOccurs="0" maxOccurs="unbounded">		
+                <xs:element name="ParaItem" type="yigo-ParaItem"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="yigo-Key-Caption"/>
+        </xs:complexType>
+        <xs:unique name="uniqueParaGroupKey">
+            <xs:selector xpath="ParaItem"/>
+            <xs:field xpath="@Key"/>
+        </xs:unique>
+    </xs:element>
+    
+    <xs:complexType name="yigo-ParaGroup">
+        <xs:annotation>
+            <xs:documentation>CommonDef的ParaGroup元素</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="ParaItem" type="yigo-ParaItem" maxOccurs="unbounded" minOccurs="1"/>
+        </xs:sequence>
+        <xs:attributeGroup ref="yigo-Key-Caption"/>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-ParaItem">
+        <xs:annotation>
+            <xs:documentation>CommonDef的ParaItem元素</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Key" type="xs:string" use="required"/>
+        <xs:attribute name="Caption" type="xs:string"/>
+        <xs:attribute name="Value" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-StatusCollection">
+        <xs:annotation>
+            <xs:documentation>CommonDef的子元素StatusCollection</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Status" type="yigo-StatusCollection-Status" maxOccurs="unbounded" minOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-StatusCollection-Status">
+        <xs:annotation>
+            <xs:documentation>StatusCollection的子元素Status</xs:documentation>
+        </xs:annotation>
+        <xs:attributeGroup ref="yigo-Key-Caption"/>
+        <xs:attribute name="Value" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-ScriptCollection">
+        <xs:annotation>
+            <xs:documentation>CommonDef的子元素ScriptCollection</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Script" maxOccurs="unbounded" minOccurs="1">
+                <xs:complexType mixed="true">
+                    <xs:attributeGroup ref="yigo-Key-Caption"/>
+                    <xs:attribute name="Range" type="yigo-ScriptRange"/>
+                    <xs:attribute name="Verb" type="yigo-FormVerb"/>
+                    <xs:attribute name="Description" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

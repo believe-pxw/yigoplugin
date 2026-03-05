@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:include schemaLocation="../../attribute/restriction/AttributeRestriction.xsd"/>
+
+	<xs:annotation>
+		<xs:documentation>ERP系统宏公式专有属性定义</xs:documentation>
+	</xs:annotation>
+	
+	<xs:element name="MacroCollection">
+		<xs:annotation>
+			<xs:documentation>MacroCollection</xs:documentation>
+		</xs:annotation>
+		<xs:complexType> 
+			<xs:sequence  minOccurs="0">		
+				<xs:element name="Macro" type="yigo-Macro" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:unique name="uniqueMacroKey">
+			<xs:selector xpath="Macro"/>
+			<xs:field xpath="@Key"/>
+		</xs:unique>
+	</xs:element>			
+
+	<xs:complexType name="yigo-MacroCollection"> 
+		<xs:sequence>				
+			<xs:element name="Macro" type="yigo-Macro" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="yigo-Macro">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="Key" type="yigo-Key"/>
+				<xs:attribute name="Args" type="xs:string"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>	
+
+</xs:schema>

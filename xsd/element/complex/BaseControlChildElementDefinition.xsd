@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:include schemaLocation="../../attribute/AttributeGroupDefinition.xsd"/>
+    <xs:include schemaLocation="FormatDefinition.xsd"/>
+    <xs:include schemaLocation="BaseScriptDefinition.xsd"/>
+
+    <xs:element name="DataBinding" type="yigo-DataBinding">
+        <xs:annotation>
+            <xs:documentation>数据绑定元素，定义控件与数据源的绑定关系</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:complexType name="yigo-DataBinding">
+        <xs:sequence>
+            <xs:element name="ValueChanged" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>值变更事件</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="CheckRule" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>校验规则</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DefaultFormulaValue" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>默认表达式值</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ValueChangeAction" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>值变更动作</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attributeGroup ref="yigo-DataBinding-Attr"/>
+    </xs:complexType>
+
+    <xs:element name="Condition" type="yigo-Condition">
+        <xs:annotation>
+            <xs:documentation>条件元素，定义控件条件</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:complexType name="yigo-Condition">
+        <xs:sequence>
+            <xs:element name="CustomCondition" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>自定义条件</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="CustomConditionPara" minOccurs="0" maxOccurs="unbounded">
+                            <xs:annotation>
+                                <xs:documentation>自定义条件参数</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:attributeGroup ref="yigo-CustomConditionPara-Attr"/>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attributeGroup ref="yigo-CustomCondition-Attr"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ConditionTarget" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>条件目标</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:attributeGroup ref="yigo-ConditionTarget-Attr"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attributeGroup ref="yigo-Condition-Attr"/>
+    </xs:complexType>
+
+    <xs:element name="ItemFilter" type="yigo-ItemFilter">
+        <xs:annotation>
+            <xs:documentation>字典项过滤器元素，用于过滤字典项</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:complexType name="yigo-ItemFilter">
+        <xs:sequence>
+            <xs:element name="Filter" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>过滤器</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="FilterValue" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                    <xs:attributeGroup ref="yigo-Filter-Attr"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute ref="ItemKey"/>
+    </xs:complexType>
+
+    <xs:element name="FilterValue">
+        <xs:annotation>
+            <xs:documentation>过滤值元素</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attributeGroup ref="yigo-FilterValue-Attr"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Format" type="yigo-Component-Format">
+        <xs:annotation>
+            <xs:documentation>格式元素，定义控件的显示格式</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name="KeyEnter" type="yigo-BaseScript2">
+        <xs:annotation>
+            <xs:documentation>回车键事件元素</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name="OnClick" type="yigo-BaseScript2">
+        <xs:annotation>
+            <xs:documentation>点击事件元素</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name="Var">
+        <xs:annotation>
+            <xs:documentation>变量元素，用于定义嵌入表单的变量</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attribute name="Key" type="yigo-Key"/>
+            <xs:attribute name="Value" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Activate" type="yigo-BaseScript2">
+        <xs:annotation>
+            <xs:documentation>激活事件元素</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name="Item" type="yigo-Item">
+        <xs:annotation>
+            <xs:documentation>下拉项元素</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:complexType name="yigo-Item">
+        <xs:attributeGroup ref="yigo-Item-Attr"/>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-ComboFilter-Item">
+        <xs:attributeGroup ref="yigo-ComboFilter-Item-Attr"/>
+    </xs:complexType>
+
+    <xs:element name="FormulaItems">
+        <xs:annotation>
+            <xs:documentation>表达式项元素，用于动态生成下拉项</xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:attribute name="ItemsDependency" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="ComboFilter" type="yigo-ComboFilter">
+        <xs:annotation>
+            <xs:documentation>下拉过滤器元素</xs:documentation>
+        </xs:annotation>
+        <xs:unique name="ComboFilterItemUnique">
+            <xs:selector xpath="Item"/>
+            <xs:field xpath="@Key"/>                        
+        </xs:unique>
+    </xs:element>
+    <xs:complexType name="yigo-ComboFilter">
+        <xs:sequence>
+            <xs:element ref="FormulaItems" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Item" type="yigo-ComboFilter-Item" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attributeGroup ref="yigo-ComboFilter-Attr"/>
+    </xs:complexType>
+
+
+    <xs:element name="QueryDef" type="yigo-QueryDef">
+        <xs:annotation>
+            <xs:documentation>查询定义元素</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:complexType name="yigo-QueryDef">
+        <xs:sequence>
+            <xs:element name="Statement" type="yigo-Statement" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="ParameterCollection" type="yigo-ParameterCollection" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:element name="FocusRowChanged" type="yigo-BaseScript2">
+        <xs:annotation>
+            <xs:documentation>焦点行变更事件元素</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="BeforeRowInsert" type="yigo-BaseScript2">
+        <xs:annotation>
+            <xs:documentation>行插入前事件元素</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:complexType name="yigo-DictViewColumnCollection">
+        <xs:annotation>
+            <xs:documentation>字典视图列集合</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="DictViewColumn" type="yigo-DictViewColumn" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-DictViewColumn">
+        <xs:annotation>
+            <xs:documentation>字典视图列</xs:documentation>
+        </xs:annotation>
+        <xs:attributeGroup ref="yigo-Key-Caption"/>
+        <xs:attribute ref="Width"/>
+    </xs:complexType>
+
+
+    <xs:complexType name="yigo-ShortCutCollection">
+        <xs:annotation>
+            <xs:documentation>快捷键集合</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="ShortCut" type="yigo-Cell-ShortCut" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-Cell-ShortCut" mixed="true">
+        <xs:annotation>
+            <xs:documentation>单元格快捷键</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Key" type="yigo-Key"/>
+        <xs:attribute name="ShortCut" type="xs:string"/>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:include schemaLocation="../../attribute/AttributeGroupDefinition.xsd"/>
+
+    <xs:annotation>
+        <xs:documentation></xs:documentation>
+    </xs:annotation>
+
+    <xs:complexType name="yigo-Entry-EntryItem">
+        <xs:annotation>
+            <xs:documentation>入口项</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Key" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>入口项标识</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Caption" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>入口项名称</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="FormKey" type="yigo-Key-Restriction50" use="required">
+            <xs:annotation>
+                <xs:documentation>表单的标识</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Type" type="yigo-EntryItem-Type">
+            <xs:annotation>
+                <xs:documentation>入口类型</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Visible" type="yigo-Boolean-Formula">
+            <xs:annotation>
+                <xs:documentation>入口项可见性</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Icon" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>图标</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="IconCode" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>图标编码</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Target" type="yigo-EntryItem-Target">
+            <xs:annotation>
+                <xs:documentation>打开目标</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Parameters" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>参数列表</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Media" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>模拟的媒体(WEB,PC,IOS,ANDROID)</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Single" type="yigo-Boolean">
+            <xs:annotation>
+                <xs:documentation>单实例</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="TCode" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>事务码</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:simpleType name="yigo-EntryItem-Type">
+        <xs:annotation>
+            <xs:documentation>菜单项的类型</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Form">
+                <xs:annotation>
+                    <xs:documentation>表单入口</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Script">
+                <xs:annotation>
+                    <xs:documentation>脚本入口</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="URL">
+                <xs:annotation>
+                    <xs:documentation>超链接入口</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Plugin">
+                <xs:annotation>
+                    <xs:documentation>来源于插件</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-EntryItem-Target">
+        <xs:annotation>
+            <xs:documentation>表单打开的目标</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="self">
+                <xs:annotation>
+                    <xs:documentation>自身覆盖</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="newtab">
+                <xs:annotation>
+                    <xs:documentation>新增TAB页</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="modal">
+                <xs:annotation>
+                    <xs:documentation>模态弹出</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="stack">
+                <xs:annotation>
+                    <xs:documentation>堆栈形式显示</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

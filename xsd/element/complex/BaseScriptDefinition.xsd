@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:include schemaLocation="../../attribute/AttributeGroupDefinition.xsd"/>
+
+    <xs:complexType name="yigo-BaseScript">
+        <xs:annotation>
+            <xs:documentation>BaseScript定义</xs:documentation>
+        </xs:annotation>
+        <!-- 本来应该处理为下拉框，erp都是Formula，所以简化处理，默认值为Formula，所以不需要配置  -->
+        <xs:attribute name="Type" type="yigo-ScriptType"/> 
+      
+        <!-- 不需要
+        <xs:attribute name="Content" type="xs:string"/>
+         -->
+    </xs:complexType>
+    
+    <xs:complexType name="yigo-BaseScript2" mixed="true">
+        <xs:annotation>
+            <xs:documentation>BaseScript定义</xs:documentation>
+        </xs:annotation>
+        <!-- 本来应该处理为下拉框，erp都是Formula，所以简化处理，默认值为Formula，所以不需要配置  -->
+        <xs:attribute name="Type" type="yigo-ScriptType"/> 
+        <!-- 平台实现有问题的实现，erp有没有使用
+        <xs:attribute name="RunType" type="xs:string"/>
+         -->
+        <!-- 不需要
+        <xs:attribute name="Content" type="xs:string"/>
+         -->
+    </xs:complexType>
+
+    <xs:complexType name="yigo-Statement">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="Type">
+                    <xs:annotation>
+                        <xs:documentation>Statement对应的Type属性</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="Sql"/>
+                            <xs:enumeration value="Formula"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-ParameterCollection">
+        <xs:annotation>
+            <xs:documentation>ParameterCollection</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Parameter" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="SourceType" type="yigo-SourceType"/>
+                    <xs:attribute name="FieldKey" type="yigo-Key"/>
+                    <xs:attribute name="TargetColumn" type="yigo-Key"/>
+                    <xs:attribute name="TargetTable" type="yigo-Key"/>
+                    <xs:attribute name="Value" type="xs:string"/>
+                    <xs:attribute name="DataType" type="yigo-DataType"/>
+                    <xs:attribute name="Formula" type="xs:string"/>
+                    <xs:attribute name="Description" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

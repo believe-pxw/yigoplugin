@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:include schemaLocation="../../attribute/AttributeGroupDefinition.xsd"/>
+
+	<xs:annotation>
+		<xs:documentation>ERP系统DataElementDef专有属性定义</xs:documentation>
+	</xs:annotation> 
+
+    <xs:complexType name="yigo-DataElement">
+        <xs:annotation>
+            <xs:documentation>ERP系统DataElement的属性检查规则</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="FieldLabelCollection" type="yigo-DataElement-FieldLabelCollection" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attributeGroup ref="yigo-Key-Caption"/>
+        <xs:attribute name="DomainKey" type="yigo-Key-Restriction"/>
+        <xs:attribute name="ParamID" type="yigo-Key-Restriction"/>
+        <xs:attribute name="DataDiffLog" type="yigo-Boolean"/>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-DataElement-FieldLabelCollection">
+        <xs:annotation>
+            <xs:documentation>ERP系统DataElement的字段标签集合</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="FieldLabel" type="yigo-DataElement-FieldLabel" minOccurs="4" maxOccurs="unbounded">
+                <xs:unique name="uniqueFieldLabel">
+                    <xs:selector xpath="FieldLabel"/>
+                    <xs:field xpath="@Key"/>
+                </xs:unique>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="yigo-DataElement-FieldLabel">
+        <xs:annotation>
+            <xs:documentation>ERP系统DataElement的字段标签</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Key" type="yigo-FieldLabelType" use="required"/>
+        <xs:attribute name="Length" type="xs:integer"/>
+        <xs:attribute name="Text" type="xs:string" use="required"/>
+        <xs:attribute name="TextEn" type="xs:string" use="required"/>
+    </xs:complexType>
+
+</xs:schema>

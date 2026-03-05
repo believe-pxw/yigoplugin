@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:annotation>
+        <xs:documentation>布局组件常用属性对于类型的定义</xs:documentation>
+    </xs:annotation>
+    
+    <xs:simpleType name="yigo-ScrollType">
+        <xs:annotation>
+            <xs:documentation>组件对应的ScrollType属性</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Visible"/>
+            <xs:enumeration value="Scroll"/>
+            <xs:enumeration value="Auto"/>             
+            <xs:enumeration value="Hidden"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-SplitSize-CollapaseType">
+        <xs:annotation>
+            <xs:documentation>收缩类型</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="None"/>
+            <xs:enumeration value="Reverse"/>
+            <xs:enumeration value="Forward"/>
+            <xs:enumeration value="All"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-ExtraLayoutType">
+        <xs:annotation>
+            <xs:documentation>ExtraLayoutType</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Collapsible"/>
+            <xs:enumeration value="Property"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-Container-Style">
+        <xs:annotation>
+            <xs:documentation>定义容器的样式，包括多栏标签式和栈式</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Tab"/>
+            <xs:enumeration value="Stack"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

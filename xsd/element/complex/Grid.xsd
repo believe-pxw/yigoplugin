@@ -1,0 +1,912 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="../../attribute/AttributeGroupDefinition.xsd"/>
+	<xs:include schemaLocation="BaseControlChildElementDefinition.xsd"/>
+	<xs:include schemaLocation="FormatDefinition.xsd"/>
+
+	<xs:element name="Grid">
+		<xs:annotation>
+			<xs:documentation>表格控件，定义表格的元数据描述，除了一般组件的属性外，表格的元数据还包括列定义的集合和行定义的集合</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Condition" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>条件</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="CustomParaCollection" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>自定义参数集合</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Para">
+								<xs:annotation>
+									<xs:documentation>参数</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attribute name="Key">
+										<xs:annotation>
+											<xs:documentation>参数标识</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+									<xs:attribute name="Value">
+										<xs:annotation>
+											<xs:documentation>参数值</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="GridColumnCollection" type="yigo-GridColumnCollection">
+					<xs:annotation>
+						<xs:documentation>列元数据集合</xs:documentation>
+					</xs:annotation>
+					<xs:unique name="uniqueGridColumnKey">
+						<xs:selector xpath="GridColumn"/>
+						<xs:field xpath="@Key"/>
+					</xs:unique>
+				</xs:element>
+				<xs:element name="GridRowCollection" type="yigo-RowColumnCollection">
+					<xs:annotation>
+						<xs:documentation>行元数据集合</xs:documentation>
+					</xs:annotation>
+					<xs:unique name="uniqueGridRowKey">
+						<xs:selector xpath="GridRow"/>
+						<xs:field xpath="@Key"/>
+					</xs:unique>
+				</xs:element>
+				<xs:element name="RowClick" type="yigo-BaseScript2" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>行点击事件</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="RowDblClick" type="yigo-BaseScript2" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>行双击事件</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="BeforeRowInsert" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>行添加前事件</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="RowInsert" type="yigo-BaseScript2" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>行添加事件</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="RowDelete" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>行删除后事件</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="OnRowDelete" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>行删除事件</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="onBatchRowDelete" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>行批量删除事件</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="TraceCollection" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>追溯集合</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Trace" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>追溯项</xs:documentation>
+								</xs:annotation>
+								<xs:complexType mixed="true">
+									<xs:attribute name="Caption" type="xs:string">
+										<xs:annotation>
+											<xs:documentation>标题</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+									<xs:attribute name="Condition" type="yigo-Boolean-Formula">
+										<xs:annotation>
+											<xs:documentation>条件</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ExtOptCollection" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>额外配置的操作集合</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ExtOpt" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>额外配置的操作</xs:documentation>
+								</xs:annotation>
+								<xs:complexType mixed="true">
+									<xs:attributeGroup ref="yigo-Key-Caption"/>
+									<xs:attributeGroup ref="yigo-Visible-Enable"/>
+									<xs:attribute ref="Icon"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="FocusRowChanged" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>焦点行改变事件</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="GridFilter" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>数据过滤条件</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="FilterValue" maxOccurs="unbounded"/>
+						</xs:sequence>
+						<xs:attribute name="Op" type="yigo-Filter-OptSign">
+							<xs:annotation>
+								<xs:documentation>操作符</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="FilterDependency" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>过滤依赖项</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attributeGroup ref="yigo-Key-Caption"/>
+			<xs:attributeGroup ref="yigo-Control-layout-collection"/>
+			<xs:attributeGroup ref="yigo-Component-XY"/>
+			<xs:attributeGroup ref="yigo-Component-biz"/>
+			<xs:attributeGroup ref="yigo-Grid-Page"/>
+			<xs:attribute name="DefaultFitWidth" type="yigo-Boolean">
+				<xs:annotation>
+					<xs:documentation>打开是否默认最佳列宽</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="SerialSeq" type="yigo-Boolean">
+				<xs:annotation>
+					<xs:documentation>序列号是否连续</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="ShowRowHead" type="yigo-Boolean">
+				<xs:annotation>
+					<xs:documentation>是否显示行头序号列</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="Option" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>需要的操作定义</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="DisabledOption" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>不需要的操作定义</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="SelectionMode" type="yigo-SelectionMode">
+				<xs:annotation>
+					<xs:documentation>表格的选择模式</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="GridDefaultSortField" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>表格排序公式定义</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="EndEditByNav" type="yigo-Boolean">
+				<xs:annotation>
+					<xs:documentation>方向键直接结束编辑</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="NewEmptyRow" type="yigo-Boolean-Formula">
+				<xs:annotation>
+					<xs:documentation>在编辑状态下是否新增一个空行</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="OneTimeCompute" type="yigo-Boolean">
+				<xs:annotation>
+					<xs:documentation>一次性计算</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="ShowTotalRowCount" type="yigo-Boolean">
+				<xs:annotation>
+					<xs:documentation>是否显示总行数</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="AddDataRow" type="yigo-Boolean">
+				<xs:annotation>
+					<xs:documentation>插行时是否同步插入数据行</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="Zoom" type="yigo-Boolean">
+				<xs:annotation>
+					<xs:documentation>是否缩放</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="Sortable" type="yigo-Boolean">
+				<xs:annotation>
+					<xs:documentation>列是否可拖动排序</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="Custom" type="yigo-Boolean">
+				<xs:annotation>
+					<xs:documentation>是否有定制数据</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="Locate" type="yigo-Boolean">
+				<xs:annotation>
+					<xs:documentation>是否可根据条件定位行</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:attributeGroup name="yigo-Grid-Page">
+		<xs:annotation>
+			<xs:documentation>Yigo的表格分页属性集合</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="PageLoadType" type="yigo-PageLoadType">
+			<xs:annotation>
+				<xs:documentation>分页类型</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="PageRowCount" type="xs:int">
+			<xs:annotation>
+				<xs:documentation>分页时每页显示行数</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="PageIndicatorCount" type="xs:int">
+			<xs:annotation>
+				<xs:documentation>分页时显示最大页码</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="SerialRowNum" type="yigo-Boolean">
+			<xs:annotation>
+				<xs:documentation>序列号行号</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="RowRange" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>分页时每页显示行数列表</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+	<xs:simpleType name="yigo-PageLoadType">
+		<xs:annotation>
+			<xs:documentation>分页类型</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="UI"/>
+			<xs:enumeration value="DB"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="yigo-SelectionMode">
+		<xs:annotation>
+			<xs:documentation>表格的选择模式</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Cell"/>
+			<xs:enumeration value="Row"/>
+			<!-- 默认的，不用提供选项
+			<xs:enumeration value="Range"/>
+			-->
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="yigo-GridColumnCollection">
+		<xs:annotation>
+			<xs:documentation>列集合</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="GridColumn" type="yigo-GridColumn" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>列定义</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="yigo-GridColumn">
+		<xs:annotation>
+			<xs:documentation>列定义，包括列标识、列标题、列宽、是否可排序等属性</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ColumnExpand" type="yigo-ColumnExpand" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>列拓展元数据对象</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GridColumnCollection" type="yigo-GridColumnCollection" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>嵌套的列集合</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OnSelect" type="yigo-OnSelect" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>选中事件，复选框类型单元格有效</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="yigo-Key-Caption"/>
+		<xs:attributeGroup ref="yigo-Visible-Enable"/>
+		<xs:attribute name="FormulaCaption" type="yigo-Formula">
+			<xs:annotation>
+				<xs:documentation>公式标题</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+        <xs:attribute name="LabelType" type="yigo-LabelType">
+			<xs:annotation>
+				<xs:documentation>标题标签类型</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="GroupSumFormula" type="yigo-Formula">
+			<xs:annotation>
+				<xs:documentation>分组单元格汇总公式</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="SumFormula" type="yigo-Formula">
+			<xs:annotation>
+				<xs:documentation>单元格汇总公式</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="AutoCaption" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>自动生成标题，用于报表显示</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Width" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>列宽</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Sortable" type="yigo-Boolean">
+			<xs:annotation>
+				<xs:documentation>是否可排序标志</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ColumnType" type="yigo-ColumnType">
+			<xs:annotation>
+				<xs:documentation>列类型</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Image" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>图片</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Freeze" type="yigo-Boolean">
+			<xs:annotation>
+				<xs:documentation>是否冻结</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Fixed" type="yigo-GridColumnFixed">
+			<xs:annotation>
+				<xs:documentation>冻结信息，取值为left或者right</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="yigo-OnSelect">
+		<xs:annotation>
+			<xs:documentation>选中事件</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:string"/>
+		</xs:simpleContent>
+	</xs:complexType>	
+
+	<xs:complexType name="yigo-ColumnExpand" mixed="true">
+		<xs:annotation>
+			<xs:documentation>列扩展类型</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="ExpandType" type="yigo-Column-ExpandType">
+			<xs:annotation>
+				<xs:documentation>拓展类型</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ExpandSourceType" type="yigo-Expand-SourceType">
+			<xs:annotation>
+				<xs:documentation>拓展数据来源类型</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ExpandDependency" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>拓展依赖项</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="TableKey" type="yigo-TableKey-Restriction50">
+			<xs:annotation>
+				<xs:documentation>表标识</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ColumnKey" type="yigo-Key-Restriction50">
+			<xs:annotation>
+				<xs:documentation>列标识</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ItemKey" type="yigo-Key-Restriction50">
+			<xs:annotation>
+				<xs:documentation>字典标识</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:simpleType name="yigo-ColumnType">
+		<xs:annotation>
+			<xs:documentation>列类型</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Detail"/>
+			<xs:enumeration value="Group"/>
+			<xs:enumeration value="Total"/>
+			<!-- 默认的，不用提供选项
+			<xs:enumeration value="Fix"/>
+			-->
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="yigo-GridColumnFixed">
+		<xs:annotation>
+			<xs:documentation>列冻结</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="left"/>
+			<xs:enumeration value="right"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="yigo-RowColumnCollection">
+		<xs:annotation>
+			<xs:documentation>行集合</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="GridRow" type="yigo-GridRow" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>行定义</xs:documentation>
+				</xs:annotation>
+				<xs:unique name="uniqueGridCellKey">
+					<xs:selector xpath="GridCell"/>
+					<xs:field xpath="@Key"/>
+				</xs:unique>
+			</xs:element>
+			<xs:element ref="OnRowDelete" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>行删除事件</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="RowDelete" type="yigo-BaseScript2">
+		<xs:annotation>
+			<xs:documentation>行删除后事件</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="OnRowDelete" type="yigo-BaseScript2">
+		<xs:annotation>
+			<xs:documentation>行删除事件</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="onBatchRowDelete" type="yigo-BaseScript2">
+		<xs:annotation>
+			<xs:documentation>行批量删除事件</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:complexType name="yigo-GridRow">
+		<xs:annotation>
+			<xs:documentation>行定义，包括行的标识、行的类型、行高、绑定的表信息，同时行对象包括组成行的每个单元格的描述信息</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="GridCell" type="yigo-GridCell" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>单元格定义</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RowExpand" type="yigo-RowExpand" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>行拓展定义</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RowTree" type="yigo-RowTree" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>行树形定义</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Key" type="yigo-Key" use="required">
+			<xs:annotation>
+				<xs:documentation>行的标识</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Visible" type="yigo-Boolean-Formula">
+			<xs:annotation>
+				<xs:documentation>可见性，针对非明细行</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="TableKey" type="yigo-TableKey-Restriction50">
+			<xs:annotation>
+				<xs:documentation>表的标识</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="RowHeight" type="xs:int">
+			<xs:annotation>
+				<xs:documentation>行高</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="GroupKey" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>所属分组的标识，只对分组行有效</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="RowType" type="yigo-RowType">
+			<xs:annotation>
+				<xs:documentation>行的类型标识</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="BackColor" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>背景色</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="yigo-RowTree" mixed="true">
+		<xs:annotation>
+			<xs:documentation>行树形定义</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="CellKey" type="yigo-Key-Restriction50">
+			<xs:annotation>
+				<xs:documentation>单元格标识</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Expand" type="yigo-Boolean">
+			<xs:annotation>
+				<xs:documentation>是否展开</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Foreign" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>外键</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Parent" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>父节点</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="TreeType" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>树形类型</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ExpandLevel" type="xs:int">
+			<xs:annotation>
+				<xs:documentation>展开层级</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="LoadMethod" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>加载方式</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Image" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>图片</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Type" type="yigo-RowTree-Type">
+			<xs:annotation>
+				<xs:documentation>类型</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="yigo-RowExpand" mixed="true">
+		<xs:annotation>
+			<xs:documentation>行拓展定义</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="ExpandType" type="yigo-Row-ExpandType">
+			<xs:annotation>
+				<xs:documentation>拓展类型</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="CellKey" type="yigo-Key-Restriction50">
+			<xs:annotation>
+				<xs:documentation>单元格标识</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+
+	<xs:simpleType name="yigo-RowType">
+		<xs:annotation>
+			<xs:documentation>行的类型标识</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Fix"/>
+			<xs:enumeration value="Group"/>
+			<xs:enumeration value="Total"/>
+			<xs:enumeration value="TreeRow"/>
+			<!-- 默认的，不用提供选项
+			<xs:enumeration value="Detail"/>
+			-->
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="yigo-GridCell">
+		<xs:annotation>
+			<xs:documentation>单元格定义，包括单元格标识、单元格名称、单元格绑定的界面组件类型、单元格的合并信息、单元格的分组信息、单元格的数据绑定信息</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="DataBinding" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>数据绑定对象</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="ItemFilter" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>项目过滤</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="Item" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>项目</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="FormulaItems" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>公式项目</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="ComboFilter" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>下拉框过滤</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OnClick" type="yigo-BaseScript2" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>点击事件</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DblClick" type="yigo-BaseScript2" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>双击事件</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ShortCutCollection" type="yigo-ShortCutCollection" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>快捷键</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CellFormat" type="yigo-CellFormat" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>单元格格式</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Key" type="yigo-Key">
+			<xs:annotation>
+				<xs:documentation>单元格标识</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+        <xs:attribute name="Caption" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>单元格名称</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attributeGroup ref="yigo-Visible-Enable"/>
+		<xs:attribute name="CellType" type="yigo-ControlType-Biz">
+			<xs:annotation>
+				<xs:documentation>单元格的绑定界面组件类型</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute ref="GroupKey"/>
+		<xs:attribute ref="IntegerValue"/>
+		<xs:attribute ref="Icon"/>
+		<xs:attribute ref="Editable"/>
+		<xs:attribute name="SourceType" type="yigo-ComboBox-Image-SourceType">
+			<xs:annotation>
+				<xs:documentation>数据源类型</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="IconLocation" type="yigo-Icon-LocationType">
+			<xs:annotation>
+				<xs:documentation>图标位置</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attributeGroup ref="yigo-ComboBox-Common-Properties"/>
+		<xs:attributeGroup ref="yigo-ComboBox-Properties"/>
+		<xs:attributeGroup ref="yigo-CheckListBox-Properties"/>
+		<xs:attributeGroup ref="yigo-RadioButton-Properties"/>
+		<xs:attributeGroup ref="yigo-NumberEditor-Properties"/>
+		<xs:attributeGroup ref="yigo-CheckBox-Properties"/>
+		<xs:attributeGroup ref="yigo-Label-Properties"/>
+		<xs:attributeGroup ref="yigo-TextEditor-Properties"/>
+		<xs:attributeGroup ref="yigo-TextArea-Properties"/>
+		<xs:attributeGroup ref="yigo-RichEditor-Properties"/>
+		<xs:attributeGroup ref="yigo-Button-Properties"/>
+		<xs:attributeGroup ref="yigo-TextButton-Properties"/>
+		<xs:attributeGroup ref="yigo-Dict-Common-Properties"/>
+		<xs:attributeGroup ref="yigo-Dict-Properties"/>
+		<xs:attributeGroup ref="yigo-DynamicDict-Properties"/>
+		<xs:attributeGroup ref="yigo-Picker-Common-Properties"/>
+		<xs:attributeGroup ref="yigo-DatePicker-Common-Properties"/>
+		<xs:attributeGroup ref="yigo-DatePicker-Properties"/>
+		<xs:attributeGroup ref="yigo-UTCDatePicker-Properties"/>
+		<xs:attributeGroup ref="yigo-MonthPicker-Properties"/>
+		<xs:attributeGroup ref="yigo-TimePicker-Properties"/>
+		<xs:attribute name="ImageScaleType" type="yigo-Image-ScaleType">
+			<xs:annotation>
+				<xs:documentation>图片缩放类型</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attributeGroup ref="yigo-Image-Properties"/>
+		<xs:attributeGroup ref="yigo-Custom-Properties"/>
+		<xs:attributeGroup ref="yigo-Dynamic-Properties"/>
+		<xs:attributeGroup ref="yigo-Icon-Properties"/>
+		<xs:attributeGroup ref="yigo-HyperLink-Properties"/>
+		<xs:attributeGroup ref="yigo-Separator-Properties"/>
+		<xs:attributeGroup ref="yigo-DropdownButton-Properties"/>
+		<xs:attribute name="IsSelect" type="yigo-Boolean">
+			<xs:annotation>
+				<xs:documentation>是否选择字段</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="SingleSelect" type="yigo-Boolean">
+			<xs:annotation>
+				<xs:documentation>选择字段是否单选</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="CopyNew" type="yigo-Boolean">
+			<xs:annotation>
+				<xs:documentation>是否可复制新增</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="AsQuery" type="yigo-Boolean">
+			<xs:annotation>
+				<xs:documentation>是否为叙时簿查询字段</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Tip" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>鼠标放置时的提示信息</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="CellGroupType" type="yigo-GridCell-GroupType">
+			<xs:annotation>
+				<xs:documentation>分组类型</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="IsMerged" type="yigo-Boolean">
+			<xs:annotation>
+				<xs:documentation>是否在合并区域</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Merge" type="yigo-Boolean">
+			<xs:annotation>
+				<xs:documentation>相同值单元格合并，明细行使用</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="MergeGroup" type="yigo-Boolean">
+			<xs:annotation>
+				<xs:documentation>是否合并分组行，在merge属性为true时有效</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="IsMergedHead" type="yigo-Boolean">
+			<xs:annotation>
+				<xs:documentation>是否合并区域头</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="MergedColumnSpan" type="xs:int">
+			<xs:annotation>
+				<xs:documentation>合并列数，只对isMergedHead为true的单元格有效</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="MergedRowSpan" type="xs:int">
+			<xs:annotation>
+				<xs:documentation>合并行数，只对isMergedHead为true的单元格有效</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="CellSortType" type="yigo-GridCell-SortType">
+			<xs:annotation>
+				<xs:documentation>排序类型</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="CellGroupItemKey" type="yigo-Key-Restriction50">
+			<xs:annotation>
+				<xs:documentation>树形分组依赖的字典标识</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="BackColor" type="yigo-Color-Formula">
+			<xs:annotation>
+				<xs:documentation>背景色</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ForeColor" type="yigo-Color-Formula">
+			<xs:annotation>
+				<xs:documentation>前景色</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		
+		<!-- 等于啥控件需要啥属性 设计器已经控制，缺少也会运行错误，主要检查多余属性（用于控件变化的时候属性忘记删除） -->
+		<xs:assert id="Dict和DynamicDict单元格类型属性匹配情况" test="
+			if (@CellType = 'Dict' or @CellType = 'DynamicDict') 
+			then not(@Trim or @EmbedText or @InvalidChars or @Case or @IntegerValue or @ZeroString or @UseGroupingSeparator or @StripTrailingZeros or @ShowZero or @RoundingMode)
+			else true()"/>
+		<xs:assert id="TextEditor单元格类型属性匹配情况" test="
+			if (@CellType = 'TextEditor') 
+			then not(@ItemKey or @StateMask or @Independent or @AllowMultiSelection or @LoadType or @QueryMatchType or @EditValue or @SourceType or @Cache or @StripTrailingZeros)
+			else true()"/>
+		<xs:assert id="CheckBox单元格类型属性匹配情况" test="
+			if (@CellType = 'CheckBox') 
+			then not(@ItemKey or @AllowMultiSelection)
+			else true()"/>
+		<xs:assert id="ComboBox和CheckListBox单元格类型属性匹配情况" test="
+			if (@CellType = 'ComboBox' or @CellType = 'CheckListBox') 
+			then not(false())
+			else true()"/>
+		<xs:assert id="DatePicker和UTCDatePicker和MonthPicker和TimePicker单元格类型属性匹配情况" test="
+			if (@CellType = 'DatePicker' or @CellType = 'UTCDatePicker' or @CellType = 'MonthPicker' or @CellType = 'TimePicker') 
+			then not(false())
+			else true()"/>
+		<xs:assert id="Button单元格类型属性匹配情况" test="
+			if (@CellType = 'Button') 
+			then not(false())
+			else true()"/>
+		<xs:assert id="NumberEditor单元格类型属性匹配情况" test="
+			if (@CellType = 'NumberEditor') 
+			then not(@ItemKey or @StateMask or @Independent or @AllowMultiSelection or @LoadType or @QueryMatchType or @EditValue or @InvalidChars or @Trim)
+			else true()"/>
+		<xs:assert id="Label单元格类型属性匹配情况" test="
+			if (@CellType = 'Label') 
+			then not(false())
+			else true()"/>
+		<xs:assert id="TextButton单元格类型属性匹配情况" test="
+			if (@CellType = 'TextButton') 
+			then not(false())
+			else true()"/>
+		<xs:assert id="RadioButton单元格类型属性匹配情况" test="
+			if (@CellType = 'RadioButton') 
+			then not(false())
+			else true()"/>
+		<xs:assert id="PasswordEditor单元格类型属性匹配情况" test="
+			if (@CellType = 'PasswordEditor') 
+			then not(false())
+			else true()"/>
+		<xs:assert id="Image单元格类型属性匹配情况" test="
+			if (@CellType = 'Image') 
+			then not(false())
+			else true()"/>
+		<xs:assert id="RichEditor单元格类型属性匹配情况" test="
+			if (@CellType = 'RichEditor') 
+			then not(false())
+			else true()"/>
+		<xs:assert id="HyperLink单元格类型属性匹配情况" test="
+			if (@CellType = 'HyperLink') 
+			then not(false())
+			else true()"/>
+		<xs:assert id="Separator单元格类型属性匹配情况" test="
+			if (@CellType = 'Separator') 
+			then not(false())
+			else true()"/>
+		<xs:assert id="GridCell在GridRow中RowType属性为Group或Total可以没有Key属性" test="
+		if (exists(../@RowType) and ((../@RowType) = 'Total' or (../@RowType) = 'Group') ) 
+		then true()
+		else exists(@Key)"/>
+	</xs:complexType>
+</xs:schema>

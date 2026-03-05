@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:annotation>
+        <xs:documentation>APP常用属性对于类型的定义</xs:documentation>
+    </xs:annotation>
+    
+    <xs:simpleType name="yigo-Carousel-SourceType">
+        <xs:annotation>
+            <xs:documentation>跑马灯来源类型</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Items"/>
+            <xs:enumeration value="Formula"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-TabGroup-TabMode">
+        <xs:annotation>
+            <xs:documentation>TabGroup的模式</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Fixed"/>
+            <xs:enumeration value="Scrollable"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-TableView-RowType">
+        <xs:annotation>
+            <xs:documentation>TableViewRowType定义TableRow数据中的行类型，包括行类型标识和行类型标识的字符串表示</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Fix"/>
+            <xs:enumeration value="Group"/>
+            <xs:enumeration value="Detail"/>
+            <xs:enumeration value="GroupTail"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-Chart-ChartType">
+        <xs:annotation>
+            <xs:documentation>Chart组件定义ChartType图表类型</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="VBar"/>
+            <xs:enumeration value="StackedVBar"/>
+            <xs:enumeration value="HBar"/>
+            <xs:enumeration value="StackedHBar"/>
+            <xs:enumeration value="Area"/>
+            <xs:enumeration value="Line"/>
+            <xs:enumeration value="Scatter"/>
+            <xs:enumeration value="Pie"/>
+            <xs:enumeration value="Radar"/>
+            <xs:enumeration value="Gauge"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-Chart-SourceType">
+        <xs:annotation>
+            <xs:documentation>Chart组件定义SourceType数据来源类型</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="DataObject"/>
+            <xs:enumeration value="ListView"/>
+            <xs:enumeration value="Grid"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-SubDetailLinkType">
+        <xs:annotation>
+            <xs:documentation>SubDetailLinkType定义父子之间的关联类型</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Parent"/>
+            <xs:enumeration value="Foreign"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-Media">
+        <xs:annotation>
+            <xs:documentation>支持的平台</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="WEB"/>
+            <xs:enumeration value="PC"/>
+            <xs:enumeration value="IOS"/>
+            <xs:enumeration value="ANDROID"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+</xs:schema>

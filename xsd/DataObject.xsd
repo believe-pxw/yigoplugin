@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="attribute/AttributeGroupDefinition.xsd"/>
+	<xs:include schemaLocation="element/complex/DataObjectDefine.xsd"/>
+
+	<xs:element name="DataObject" type="yigo-DataObject"/>
+
+	<xs:complexType name="yigo-DataObject">
+		<xs:annotation>
+			<xs:documentation>数据对象配置对象</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="TableCollection" type="yigo-TableCollection">
+					<xs:annotation>
+						<xs:documentation>数据对象包含的子对象：表的集合</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Relation" type="yigo-Relation">
+					<xs:annotation>
+						<xs:documentation>关系表</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="EmbedTableCollection" type="yigo-EmbedTableCollection">
+					<xs:annotation>
+						<xs:documentation>嵌入表集合</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attributeGroup ref="yigo-Key-Caption50"/>
+		<xs:attribute name="PrimaryTableKey" type="yigo-TableKey-Restriction50">
+			<xs:annotation>
+				<xs:documentation>主表的KEY</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="PrimaryType" type="yigo-PrimaryType">
+			<xs:annotation>
+				<xs:documentation>数据对象的类型，取值为Entity和Virtual、Template</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="NoPrefix" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>单据编号前缀</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="SecondaryType" type="yigo-SecondaryType">
+			<xs:annotation>
+				<xs:documentation>数据对象的辅助类型</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="DisplayFields" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>字典显示字段</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="DropviewFields" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>字典下拉框显示列</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="MaintainDict" type="yigo-Boolean">
+			<xs:annotation>
+				<xs:documentation>是否维护字典的tleft tright</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="QueryFields" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>字典模糊查询字段</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="IndexPrefix" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>索引前缀</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Version" type="yigo-Version">
+			<xs:annotation>
+				<xs:documentation>配置版本</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="LoadRightsType">
+			<xs:annotation>
+				<xs:documentation>加载权限类型</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Deny">
+						<xs:annotation>
+							<xs:documentation>拒绝</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="BrowserFormKey" type="yigo-Formula">
+			<xs:annotation>
+				<xs:documentation>浏览表单标识</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="QueryFormKey" type="yigo-Formula">
+			<xs:annotation>
+				<xs:documentation>查询表单标识</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="RelateObjectKey" type="yigo-Key-Restriction50">
+			<xs:annotation>
+				<xs:documentation>关联的数据对象（即当前数据对象是view的数据对象，relateObjectKey表示的其单据的数据对象）</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="CheckAfterLoad" type="yigo-Boolean">
+			<xs:annotation>
+				<xs:documentation>权限的检查在加载后还是加载前，默认是加载前</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="IOProvider" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>IO工厂类标识</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="MigrationUpdateStrategy">
+			<xs:annotation>
+				<xs:documentation>迁移表更新数据时使用的策略</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="InsertFast">
+						<xs:annotation>
+							<xs:documentation>快速插入的策略</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="UpdateFast">
+						<xs:annotation>
+							<xs:documentation>快速更新的策略</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="FocusChange">
+						<xs:annotation>
+							<xs:documentation>只关注增量策略</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="KeysTableFocusChange">
+						<xs:annotation>
+							<xs:documentation>ERP余额表增量迁移策略</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="DictCacheCheckMode" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>字典缓存检查策略</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:assert id="迁移表才允许填写迁移策略" test="if (exists(@MigrationUpdateStrategy)) then @SecondaryType = 'Migration' else true()"/>
+		<xs:assert id="特有的属性只有在迁移表中允许填写" test="if (count(./TableCollection/Table/Column/@GroupType)>0 or count(./TableCollection/Table/Column/@SplitType)>0 or count(./TableCollection/Table/Column/@PeriodImpl)>0) then @SecondaryType = 'Migration' else true()"/>
+		<xs:assert id="字典才能设置DictCacheCheckMode属性" test="if (exists(../../@FormType) and (../../@FormType)='Dict') then true() else not(exists(@DictCacheCheckMode))"/>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:include schemaLocation="attribute/restriction/AttributeRestriction.xsd"/>
+	<xs:include schemaLocation="attribute/AttributeGroupDefinition.xsd"/>
+    <xs:include schemaLocation="element/complex/MapDefine.xsd"/>
+
+	<xs:annotation>
+		<xs:documentation>ERP系统映射Map的属性检查规则</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="Map"> 
+        <xs:annotation>
+            <xs:documentation>数据映射，定义了从一个数据对象到一个数据对象的数据映射关系</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:choice maxOccurs="unbounded" minOccurs="0">
+                    <xs:element name="SourceTableCollection" type="yigo-SourceTableCollection">
+                        <xs:annotation>
+                            <xs:documentation>源数据表集合</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="TargetTableCollection" type="yigo-TargetTableCollection" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>目标数据表集合</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="PostProcess" type="yigo-PostProcess" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>中间层下推完之后执行的二次开发公式</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="FeedbackCollection" type="yigo-FeedbackCollection" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>反填数据表集合</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="RelateDataMapCollection" type="yigo-RelateDataMapCollection" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>关联的映射</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:choice>
+            </xs:sequence>
+            <xs:attributeGroup ref="yigo-Key-Caption"/>
+            <xs:attribute name="SrcDataObjectKey" type="yigo-Key-Restriction50">
+                <xs:annotation>
+                    <xs:documentation>源数据对象标识</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="SrcFormKey" type="yigo-Key-Restriction50">
+                <xs:annotation>
+                    <xs:documentation>源表单标识</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="TgtDataObjectKey" type="yigo-Key-Restriction50">
+                <xs:annotation>
+                    <xs:documentation>目标数据对象标识</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="TgtFormKey" type="yigo-Key-Restriction50">
+                <xs:annotation>
+                    <xs:documentation>目标表单标识</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="AllowSurplus" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>是否允许超量</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="MinPushValue" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>单次最小下推值</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="PullDataOnly" type="yigo-Boolean">
+                <xs:annotation>
+                    <xs:documentation>当前映射关系仅推送数据，不建立关系</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="MaxCurPushValue" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>总体最大下推值</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="RemainderPushValue" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>剩余下推量</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="MarkMapCount" type="yigo-Boolean">
+                <xs:annotation>
+                    <xs:documentation>是否在源单上记录通过映射产生的数据条数</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+	</xs:element>
+</xs:schema>

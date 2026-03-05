@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:include schemaLocation="attribute/restriction/AttributeRestriction.xsd"/>
+
+	<xs:annotation>
+		<xs:documentation>Yigo系统宏公式专有属性定义</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="MacroCollection">
+		<xs:complexType>
+			<xs:sequence maxOccurs="unbounded" minOccurs="0">
+				<xs:element ref="Macro"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Macro">
+		<xs:complexType>
+			<xs:attribute name="Key" type="yigo-Key"/>
+			<xs:attribute name="Args" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>	
+
+</xs:schema>

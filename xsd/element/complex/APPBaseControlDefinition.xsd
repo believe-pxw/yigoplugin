@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:annotation>
+        <xs:documentation>ERP系统APP通用控件属性组的定义</xs:documentation>
+    </xs:annotation>
+    
+    <xs:include schemaLocation="BaseControlChildElementDefinition.xsd"/>
+    <xs:include schemaLocation="PanelDefine.xsd"/>
+    <xs:include schemaLocation="../../attribute/APPControlAttributeGroupDefinition.xsd"/>
+    
+    <xs:element name="HoverButton">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="DataBinding" minOccurs="0"/>
+                <xs:element ref="Format" minOccurs="0"/>
+                <xs:element ref="OnClick" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/> 
+            <xs:attribute ref="Icon"/>
+            <!--  Location="Right|Bottom"
+            <xs:attribute name="Location" type="yigo-LocationType"/>
+             -->
+            <xs:attribute name="Location" type="xs:string"/>
+            <xs:attributeGroup ref="yigo-Button-Properties"/>
+        </xs:complexType>
+    </xs:element>    
+    
+    <xs:element name="EditView">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:group ref="ControlBaseChildGroup"/>
+                <xs:element name="EditViewColumnCollection">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="EditViewColumn" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+                                    <xs:attributeGroup ref="yigo-EditViewColumn-Properties"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="RowClick">
+                    <xs:complexType mixed="true">
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="EditViewRow">                    
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="RowActionCollection" minOccurs="0"/>
+                        </xs:sequence>
+                        <xs:attribute name="SeparatorRadius" type="xs:int"/>
+                        <xs:attribute name="TopMargin" type="xs:string"/>
+                        <xs:attribute name="LeftPadding" type="xs:string"/>
+                        <xs:attribute name="RightPadding" type="xs:string"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attributeGroup ref="yigo-EditView-Properties"/>
+            <xs:attribute name="RowHeight" type="xs:int"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="Carousel">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Item" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="yigo-BaseControl-Attr"/>
+            <xs:attributeGroup ref="yigo-Carousel-Properties"/>
+        </xs:complexType>
+    </xs:element>
+    
+</xs:schema>

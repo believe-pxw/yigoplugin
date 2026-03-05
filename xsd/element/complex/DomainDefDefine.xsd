@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:annotation>
+		<xs:documentation>ERP系统DomainDef专有属性定义</xs:documentation>
+	</xs:annotation> 
+
+    <xs:include schemaLocation="../../attribute/AttributeGroupDefinition.xsd"/>
+    
+    <xs:complexType name="yigo-DomainDef-Item">
+        <xs:annotation>
+            <xs:documentation>DomainDef对应的Item属性</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Key" type="xs:string" use="required"/>
+        <xs:attribute name="Caption" type="xs:string" use="required"/>
+        <xs:attribute name="Value" type="xs:string"/>
+    </xs:complexType>
+</xs:schema>

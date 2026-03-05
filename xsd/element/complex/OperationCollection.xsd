@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:include schemaLocation="../../attribute/AttributeGroupDefinition.xsd"/>
+
+	<xs:annotation>
+		<xs:documentation>Yigo界面操作定义</xs:documentation>
+	</xs:annotation>
+
+	<!--				第一个OperationCollection是没有属性的				-->
+	<xs:complexType name="yigo-OperationCollection-Top">
+		<xs:sequence>
+			<xs:choice minOccurs="1" maxOccurs="unbounded">
+				<xs:element name="Operation" type="yigo-Operation" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="OperationCollection" type="yigo-OperationCollection-Sub" minOccurs="0" maxOccurs="unbounded">
+					<xs:unique name="uniqueOperationCollectionKey2">
+						<xs:selector xpath="Operation"/>
+						<xs:field xpath="@Key"/>
+					</xs:unique>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<!--				非第一个OperationCollection是属性				-->
+	<xs:complexType name="yigo-OperationCollection-Sub">
+		<xs:sequence>
+			<xs:choice minOccurs="1" maxOccurs="unbounded">
+				<xs:element name="Operation" type="yigo-Operation" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="OperationCollection" type="yigo-OperationCollection-Sub" minOccurs="0" maxOccurs="unbounded">
+					<xs:unique name="uniqueOperationCollectionKey3">
+						<xs:selector xpath="Operation"/>
+						<xs:field xpath="@Key"/>
+					</xs:unique>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attributeGroup ref="yigo-Operation-Attr"/>
+	</xs:complexType>
+	
+	<xs:complexType name="yigo-Operation">
+		<xs:sequence>
+			<xs:element name="Action" type="xs:string" minOccurs="0"/>
+			<xs:element name="ExceptionHandler" type="xs:string" minOccurs="0"/>
+			<xs:element name="Operation" type="yigo-Operation" minOccurs="0" maxOccurs="unbounded"/>			
+		</xs:sequence>
+		<xs:attributeGroup ref="yigo-Operation-Attr"/>
+	</xs:complexType>
+</xs:schema>

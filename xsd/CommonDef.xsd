@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:include schemaLocation="attribute/restriction/AttributeRestriction.xsd"/>
+    <xs:include schemaLocation="element/complex/MacroCollection.xsd"/>
+    <xs:include schemaLocation="element/complex/OperationCollection.xsd"/>
+    <xs:include schemaLocation="element/complex/CommonDefDefine.xsd"/>
+
+    <xs:annotation>
+		<xs:documentation>ERP系统CommonDef的属性检查规则</xs:documentation>
+	</xs:annotation>
+
+    <xs:element name="CommonDef">
+        <xs:annotation>
+            <xs:documentation>公共定义配置对象</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="OperationCollection" type="yigo-OperationCollection-Top" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>公共操作定义集合</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="StatusCollection" type="yigo-StatusCollection" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>状态集合</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="ScriptCollection" type="yigo-ScriptCollection" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>脚本集合</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element ref="MacroCollection" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>宏公式集合</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element ref="ParaTable" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>参数表</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

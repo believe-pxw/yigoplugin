@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:include schemaLocation="BaseControlDefinition.xsd"/>
+    <xs:include schemaLocation="PanelDefine.xsd"/>
+
+    <xs:element name="GridLayoutPanel">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Format" minOccurs="0"/>
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                    <xs:group ref="BaseControlGroup"/>
+                    <xs:group ref="BasePanelGroup"/>
+                    <!--暂时先不管，需要讨论-->
+                    <!--
+                    <xs:element name="ToolBar"/>
+                    -->
+                </xs:choice>
+                <xs:element ref="RowDefCollection"/>
+                <xs:element ref="ColumnDefCollection"/>
+                <xs:element ref="ExtraLayout" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="yigo-Key-Caption"/>
+            <xs:attributeGroup ref="yigo-Visible-Enable"/>
+            <xs:attributeGroup ref="yigo-Component-XY"/>
+            <xs:attributeGroup ref="yigo-Panel-layout-collection"/>
+            <xs:attribute name="OddColumnColor" type="yigo-Color"/>
+            <xs:attribute name="ForceLayout" type="yigo-Boolean"/>
+        </xs:complexType>
+        <xs:unique name="uniqueGridLayoutPanelControlKey">
+            <xs:selector xpath="./*"/>
+            <xs:field xpath="@Key"/>
+        </xs:unique>
+    </xs:element>
+
+
+    <xs:element name="ExtraLayout">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="GroupCollection">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Group" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Handle">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element ref="Format" minOccurs="0"/>
+                                                </xs:sequence>
+                                                <xs:attributeGroup ref="yigo-Component-XY"/>
+                                                <xs:attribute name="Type" type="Handle-Type"/>
+                                                <xs:attribute name="ExpandStyleClass" type="xs:string"/>
+                                                <xs:attribute name="CollapseStyleClass" type="xs:string"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attributeGroup ref="yigo-ExtraLayout-Group-Attr"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="Type" type="yigo-ExtraLayoutType"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:simpleType name="Handle-Type">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="UpDown"/>
+            <xs:enumeration value="SubAdd"/>
+            <xs:enumeration value="Custom"/>
+            <xs:enumeration value="Switch"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

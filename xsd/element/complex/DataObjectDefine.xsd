@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:include schemaLocation="../../attribute/AttributeGroupDefinition.xsd"/>
+	<xs:include schemaLocation="BaseScriptDefinition.xsd"/>
+
+	<xs:annotation>
+		<xs:documentation>ERP系统DataObject专有属性定义</xs:documentation>
+	</xs:annotation>
+
+	<xs:simpleType name="yigo-SecondaryType">
+		<xs:annotation>
+			<xs:documentation>数据对象的辅助类型</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Normal">
+				<xs:annotation>
+					<xs:documentation>普通实体数据</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Dict">
+				<xs:annotation>
+					<xs:documentation>字典数据</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ChainDict">
+				<xs:annotation>
+					<xs:documentation>链式字典数据</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CompDict">
+				<xs:annotation>
+					<xs:documentation>复合字典数据</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Migration">
+				<xs:annotation>
+					<xs:documentation>迁移表</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<!-- PrimaryType 的定义 -->
+	<xs:simpleType name="yigo-PrimaryType">
+		<xs:annotation>
+			<xs:documentation>数据对象的类型</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Entity">
+				<xs:annotation>
+					<xs:documentation>数据对象的类型——实体</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Template">
+				<xs:annotation>
+					<xs:documentation>数据对象的类型——模板</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<!-- TableMode 的定义 -->
+	<xs:simpleType name="yigo-TableMode">
+		<xs:annotation>
+			<xs:documentation>表模式</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Detail">
+				<xs:annotation>
+					<xs:documentation>明细表</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="yigo-TableCollection">
+		<xs:annotation>
+			<xs:documentation>TableCollection</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded" minOccurs="0">
+			<xs:element ref="Table"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="Table">
+		<xs:annotation>
+			<xs:documentation>数据表</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Column" type="yigo-Column" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>数据列</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="TableFilter" type="yigo-TableFilter" maxOccurs="1" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>表过滤条件</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ParameterCollection" type="yigo-ParameterCollection" maxOccurs="1" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>参数集合</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Statement" type="yigo-Statement" maxOccurs="1" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>SQL语句</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="IndexCollection" type="yigo-IndexCollection" maxOccurs="1" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>索引集合</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="Key" type="yigo-TableKey-Restriction50">
+				<xs:annotation>
+					<xs:documentation>表的标识</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="Caption" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>表的名称</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="TableMode" type="yigo-TableMode" use="optional">
+				<xs:annotation>
+					<xs:documentation>表模式，区分主表和明细表</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="IndexPrefix" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>索引前缀</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="PrimaryKey" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>主键</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="Persist" type="yigo-Boolean">
+				<xs:annotation>
+					<xs:documentation>是否持久化</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="SourceType">
+				<xs:annotation>
+					<xs:documentation>表来源类型</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="Table">
+							<xs:annotation>
+								<xs:documentation>表</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="Query">
+							<xs:annotation>
+								<xs:documentation>查询</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="Custom">
+							<xs:annotation>
+								<xs:documentation>自定义</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="Interface">
+							<xs:annotation>
+								<xs:documentation>接口</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="">
+							<xs:annotation>
+								<xs:documentation>非持久化</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="OrderBy" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>排序方式</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="GroupBy" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>分组方式</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="Formula" type="yigo-Formula">
+				<xs:annotation>
+					<xs:documentation>表达式</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="Impl" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>实现类</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="ParentKey" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>父表标识</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="DBTableName" type="yigo-Key-Restriction30">
+				<xs:annotation>
+					<xs:documentation>数据库表名</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="LazyLoad" type="yigo-Boolean">
+				<xs:annotation>
+					<xs:documentation>是否延迟加载</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="RefreshFilter" type="yigo-Boolean">
+				<xs:annotation>
+					<xs:documentation>是否刷新过滤条件</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:assert id="持久化的表长度需要小于30" test="if (Persist or @Persist='true') then string-length(@Key)&lt;=30 else true()"/>
+		</xs:complexType>
+		<xs:unique name="uniqueColumnKey">
+			<xs:selector xpath="Column"/>
+			<xs:field xpath="@Key"/>
+		</xs:unique>
+	</xs:element>
+
+	<xs:complexType name="yigo-Column">
+		<xs:annotation>
+			<xs:documentation>Table对应的Column</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="yigo-Key-Caption50"/>
+		<xs:attribute name="DataType" type="yigo-DataType"/>
+		<xs:attribute name="Description" type="xs:string"/>
+		<xs:attribute name="DataElementKey" type="yigo-Key-Restriction"/>
+		<xs:attribute name="DefaultValue" type="xs:string"/>
+		<xs:attribute name="Cache" type="yigo-Boolean"/>
+		<xs:attribute name="DBColumnName" type="yigo-Key"/>
+		<xs:attribute name="SortType">
+			<xs:annotation>
+				<xs:documentation>Column对应的SortType属性</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Asc"/>
+					<xs:enumeration value="Desc"/>
+					<!--  默认的，不用提供选项
+					<xs:enumeration value="None"/>
+					-->
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="CodeColumnKey" type="yigo-Key-Restriction"/>
+		<xs:attribute name="IsPrimary" type="yigo-Boolean"/>
+		<xs:attribute name="PrimaryKey" type="yigo-Boolean"/>
+		<xs:attribute name="RefCol" type="xs:string"/>
+		<xs:attribute name="RefItemKeyCol" type="yigo-Key-Restriction50"/>
+		<xs:attribute name="Persist" type="yigo-Boolean"/>
+		<xs:attribute name="SupportI18n" type="yigo-Boolean"/>
+		<xs:attribute name="ItemKey" type="yigo-Key-Restriction50"/>
+		<xs:attribute name="GroupType">
+			<xs:annotation>
+				<xs:documentation>Column对应的GroupType属性</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<!-- 默认的，不用提供选项
+					<xs:enumeration value=""/>
+					-->
+					<xs:enumeration value="Discrete"/>
+					<xs:enumeration value="Period"/>
+					<xs:enumeration value="PeriodGroup"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<!-- 迁移表使用 -->
+		<xs:attribute name="PeriodGranularity">
+			<xs:annotation>
+				<xs:documentation>Column对应的PeriodGranularity属性</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<!-- 默认的，不用提供选项
+					<xs:enumeration value=""/>
+					-->
+					<xs:enumeration value="Day"/>
+					<xs:enumeration value="Month"/>
+					<xs:enumeration value="Year"/>
+					<xs:enumeration value="FiscalMonth"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="SplitType">
+			<xs:annotation>
+				<xs:documentation>Column对应的SplitType属性</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<!-- 默认的，不用提供选项
+					<xs:enumeration value=""/>
+					-->
+					<xs:enumeration value="Period"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="PeriodImpl" type="xs:string"/>
+		<xs:attribute name="IgnoreQuery" type="yigo-Boolean"/>
+		<xs:attribute name="Precision" type="yigo-Int-GreaterThan_EqualTo_Zero"/>
+		<xs:attribute name="Scale" type="yigo-Int-GreaterThan_EqualTo_Zero"/>
+		<xs:attribute name="Length" type="yigo-Int-GreaterThan_EqualTo_Zero"/>
+		<xs:attribute name="Expand" type="yigo-Boolean"/>
+		<xs:attribute name="NeedRights" type="yigo-Boolean"/>
+		<xs:attribute name="IsPrimaryKey" type="yigo-Boolean"/>
+		<xs:attribute name="IgnoreSave" type="yigo-Boolean"/>
+		<xs:attribute name="AccessControl" type="yigo-Boolean"/>
+		<xs:assert id="存在数据元素则不能配置长度和精度属性" test="(exists(@DataElementKey) and not(exists(@Precision)) and not(exists(@Scale)) and not(exists(@Length))) or not(exists(@DataElementKey))"></xs:assert>
+		<xs:assert id="持久化的列长度需要小于30" test="if( not(exists(../@Persist)) and not(exists(@Persist))) then string-length(@Key)&lt;=30 else string-length(@Key)&lt;=50"></xs:assert>
+	</xs:complexType>
+
+	<xs:complexType name="yigo-TableFilter">
+		<xs:annotation>
+			<xs:documentation>TableFilter</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="Type">
+					<xs:annotation>
+						<xs:documentation>TableFilter对应的Type属性</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="Const"/>
+							<xs:enumeration value="Custom"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="yigo-IndexCollection">
+		<xs:sequence>
+			<xs:element name="Index" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:attribute name="Key" type="yigo-Key"/>
+					<xs:attribute name="Columns" type="xs:string"/>
+					<xs:attribute name="IsUnique" type="yigo-Boolean"/>
+					<xs:attribute name="Description" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="yigo-TableSourceCollection">
+		<xs:sequence>
+			<xs:element name="TableSource">
+				<xs:complexType>
+					<xs:attribute name="Type" type="xs:string"/>
+					<xs:attribute name="SourceType">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="Table"/>
+								<xs:enumeration value="DataObject"/>
+								<xs:enumeration value="Query"/>
+								<xs:enumeration value="Custom"/>
+								<xs:enumeration value="Interface"/>
+								<!-- erp不使用
+								<xs:enumeration value="LinkTable"/>
+								 -->
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="Rule" type="xs:string"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- 需要禁用的元素 -->
+	<xs:complexType name="yigo-PreSaveProcess">
+		<xs:annotation>
+			<xs:documentation>TableCollection下的PreSaveProcess元素</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded" minOccurs="0">
+			<xs:element ref="Process"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="Process">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute name="Description" type="xs:string"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- Relation -->
+	<xs:complexType name="yigo-Relation">
+		<xs:annotation>
+			<xs:documentation>Relation</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded" minOccurs="0">
+			<xs:element name="Layer">
+				<xs:complexType>
+					<xs:attribute name="ItemKey" type="yigo-Key-Restriction50"/>
+					<xs:attribute name="ColumnKey" type="yigo-Key-Restriction50"/>
+					<xs:attribute name="Relation" type="xs:string"/>
+					<xs:attribute name="TableKey" type="yigo-TableKey-Restriction50"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- PostDeleteProcess -->
+	<xs:complexType name="yigo-PostDeleteProcess">
+		<xs:annotation>
+			<xs:documentation>PostDeleteProcess</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded" minOccurs="0">
+			<xs:element ref="Process"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- PreDeleteProcess -->
+	<xs:complexType name="yigo-PreDeleteProcess">
+		<xs:annotation>
+			<xs:documentation>PreDeleteProcess</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded" minOccurs="0">
+			<xs:element ref="Process"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- EmbedTableCollection -->
+	<xs:complexType name="yigo-EmbedTableCollection">
+		<xs:annotation>
+			<xs:documentation>EmbedTableCollection</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded" minOccurs="0">
+			<xs:element name="EmbedTable">
+				<xs:complexType>
+					<xs:attribute name="ObjectKey" type="yigo-Key" use="required"/>
+					<xs:attribute name="TableKeys" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- OIDFilter -->
+	<xs:complexType name="yigo-OIDFilter">
+		<xs:annotation>
+			<xs:documentation>OIDFilter</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+
+	<!-- PostSaveProcess -->
+	<xs:complexType name="yigo-PostSaveProcess">
+		<xs:annotation>
+			<xs:documentation>PostSaveProcess</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded" minOccurs="0">
+			<xs:element ref="Process"/>
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

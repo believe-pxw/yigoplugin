@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="../../attribute/AttributeGroupDefinition.xsd"/>
+	<xs:include schemaLocation="GridLayoutPanel.xsd"/>
+	<xs:include schemaLocation="Grid.xsd"/>
+	<xs:include schemaLocation="PanelDefine.xsd"/>
+
+	<xs:annotation>
+		<xs:documentation>ERP系统APP的Panel的定义</xs:documentation>
+	</xs:annotation>
+	 
+	<xs:element name="LinearLayoutPanel">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Format" minOccurs="0"/>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:group ref="BaseControlGroup"/>
+					<xs:group ref="BasePanelGroup"/>
+					<xs:element ref="ToolBar" minOccurs="0"/>
+				</xs:choice>
+			</xs:sequence>
+			<xs:attributeGroup ref="yigo-Key-Caption"/>
+			<xs:attributeGroup ref="yigo-Visible-Enable"/>
+			<xs:attributeGroup ref="yigo-Component-XY"/>
+			<xs:attributeGroup ref="yigo-Panel-layout-collection"/>
+			<xs:attribute name="Orientation" type="yigo-OrientationType"/> 
+		</xs:complexType>
+		<xs:unique name="uniqueLinearLayoutPanelControlKey">
+			<xs:selector xpath="./*"/>
+			<xs:field xpath="@Key"/>
+		</xs:unique>
+	</xs:element>	
+	
+	<xs:element name="PopView">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:group ref="BaseControlGroup"/>
+					<xs:group ref="BasePanelGroup"/>
+					<xs:element name="OnClose" type="yigo-BaseScript2" minOccurs="0"/>
+				</xs:choice>
+			</xs:sequence>
+			<xs:attributeGroup ref="yigo-Key-Caption"/>
+			<xs:attributeGroup ref="yigo-Visible-Enable"/>
+			<xs:attributeGroup ref="yigo-Panel-layout-collection"/>
+		</xs:complexType>
+	</xs:element>	
+	
+	
+	<xs:element name="RowActionCollection">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="RowAction">
+					<xs:complexType mixed="true">
+						<xs:attributeGroup ref="yigo-Key-Caption"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="TableRow">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:group ref="BaseControlGroup"/>
+					<xs:group ref="BasePanelGroup"/>
+				</xs:choice>
+				<xs:element name="RowClick" type="yigo-BaseScript2" minOccurs="0"/>
+				<xs:element ref="RowActionCollection" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attributeGroup ref="yigo-Key-Caption"/>
+			<xs:attributeGroup ref="yigo-Visible-Enable"/>
+			<xs:attributeGroup ref="yigo-Panel-layout-collection"/>
+			<xs:attribute name="RowType" type="yigo-TableView-RowType"/>
+			<xs:attribute name="SeparatorStyle" type="xs:string"/>
+			<xs:attribute name="SeparatorColor" type="yigo-Color"/>
+			<xs:attribute name="LinkType" type="yigo-SubDetailLinkType"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Chart">
+		<xs:complexType>
+			<xs:attribute name="ChartType" type="yigo-Chart-ChartType"/>
+			<xs:attribute name="SourceType" type="yigo-Chart-SourceType"/>
+			<xs:attribute name="Title" type="xs:string"/>
+			<xs:attribute name="SeriesInRow" type="yigo-Boolean"/>
+			<xs:attribute name="SeriesAxisTitle" type="xs:string"/>
+			<xs:attribute name="CategoryAxisTitle" type="xs:string"/>
+			<xs:attribute name="ShowValues" type="yigo-Boolean"/>
+			<xs:attribute name="Fill" type="yigo-Boolean"/>
+			<xs:attribute name="HasAnimation" type="yigo-Boolean"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="TableView">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Format" minOccurs="0"/>
+				<xs:element name="TableRowCollection">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="TableRow" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attributeGroup ref="yigo-Key-Caption"/>
+			<xs:attributeGroup ref="yigo-Visible-Enable"/>
+			<xs:attributeGroup ref="yigo-Panel-layout-collection"/>
+		</xs:complexType>
+	</xs:element>
+	 
+	<xs:element name="TabGroup">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Format" minOccurs="0"/>
+				<xs:choice maxOccurs="unbounded">
+					<xs:element name="TabItem">
+						<xs:complexType>
+							<xs:attribute name="Key" type="yigo-Key"/>
+							<xs:attribute name="Text" type="xs:string"/>
+							<xs:attribute name="Icon" type="xs:string"/>
+							<xs:attribute name="FormKey" type="yigo-Key-Restriction50"/>
+							<xs:attribute name="SelectedIcon" type="xs:string"/>
+							<xs:attribute name="ClickAnim" type="xs:string"/>
+							<xs:attribute name="Visible" type="xs:string"/>
+							<xs:attribute name="VisibleDependency" type="xs:string"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:choice>
+			</xs:sequence>
+			<xs:attributeGroup ref="yigo-Key-Caption"/>
+			<xs:attributeGroup ref="yigo-Visible-Enable"/>
+			<xs:attributeGroup ref="yigo-Component-XY"/>
+			<xs:attributeGroup ref="yigo-Panel-layout-collection"/>
+			<xs:attribute name="Direction" type="yigo-DirectionType"/>
+			<xs:attribute name="TabMode" type="yigo-TabGroup-TabMode"/>
+			<xs:attribute name="IndicatorHeight" type="yigo-Dimension"/>
+			<xs:attribute name="IndicatorColor" type="yigo-Color"/>
+			<xs:attribute name="ClickAnim" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	
+</xs:schema>

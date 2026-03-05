@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:annotation>
+        <xs:documentation>APP中专用元素</xs:documentation>
+    </xs:annotation>
+
+    <xs:include schemaLocation="../attribute/AttributeGroupDefinition.xsd"/>
+    <xs:include schemaLocation="../attribute/restriction/APPAttributeRestriction.xsd"/>
+    <xs:include schemaLocation="complex/PanelDefine.xsd"/>
+
+    <xs:element name="ViewCollection">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="View">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="ComponentView">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element ref="GridLayout"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="Key" type="yigo-Key"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attributeGroup ref="yigo-Key-Caption"/>
+                        <xs:attribute name="Media" type="yigo-Media"/>
+                        <xs:attribute name="FormType" type="xs:string"/>
+                        <xs:attribute name="Rule" type="xs:string"/>
+                        <xs:attribute name="Size" type="xs:string"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="GridLayout">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="LayoutSpan">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="RowDefCollection"/>
+                            <xs:element ref="ColumnDefCollection"/>
+                        </xs:sequence>
+                        <xs:attribute name="Key" type="yigo-Key"/>
+                        <xs:attributeGroup ref="yigo-Component-XY"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="Key" type="yigo-Key"/>
+        </xs:complexType>
+    </xs:element>
+
+    
+    <xs:element name="NavigationBar">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="BarItem" minOccurs="0"/>
+                <xs:element ref="LeftButton" minOccurs="0"/>
+                <xs:element ref="RightButton" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute name="Title" type="xs:string"/>
+            <xs:attribute name="BackColor" type="xs:string"/>
+            <xs:attribute name="ForeColor" type="xs:string"/>
+            <xs:attribute name="HasLeftButton" type="xs:string"/>
+            <xs:attribute name="HasRightButton" type="xs:string"/>
+            <xs:attribute name="Elevation" type="xs:string"/>
+            <xs:attribute name="BackImage" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="BarItem">
+        <xs:annotation>
+            <xs:documentation>NavigationBar对应的BarItem标签</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attributeGroup ref="yigo-Key-Caption"/>
+            <xs:attribute name="Location">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="Left"/>
+                        <xs:enumeration value="Center"/>
+                        <xs:enumeration value="Right"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="LeftButton">
+        <xs:annotation>
+            <xs:documentation>NavigationBar对应的LeftButton标签</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attribute name="Icon" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="RightButton">
+        <xs:annotation>
+            <xs:documentation>NavigationBar对应的RightButton标签</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attribute name="Icon" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+     
+</xs:schema>

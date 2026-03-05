@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:include schemaLocation="attribute/restriction/AttributeRestriction.xsd"/>
+    <xs:include schemaLocation="attribute/AttributeGroupDefinition.xsd"/>
+    <xs:include schemaLocation="element/complex/DomainDefDefine.xsd"/>
+
+	<xs:annotation>
+		<xs:documentation>ERP系统DomainDef的属性检查规则</xs:documentation>
+	</xs:annotation>
+
+    <xs:element name="DomainDef">
+        <xs:annotation>
+            <xs:documentation>ERP系统DomainDef元素</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="DomainCollection">
+                    <xs:annotation>
+                        <xs:documentation>DomainDef元素的子元素DomainCollection</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Domain" maxOccurs="unbounded" minOccurs="1">
+                                <xs:annotation>
+                                    <xs:documentation>DomainDef元素的子元素Domain</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Item" type="yigo-DomainDef-Item" maxOccurs="unbounded" minOccurs="0">
+                                            <xs:unique name="uniqueDomaiItemnKey">
+                                                <xs:selector xpath="Item"/>
+                                                <xs:field xpath="@Key"/>
+                                            </xs:unique>
+                                        </xs:element>
+                                        <xs:element name="ItemKeyCollection" minOccurs="0">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="Item" type="yigo-DomainDef-Item" maxOccurs="unbounded"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attributeGroup ref="yigo-Key-Caption"/>
+                                    <xs:attribute name="RefControlType" type="yigo-ControlType-Biz"/>
+                                    <xs:attribute name="DataType" type="yigo-DataType"/>
+                                    <xs:attribute name="Length" type="yigo-Int-GreaterThan_EqualTo_NegativeOne"/>
+                                    <xs:attribute name="SourceType" type="yigo-ComboBox-SourceType"/>
+                                    <xs:attribute name="GroupKey" type="xs:string"/>
+                                    <xs:attribute name="Precision" type="yigo-Int-GreaterThan_EqualTo_NegativeOne"/>
+                                    <xs:attribute name="Scale" type="yigo-Int-GreaterThan_EqualTo_NegativeOne"/>
+                                    <xs:attribute name="ItemKey" type="yigo-Key-Restriction50"/>
+                                    <xs:attribute name="AllowMultiSelection" type="yigo-Boolean"/>
+                                    <xs:attribute name="VisibleLength" type="yigo-Int-GreaterThan_EqualTo_Zero"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                    <xs:unique name="uniqueDomainKey">
+                        <xs:selector xpath="Domain"/>
+                        <xs:field xpath="@Key"/>
+                    </xs:unique>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

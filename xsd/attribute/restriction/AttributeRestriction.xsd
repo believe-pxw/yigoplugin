@@ -1,0 +1,963 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:annotation>
+        <xs:documentation>ERP系统常用属性对于类型的定义</xs:documentation>
+    </xs:annotation>
+
+    <xs:simpleType name="yigo-Key">
+        <xs:annotation>
+            <xs:documentation>Yigo的Key，一般采用驼峰写法（有的首字母小写）</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-zA-Z][a-zA-Z0-9_]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-Key-Restriction">
+        <xs:annotation>
+            <xs:documentation>Yigo的Key，一般采用驼峰写法</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[A-Z][a-zA-Z0-9_]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-Key-Restriction30">
+        <xs:annotation>
+            <xs:documentation>Yigo组件的Key，一般采用驼峰写法，首字母大写，限定长度30</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[A-Z][a-zA-Z0-9_]*"/>
+            <xs:maxLength value="30"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-Key-Restriction50">
+        <xs:annotation>
+            <xs:documentation>Yigo布局组件的Key，一般采用驼峰写法，首字母大写，限定长度50</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[A-Z][a-zA-Z0-9_]*"/>
+            <xs:maxLength value="50"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-TableKey-Restriction50">
+        <xs:annotation>
+            <xs:documentation>Yigo TableKey，一般采用驼峰写法，，首字母大写，限定长度50，可以是${xxx}引用形式</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([A-Z][a-zA-Z0-9_]*|\$\{[A-Z][a-zA-Z0-9_]*\})"/>
+            <xs:maxLength value="50"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-Version">
+        <xs:annotation>
+            <xs:documentation>版本必须大于零</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-Boolean">
+        <xs:annotation>
+            <xs:documentation>统一，不要出现True，False等</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="true"/>
+            <xs:enumeration value="false"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-LabelType">
+        <xs:annotation>
+            <xs:documentation>标签类型，定义字段或列标题来源。F=Fixed Label(固定标签)，S=Short Label(短标签)，M=Medium Label(中等标签)，L=Long Label(长标签)，H=Header Label(标题标签)</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <!--<xs:enumeration value="F"/> 默认选项，不需要提供-->
+            <xs:enumeration value="S">
+                <xs:annotation>
+                    <xs:documentation>Short Label - 短标签</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="M">
+                <xs:annotation>
+                    <xs:documentation>Medium Label - 中等标签</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="L">
+                <xs:annotation>
+                    <xs:documentation>Long Label - 长标签</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="H">
+                <xs:annotation>
+                    <xs:documentation>Header Label - 标题标签</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-BaseComponent-LabelType">
+        <xs:annotation>
+            <xs:documentation>基础组件标签类型。F=Fixed Label(固定标签)，S=Short Label(短标签)，M=Medium Label(中等标签)，L=Long Label(长标签)</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <!--<xs:enumeration value="F"/> 默认选项，不需要提供-->
+            <xs:enumeration value="S">
+                <xs:annotation>
+                    <xs:documentation>Short Label - 短标签</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="M">
+                <xs:annotation>
+                    <xs:documentation>Medium Label - 中等标签</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="L">
+                <xs:annotation>
+                    <xs:documentation>Long Label - 长标签</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="yigo-FieldLabelType">
+        <xs:annotation>
+            <xs:documentation>Short, Medium, Long, Header</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Short"/>
+            <xs:enumeration value="Medium"/>
+            <xs:enumeration value="Long"/>
+            <xs:enumeration value="Header"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="yigo-Formula">
+        <xs:annotation>
+            <xs:documentation>Yigo的公式</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-Boolean-Formula">
+        <xs:annotation>
+            <xs:documentation>返回值为Boolean的公式</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <!--
+            <xs:pattern value="true|false|.+"/>   需要使用正则限定 TODO true或者false或者复杂公式  ,这个正则表达式好像是错误的             
+            -->
+        </xs:restriction>
+    </xs:simpleType>
+      
+    <xs:simpleType name="yigo-Color-Formula">
+        <xs:annotation>
+            <xs:documentation>颜色的公式</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-Int-GreaterThan_EqualTo_Zero">
+        <xs:annotation>
+            <xs:documentation>大于等于零的int</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-Int-GreaterThan_EqualTo_NegativeOne">
+        <xs:annotation>
+            <xs:documentation>大于等于-1的int，-1是无限制</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:int">
+            <xs:minInclusive value="-1"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-Color">
+        <xs:annotation>
+            <xs:documentation>颜色限定</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <!-- 三种写法：一：枚举 二：#FFFFFF 三：rgb（？，？，？） 四：rgba（？，？，？，？）-->
+            <!-- #(?:[0-9a-fA-F]{3}){1,2}$ -->
+            <!-- #([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}) -->            
+            <xs:pattern value="transparent|Transparent|red|green|blue|yellow|orange|purple|black|white|gray|#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})|rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)|rgba\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3}),\s*(0|1|0\.[0-9]+)\)"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-DataType">
+        <xs:annotation>
+            <xs:documentation>Colunm对应的DataType属性</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Integer"/>
+            <xs:enumeration value="Varchar"/>
+            <xs:enumeration value="Date"/>
+            <xs:enumeration value="DateTime"/>
+            <xs:enumeration value="Numeric"/>
+            <xs:enumeration value="Long"/>
+            <xs:enumeration value="Text"/>
+            <!--
+                <xs:enumeration value="Double"/>
+                <xs:enumeration value="Float"/>
+                <xs:enumeration value="Binary"/>
+                <xs:enumeration value="Boolean"/>
+                <xs:enumeration value="Char"/>
+                        -->
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-DictFilterType">
+        <xs:annotation>
+            <xs:documentation>过滤条件中对应的Type属性</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="FieldValue"/>
+            <xs:enumeration value="Expression"/>
+            <xs:enumeration value="Custom"/>
+            <xs:enumeration value="DataSet"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-ControlType-Biz">
+        <xs:annotation>
+            <xs:documentation>Yigo业务组件类型（布局组件除外）</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Button"/>
+            <xs:enumeration value="CheckBox"/>
+            <xs:enumeration value="CheckListBox"/>
+            <xs:enumeration value="ComboBox"/>
+            <xs:enumeration value="DatePicker"/>
+            <xs:enumeration value="TimePicker"/>
+            <xs:enumeration value="MonthPicker"/>
+            <xs:enumeration value="UTCDatePicker"/>
+            <xs:enumeration value="Dict"/>
+            <xs:enumeration value="DynamicDict"/>
+            <xs:enumeration value="CompDict"/>
+            <xs:enumeration value="HyperLink"/>
+            <xs:enumeration value="Label"/>
+            <xs:enumeration value="NumberEditor"/>
+            <xs:enumeration value="Image"/>
+            <xs:enumeration value="ProgressBar"/>
+            <xs:enumeration value="RadioButton"/>
+            <xs:enumeration value="TextButton"/>
+            <xs:enumeration value="TextEditor"/>
+            <xs:enumeration value="RichEditor"/>
+            <xs:enumeration value="Separator"/>
+            <xs:enumeration value="WebBrowser"/>
+            <xs:enumeration value="PasswordEditor"/>
+            <xs:enumeration value="DropdownButton"/>
+            <xs:enumeration value="TextArea"/>
+            <xs:enumeration value="Dynamic"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-HAlignment">
+        <xs:annotation>
+            <xs:documentation>水平对齐方式</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Left">
+                <xs:annotation>
+                    <xs:documentation>左对齐</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Center">
+                <xs:annotation>
+                    <xs:documentation>居中对齐</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Right">
+                <xs:annotation>
+                    <xs:documentation>右对齐</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-VAlignment">
+        <xs:annotation>
+            <xs:documentation>垂直对齐方式</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Top">
+                <xs:annotation>
+                    <xs:documentation>顶部对齐</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Center">
+                <xs:annotation>
+                    <xs:documentation>居中对齐</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Bottom">
+                <xs:annotation>
+                    <xs:documentation>底部对齐</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-ComboBox-TextShowType">
+        <xs:annotation>
+            <xs:documentation>下拉项显示方式</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ValueCaption"/>
+            <xs:enumeration value="Caption"/>
+            <xs:enumeration value="CaptionValue"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-QueryMatchType">
+        <xs:annotation>
+            <xs:documentation>字典模糊匹配类型</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value=""/><!-- 允许为空 -->
+            <xs:enumeration value="Full">
+                <xs:annotation>
+                    <xs:documentation>全匹配 %x%</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Right">
+                <xs:annotation>
+                    <xs:documentation>右通配 x%</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Left">
+                <xs:annotation>
+                    <xs:documentation>左通配 %x</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-LoadType">
+        <xs:annotation>
+            <xs:documentation>字典加载策略</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="L2R">
+                <xs:annotation>
+                    <xs:documentation>从子节点到根节点</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="R2L">
+                <xs:annotation>
+                    <xs:documentation>从根节点到子节点</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-TextField">
+        <xs:annotation>
+            <xs:documentation>字典的TextField属性</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Code"/>
+            <xs:enumeration value="UseCode"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-StateMask">
+        <xs:annotation>
+            <xs:documentation>字典的StateMask属性</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="(Enable|Disable|Discard)(\|(Enable|Disable|Discard))?(\|(Enable|Disable|Discard))?"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-DatePicker-EditType">
+        <xs:annotation>
+            <xs:documentation>日期类型编辑样式</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Pop">
+                <xs:annotation>
+                    <xs:documentation>底部向上弹出</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Sideslip">
+                <xs:annotation>
+                    <xs:documentation>侧滑新界面</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="DropView">
+                <xs:annotation>
+                    <xs:documentation>停靠弹出菜单样式</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Dialog">
+                <xs:annotation>
+                    <xs:documentation>中间显示对话框</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-NumberEditor-ZeroString">
+        <xs:annotation>
+            <xs:documentation>零值是否显示，平台是个文本，ERP限定几种选项，所以做成可选值</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="-"/>
+            <xs:enumeration value=" "/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-ComboBox-SourceType">
+        <xs:annotation>
+            <xs:documentation>下拉项来源类型</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Items">
+                <xs:annotation>
+                    <xs:documentation>固定值</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>             
+            <xs:enumeration value="Formula">
+                <xs:annotation>
+                    <xs:documentation>表达式</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <!-- erp不使用
+            <xs:enumeration value="Query"/>
+            -->
+            <xs:enumeration value="Status">
+                <xs:annotation>
+                    <xs:documentation>状态集合</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ParaGroup">
+                <xs:annotation>
+                    <xs:documentation>参数组</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>        
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-Image-SourceType">
+        <xs:annotation>
+            <xs:documentation>image来源</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Data"/>    
+            <xs:enumeration value="Resource"/>    
+            <xs:enumeration value="URL"/>        
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-ComboBox-Image-SourceType">
+        <xs:annotation>
+            <xs:documentation>下拉项和image来源，两个属性一致，而且都是枚举值</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Items"/>             
+            <xs:enumeration value="Formula"/>
+            <!-- erp不使用
+            <xs:enumeration value="Query"/>
+            -->
+            <xs:enumeration value="Status"/>
+            <xs:enumeration value="ParaGroup"/> 
+            <!-- Image 控件使用-->
+            <xs:enumeration value="Data"/>    
+            <xs:enumeration value="Resource"/>    
+            <xs:enumeration value="URL"/>        
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-Image-ScaleType">
+        <xs:annotation>
+            <xs:documentation>图片拉伸缩放类型，目前移动端使用</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">   
+            <xs:enumeration value="Center">
+                <xs:annotation>
+                    <xs:documentation>不缩放，居中显示</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Fit_XY">
+                <xs:annotation>
+                    <xs:documentation>图片宽高都进行拉伸，以撑满整个控件大小</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Fit_Start">
+                <xs:annotation>
+                    <xs:documentation>保持长宽比进行缩放，撑满控件的宽度或者高度，并显示在左上角</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Fit_Center">
+                <xs:annotation>
+                    <xs:documentation>保持长宽比进行缩放，撑满控件的宽度或者高度，并显示在中间</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Fit_End">
+                <xs:annotation>
+                    <xs:documentation>保持长宽比进行缩放，撑满控件的宽度或者高度，并显示在右下角</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Center_Crop">
+                <xs:annotation>
+                    <xs:documentation>保持长宽比进行缩放，不给控件留空隙地撑满控件，只有图片的最短的边能显示出来</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Start">
+                <xs:annotation>
+                    <xs:documentation>不缩放，左上方显示</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-LocationType">
+        <xs:annotation>
+            <xs:documentation>LocationType</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">   
+            <xs:enumeration value="top"/>
+            <xs:enumeration value="bottom"/>
+            <xs:enumeration value="left"/>
+            <xs:enumeration value="right"/>
+            <xs:enumeration value="center"/>
+        </xs:restriction>
+    </xs:simpleType>    
+    
+    <xs:simpleType name="yigo-Icon-LocationType">
+        <xs:annotation>
+            <xs:documentation>图标位置类型</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Top">
+                <xs:annotation>
+                    <xs:documentation>图标在上方</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Bottom">
+                <xs:annotation>
+                    <xs:documentation>图标在下方</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Left">
+                <xs:annotation>
+                    <xs:documentation>图标在左侧</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Right">
+                <xs:annotation>
+                    <xs:documentation>图标在右侧</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-GridCell-GroupType">
+        <xs:annotation>
+            <xs:documentation>单元格分组类型</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="RowGroup"/>
+            <xs:enumeration value="RowTreeGroup"/>
+			<xs:enumeration value="None"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-GridCell-SortType">
+        <xs:annotation>
+            <xs:documentation>单元格排序类型</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">   
+            <xs:enumeration value="None"/>  
+            <xs:enumeration value="Asc"/>
+            <xs:enumeration value="Desc"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-CondSign">
+        <xs:annotation>
+            <xs:documentation>条件符号，用于条件表达式中的比较运算符</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="=">
+                <xs:annotation>
+                    <xs:documentation>等于</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="like">
+                <xs:annotation>
+                    <xs:documentation>模糊匹配</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="none">
+                <xs:annotation>
+                    <xs:documentation>无条件</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="&gt;">
+                <xs:annotation>
+                    <xs:documentation>大于</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="&gt;=">
+                <xs:annotation>
+                    <xs:documentation>大于等于</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="&lt;">
+                <xs:annotation>
+                    <xs:documentation>小于</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="&lt;=">
+                <xs:annotation>
+                    <xs:documentation>小于等于</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="in">
+                <xs:annotation>
+                    <xs:documentation>包含于</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="between">
+                <xs:annotation>
+                    <xs:documentation>介于...之间</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="custom">
+                <xs:annotation>
+                    <xs:documentation>自定义条件</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="&lt;&gt;">
+                <xs:annotation>
+                    <xs:documentation>不等于</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration> 
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-Condition-Impl">
+        <xs:annotation>
+            <xs:documentation>定制条件实现类</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="com.bokesoft.yes.erp.condition.ERPCustomConditionImpl"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-ItemFilter-Impl">
+        <xs:annotation>
+            <xs:documentation>定制过滤实现类</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="com.bokesoft.yes.erp.condition.Filter"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-Column-ExpandType">
+        <xs:annotation>
+            <xs:documentation>列扩展类型</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Title"/>
+            <xs:enumeration value="Data"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-Expand-SourceType">
+        <xs:annotation>
+            <xs:documentation>扩展的数据来源类型</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Data"/>
+            <xs:enumeration value="Custom"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-Row-ExpandType">
+        <xs:annotation>
+            <xs:documentation>行扩展类型</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Dict"/>
+            <xs:enumeration value="Formula"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-ScriptType">
+        <xs:annotation>
+            <xs:documentation>定义脚本的类型</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Formula"/>
+            <!-- erp不用，不用提供选项
+            <xs:enumeration value="JavaScript"/>
+            <xs:enumeration value="Interface"/>
+            -->
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-Dimension">
+        <xs:annotation>
+            <xs:documentation>尺寸</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">  
+            <xs:pattern value="pref|unit|inherit|dp|auto|\d+px|\d+%"/>  
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-ComboFilter-Type">
+        <xs:annotation>
+            <xs:documentation>下拉项过滤类型</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Exclude"/>
+            <xs:enumeration value="Filter"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-OrientationType">
+        <xs:annotation>
+            <xs:documentation>面板的拆分方向</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Horizontal"/>
+            <xs:enumeration value="Vertical"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-TextEditor-Case">
+        <xs:annotation>
+            <xs:documentation>大小写转换类型</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="None"/>
+            <xs:enumeration value="Lower"/>
+            <xs:enumeration value="Upper"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-Button-Type">
+        <xs:annotation>
+            <xs:documentation>按钮类型</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Normal">
+                <xs:annotation>
+                    <xs:documentation>默认按钮</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Primary">
+                <xs:annotation>
+                    <xs:documentation>主要按钮</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Warning">
+                <xs:annotation>
+                    <xs:documentation>警告按钮</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Danger">
+                <xs:annotation>
+                    <xs:documentation>危险按钮</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-Filter-OptSign">
+        <xs:annotation>
+            <xs:documentation>过滤Filter类型</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="AND"/>
+            <xs:enumeration value="OR"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-ScriptRange">
+        <xs:annotation>
+            <xs:documentation>ScriptRange定义脚本的应用范围</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Rule"/>
+            <xs:enumeration value="Action"/>
+            <xs:enumeration value="All"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-FormVerb">
+        <xs:annotation>
+            <xs:documentation>FormVerb定义表单中的系统操作动词</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Load"/>
+            <xs:enumeration value="Save"/>
+            <xs:enumeration value="Delete"/>
+            <xs:enumeration value="Edit"/>
+            <xs:enumeration value="Show"/>
+            <xs:enumeration value="Other"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-SourceType">
+        <xs:annotation>
+            <xs:documentation>过滤值类型</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Field"/>
+            <xs:enumeration value="Formula"/>
+            <xs:enumeration value="Const"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-RoundingMode">
+        <xs:annotation>
+            <xs:documentation>舍入模式，用于数值计算时的四舍五入规则</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="HALF_UP">
+                <xs:annotation>
+                    <xs:documentation>四舍五入，当舍弃部分>=0.5时向上舍入</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ROUND_UP">
+                <xs:annotation>
+                    <xs:documentation>向大值舍入，进1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ROUND_DOWN">
+                <xs:annotation>
+                    <xs:documentation>向小值舍入，截取</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ROUND_CEILING">
+                <xs:annotation>
+                    <xs:documentation>向右值舍入，向正无穷方向舍入</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ROUND_FLOOR">
+                <xs:annotation>
+                    <xs:documentation>向左值舍入，向负无穷方向舍入</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-RowTree-Type">
+        <xs:annotation>
+            <xs:documentation>脚本类型</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Formula"/>
+            <xs:enumeration value="JavaScript"/>
+            <xs:enumeration value="Interface"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-WebBrowser-SourceType">
+        <xs:annotation>
+            <xs:documentation>WebBrowser来源类型</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Html"/>
+            <xs:enumeration value="Url"/>
+            <xs:enumeration value="Resource"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="yigo-DirectionType">
+        <xs:annotation>
+            <xs:documentation>Direction定义方位</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="top"/>
+            <xs:enumeration value="bottom"/>
+            <xs:enumeration value="left"/>
+            <xs:enumeration value="right"/>
+            <xs:enumeration value="center"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-CheckBox-CheckedType">
+        <xs:annotation>
+            <xs:documentation>选中联动类型,PS,P,S,""</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value=""/>
+            <xs:enumeration value="PS"/>
+            <xs:enumeration value="P"/>
+            <xs:enumeration value="S"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-CheckBox-UnCheckedType">
+        <xs:annotation>
+            <xs:documentation>取消选中联动类型,PS,P,S,""</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value=""/>
+            <xs:enumeration value="PS"/>
+            <xs:enumeration value="P"/>
+            <xs:enumeration value="S"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yigo-DeliveryClass">
+        <xs:annotation>
+            <xs:documentation>交付类，定义数据表的传输和复制属性</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="A">
+                <xs:annotation>
+                    <xs:documentation>应用表(主数据和业务数据)，不进行传输和数据复制</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="C">
+                <xs:annotation>
+                    <xs:documentation>定制表，仅由用户维护</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="L">
+                <xs:annotation>
+                    <xs:documentation>临时数据表，不进行传输和数据复制</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="G">
+                <xs:annotation>
+                    <xs:documentation>定制表，不可修改和删除，只能新增数据</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="E">
+                <xs:annotation>
+                    <xs:documentation>控制表</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="S">
+                <xs:annotation>
+                    <xs:documentation>系统表，不能被用户修改</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="W">
+                <xs:annotation>
+                    <xs:documentation>系统表，用户可修改</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
