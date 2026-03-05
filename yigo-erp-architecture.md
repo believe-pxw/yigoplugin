@@ -1,0 +1,13 @@
+1.单页面web应用
+2.页面都是通过form表单渲染形成
+3.form表单都是通过xml文件配置 @MM_PurchaseOrder.xml,里面包含了页面的布局，数据对象（DataObject，里面包含了表的定义，里面的表字段称之为Column），界面操作（Operation），控件（Control,ERP中称之为Field），事件（ValueChanged,Button等），宏定义（Macro），在事件与宏中支持表达式（语法参考@peixw.bnf）
+4.前后端交互是通过@RichDocumentDefaultCmd.java这个服务，其中，dealArguments代表将json数据转化为DocumentRecordDirty对象，getDirtyJSON代表将DocumentRecordDirty对象转化为json数据返回给前端
+5.@RichDocument.java是后端处理页面数据的类，也代表一个Form表单，是DocumentRecordDirty的父类，里面提供了setValue,getValue等方法
+6.二次开发：表示基于上述通用模式下，进行二次开发，二次开发的类需要继承EntityContextAction，比如@StrategiesFormula.java,二次开发使用java进行编写，其中，内部变量_context代表RichDocumentContext，代表当前上下文，里面记录了RichDocument对象，也就是当前的表单数据。二次开发在xml中通过类名.方法名的方式调用java方法
+7.二次开发中，yigo-erp通过将form的xml文件转换成BillEntity @PM_Strategy.java文件，里面封装了若干方法，可在java中快速对字段或表进行增删改操作，实际上底层都是通过RichDocument对象来执行，同时，还提供了formkey_loader.java文件，里面根据fieldkey封装了若干方法，这些方法都是查询条件，最后通过load()方法可以从数据库中查询出数据并转换为richdocument对象。还有TableEntity，这种是表单内的某张表的封装，与billentity的差异就是内部是一个DataTable，使用ColumnKey进行访问
+8.RichDocumentContext中承载着数据库连接，如果需要sql可通过SqlString拼接后再调用com.bokesoft.yes.mid.cmd.richdocument.strut.RichDocumentContext#getResultSet(com.bokesoft.yes.mid.parameterizedsql.SqlString)方法执行，返回结果集
+9.RichDocumentContext中有一个Paras 键值对对象，可以在上下文中存储任何自定义参数。
+10.@entry.xml中定义了菜单入口，打开菜单后会根据formkey打开对应的form表单
+11.Commondef.xml中定义了顶层宏公式，在form中可以调用，注意：form中同名的宏公式会覆盖Commondef.xml中的宏公式
+12.由于是erp系统，现在我的xml与java二开代码都已经有百万行代码之多
+13.预定义数据：每一个form，特别是后台管理类的form，都会有一个预定义数据，在initializeData文件夹下有一个与form同名的xml文件，其中，里面的结构为dataobject中的表结构，数据对应为预定义的数据，这部分数据可用于初始化系统时的初始数据，预定义数据还有一个用途，就是用于系统升级，根据里面的数据升级系统。具体的内容可参考[text](../../../Users/boke/Desktop/Workbench/source_202512/bokeerp/erp-update/src/main/resources/erp-solution-update/分支2512-000阶段升级记录/imconfig/预定义数据/TCodeAuthorityObjectFieldDefaultValue.xml)文件，还有一个规则说明下，就是父子表关联通过父表__OldPrimaryValue与子表POID关联。

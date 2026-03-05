@@ -1,0 +1,192 @@
+// MyLanguage.bnf - Context-Aware Version with Decimal Support and Comments
+
+{
+  tokens = [
+    IF_KEYWORD = "if"
+    ELSE_KEYWORD = "else"
+    WHILE_KEYWORD = "while"
+    RETURN_KEYWORD = "return"
+    VAR_KEYWORD = "var"
+    PARENT_KEYWORD = "regexp:[pP]arent"
+    CONTAINER_KEYWORD = "regexp:[cC]ontainer"
+    TRUE_KEYWORD = "true"
+    FALSE_KEYWORD = "false"
+    IIF_KEYWORD = "IIF"
+
+    // 特殊函数标识符
+    CONFIRM_MSG = "ConfirmMsg"
+
+    MACRO_IDENTIFIER = "regexp:Macro_[a-zA-Z_][a-zA-Z0-9_]*"
+    JAVA_PATH_IDENTIFIER = "regexp:com*(\.[a-zA-Z_][a-zA-Z0-9_]*)+"
+    IDENTIFIER = "regexp:[a-zA-Z_][a-zA-Z0-9_]*"
+
+    SINGLE_QUOTED_STRING = "regexp:'[^']*'"
+    DOUBLE_QUOTED_STRING = "regexp:\"[^\"]*\""
+
+    // 扩展数字类型以支持小数
+    DECIMAL_NUMBER = "regexp:[0-9]+\.[0-9]+"  // 小数：如 0.00, 3.14, 123.456
+    INTEGER_NUMBER = "regexp:[0-9]+"          // 整数：如 0, 123, 456
+    NUMBER = "regexp:[0-9]+(\.[0-9]+)?"       // 通用数字匹配（整数或小数）
+
+    // 注释 tokens
+    LINE_COMMENT = "regexp://.*"                           // 单行注释：// 开头到行尾
+    BLOCK_COMMENT = "regexp:/\*([^*]|\*+[^*/])*\*+/"      // 多行注释：/* ... */
+
+    AMP_ENTITY = "&amp;"
+    LT_ENTITY = "&lt;"
+    GT_ENTITY = "&gt;"
+    AND_OP_ENTITY = "&amp;&amp;"
+
+    PLUS = "+"
+    MINUS = "-"
+    MUL = "*"
+    DIV = "/"
+    AMPERSAND = "&"
+    AND_OP = "&&"
+    OR_OP = "||"
+    DOT = "."
+    NOT_OP = "!"
+    EQ = "="
+
+    LESS_EQUAL = "<="
+    GREATER_EQUAL = ">="
+    EQUAL_EQUAL = "=="
+    NOT_EQUAL = "!="
+    LESS = "<"
+    GREATER = ">"
+    NOT_EQUAL_ALT = "<>"
+
+    LPAREN = "("
+    RPAREN = ")"
+    SEMICOLON = ";"
+    COMMA = ","
+    LBRACE = "{"
+    RBRACE = "}"
+    COLON = ":"
+  ]
+}
+
+// ---------------------------------------------------------------------
+// 语法规则 (Grammar Rules)
+// ---------------------------------------------------------------------
+
+root ::= (comment | top_level_statement)*
+
+// 注释规则
+comment ::= LINE_COMMENT | BLOCK_COMMENT
+
+private top_level_statement ::=
+  (variable_declaration SEMICOLON)
+  | (variable_assignment SEMICOLON?)
+  | ((expression_sequence | if_statement | while_statement |return_statement) SEMICOLON?)
+
+expression_sequence ::= expression_statement (SEMICOLON expression_statement)*
+
+statement ::=
+  comment
+  | (variable_declaration SEMICOLON)
+  | (variable_assignment SEMICOLON?)
+  | ((expression_sequence | if_statement | while_statement | return_statement) SEMICOLON?)
+
+variable_declaration ::= VAR_KEYWORD IDENTIFIER (EQ expression)?
+variable_assignment ::= IDENTIFIER EQ expression
+expression_statement ::= expression
+
+if_statement ::= IF_KEYWORD LPAREN expression RPAREN statement_block (ELSE_KEYWORD statement_block)?
+
+while_statement ::= WHILE_KEYWORD LPAREN expression RPAREN statement_block
+return_statement ::= RETURN_KEYWORD expression
+
+statement_block ::= statement | block_statement
+
+block_statement ::= LBRACE (comment | statement)* RBRACE COLON*
+
+expression ::= logical_or_expression
+private logical_or_expression ::= logical_and_expression (OR_OP logical_and_expression)*
+private logical_and_expression ::= comparison_expression ((AND_OP|AND_OP_ENTITY) comparison_expression)*
+
+private comparison_expression ::= additive_expression ((LESS_EQUAL | GREATER_EQUAL | EQUAL_EQUAL | NOT_EQUAL | LESS | GREATER | NOT_EQUAL_ALT | LT_ENTITY | GT_ENTITY) additive_expression)*
+
+private additive_expression ::= multiplicative_expression ((PLUS | MINUS | AMPERSAND | AMP_ENTITY) multiplicative_expression)*
+
+private multiplicative_expression ::= unary_expression ((MUL | DIV) unary_expression)*
+private unary_expression ::= (MINUS | NOT_OP) unary_expression | primary_expression
+
+primary_expression ::=
+  constant
+  | function_call
+  | variable_reference
+  | LPAREN expression RPAREN
+  | boolean_constant
+
+variable_reference ::= path
+
+// 扩展常量规则以支持不同类型的数字
+constant ::=
+  SINGLE_QUOTED_STRING
+  | DOUBLE_QUOTED_STRING
+  | numeric_constant
+
+// 新增数字常量规则，支持小数和整数
+numeric_constant ::=
+  DECIMAL_NUMBER      // 优先匹配小数
+  | INTEGER_NUMBER    // 然后匹配整数
+
+boolean_constant ::= TRUE_KEYWORD | FALSE_KEYWORD
+
+// 关键改进：区分不同类型的函数调用
+function_call ::=
+  ((PARENT_KEYWORD | CONTAINER_KEYWORD) DOT)?
+  (
+    confirm_msg_call |          // 特殊处理 ConfirmMsg
+    regular_function_call       // 普通函数调用
+  )
+
+// ConfirmMsg 特殊处理：支持新的参数格式
+confirm_msg_call ::= CONFIRM_MSG LPAREN confirm_msg_args RPAREN
+confirm_msg_args ::=
+  expression COMMA expression                                              // 必需：args[0]消息代码, args[1]消息文本
+  (COMMA message_params_expression                                        // 可选：args[2]消息参数
+    (COMMA expression                                                     // 可选：args[3]样式(OK,YES_NO,YES_NO_CANCEL)
+      (COMMA callback_object)?                                            // 可选：args[4]回调函数对象
+    )?
+  )?
+
+// 消息参数表达式：支持多种格式
+message_params_expression ::=
+  parameter_array |           // {{参数1},{参数2},{参数3}} 的形式
+  double_brace_expression |   // {{表达式}} 的形式
+  object_literal |            // {} 空对象形式
+  expression                  // 其他表达式形式
+
+// 双大括号表达式：{{表达式}}
+double_brace_expression ::= LBRACE LBRACE expression RBRACE RBRACE
+
+// 参数数组：{{param1},{param2},{param3}}
+parameter_array ::= LBRACE LBRACE expression RBRACE (COMMA LBRACE expression RBRACE)* RBRACE
+
+// 回调函数对象：专门用于ConfirmMsg的回调
+callback_object ::= LBRACE callback_property (COMMA callback_property)* RBRACE
+callback_property ::= callback_key COLON code_block_literal
+callback_key ::=
+  SINGLE_QUOTED_STRING | DOUBLE_QUOTED_STRING |  // 字符串形式的键
+  IDENTIFIER                                     // 或标识符形式
+
+// 普通函数调用
+regular_function_call ::=
+  (macro_call_expression | path | java_method_call | iif_function_call)
+  LPAREN argument_list? RPAREN
+
+// 对象字面量：专门用于函数参数中的字面量对象
+object_literal ::= LBRACE object_literal_content RBRACE
+object_literal_content ::= (object_property (COMMA object_property)*)?
+object_property ::= IDENTIFIER COLON (object_literal | expression | code_block_literal)
+
+// 代码块字面量：在对象属性中表示要执行的代码
+code_block_literal ::= LBRACE (comment | statement)* RBRACE
+
+macro_call_expression ::= MACRO_IDENTIFIER
+java_method_call ::= JAVA_PATH_IDENTIFIER
+iif_function_call ::= IIF_KEYWORD
+argument_list ::= expression (COMMA expression)*
+private path ::= ((PARENT_KEYWORD | CONTAINER_KEYWORD) DOT)? IDENTIFIER
