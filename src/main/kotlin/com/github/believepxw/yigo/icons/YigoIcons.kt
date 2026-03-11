@@ -30,8 +30,6 @@ object YigoIcons {
         @JvmField val TextButton = IconLoader.getIcon("/icons/controls/textbutton.svg", YigoIcons::class.java)
         @JvmField val Label = IconLoader.getIcon("/icons/controls/label.svg", YigoIcons::class.java)
         @JvmField val Image = IconLoader.getIcon("/icons/controls/image.svg", YigoIcons::class.java)
-        @JvmField val IconControl = IconLoader.getIcon("/icons/controls/icon_control.svg", YigoIcons::class.java)
         @JvmField val HyperLink = IconLoader.getIcon("/icons/controls/hyperlink.svg", YigoIcons::class.java)
-        @JvmField val Grid = IconLoader.getIcon("/icons/controls/grid.svg", YigoIcons::class.java)
     }
 }
