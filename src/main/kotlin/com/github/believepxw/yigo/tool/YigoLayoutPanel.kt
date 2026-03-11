@@ -731,17 +731,29 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
 
     private fun getIconForTag(tagName: String): Icon? {
         return when (tagName) {
-            "CheckBox", "CheckListBox", "RadioButton" -> com.intellij.icons.AllIcons.Actions.Checked
-            "ComboBox", "DropdownButton" -> com.intellij.icons.AllIcons.General.ArrowDown
-            "Dict", "DynamicDict" -> com.intellij.icons.AllIcons.Actions.Find
-            "TextEditor", "TextArea", "RichEditor", "PasswordEditor" -> com.intellij.icons.AllIcons.FileTypes.Text
-            "NumberEditor" -> com.intellij.icons.AllIcons.Debugger.Db_array
-            "DatePicker", "UTCDatePicker", "MonthPicker", "TimePicker" -> com.intellij.icons.AllIcons.Vcs.History
-            "Button" -> com.intellij.icons.AllIcons.Gutter.Mnemonic
-            "TextButton" -> com.intellij.icons.AllIcons.Scope.ChangedFiles
-            "Label" -> com.intellij.icons.AllIcons.General.Note
-            "Image", "Icon" -> com.intellij.icons.AllIcons.FileTypes.Image
-            "HyperLink" -> com.intellij.icons.AllIcons.Ide.Link
+            "CheckBox" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.CheckBox
+            "CheckListBox" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.CheckListBox
+            "RadioButton" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.RadioButton
+            "ComboBox" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.ComboBox
+            "DropdownButton" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.DropdownButton
+            "Dict" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.Dict
+            "DynamicDict" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.DynamicDict
+            "TextEditor" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.TextEditor
+            "TextArea" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.TextArea
+            "RichEditor" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.RichEditor
+            "PasswordEditor" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.PasswordEditor
+            "NumberEditor" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.NumberEditor
+            "DatePicker" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.DatePicker
+            "UTCDatePicker" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.UTCDatePicker
+            "MonthPicker" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.MonthPicker
+            "TimePicker" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.TimePicker
+            "Button" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.Button
+            "TextButton" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.TextButton
+            "Label" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.Label
+            "Image" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.Image
+            "Icon" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.IconControl
+            "HyperLink" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.HyperLink
+            "Grid" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.Grid
             else -> null
         }
     }
