@@ -1,5 +1,6 @@
 package com.github.believepxw.yigo.tool
 
+import com.github.believepxw.yigo.ref.VariableReference
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ModalityState
 import com.intellij.openapi.application.ReadAction
@@ -17,6 +18,7 @@ import com.intellij.openapi.wm.ToolWindow
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiManager
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlFile
 import com.intellij.psi.xml.XmlTag
 import com.intellij.ui.SearchTextField
@@ -32,8 +34,7 @@ import java.awt.dnd.DragSource
 import java.awt.event.*
 import javax.swing.*
 import javax.swing.border.Border
-import javax.swing.event.DocumentEvent
-import javax.swing.event.DocumentListener
+import javax.swing.table.DefaultTableModel
 
 class YigoLayoutPanel(private val project: Project, private val toolWindow: ToolWindow) : JPanel(BorderLayout()) {
 
@@ -72,6 +73,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
     // Flag to prevent recursive navigation updates
     private var isProgrammaticSwitch = false
     private var isNavigatingToXml = false
+    private var isDeletingControls = false
 
     init {
         rootPanel.layout = BoxLayout(rootPanel, BoxLayout.Y_AXIS)
@@ -126,6 +128,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
             override fun childMoved(event: com.intellij.psi.PsiTreeChangeEvent) { processEvent(event) }
             
             fun processEvent(event: com.intellij.psi.PsiTreeChangeEvent) {
+                 if (isDeletingControls) return
                  val element = event.parent ?: event.child ?: return
                  val tag = PsiTreeUtil.getParentOfType(element, XmlTag::class.java, false)
                  
@@ -780,8 +783,14 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                  ds.startDrag(dge, DragSource.DefaultMoveDrop, transferable, null)
                  DragContext.draggedTag = tag
              }
-        }
+         }
         ds.createDefaultDragGestureRecognizer(panel, DnDConstants.ACTION_MOVE, listener)
+        
+        // Right-click delete for leaf controls
+        panel.addMouseListener(object : MouseAdapter() {
+            override fun mousePressed(e: MouseEvent) { if (e.isPopupTrigger) showLeafDeleteMenu(e, tag) }
+            override fun mouseReleased(e: MouseEvent) { if (e.isPopupTrigger) showLeafDeleteMenu(e, tag) }
+        })
         
         return panel
     }
@@ -1310,6 +1319,20 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                     }
                     menu.add(itemSearch)
                     
+                    menu.addSeparator()
+                    val batchDeleteItem = JMenuItem("Batch Delete...")
+                    batchDeleteItem.addActionListener {
+                        showBatchDeleteDialog(tag)
+                    }
+                    menu.add(batchDeleteItem)
+                    
+                    val deleteItem = JMenuItem("Delete")
+                    deleteItem.icon = com.intellij.icons.AllIcons.Actions.GC
+                    deleteItem.addActionListener {
+                        deleteTagsWithCascade(listOf(tag))
+                    }
+                    menu.add(deleteItem)
+                    
                     menu.show(e.component, e.x, e.y)
                 }
             }
@@ -1679,6 +1702,321 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                 lastSearchHighlight = null
             }
         }
+    }
+
+    // ===================== Delete Feature =====================
+    
+    private fun showLeafDeleteMenu(e: MouseEvent, tag: XmlTag) {
+        val menu = JPopupMenu()
+        val deleteItem = JMenuItem("Delete")
+        deleteItem.icon = com.intellij.icons.AllIcons.Actions.GC
+        deleteItem.addActionListener {
+            deleteTagsWithCascade(listOf(tag))
+        }
+        menu.add(deleteItem)
+        menu.show(e.component, e.x, e.y)
+    }
+    
+    private fun showBatchDeleteDialog(containerTag: XmlTag) {
+        val childTags = mutableListOf<Pair<XmlTag, String>>()
+        
+        ApplicationManager.getApplication().runReadAction {
+            if (!containerTag.isValid) return@runReadAction
+            
+            when (containerTag.name) {
+                "Grid" -> {
+                    // Only list GridColumns, not GridCells
+                    val colCollection = containerTag.findFirstSubTag("GridColumnCollection")
+                    colCollection?.findSubTags("GridColumn")?.forEach { col ->
+                        val key = col.getAttributeValue("Key") ?: col.name
+                        val caption = col.getAttributeValue("Caption") ?: ""
+                        val display = if (caption.isNotEmpty()) "$key ($caption)" else key
+                        childTags.add(col to display)
+                    }
+                }
+                else -> {
+                    // GridLayoutPanel, FlexGridLayoutPanel, FlexFlowLayoutPanel, etc.
+                    containerTag.subTags.filter { isValidGridChild(it.name) }.forEach { child ->
+                        val key = child.getAttributeValue("Key") ?: child.name
+                        val caption = child.getAttributeValue("Caption") ?: ""
+                        val display = if (caption.isNotEmpty()) "$key ($caption)" else "$key [${child.name}]"
+                        childTags.add(child to display)
+                    }
+                }
+            }
+        }
+        
+        if (childTags.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No deletable items found.", "Batch Delete", JOptionPane.INFORMATION_MESSAGE)
+            return
+        }
+        
+        // Build dialog with JTable checkboxes
+        val dialog = JDialog(SwingUtilities.getWindowAncestor(this), "Batch Delete", Dialog.ModalityType.APPLICATION_MODAL)
+        dialog.layout = BorderLayout()
+        
+        val columnNames = arrayOf("", "Name")
+        val data = Array(childTags.size) { arrayOf(false as Any, childTags[it].second as Any) }
+        val tableModel = object : DefaultTableModel(data, columnNames) {
+            override fun getColumnClass(columnIndex: Int): Class<*> {
+                return if (columnIndex == 0) java.lang.Boolean::class.java else String::class.java
+            }
+            override fun isCellEditable(row: Int, column: Int): Boolean = column == 0
+        }
+        val table = javax.swing.JTable(tableModel)
+        table.columnModel.getColumn(0).preferredWidth = 30
+        table.columnModel.getColumn(0).maxWidth = 40
+        table.columnModel.getColumn(1).preferredWidth = 350
+        table.rowHeight = 24
+        
+        val tableScrollPane = JBScrollPane(table)
+        tableScrollPane.preferredSize = Dimension(420, Math.min(childTags.size * 24 + 30, 400))
+        dialog.add(tableScrollPane, BorderLayout.CENTER)
+        
+        // Buttons panel
+        val buttonsPanel = JPanel(FlowLayout(FlowLayout.RIGHT))
+        val selectAllBtn = JButton("Select All")
+        selectAllBtn.addActionListener {
+            for (i in 0 until tableModel.rowCount) tableModel.setValueAt(true, i, 0)
+        }
+        val deselectAllBtn = JButton("Deselect All")
+        deselectAllBtn.addActionListener {
+            for (i in 0 until tableModel.rowCount) tableModel.setValueAt(false, i, 0)
+        }
+        val deleteBtn = JButton("Delete Selected")
+        deleteBtn.addActionListener {
+            val selectedTags = mutableListOf<XmlTag>()
+            for (i in 0 until tableModel.rowCount) {
+                if (tableModel.getValueAt(i, 0) == true) {
+                    selectedTags.add(childTags[i].first)
+                }
+            }
+            if (selectedTags.isEmpty()) {
+                JOptionPane.showMessageDialog(dialog, "No items selected.", "Batch Delete", JOptionPane.WARNING_MESSAGE)
+                return@addActionListener
+            }
+            dialog.dispose()
+            deleteTagsWithCascade(selectedTags)
+        }
+        val cancelBtn = JButton("Cancel")
+        cancelBtn.addActionListener { dialog.dispose() }
+        
+        buttonsPanel.add(selectAllBtn)
+        buttonsPanel.add(deselectAllBtn)
+        buttonsPanel.add(deleteBtn)
+        buttonsPanel.add(cancelBtn)
+        dialog.add(buttonsPanel, BorderLayout.SOUTH)
+        
+        dialog.pack()
+        dialog.setLocationRelativeTo(this)
+        dialog.isVisible = true
+    }
+    
+    /**
+     * Cascade-delete the given tags.
+     * - GridColumn: deletes associated GridCells + DataBinding Column tags with matching ColumnKey
+     * - Grid: deletes corresponding Table in DataSource's DataObject
+     * - Panel containers: recursively scans children for GridColumns and cascades
+     * Checks for references via ReferencesSearch before deleting (warning only, not blocking).
+     */
+    private fun deleteTagsWithCascade(tags: List<XmlTag>) {
+        val allTagsToDelete = mutableListOf<XmlTag>()
+        val warningMessages = mutableListOf<String>()
+        
+        ApplicationManager.getApplication().runReadAction {
+            for (tag in tags) {
+                if (!tag.isValid) continue
+                allTagsToDelete.add(tag)
+                collectCascadeTargets(tag, allTagsToDelete, warningMessages)
+            }
+        }
+        
+        ApplicationManager.getApplication().invokeLater {
+            // Remove Swing components before deleting XML to avoid full rerender
+            isDeletingControls = true
+            try {
+                // Remove UI components for all tags being deleted (including cascade targets like GridCells)
+                for (tag in allTagsToDelete) {
+                    val comp = tagToComponent[tag]
+                    if (comp != null) {
+                        val parent = comp.parent
+                        // If wrapped in JScrollPane, remove the scroll pane instead
+                        val toRemove = if (parent is javax.swing.JViewport && parent.parent is JBScrollPane) {
+                            parent.parent
+                        } else {
+                            comp
+                        }
+                        toRemove.parent?.remove(toRemove)
+                        toRemove.parent?.let { it.revalidate(); it.repaint() }
+                        tagToComponent.remove(tag)
+                    }
+                }
+                rootPanel.revalidate()
+                rootPanel.repaint()
+                
+                // Collect parent Grids BEFORE deleting XML (parentTag will be invalid after delete)
+                val gridsToRefresh = mutableSetOf<XmlTag>()
+                for (tag in tags) {
+                    if (tag.name == "GridColumn" && tag.isValid) {
+                        val gridTag = tag.parentTag?.parentTag // GridColumn -> GridColumnCollection -> Grid
+                        if (gridTag != null && gridTag.name == "Grid") {
+                            gridsToRefresh.add(gridTag)
+                        }
+                    }
+                }
+                
+                WriteCommandAction.runWriteCommandAction(project, "Delete Controls", null, Runnable {
+                    for (t in allTagsToDelete) {
+                        if (t.isValid) {
+                            t.delete()
+                        }
+                    }
+                })
+                
+                // Refresh parent Grid components after deletion to rebuild layout
+                ApplicationManager.getApplication().runReadAction {
+                    for (gridTag in gridsToRefresh) {
+                        if (gridTag.isValid) {
+                            refreshGridComponent(gridTag)
+                        }
+                    }
+                }
+            } finally {
+                isDeletingControls = false
+            }
+        }
+    }
+    
+    /**
+     * Recursively collect cascade targets for the given tag.
+     */
+    private fun collectCascadeTargets(tag: XmlTag, result: MutableList<XmlTag>, warnings: MutableList<String>) {
+        when (tag.name) {
+            "GridColumn" -> {
+                val colKey = tag.getAttributeValue("Key") ?: return
+                val gridTag = tag.parentTag?.parentTag ?: return
+                var gridCell = findGridCellsForColumn(gridTag, colKey)
+                var refColumn: XmlAttributeValue? = null
+                if (gridCell.size > 0) {
+                    result.addAll(gridCell)
+                    for (xmlTag in gridCell.first().subTags) {
+                        if (xmlTag.name == "DataBinding") {
+                            refColumn = xmlTag.getAttribute("ColumnKey")?.valueElement
+                        }
+                    }
+                }
+
+                if (refColumn != null) {
+                    var def = refColumn.references.first()?.resolve()
+                    if (def != null) {
+                        result.add(def.parent.parent as XmlTag)
+                    }
+
+                }
+            }
+            "Grid" -> {
+                // Cascade: delete all GridColumns inside (which cascades their cells + DataBinding)
+                val colCollection = tag.findFirstSubTag("GridColumnCollection")
+                colCollection?.findSubTags("GridColumn")?.forEach { col ->
+                    collectCascadeTargets(col, result, warnings)
+                }
+                // Cascade: delete corresponding Table in DataSource DataObject
+                val rowCollection = tag.findFirstSubTag("GridRowCollection")
+                val firstRow = rowCollection?.findSubTags("GridRow")?.firstOrNull()
+                val tableKey = firstRow?.getAttributeValue("TableKey")
+                if (tableKey != null) {
+                    var def = firstRow.getAttribute("TableKey")?.valueElement?.references?.first()?.resolve()
+                    if (def != null) {
+                        result.add(def.parent.parent as XmlTag)
+                    }
+
+                }
+            }
+            in VariableReference.variableDefinitionTagNames ->{
+                var refColumn: XmlAttributeValue? = null
+                for (xmlTag in tag.subTags) {
+                    if (xmlTag.name == "DataBinding") {
+                        refColumn = xmlTag.getAttribute("ColumnKey")?.valueElement
+                    }
+                }
+                var defPsi = refColumn?.references?.first()?.resolve()
+                if (defPsi != null) {
+                    result.add(defPsi.parent.parent as XmlTag)
+                }
+            }
+            else -> {
+                // Panel containers: recursively scan children
+                for (child in tag.subTags) {
+                    if (child.name == "Grid") {
+                        collectCascadeTargets(child, result, warnings)
+                    } else if (child.name == "GridColumn") {
+                        collectCascadeTargets(child, result, warnings)
+                    } else if (child.name in VariableReference.variableDefinitionTagNames) {
+                        collectCascadeTargets(child, result, warnings)
+                    } else if (isValidGridChild(child.name)) {
+                        // Recurse into sub-panels
+                        collectCascadeTargets(child, result, warnings)
+                    }
+                }
+            }
+        }
+    }
+    
+    private fun findGridCellsForColumn(gridTag: XmlTag, columnKey: String): List<XmlTag> {
+        val result = mutableListOf<XmlTag>()
+        val rowCollection = gridTag.findFirstSubTag("GridRowCollection") ?: return result
+        for (row in rowCollection.findSubTags("GridRow")) {
+            for (cell in row.findSubTags("GridCell")) {
+                if (cell.getAttributeValue("Key") == columnKey) {
+                    result.add(cell)
+                }
+            }
+        }
+        return result
+    }
+    
+    private fun findDataBindingColumnTags(formTag: XmlTag, columnKey: String): List<XmlTag> {
+        val result = mutableListOf<XmlTag>()
+        collectDataBindingColumnTags(formTag, columnKey, result)
+        return result
+    }
+    
+    private fun collectDataBindingColumnTags(tag: XmlTag, columnKey: String, result: MutableList<XmlTag>) {
+        if (tag.name == "Column" && tag.parentTag?.name == "DataBinding") {
+            if (tag.getAttributeValue("ColumnKey") == columnKey) {
+                result.add(tag)
+            }
+        }
+        for (sub in tag.subTags) {
+            collectDataBindingColumnTags(sub, columnKey, result)
+        }
+    }
+    
+    /**
+     * Find a Table tag in DataSource by TableKey.
+     * Supports both inline DataObject and RefObjectKey-referenced DataObject.
+     */
+    private fun findTableInDataSource(dataSourceTag: XmlTag, tableKey: String): XmlTag? {
+        val refKey = dataSourceTag.getAttributeValue("RefObjectKey")
+        val dataObjectTag = if (refKey != null) {
+            val defAttr = example.index.DataObjectIndex.findDataObjectDefinition(project, refKey)
+            (defAttr?.parent?.parent as? XmlTag)
+        } else {
+            dataSourceTag.findFirstSubTag("DataObject")
+        }
+        if (dataObjectTag == null) return null
+        
+        val tableCollection = dataObjectTag.findFirstSubTag("TableCollection") ?: return null
+        return tableCollection.findSubTags("Table").firstOrNull { it.getAttributeValue("Key") == tableKey }
+    }
+    
+    private fun findRootFormTag(tag: XmlTag): XmlTag? {
+        var current: XmlTag? = tag
+        while (current != null) {
+            if (current.name == "Form") return current
+            current = current.parentTag
+        }
+        return null
     }
 }
 
