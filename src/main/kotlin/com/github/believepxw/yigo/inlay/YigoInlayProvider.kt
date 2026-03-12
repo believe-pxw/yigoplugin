@@ -60,8 +60,13 @@ class YigoInlayProvider : InlayHintsProvider<NoSettings> {
                     val columnTag = YigoUtils.findColumnInTable(tag, tableKey, columnKey)
                     if (columnTag != null) {
                         val dataElementKey = columnTag.getAttributeValue("DataElementKey")
+                        var attribute = columnTag.getAttribute("Persist")
                         if (dataElementKey != null) {
-                             resolveAndAddDomainHint(columnKeyAttr!!, dataElementKey, tag.project, sink)
+                            var extra = ""
+                            if (attribute != null) {
+                                extra = attribute.name + "=" + attribute.value
+                            }
+                            resolveAndAddDomainHint(columnKeyAttr!!, dataElementKey, tag.project, sink, extra)
                         }
                     }
                 }
@@ -71,10 +76,10 @@ class YigoInlayProvider : InlayHintsProvider<NoSettings> {
                 val dataElementKeyAttr = tag.getAttribute("DataElementKey")
                 val dataElementKey = dataElementKeyAttr?.value ?: return
                 
-                resolveAndAddDomainHint(dataElementKeyAttr, dataElementKey, tag.project, sink)
+                resolveAndAddDomainHint(dataElementKeyAttr, dataElementKey, tag.project, sink, "")
             }
             
-            private fun resolveAndAddDomainHint(sourceAttr: com.intellij.psi.xml.XmlAttribute, dataElementKey: String, project: com.intellij.openapi.project.Project, sink: InlayHintsSink) {
+            private fun resolveAndAddDomainHint(sourceAttr: com.intellij.psi.xml.XmlAttribute, dataElementKey: String, project: com.intellij.openapi.project.Project, sink: InlayHintsSink, extra: String) {
                 val dataElementTag = YigoUtils.findDataElementDefinition(project, dataElementKey) ?: return
                 
                 // In DataElement, DomainKey is usually the attribute pointing to Domain
@@ -88,10 +93,10 @@ class YigoInlayProvider : InlayHintsProvider<NoSettings> {
                 
                 val domainTag = example.index.DomainIndex.findDomainDefinition(project, domainKey) ?: return
                 
-                addDomainAttributesHint(sourceAttr, domainTag, sink)
+                addDomainAttributesHint(sourceAttr, domainTag, sink, extra)
             }
             
-            private fun addDomainAttributesHint(sourceAttr: com.intellij.psi.xml.XmlAttribute, domainTag: XmlTag, sink: InlayHintsSink) {
+            private fun addDomainAttributesHint(sourceAttr: com.intellij.psi.xml.XmlAttribute, domainTag: XmlTag, sink: InlayHintsSink, extra: String) {
                 val attributes = domainTag.attributes
                 val sb = StringBuilder()
                 var first = true
@@ -113,6 +118,9 @@ class YigoInlayProvider : InlayHintsProvider<NoSettings> {
                 }
                 
                 if (sb.isNotEmpty()) {
+                    if (extra.isNotEmpty()) {
+                        sb.append(";$extra")
+                    }
                     val valueElement = sourceAttr.valueElement
                     if (valueElement != null) {
                         val offset = valueElement.textRange.endOffset

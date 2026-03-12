@@ -84,7 +84,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
             "TgtDataObjectKey", "SrcDataObjectKey" -> {
                 val tag = attr.parent
                 if (tag.localName == "Map") {
-                    references.add(DataObjectReference(element, range, value))
+                    references.add(DataObjectReference(element, range, value,"Map"))
                 }
             }
             "TargetFieldKey" -> {
@@ -120,7 +120,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                     }
                 }
             }
-            "ItemKey" -> references.add(DataObjectReference(element, range, value))
+            "ItemKey" -> references.add(DataObjectReference(element, range, value,"ItemKey"))
             "DataElementKey" -> references.add(DataElementReference(element, range))
             "FormKey" -> references.add(FormReference(element, range, value))
             "Parameters" -> {
@@ -152,7 +152,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                     references.add(TableReference(element, range, false))
                 }
             }
-            "RefObjectKey" -> references.add(DataObjectReference(element, range, value))
+            "RefObjectKey" -> references.add(DataObjectReference(element, range, value,"RefObjectKey"))
             "ColumnKey" -> references.add(DataBindingColumnReference(element, range, false))
             "BindingCellKey" -> references.add(VariableReference(element, range, value))
             "RefKey" -> references.add(OperationRefKeyReference(element, range))
@@ -196,7 +196,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
             "ObjectKey" -> {
                  val tag = attr.parent
                  if (tag.localName == "EmbedTable") {
-                     references.add(DataObjectReference(element, range, value))
+                     references.add(DataObjectReference(element, range, value,"RefObjectKey"))
                  }
             }
         }
@@ -269,7 +269,7 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                                         references.add(VariableReference(element, rangeRemoveQuotation(rangeInInjectedFragment), removeQuotation(referencedName), formTag))
                                     }
                                     "GetDictValue" -> {
-                                        references.add(DataObjectReference(element, rangeRemoveQuotation(rangeInInjectedFragment), removeQuotation(referencedName)))
+                                        references.add(DataObjectReference(element, rangeRemoveQuotation(rangeInInjectedFragment), removeQuotation(referencedName),"GetDictValue"))
                                     }
                                 }
                             }

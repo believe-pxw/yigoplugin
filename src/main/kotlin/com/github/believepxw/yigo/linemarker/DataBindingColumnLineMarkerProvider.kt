@@ -12,10 +12,11 @@ import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.searches.ReferencesSearch
+import com.intellij.psi.xml.XmlDocument
 import com.intellij.psi.xml.XmlFile
 import com.intellij.psi.xml.XmlTag
-import com.intellij.util.containers.ContainerUtil.filterIsInstance
 import example.ref.DataBindingColumnReference
+import example.ref.DataObjectReference
 
 class DataBindingColumnLineMarkerProvider : RelatedItemLineMarkerProvider() {
 
@@ -68,6 +69,54 @@ class DataBindingColumnLineMarkerProvider : RelatedItemLineMarkerProvider() {
                     element.firstChild.textRange,
                     AllIcons.Chooser.Left,
                     { "Navigate to DataBinding Usage" },
+                    navigationHandler,
+                    com.intellij.openapi.editor.markup.GutterIconRenderer.Alignment.RIGHT,
+                    { emptyList() }
+                ))
+            }
+            "DataObject" -> {
+                if (element.parent !is XmlDocument) {
+                    return
+                }
+                val keyAttr = element.getAttribute("Key") ?: return
+                val key = keyAttr.value
+                if (key.isNullOrEmpty()) {
+                    return
+                }
+
+                val valueElement = keyAttr.valueElement ?: return
+
+                val navigationHandler = GutterIconNavigationHandler<PsiElement> { e, elt ->
+                    val scope = GlobalSearchScope.getScopeRestrictedByFileTypes(
+                        GlobalSearchScope.projectScope(elt.project),
+                        XmlFileType.INSTANCE
+                    )
+                    val references = ReferencesSearch.search(valueElement, scope).findAll()
+                    val targets = references.filter { it is DataObjectReference && it.refType == "RefObjectKey" }
+                        .map { it.element }
+                        .filterIsInstance<com.intellij.psi.NavigatablePsiElement>()
+
+                    if (targets.isEmpty()) {
+                        val editor = FileEditorManager.getInstance(elt.project).selectedTextEditor
+                        if (editor != null) {
+                            HintManager.getInstance().showInformationHint(editor, "No RefObjectKey usages found")
+                        }
+                    } else {
+                        PsiElementListNavigator.openTargets(
+                            e,
+                            targets.toTypedArray(),
+                            "RefObjectKey Usages",
+                            null,
+                            DefaultPsiElementCellRenderer()
+                        )
+                    }
+                }
+
+                result.add(RelatedItemLineMarkerInfo(
+                    element.firstChild,
+                    element.firstChild.textRange,
+                    AllIcons.Chooser.Left,
+                    { "Navigate to RefObjectKey Usage" },
                     navigationHandler,
                     com.intellij.openapi.editor.markup.GutterIconRenderer.Alignment.RIGHT,
                     { emptyList() }

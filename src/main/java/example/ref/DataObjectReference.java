@@ -11,11 +11,13 @@ import org.jetbrains.annotations.Nullable;
 public class DataObjectReference extends PsiReferenceBase<PsiElement> {
 
     private final String dataObjectKey;
+    private final String refType;
 
-    public DataObjectReference(@NotNull PsiElement element, TextRange rangeInElement,String dataObjectKey) {
+    public DataObjectReference(@NotNull PsiElement element, TextRange rangeInElement,String dataObjectKey,String refType) {
         super(element, rangeInElement);
         // The attribute value is "SD_DateCategory", so we extract it.
         this.dataObjectKey = dataObjectKey;
+        this.refType = refType;
     }
 
     @Nullable
@@ -28,5 +30,9 @@ public class DataObjectReference extends PsiReferenceBase<PsiElement> {
     @Override
     public boolean isSoft() {
         return true;
+    }
+
+    public String getRefType() {
+        return refType;
     }
 }
