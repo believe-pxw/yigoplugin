@@ -751,9 +751,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
             "TextButton" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.TextButton
             "Label" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.Label
             "Image" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.Image
-            "Icon" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.IconControl
             "HyperLink" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.HyperLink
-            "Grid" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.Grid
             else -> null
         }
     }
