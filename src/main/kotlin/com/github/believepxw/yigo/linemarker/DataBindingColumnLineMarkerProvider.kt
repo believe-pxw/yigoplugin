@@ -3,11 +3,10 @@ package com.github.believepxw.yigo.linemarker
 import com.intellij.codeInsight.daemon.GutterIconNavigationHandler
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerInfo
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerProvider
-import com.intellij.codeInsight.daemon.impl.PsiElementListNavigator
+import com.intellij.codeInsight.navigation.PsiTargetNavigator
 import com.intellij.codeInsight.hint.HintManager
 import com.intellij.icons.AllIcons
 import com.intellij.ide.highlighter.XmlFileType
-import com.intellij.ide.util.DefaultPsiElementCellRenderer
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.search.GlobalSearchScope
@@ -54,13 +53,9 @@ class DataBindingColumnLineMarkerProvider : RelatedItemLineMarkerProvider() {
                             HintManager.getInstance().showInformationHint(editor, "No DataBinding usages found")
                         }
                     } else {
-                        PsiElementListNavigator.openTargets(
-                            e,
-                            targets.toTypedArray(),
-                            "DataBinding Usages",
-                            null,
-                            DefaultPsiElementCellRenderer()
-                        )
+                        PsiTargetNavigator(targets)
+                            .tabTitle("DataBinding Usages")
+                            .navigate(e, null, elt.project)
                     }
                 }
 
@@ -102,13 +97,9 @@ class DataBindingColumnLineMarkerProvider : RelatedItemLineMarkerProvider() {
                             HintManager.getInstance().showInformationHint(editor, "No RefObjectKey usages found")
                         }
                     } else {
-                        PsiElementListNavigator.openTargets(
-                            e,
-                            targets.toTypedArray(),
-                            "RefObjectKey Usages",
-                            null,
-                            DefaultPsiElementCellRenderer()
-                        )
+                        PsiTargetNavigator(targets)
+                            .tabTitle("RefObjectKey Usages")
+                            .navigate(e, null, elt.project)
                     }
                 }
 
@@ -138,13 +129,9 @@ class DataBindingColumnLineMarkerProvider : RelatedItemLineMarkerProvider() {
                             HintManager.getInstance().showInformationHint(editor, "No GridColumn found")
                         }
                     } else {
-                        PsiElementListNavigator.openTargets(
-                            e,
-                            targets.toTypedArray(),
-                            "Jump to GridColumn",
-                            null,
-                            DefaultPsiElementCellRenderer()
-                        )
+                        PsiTargetNavigator(targets)
+                            .tabTitle("Jump to GridColumn")
+                            .navigate(e, null, elt.project)
                     }
                 }
 
@@ -174,13 +161,9 @@ class DataBindingColumnLineMarkerProvider : RelatedItemLineMarkerProvider() {
                             HintManager.getInstance().showInformationHint(editor, "No GridCell found")
                         }
                     } else {
-                        PsiElementListNavigator.openTargets(
-                            e,
-                            targets.toTypedArray(),
-                            "Jump to GridCell",
-                            null,
-                            DefaultPsiElementCellRenderer()
-                        )
+                        PsiTargetNavigator(targets)
+                            .tabTitle("Jump to GridCell")
+                            .navigate(e, null, elt.project)
                     }
                 }
 
