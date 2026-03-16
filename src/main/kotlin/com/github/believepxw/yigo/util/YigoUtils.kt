@@ -1,7 +1,6 @@
 package com.github.believepxw.yigo.util
 
 import com.intellij.psi.PsiElement
-import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
 import com.intellij.psi.xml.XmlFile
 import com.intellij.psi.xml.XmlTag

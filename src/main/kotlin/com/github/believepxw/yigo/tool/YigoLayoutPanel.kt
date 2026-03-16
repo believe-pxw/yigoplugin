@@ -782,15 +782,45 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
          }
         ds.createDefaultDragGestureRecognizer(panel, DnDConstants.ACTION_MOVE, listener)
         
-        // Right-click delete for leaf controls
+        // Right-click menu for leaf controls
         panel.addMouseListener(object : MouseAdapter() {
-            override fun mousePressed(e: MouseEvent) { if (e.isPopupTrigger) showLeafDeleteMenu(e, tag) }
-            override fun mouseReleased(e: MouseEvent) { if (e.isPopupTrigger) showLeafDeleteMenu(e, tag) }
+            override fun mousePressed(e: MouseEvent) { handlePopup(e) }
+            override fun mouseReleased(e: MouseEvent) { handlePopup(e) }
+
+            private fun handlePopup(e: MouseEvent) {
+                if (e.isPopupTrigger) {
+                    // Priority 1: Grid elements (Column/Cell) -> Show Grid menu
+                    if (tag.name == "GridColumn" || tag.name == "GridCell") {
+                        val gridTag = findParentGridTag(tag)
+                        if (gridTag != null) {
+                            val parentComp = tagToComponent[gridTag]
+                            if (parentComp != null) {
+                                val p = SwingUtilities.convertPoint(e.component, e.point, parentComp)
+                                showContainerContextMenu(parentComp, gridTag, p.x, p.y, targetTag = tag)
+                                return
+                            }
+                        }
+                    }
+
+                    // Priority 2: Inside GridLayoutPanel -> Show GLP menu (adding controls)
+                    val glpTag = findParentGridLayoutPanelTag(tag)
+                    if (glpTag != null) {
+                        val parentComp = tagToComponent[glpTag]
+                        if (parentComp != null) {
+                            val p = SwingUtilities.convertPoint(e.component, e.point, parentComp)
+                            showContainerContextMenu(parentComp, glpTag, p.x, p.y, targetTag = tag)
+                            return
+                        }
+                    }
+                    
+                    showLeafDeleteMenu(e, tag)
+                }
+            }
         })
         
         return panel
     }
-    
+
     private fun createWrappedGridTable(tag: XmlTag): JComponent {
         val mainPanel = JPanel(GridBagLayout())
         val rowCollection = tag.findFirstSubTag("GridRowCollection")
@@ -849,31 +879,31 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
              
              chunks.forEachIndexed { chunkIndex, chunkCols ->
                  chunkCols.forEachIndexed { colInChunk, colTag ->
-                     val key = colTag.getAttributeValue("Key")
-                     val cellTag = cellMap[key]
-                     
-                     if (cellTag != null) {
-                         val c = GridBagConstraints()
-                         c.gridx = colInChunk
-                         c.gridy = gridYCounter
-                         c.fill = GridBagConstraints.HORIZONTAL
-                         c.weightx = 1.0
-                         c.insets = JBUI.insets(1)
-                         
-                         val cell = createLeafComponent(cellTag)
-                         registerComponent(cellTag, cell)
-                         mainPanel.add(cell, c)
-                     } else {
-                         val placeholder = createPlaceholder(colInChunk, gridYCounter) 
-                         val c = GridBagConstraints()
-                         c.gridx = colInChunk
-                         c.gridy = gridYCounter
-                         c.fill = GridBagConstraints.HORIZONTAL
-                         c.weightx = 1.0
-                         c.insets = JBUI.insets(1)
-                         
-                         mainPanel.add(placeholder, c)
-                     }
+                      val key = colTag.getAttributeValue("Key")
+                      val cellTag = cellMap[key]
+                      
+                      if (cellTag != null) {
+                          val c = GridBagConstraints()
+                          c.gridx = colInChunk
+                          c.gridy = gridYCounter
+                          c.fill = GridBagConstraints.HORIZONTAL
+                          c.weightx = 1.0
+                          c.insets = JBUI.insets(1)
+                          
+                          val cell = createLeafComponent(cellTag)
+                          registerComponent(cellTag, cell)
+                          mainPanel.add(cell, c)
+                      } else {
+                          val placeholder = createPlaceholder(colInChunk, gridYCounter, tag) 
+                          val c = GridBagConstraints()
+                          c.gridx = colInChunk
+                          c.gridy = gridYCounter
+                          c.fill = GridBagConstraints.HORIZONTAL
+                          c.weightx = 1.0
+                          c.insets = JBUI.insets(1)
+                          
+                          mainPanel.add(placeholder, c)
+                      }
                  }
                  gridYCounter++
              }
@@ -1114,7 +1144,7 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
                 } else {
                     c.gridwidth = 1
                     c.gridheight = 1
-                    panel.add(createPlaceholder(x, y), c)
+                    panel.add(createPlaceholder(x, y, tag), c)
                 }
             }
         }
@@ -1216,6 +1246,16 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         }
     }
 
+    private fun findParentGridLayoutPanelTag(tag: XmlTag): XmlTag? {
+        var current = tag.parentTag
+        while (current != null) {
+            if (current.name == "GridLayoutPanel") return current
+            if (current.name == "Form" || current.name == "Body") break
+            current = current.parentTag
+        }
+        return null
+    }
+
     private fun addContainerContextMenu(panel: JComponent, tag: XmlTag) {
         panel.addMouseListener(object : MouseAdapter() {
             override fun mousePressed(e: MouseEvent) { handlePopup(e) }
@@ -1223,61 +1263,75 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
 
             private fun handlePopup(e: MouseEvent) {
                 if (e.isPopupTrigger) {
-                    val menu = JPopupMenu()
-
-                    if (tag.name == "GridLayoutPanel") {
-                        val addControlItem = JMenuItem("Add Control...")
-                        addControlItem.addActionListener {
-                            YigoControlBuilder(project).showAddControlDialog(addControlItem,tag, e.x, e.y)
-                        }
-                        menu.add(addControlItem)
-                        menu.addSeparator()
-
-                        val itemRow = JMenuItem("Go to RowDefCollection")
-                        itemRow.addActionListener {
-                            findChildTag(tag, "RowDefCollection")?.let { navigateToTag(it) }
-                        }
-                        menu.add(itemRow)
-
-                        val itemCol = JMenuItem("Go to ColumnDefCollection")
-                        itemCol.addActionListener {
-                             findChildTag(tag, "ColumnDefCollection")?.let { navigateToTag(it) }
-                        }
-                        menu.add(itemCol)
-                        menu.addSeparator()
-                    } else if (tag.name == "Grid") {
-                        val addColumnItem = JMenuItem("Add Column...")
-                        addColumnItem.addActionListener {
-                            YigoControlBuilder(project).showAddGridColumnDialog(addColumnItem, tag)
-                        }
-                        menu.add(addColumnItem)
-                        menu.addSeparator()
-                    }
-
-                    val itemSearch = JMenuItem("Search in this container...")
-                    itemSearch.addActionListener {
-                        searchHandler.ScopeSearchDialog(tag).showDialog()
-                    }
-                    menu.add(itemSearch)
-
-                    menu.addSeparator()
-                    val batchDeleteItem = JMenuItem("Batch Delete...")
-                    batchDeleteItem.addActionListener {
-                        deleteHandler.showBatchDeleteDialog(tag)
-                    }
-                    menu.add(batchDeleteItem)
-
-                    val deleteItem = JMenuItem("Delete")
-                    deleteItem.icon = AllIcons.Actions.GC
-                    deleteItem.addActionListener {
-                        deleteHandler.deleteTagsWithCascade(listOf(tag))
-                    }
-                    menu.add(deleteItem)
-
-                    menu.show(e.component, e.x, e.y)
+                    showContainerContextMenu(e.component as JComponent, tag, e.x, e.y)
                 }
             }
         })
+    }
+
+    private fun showContainerContextMenu(component: JComponent, tag: XmlTag, x: Int, y: Int, targetTag: XmlTag? = null) {
+        val menu = JPopupMenu()
+
+        if (tag.name == "GridLayoutPanel") {
+            val addControlItem = JMenuItem("Add Control...")
+            addControlItem.addActionListener {
+                YigoControlBuilder(project).showAddControlDialog(addControlItem, tag, x, y, component)
+            }
+            menu.add(addControlItem)
+            menu.addSeparator()
+
+            val itemRow = JMenuItem("Go to RowDefCollection")
+            itemRow.addActionListener {
+                findChildTag(tag, "RowDefCollection")?.let { navigateToTag(it) }
+            }
+            menu.add(itemRow)
+
+            val itemCol = JMenuItem("Go to ColumnDefCollection")
+            itemCol.addActionListener {
+                findChildTag(tag, "ColumnDefCollection")?.let { navigateToTag(it) }
+            }
+            menu.add(itemCol)
+            menu.addSeparator()
+        } else if (tag.name == "Grid") {
+            val afterColumnKey = if (targetTag?.name == "GridColumn") targetTag.getAttributeValue("Key") else null
+            val addColumnItem = JMenuItem(if (afterColumnKey != null) "Add Column After..." else "Add Column...")
+            addColumnItem.addActionListener {
+                YigoControlBuilder(project).showAddGridColumnDialog(addColumnItem, tag, afterColumnKey)
+            }
+            menu.add(addColumnItem)
+            menu.addSeparator()
+        }
+
+        val itemSearch = JMenuItem("Search in this container...")
+        itemSearch.addActionListener {
+            searchHandler.ScopeSearchDialog(tag).showDialog()
+        }
+        menu.add(itemSearch)
+
+        menu.addSeparator()
+        val batchDeleteItem = JMenuItem("Batch Delete...")
+        batchDeleteItem.addActionListener {
+            deleteHandler.showBatchDeleteDialog(tag)
+        }
+        menu.add(batchDeleteItem)
+
+        if (targetTag != null && targetTag.name != "GridColumn") {
+            val deleteTagItem = JMenuItem("Delete Current Control")
+            deleteTagItem.icon = AllIcons.Actions.GC
+            deleteTagItem.addActionListener {
+                deleteHandler.deleteTagsWithCascade(listOf(targetTag))
+            }
+            menu.add(deleteTagItem)
+        } else if (targetTag == null) {
+            val deleteItem = JMenuItem("Delete Container")
+            deleteItem.icon = AllIcons.Actions.GC
+            deleteItem.addActionListener {
+                deleteHandler.deleteTagsWithCascade(listOf(tag))
+            }
+            menu.add(deleteItem)
+        }
+
+        menu.show(component, x, y)
     }
     
     // Helper search because tag.findFirstSubTag is sometimes not enough if we need recursive? 
@@ -1292,12 +1346,25 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         return result
     }
     
-    private fun createPlaceholder(x: Int, y: Int): JComponent {
+    private fun createPlaceholder(x: Int, y: Int, parentTag: XmlTag? = null): JComponent {
         val panel = JPanel()
         panel.background = JBColor(Color(250, 250, 250), Color(43, 43, 43))
         panel.border = BorderFactory.createDashedBorder(JBColor.border(), 1.0f, 3.0f, 3.0f, true)
         panel.toolTipText = "Empty Cell ($x, $y)"
         panel.name = "Placeholder:$x,$y" 
+
+        panel.addMouseListener(object : MouseAdapter() {
+            override fun mousePressed(e: MouseEvent) { handlePopup(e) }
+            override fun mouseReleased(e: MouseEvent) { handlePopup(e) }
+
+            private fun handlePopup(e: MouseEvent) {
+                if (e.isPopupTrigger && parentTag != null) {
+                    val p = SwingUtilities.convertPoint(e.component, e.point, tagToComponent[parentTag] ?: e.component)
+                    showContainerContextMenu(tagToComponent[parentTag] ?: e.component as JComponent, parentTag, p.x, p.y)
+                }
+            }
+        })
+
         return panel
     }
 

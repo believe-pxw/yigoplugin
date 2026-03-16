@@ -12,6 +12,7 @@ import com.intellij.util.ui.JBUI
 import example.index.DataElementIndex
 import example.index.DomainIndex
 import java.awt.*
+import java.awt.event.ActionEvent
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
 import java.awt.event.MouseAdapter
@@ -20,122 +21,41 @@ import javax.swing.*
 
 class YigoControlBuilder(private val project: Project) {
 
-    fun showAddControlDialog(parent: Component, gridTag: XmlTag, clickX: Int, clickY: Int) {
-        val dialog = JDialog(SwingUtilities.getWindowAncestor(parent), "Add Control", Dialog.ModalityType.APPLICATION_MODAL)
-        dialog.layout = BorderLayout()
-
-        val panel = JPanel(GridBagLayout())
-        panel.border = JBUI.Borders.empty(10)
-
-        val tableKeyField = JTextField(20)
-        val columnKeyField = SearchTextField()
-        val columnList = JBList<String>()
-        val listModel = DefaultListModel<String>()
-        columnList.model = listModel
-
-        var allColumns = listOf<Pair<String, String>>()
-
-        val suggestedTableKey = ApplicationManager.getApplication().runReadAction<String?> {
-            if (!gridTag.isValid) return@runReadAction null
-            for (control in gridTag.subTags) {
-                for (subTag in control.subTags) {
-                    if (subTag.name == "DataBinding") {
-                        val tableKey = subTag.getAttributeValue("TableKey")
-                        if (tableKey != null) return@runReadAction tableKey
-                    }
-                }
-            }
-            null
+    fun showAddControlDialog(
+        parent: Component,
+        gridTag: XmlTag,
+        clickX: Int,
+        clickY: Int,
+        containerComponent: JComponent? = null
+    ) {
+        showCommonAddDialog(parent, gridTag, "Add Control") { tableKey, columnKey ->
+            createControlFromDomain(gridTag, tableKey, columnKey, clickX, clickY, containerComponent)
         }
-        if (suggestedTableKey != null) tableKeyField.text = suggestedTableKey
-
-        val c = GridBagConstraints()
-        c.fill = GridBagConstraints.HORIZONTAL
-        c.insets = JBUI.insets(5)
-
-        c.gridx = 0; c.gridy = 0; c.weightx = 0.0
-        panel.add(JLabel("TableKey:"), c)
-        c.gridx = 1; c.weightx = 1.0
-        panel.add(tableKeyField, c)
-
-        c.gridx = 0; c.gridy = 1; c.weightx = 0.0
-        panel.add(JLabel("ColumnKey:"), c)
-        c.gridx = 1; c.weightx = 1.0
-        panel.add(columnKeyField, c)
-
-        c.gridx = 0; c.gridy = 2; c.gridwidth = 2; c.weighty = 1.0; c.fill = GridBagConstraints.BOTH
-        val scrollPane = JBScrollPane(columnList)
-        scrollPane.preferredSize = Dimension(400, 200)
-        panel.add(scrollPane, c)
-
-        val loadColumns = {
-            val tableKey = tableKeyField.text.trim()
-            if (tableKey.isNotEmpty()) {
-                ApplicationManager.getApplication().runReadAction {
-                    val table = YigoUtils.findTable(gridTag, tableKey)
-                    if (table != null) {
-                        allColumns = getAllColumn(table)
-                        listModel.clear()
-                        allColumns.forEach { (key, caption) ->
-                            listModel.addElement("$key - $caption")
-                        }
-                    }
-                }
-            }
-        }
-
-        tableKeyField.addActionListener { loadColumns() }
-
-        columnKeyField.addKeyboardListener(object : KeyAdapter() {
-            override fun keyReleased(e: KeyEvent) {
-                val filter = columnKeyField.text.lowercase()
-                listModel.clear()
-                allColumns.filter { it.first.lowercase().contains(filter) || it.second.lowercase().contains(filter) }
-                    .forEach { (key, caption) -> listModel.addElement("$key - $caption") }
-            }
-        })
-
-        columnList.addMouseListener(object : MouseAdapter() {
-            override fun mouseClicked(e: MouseEvent) {
-                if (e.clickCount == 1) {
-                    val selected = columnList.selectedValue
-                    if (selected != null) {
-                        columnKeyField.text = selected.substringBefore(" - ")
-                    }
-                }
-            }
-        })
-
-        dialog.add(panel, BorderLayout.CENTER)
-
-        val btnPanel = JPanel(FlowLayout(FlowLayout.RIGHT))
-        val okBtn = JButton("OK")
-        okBtn.addActionListener {
-            val tableKey = tableKeyField.text.trim()
-            val columnKey = columnKeyField.text.trim()
-            if (tableKey.isNotEmpty() && columnKey.isNotEmpty()) {
-                dialog.dispose()
-                createControlFromDomain(gridTag, tableKey, columnKey, clickX, clickY)
-            }
-        }
-        val cancelBtn = JButton("Cancel")
-        cancelBtn.addActionListener { dialog.dispose() }
-        btnPanel.add(okBtn)
-        btnPanel.add(cancelBtn)
-        dialog.add(btnPanel, BorderLayout.SOUTH)
-
-        dialog.pack()
-        dialog.setLocationRelativeTo(parent)
-        loadColumns()
-        dialog.isVisible = true
     }
 
-    val ignoreList = listOf("VERID", "DVERID", "TLeft", "TRight", "Enable", "ClientID", "Creator", "CreateTime","Modifier","ModifyTime")
+    fun showAddGridColumnDialog(parent: Component, gridTag: XmlTag, afterColumnKey: String? = null) {
+        showCommonAddDialog(parent, gridTag, "Add Grid Column") { tableKey, columnKey ->
+            createGridColumnFromDomain(gridTag, tableKey, columnKey, afterColumnKey)
+        }
+    }
 
-    fun getAllColumn(table: XmlTag) : List<Pair<String, String>>{
+    val ignoreList = listOf(
+        "VERID",
+        "DVERID",
+        "TLeft",
+        "TRight",
+        "Enable",
+        "ClientID",
+        "Creator",
+        "CreateTime",
+        "Modifier",
+        "ModifyTime"
+    )
+
+    fun getAllColumn(table: XmlTag): List<Pair<String, String>> {
         val codeColumnKey = mutableListOf<String>()
         table.findSubTags("Column")?.mapNotNull {
-            if(it.getAttributeValue("CodeColumnKey")?.isNotEmpty() == true){
+            if (it.getAttributeValue("CodeColumnKey")?.isNotEmpty() == true) {
                 codeColumnKey.add(it.getAttributeValue("CodeColumnKey").orEmpty())
             }
         } ?: emptyList()
@@ -148,7 +68,7 @@ class YigoControlBuilder(private val project: Project) {
             if (codeColumnKey.contains(key)) {
                 return@mapNotNull null
             }
-            if(it.getAttributeValue("CodeColumnKey")?.isNotEmpty() == true){
+            if (it.getAttributeValue("CodeColumnKey")?.isNotEmpty() == true) {
                 codeColumnKey.add(it.getAttributeValue("CodeColumnKey").orEmpty())
             }
             val caption = it.getAttributeValue("Caption") ?: ""
@@ -157,8 +77,8 @@ class YigoControlBuilder(private val project: Project) {
         return allColumns
     }
 
-    fun showAddGridColumnDialog(parent: Component, gridTag: XmlTag) {
-        val dialog = JDialog(SwingUtilities.getWindowAncestor(parent), "Add Grid Column", Dialog.ModalityType.APPLICATION_MODAL)
+    private fun showCommonAddDialog(parent: Component, gridTag: XmlTag, title: String, onOk: (String, String) -> Unit) {
+        val dialog = JDialog(SwingUtilities.getWindowAncestor(parent), title, Dialog.ModalityType.APPLICATION_MODAL)
         dialog.layout = BorderLayout()
 
         val panel = JPanel(GridBagLayout())
@@ -174,8 +94,20 @@ class YigoControlBuilder(private val project: Project) {
 
         val suggestedTableKey = ApplicationManager.getApplication().runReadAction<String?> {
             if (!gridTag.isValid) return@runReadAction null
-            val rowCollection = gridTag.findFirstSubTag("GridRowCollection")
-            rowCollection?.findSubTags("GridRow")?.firstOrNull()?.getAttributeValue("TableKey")
+            if (gridTag.name == "Grid") {
+                val rowCollection = gridTag.findFirstSubTag("GridRowCollection")
+                rowCollection?.findSubTags("GridRow")?.firstOrNull()?.getAttributeValue("TableKey")
+            } else {
+                for (control in gridTag.subTags) {
+                    for (subTag in control.subTags) {
+                        if (subTag.name == "DataBinding") {
+                            val tableKey = subTag.getAttributeValue("TableKey")
+                            if (tableKey != null) return@runReadAction tableKey
+                        }
+                    }
+                }
+                null
+            }
         }
         if (suggestedTableKey != null) tableKeyField.text = suggestedTableKey
 
@@ -245,7 +177,7 @@ class YigoControlBuilder(private val project: Project) {
             val columnKey = columnKeyField.text.trim()
             if (tableKey.isNotEmpty() && columnKey.isNotEmpty()) {
                 dialog.dispose()
-                createGridColumnFromDomain(gridTag, tableKey, columnKey)
+                onOk(tableKey, columnKey)
             }
         }
         val cancelBtn = JButton("Cancel")
@@ -254,14 +186,36 @@ class YigoControlBuilder(private val project: Project) {
         btnPanel.add(cancelBtn)
         dialog.add(btnPanel, BorderLayout.SOUTH)
 
+        // Close on ESC
+        val escapeStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0)
+        val dispatchAction = object : AbstractAction() {
+            override fun actionPerformed(e: ActionEvent?) {
+                dialog.dispose()
+            }
+        }
+        dialog.rootPane.registerKeyboardAction(dispatchAction, escapeStroke, JComponent.WHEN_IN_FOCUSED_WINDOW)
+
         dialog.pack()
         dialog.setLocationRelativeTo(parent)
         loadColumns()
+
+        // Initial focus on columnKeyField
+        SwingUtilities.invokeLater {
+            columnKeyField.requestFocusInWindow()
+        }
+
         dialog.isVisible = true
     }
 
 
-    private fun createControlFromDomain(gridTag: XmlTag, tableKey: String, columnKey: String, clickX: Int, clickY: Int) {
+    private fun createControlFromDomain(
+        gridTag: XmlTag,
+        tableKey: String,
+        columnKey: String,
+        clickX: Int,
+        clickY: Int,
+        containerComponent: JComponent?
+    ) {
         ApplicationManager.getApplication().invokeLater {
             WriteCommandAction.runWriteCommandAction(project) {
                 val column = YigoUtils.findColumnInTable(gridTag, tableKey, columnKey) ?: return@runWriteCommandAction
@@ -273,7 +227,7 @@ class YigoControlBuilder(private val project: Project) {
                 val controlType = domainTag.getAttributeValue("RefControlType") ?: "TextEditor"
                 val caption = deTag.getAttributeValue("Caption") ?: columnKey
 
-                val layout = (gridTag as? JPanel)?.layout as? GridBagLayout
+                val layout = containerComponent?.layout as? GridBagLayout
                 val targetX = layout?.let {
                     val dims = it.getLayoutDimensions()
                     val origin = it.getLayoutOrigin()
@@ -322,10 +276,17 @@ class YigoControlBuilder(private val project: Project) {
         }
     }
 
-    private fun createGridColumnFromDomain(gridTag: XmlTag, tableKey: String, columnKey: String) {
+    private fun createGridColumnFromDomain(
+        gridTag: XmlTag,
+        tableKey: String,
+        columnKey: String,
+        afterColumnKey: String? = null
+    ) {
         ApplicationManager.getApplication().invokeLater {
             WriteCommandAction.runWriteCommandAction(project) {
-                val deKey = "${tableKey}_$columnKey"
+                val columnDef =
+                    YigoUtils.findColumnInTable(gridTag, tableKey, columnKey) ?: return@runWriteCommandAction
+                val deKey = columnDef.getAttributeValue("DataElementKey") ?: return@runWriteCommandAction
                 val deTag = DataElementIndex.findDEDefinition(project, deKey) ?: return@runWriteCommandAction
                 val domainKey = deTag.getAttributeValue("DomainKey") ?: return@runWriteCommandAction
                 val domainTag = DomainIndex.findDomainDefinition(project, domainKey) ?: return@runWriteCommandAction
@@ -333,29 +294,52 @@ class YigoControlBuilder(private val project: Project) {
                 val controlType = domainTag.getAttributeValue("RefControlType") ?: "TextEditor"
                 val caption = deTag.getAttributeValue("Caption") ?: columnKey
 
-                val colCollection = gridTag.findFirstSubTag("GridColumnCollection") ?: gridTag.createChildTag("GridColumnCollection", null, null, false).also { gridTag.addSubTag(it, false) }
+                val colCollection = gridTag.findFirstSubTag("GridColumnCollection") ?: gridTag.createChildTag(
+                    "GridColumnCollection",
+                    null,
+                    null,
+                    false
+                ).also { gridTag.addSubTag(it, false) }
                 val newColumn = colCollection.createChildTag("GridColumn", null, null, false)
                 newColumn.setAttribute("Key", columnKey)
                 newColumn.setAttribute("Caption", caption)
-                colCollection.addSubTag(newColumn, false)
+
+                if (afterColumnKey != null) {
+                    val targetCol =
+                        colCollection.findSubTags("GridColumn").find { it.getAttributeValue("Key") == afterColumnKey }
+                    if (targetCol != null) {
+                        colCollection.addAfter(newColumn, targetCol)
+                    } else {
+                        colCollection.addSubTag(newColumn, false)
+                    }
+                } else {
+                    colCollection.addSubTag(newColumn, false)
+                }
 
                 val rowCollection = gridTag.findFirstSubTag("GridRowCollection")
                 rowCollection?.findSubTags("GridRow")?.forEach { row ->
                     val newCell = row.createChildTag("GridCell", null, null, false)
                     newCell.setAttribute("Key", columnKey)
+                    newCell.setAttribute("Caption", caption)
                     newCell.setAttribute("CellType", controlType)
 
-                    val cellControl = newCell.createChildTag(controlType, null, null, false)
-                    cellControl.setAttribute("Key", columnKey)
-                    applyDomainAttributes(cellControl, domainTag, controlType)
-
-                    val dataBinding = cellControl.createChildTag("DataBinding", null, null, false)
+                    applyDomainAttributes(newCell, domainTag, controlType)
+                    
+                    val dataBinding = newCell.createChildTag("DataBinding", null, null, false)
                     dataBinding.setAttribute("TableKey", tableKey)
                     dataBinding.setAttribute("ColumnKey", columnKey)
-                    cellControl.addSubTag(dataBinding, false)
+                    newCell.addSubTag(dataBinding, false)
 
-                    newCell.addSubTag(cellControl, false)
-                    row.addSubTag(newCell, false)
+                    if (afterColumnKey != null) {
+                        val targetCell = row.findSubTags("GridCell").find { it.getAttributeValue("Key") == afterColumnKey }
+                        if (targetCell != null) {
+                            row.addAfter(newCell, targetCell)
+                        } else {
+                            row.addSubTag(newCell, false)
+                        }
+                    } else {
+                        row.addSubTag(newCell, false)
+                    }
                 }
             }
         }
