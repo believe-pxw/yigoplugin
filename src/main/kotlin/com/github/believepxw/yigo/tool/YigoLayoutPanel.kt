@@ -1,10 +1,11 @@
 package com.github.believepxw.yigo.tool
 
+import com.github.believepxw.yigo.icons.YigoIcons
 import com.github.believepxw.yigo.ref.VariableReference
+import com.intellij.icons.AllIcons
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ModalityState
 import com.intellij.openapi.application.ReadAction
-import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.EditorFactory
 import com.intellij.openapi.editor.ScrollType
@@ -14,14 +15,13 @@ import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.fileEditor.FileEditorManagerEvent
 import com.intellij.openapi.fileEditor.FileEditorManagerListener
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.wm.ToolWindow
-import com.intellij.psi.PsiDocumentManager
-import com.intellij.psi.PsiManager
+import com.intellij.psi.*
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlFile
 import com.intellij.psi.xml.XmlTag
-import com.intellij.ui.SearchTextField
+import com.intellij.ui.JBColor
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
 import com.intellij.util.concurrency.AppExecutorUtil
@@ -30,19 +30,24 @@ import example.index.FormIndex
 import java.awt.*
 import java.awt.datatransfer.StringSelection
 import java.awt.dnd.DnDConstants
+import java.awt.dnd.DragGestureEvent
+import java.awt.dnd.DragGestureListener
 import java.awt.dnd.DragSource
-import java.awt.event.*
+import java.awt.event.ActionEvent
+import java.awt.event.KeyEvent
+import java.awt.event.MouseAdapter
+import java.awt.event.MouseEvent
+import java.util.*
 import javax.swing.*
 import javax.swing.border.Border
-import javax.swing.table.DefaultTableModel
 
-class YigoLayoutPanel(private val project: Project, private val toolWindow: ToolWindow) : JPanel(BorderLayout()) {
+class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) : JPanel(BorderLayout()) {
 
-    private val rootPanel = object : JPanel(), Scrollable {
+    val rootPanel: JPanel = object : JPanel(), Scrollable {
         // Implement Scrollable with smart width tracking: 
         // Expand to viewport if minimum content fits (true), but allow scroll if even minimum is wider (false).
         override fun getScrollableTracksViewportWidth(): Boolean {
-            val viewport = parent as? javax.swing.JViewport ?: return true
+            val viewport = parent as? JViewport ?: return true
             return minimumSize.width <= viewport.width
         }
         
@@ -57,23 +62,27 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
     private val scrollPane = JBScrollPane(rootPanel)
     
     // State
-    private val tagToComponent = java.util.WeakHashMap<XmlTag, JComponent>()
+    internal val tagToComponent = WeakHashMap<XmlTag, JComponent>()
     private var lastSelectedComponent: JComponent? = null // From Editor Caret
     internal var lastSearchHighlight: JComponent? = null // From Search
+    
+    // Handlers
+    private val searchHandler = YigoSearchHandler(this)
+    private val deleteHandler = YigoDeleteHandler(this)
     
     // Constant for client property key
     private val KEY_ORIGINAL_BORDER = "YigoOriginalBorder"
     private val KEY_XML_TAG = "YigoXmlTag"
     
     // Embed Loading Queue
-    private val embedLoadQueue = java.util.ArrayDeque<() -> Unit>()
+    private val embedLoadQueue = ArrayDeque<() -> Unit>()
     private var activeEmbedLoads = 0
     private val MAX_CONCURRENT_EMBED_LOADS = 5
     
     // Flag to prevent recursive navigation updates
     private var isProgrammaticSwitch = false
     private var isNavigatingToXml = false
-    private var isDeletingControls = false
+    internal var isDeletingControls = false
 
     init {
         rootPanel.layout = BoxLayout(rootPanel, BoxLayout.Y_AXIS)
@@ -88,12 +97,12 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                 val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(currentEditor.document) as? XmlFile ?: return
                 val rootTag = psiFile.rootTag ?: return
                 val bodyTag = rootTag.findFirstSubTag("Body") ?: rootTag
-                ScopeSearchDialog(bodyTag).showDialog()
+                searchHandler.ScopeSearchDialog(bodyTag).showDialog()
             }
         }
         val keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().menuShortcutKeyMaskEx)
-        this.registerKeyboardAction(searchAction, keyStroke, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
-        rootPanel.registerKeyboardAction(searchAction, keyStroke, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
+        this.registerKeyboardAction(searchAction, keyStroke, WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
+        rootPanel.registerKeyboardAction(searchAction, keyStroke, WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
 
         updateUIFromXml()
 
@@ -121,13 +130,13 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         )
 
         // 3. PSI Change Listener (Refresh UI)
-        PsiManager.getInstance(project).addPsiTreeChangeListener(object : com.intellij.psi.PsiTreeChangeAdapter() {
-            override fun childrenChanged(event: com.intellij.psi.PsiTreeChangeEvent) { processEvent(event) }
-            override fun childAdded(event: com.intellij.psi.PsiTreeChangeEvent) { processEvent(event) }
-            override fun childRemoved(event: com.intellij.psi.PsiTreeChangeEvent) { processEvent(event) }
-            override fun childMoved(event: com.intellij.psi.PsiTreeChangeEvent) { processEvent(event) }
+        PsiManager.getInstance(project).addPsiTreeChangeListener(object : PsiTreeChangeAdapter() {
+            override fun childrenChanged(event: PsiTreeChangeEvent) { processEvent(event) }
+            override fun childAdded(event: PsiTreeChangeEvent) { processEvent(event) }
+            override fun childRemoved(event: PsiTreeChangeEvent) { processEvent(event) }
+            override fun childMoved(event: PsiTreeChangeEvent) { processEvent(event) }
             
-            fun processEvent(event: com.intellij.psi.PsiTreeChangeEvent) {
+            fun processEvent(event: PsiTreeChangeEvent) {
                  if (isDeletingControls) return
                  val element = event.parent ?: event.child ?: return
                  val tag = PsiTreeUtil.getParentOfType(element, XmlTag::class.java, false)
@@ -135,7 +144,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                  if (tag != null) {
                      val gridTag = findParentGridTag(tag)
                      if (gridTag != null && tagToComponent.containsKey(gridTag)) {
-                         javax.swing.SwingUtilities.invokeLater {
+                         SwingUtilities.invokeLater {
                              if (project.isDisposed) return@invokeLater
                              ApplicationManager.getApplication().runReadAction {
                                  refreshGridComponent(gridTag)
@@ -145,7 +154,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                      }
                  }
                  
-                 javax.swing.SwingUtilities.invokeLater {
+                 SwingUtilities.invokeLater {
                     if (project.isDisposed) return@invokeLater
                     ApplicationManager.getApplication().runReadAction {
                         updateUIFromXml(preserveScroll = true)
@@ -171,12 +180,12 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         }
     }
     
-    private fun restoreBorder(component: JComponent) {
+    internal fun restoreBorder(component: JComponent) {
         val original = component.getClientProperty(KEY_ORIGINAL_BORDER) as? Border
         component.border = original ?: BorderFactory.createEmptyBorder()
     }
     
-    private fun setHighlightBorder(component: JComponent, color: Color, thickness: Int) {
+    internal fun setHighlightBorder(component: JComponent, color: Color, thickness: Int) {
         val original = component.getClientProperty(KEY_ORIGINAL_BORDER) as? Border
         val highlight = BorderFactory.createLineBorder(color, thickness)
         
@@ -189,7 +198,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
     }
     // -------------------------------------------------------------
     
-    private fun requestEmbedLoad(task: () -> Unit) {
+    internal fun requestEmbedLoad(task: () -> Unit) {
         embedLoadQueue.add(task)
         processEmbedQueue()
     }
@@ -214,8 +223,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
     }
 
 
-
-    private fun findParentGridTag(startTag: XmlTag): XmlTag? {
+    fun findParentGridTag(startTag: XmlTag): XmlTag? {
         var current: XmlTag? = startTag
         while (current != null) {
             if (current.name == "Grid") return current
@@ -225,7 +233,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         return null
     }
 
-    private fun refreshGridComponent(gridTag: XmlTag) {
+    fun refreshGridComponent(gridTag: XmlTag) {
         val oldComp = tagToComponent[gridTag] as? JPanel ?: return
         oldComp.removeAll()
         populateWrappedGridTable(gridTag, oldComp)
@@ -302,7 +310,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         rootPanel.revalidate()
         rootPanel.repaint()
         
-        javax.swing.SwingUtilities.invokeLater {
+        SwingUtilities.invokeLater {
             if (project.isDisposed) return@invokeLater
             ApplicationManager.getApplication().runReadAction {
                 if (preserveScroll) {
@@ -423,7 +431,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         }
     }
     
-        private fun ensureComponentVisible(component: JComponent) {
+        internal fun ensureComponentVisible(component: JComponent) {
         // 1. Walk up hierarchy to find JTabbedPane and switch tabs
         var current: Container? = component
         while (current != null) {
@@ -446,13 +454,13 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         component.scrollRectToVisible(component.bounds)
     }
 
-    private fun navigateToTag(tag: XmlTag, requestFocus: Boolean = true) {
+    internal fun navigateToTag(tag: XmlTag, requestFocus: Boolean = true) {
         if (project.isDisposed) return
         
         // Read PSI to get offset and file info
         var offset = 0
-        var vFile: com.intellij.openapi.vfs.VirtualFile? = null
-        var psiFile: com.intellij.psi.PsiFile? = null
+        var vFile: VirtualFile? = null
+        var psiFile: PsiFile? = null
         
         ApplicationManager.getApplication().runReadAction {
             if (tag.isValid) {
@@ -644,6 +652,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
          val container = JPanel()
          container.layout = BoxLayout(container, BoxLayout.Y_AXIS)
          container.border = BorderFactory.createTitledBorder(getTitle(tag))
+         container.transferHandler = FlexDropHandler(this, tag, project)
          addContainerContextMenu(container, tag)
          for (subTag in tag.subTags) {
              renderTag(subTag, container, visitedForms)
@@ -705,22 +714,22 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         
 
 
-    private fun isValidGridChild(tagName: String): Boolean {
+    internal fun isValidGridChild(tagName: String): Boolean {
         if (tagName.endsWith("DefCollection")) return false
-        return com.github.believepxw.yigo.ref.VariableReference.variableDefinitionTagNames.contains(tagName) || 
+        return VariableReference.variableDefinitionTagNames.contains(tagName) ||
                tagName == "Grid" || tagName == "Embed" ||
                tagName == "GridLayoutPanel" || tagName == "FlexGridLayoutPanel" || 
                tagName == "FlexFlowLayoutPanel" || tagName == "LinearLayoutPanel" ||
                tagName == "SplitPanel" || tagName == "TabPanel"
     }
 
-    private fun getTitle(tag: XmlTag): String {
+    internal fun getTitle(tag: XmlTag): String {
         val key = tag.getAttributeValue("Key") ?: ""
         val caption = tag.getAttributeValue("Caption")
         return if (!caption.isNullOrEmpty()) caption else key.ifEmpty { tag.name }
     }
     
-    private fun getIconForTag(tag: XmlTag): Icon? {
+    internal fun getIconForTag(tag: XmlTag): Icon? {
         val tagName = tag.name
         if (tagName == "GridCell") {
             val cellType = tag.getAttributeValue("CellType")
@@ -729,31 +738,8 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         return getIconForTag(tagName)
     }
 
-    private fun getIconForTag(tagName: String): Icon? {
-        return when (tagName) {
-            "CheckBox" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.CheckBox
-            "CheckListBox" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.CheckListBox
-            "RadioButton" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.RadioButton
-            "ComboBox" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.ComboBox
-            "DropdownButton" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.DropdownButton
-            "Dict" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.Dict
-            "DynamicDict" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.DynamicDict
-            "TextEditor" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.TextEditor
-            "TextArea" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.TextArea
-            "RichEditor" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.RichEditor
-            "PasswordEditor" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.PasswordEditor
-            "NumberEditor" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.NumberEditor
-            "DatePicker" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.DatePicker
-            "UTCDatePicker" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.UTCDatePicker
-            "MonthPicker" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.MonthPicker
-            "TimePicker" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.TimePicker
-            "Button" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.Button
-            "TextButton" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.TextButton
-            "Label" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.Label
-            "Image" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.Image
-            "HyperLink" -> com.github.believepxw.yigo.icons.YigoIcons.Controls.HyperLink
-            else -> null
-        }
+    internal fun getIconForTag(tagName: String): Icon? {
+        return YigoIcons.getIconForTag(tagName)
     }
 
     private fun createLeafComponent(tag: XmlTag): JComponent {
@@ -764,21 +750,21 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
                 g2.color = background
                 g2.fillRoundRect(0, 0, width - 1, height - 1, 8, 8)
-                g2.color = com.intellij.ui.JBColor.border()
+                g2.color = JBColor.border()
                 g2.drawRoundRect(0, 0, width - 1, height - 1, 8, 8)
                 g2.dispose()
                 super.paintComponent(g) // Paint children (label)
             }
         }
         panel.isOpaque = false // For rounded corners
-        panel.background = com.intellij.ui.JBColor(Color(245, 245, 245), Color(60, 63, 65))
+        panel.background = JBColor(Color(245, 245, 245), Color(60, 63, 65))
         panel.border = JBUI.Borders.empty(2, 5)
         
         val label = JLabel(getTitle(tag))
         label.icon = getIconForTag(tag)
         label.iconTextGap = 8
         label.horizontalAlignment = SwingConstants.LEFT // Align left to show icon properly
-        label.foreground = com.intellij.ui.JBColor.foreground()
+        label.foreground = JBColor.foreground()
         label.font = JBUI.Fonts.label().deriveFont(12f)
         panel.add(label, BorderLayout.CENTER)
         
@@ -787,8 +773,8 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         panel.putClientProperty(KEY_XML_TAG, tag)
         
         val ds = DragSource.getDefaultDragSource()
-        val listener = object : java.awt.dnd.DragGestureListener {
-             override fun dragGestureRecognized(dge: java.awt.dnd.DragGestureEvent) {
+        val listener = object : DragGestureListener {
+             override fun dragGestureRecognized(dge: DragGestureEvent) {
                  val transferable = StringSelection(tag.getAttributeValue("Key") ?: "")
                  ds.startDrag(dge, DragSource.DefaultMoveDrop, transferable, null)
                  DragContext.draggedTag = tag
@@ -840,7 +826,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                  c.insets = JBUI.insets(2)
                  
                  val header = createLeafComponent(colTag)
-                 header.background = com.intellij.ui.JBColor(Color(225, 230, 240), Color(60, 70, 80))
+                 header.background = JBColor(Color(225, 230, 240), Color(60, 70, 80))
                  (header.getComponent(0) as? JLabel)?.font = JBUI.Fonts.label().asBold() 
                  registerComponent(colTag, header)
                  mainPanel.add(header, c)
@@ -915,7 +901,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         val layout = GridBagLayout()
         val panel = JPanel(layout)
         panel.border = BorderFactory.createTitledBorder("FlexGrid: ${getTitle(tag)}")
-        panel.transferHandler = FlexDropHandler(tag, project)
+        panel.transferHandler = FlexDropHandler(this, tag, project)
         addContainerContextMenu(panel, tag)
         
         val columnCount = tag.getAttributeValue("ColumnCount")?.toIntOrNull() ?: 1
@@ -965,76 +951,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         return panel
     }
 
-    private inner class FlexDropHandler(private val parentTag: XmlTag, private val project: Project) : TransferHandler() {
-        override fun canImport(support: TransferSupport): Boolean {
-             // Check if dragging a tag
-             return DragContext.draggedTag != null
-        }
-        
-        override fun importData(support: TransferSupport): Boolean {
-             val draggedTag = DragContext.draggedTag ?: return false
-             // Confirm draggedTag is not an ancestor of parentTag (prevent cycle)
-             if (PsiTreeUtil.isAncestor(draggedTag, parentTag, false)) return false
-             
-             val dropLocation = support.dropLocation as? javax.swing.TransferHandler.DropLocation ?: return false
-             val panel = support.component as? Container ?: return false
-             
-             // Find insertion point
-             var targetIndex = -1
-             var insertBefore = false
-             
-             // Simple geometry check against children
-             val p = dropLocation.dropPoint
-             var closestDist = Double.MAX_VALUE
-             var closestComp: Component? = null
-             
-             for (comp in panel.components) {
-                 if (comp !is JComponent || comp.getClientProperty(KEY_XML_TAG) == null) continue
-                 
-                 val cx = comp.x + comp.width / 2
-                 val cy = comp.y + comp.height / 2
-                 val dist = Math.pow((p.x - cx).toDouble(), 2.0) + Math.pow((p.y - cy).toDouble(), 2.0)
-                 
-                 if (dist < closestDist) {
-                     closestDist = dist
-                     closestComp = comp
-                 }
-             }
-             
-             if (closestComp != null) {
-                 // Determine if before or after based on flow
-                 // FlexGrid flow is Left->Right, Top->Bottom
-                 val refTag = (closestComp as JComponent).getClientProperty(KEY_XML_TAG) as XmlTag
-                 
-                 // If point is to the LEFT of center, insert BEFORE
-                 val center = closestComp.x + closestComp.width / 2
-                 insertBefore = p.x < center
-                 
-                 ApplicationManager.getApplication().invokeLater {
-                     WriteCommandAction.runWriteCommandAction(project) {
-                         val newCopy = draggedTag.copy()
-                         draggedTag.delete()
-                         if (insertBefore) {
-                             parentTag.addBefore(newCopy, refTag)
-                         } else {
-                             parentTag.addAfter(newCopy, refTag)
-                         }
-                     }
-                 }
-                 return true
-             } else {
-                 // Append to end if empty or far away
-                 ApplicationManager.getApplication().invokeLater {
-                     WriteCommandAction.runWriteCommandAction(project) {
-                         val newCopy = draggedTag.copy()
-                         draggedTag.delete()
-                         parentTag.add(newCopy)
-                     }
-                 }
-                 return true
-             }
-        }
-    }
+    // --- Flex Drag & Drop Extracted to YigoDragDropHandlers.kt ---
 
     private fun createCoordinateGridPanel(tag: XmlTag, visitedForms: Set<String> = emptySet()): JPanel {
         val layout = GridBagLayout()
@@ -1042,7 +959,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         panel.border = BorderFactory.createTitledBorder("Grid: ${getTitle(tag)}")
         
         // Add drop support
-        panel.transferHandler = GridDropHandler(tag, project)
+        panel.transferHandler = GridDropHandler(this, tag, project)
         
         // Add Context Menu
         addContainerContextMenu(panel, tag)
@@ -1177,7 +1094,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
                     } else {
                          val cellPanel = JPanel()
                          cellPanel.layout = BoxLayout(cellPanel, BoxLayout.Y_AXIS)
-                         cellPanel.border = BorderFactory.createLineBorder(com.intellij.ui.JBColor.ORANGE) 
+                         cellPanel.border = BorderFactory.createLineBorder(JBColor.ORANGE)
                          compTags.forEach { 
                              val comp = createComponentForGridCell(it)
                              registerComponent(it, comp)
@@ -1339,21 +1256,21 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
 
                     val itemSearch = JMenuItem("Search in this container...")
                     itemSearch.addActionListener {
-                        ScopeSearchDialog(tag).showDialog()
+                        searchHandler.ScopeSearchDialog(tag).showDialog()
                     }
                     menu.add(itemSearch)
 
                     menu.addSeparator()
                     val batchDeleteItem = JMenuItem("Batch Delete...")
                     batchDeleteItem.addActionListener {
-                        showBatchDeleteDialog(tag)
+                        deleteHandler.showBatchDeleteDialog(tag)
                     }
                     menu.add(batchDeleteItem)
 
                     val deleteItem = JMenuItem("Delete")
-                    deleteItem.icon = com.intellij.icons.AllIcons.Actions.GC
+                    deleteItem.icon = AllIcons.Actions.GC
                     deleteItem.addActionListener {
-                        deleteTagsWithCascade(listOf(tag))
+                        deleteHandler.deleteTagsWithCascade(listOf(tag))
                     }
                     menu.add(deleteItem)
 
@@ -1365,12 +1282,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
     
     // Helper search because tag.findFirstSubTag is sometimes not enough if we need recursive? 
     // No, standard subtag is fine for this structure.
-    private fun findChildTag(parent: XmlTag, name: String): XmlTag? {
-        // Need to be cautious about ReadAction? navigateToTag handles read action for offsets.
-        // But finding the tag here requires read access if called from EDT action info?
-        // navigateToTag will re-resolve, but here we need the tag object or offset.
-        // Actually, let's look it up inside a ReadAction just to be safe immediately.
-        
+    internal fun findChildTag(parent: XmlTag, name: String): XmlTag? {
         var result: XmlTag? = null
         ApplicationManager.getApplication().runReadAction {
             if (parent.isValid) {
@@ -1382,665 +1294,17 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
     
     private fun createPlaceholder(x: Int, y: Int): JComponent {
         val panel = JPanel()
-        panel.background = com.intellij.ui.JBColor(Color(250, 250, 250), Color(43, 43, 43))
-        panel.border = BorderFactory.createDashedBorder(com.intellij.ui.JBColor.border(), 1.0f, 3.0f, 3.0f, true)
+        panel.background = JBColor(Color(250, 250, 250), Color(43, 43, 43))
+        panel.border = BorderFactory.createDashedBorder(JBColor.border(), 1.0f, 3.0f, 3.0f, true)
         panel.toolTipText = "Empty Cell ($x, $y)"
         panel.name = "Placeholder:$x,$y" 
         return panel
     }
 
-    object DragContext {
-        var draggedTag: XmlTag? = null
-    }
-
-    private inner class GridDropHandler(private val gridTag: XmlTag, private val project: Project) : TransferHandler() {
-        override fun canImport(support: TransferSupport): Boolean {
-             return DragContext.draggedTag != null
-        }
-
-        override fun importData(support: TransferSupport): Boolean {
-             val draggedTag = DragContext.draggedTag ?: return false
-             val dropLocation = support.dropLocation as? javax.swing.TransferHandler.DropLocation ?: return false
-             val component = support.component as? Container ?: return false
-             
-             // Find target X, Y
-             var targetX = 0
-             var targetY = 0
-             var found = false
-             
-             for (comp in component.components) {
-                 if (comp.bounds.contains(dropLocation.dropPoint)) {
-                     if (comp.name?.startsWith("Placeholder") == true) {
-                         val parts = comp.name.substringAfter(":").split(",")
-                         targetX = parts[0].toInt()
-                         targetY = parts[1].toInt()
-                         found = true
-                     } else {
-                         val layout = component.layout as? GridBagLayout
-                         if (layout != null) {
-                             val c = layout.getConstraints(comp)
-                             targetX = c.gridx
-                             targetY = c.gridy
-                             found = true
-                         }
-                     }
-                     break
-                 }
-             }
-
-             if (!found) return false
-
-             ApplicationManager.getApplication().invokeLater {
-                WriteCommandAction.runWriteCommandAction(project) {
-                    if (draggedTag.parentTag != gridTag) {
-                        try {
-                             val copy = draggedTag.copy() as XmlTag
-                             copy.setAttribute("X", targetX.toString())
-                             copy.setAttribute("Y", targetY.toString())
-                             gridTag.add(copy)
-                             draggedTag.delete()
-                        } catch (e: Exception) { e.printStackTrace() }
-                    } else {
-                        draggedTag.setAttribute("X", targetX.toString())
-                        draggedTag.setAttribute("Y", targetY.toString())
-                    }
-                }
-             }
-             return true
-        }
-    }
-    
-    private inner class TableDropHandler(private val gridTag: XmlTag, private val project: Project) : TransferHandler() {
-        override fun canImport(support: TransferSupport): Boolean {
-             val dragged = DragContext.draggedTag
-             return dragged != null && dragged.name == "GridColumn"
-        }
-        
-        override fun importData(support: TransferSupport): Boolean {
-             val draggedTag = DragContext.draggedTag ?: return false
-             if (draggedTag.name != "GridColumn") return false
-             
-             val dropLocation = support.dropLocation as? javax.swing.TransferHandler.DropLocation ?: return false
-             val component = support.component as? Container ?: return false
-             
-             var targetTag: XmlTag? = null
-             var insertBefore = false
-             
-             ApplicationManager.getApplication().runReadAction {
-                 for (comp in component.components) {
-                     if (comp.bounds.contains(dropLocation.dropPoint)) {
-                         // Optimization: Use client property instead of linear search in map
-                         val tag = (comp as? JComponent)?.getClientProperty(KEY_XML_TAG) as? XmlTag
-                         if (tag != null && tag.isValid && tag.name == "GridColumn") {
-                             targetTag = tag
-                             val center = comp.x + comp.width / 2
-                             insertBefore = dropLocation.dropPoint.x < center
-                         }
-                         break
-                     }
-                 }
-             }
-             
-             if (targetTag == null) return false
-             if (targetTag == draggedTag) return false
-
-             ApplicationManager.getApplication().invokeLater {
-                 WriteCommandAction.runWriteCommandAction(project) {
-                     val parent = targetTag!!.parentTag
-                     if (parent != null) {
-                         // Perform atomic move of column and corresponding cells
-                         moveColumnAndCells(gridTag, draggedTag, targetTag!!, insertBefore)
-                     }
-                 }
-             }
-             return true
-        }
-    }
-    
-    private fun moveColumnAndCells(gridTag: XmlTag, draggedCol: XmlTag, targetCol: XmlTag, insertBefore: Boolean) {
-        val colCollection = draggedCol.parentTag ?: return
-        val rowCollection = gridTag.findFirstSubTag("GridRowCollection")
-
-        // 1. Move Column
-        val newCopy = draggedCol.copy() as XmlTag
-        draggedCol.delete()
-        if (insertBefore) {
-            colCollection.addBefore(newCopy, targetCol)
-        } else {
-            colCollection.addAfter(newCopy, targetCol)
-        }
-
-        // 2. Move correponding cells in each row (Optimization: Move only one cell per row)
-        val colKey = newCopy.getAttributeValue("Key") ?: return
-        val targetKey = targetCol.getAttributeValue("Key") ?: return
-
-        if (rowCollection != null) {
-            for (row in rowCollection.findSubTags("GridRow")) {
-                val cells = row.findSubTags("GridCell")
-                val cellToMove = cells.find { it.getAttributeValue("Key") == colKey }
-                val targetCell = cells.find { it.getAttributeValue("Key") == targetKey }
-
-                if (cellToMove != null && targetCell != null) {
-                    val cellCopy = cellToMove.copy()
-                    cellToMove.delete()
-                    if (insertBefore) {
-                        row.addBefore(cellCopy, targetCell)
-                    } else {
-                        row.addAfter(cellCopy, targetCell)
-                    }
-                }
-            }
-        }
-    }
-
-    inner class ScopeSearchDialog(private val scopeTag: XmlTag) : JDialog(SwingUtilities.getWindowAncestor(this@YigoLayoutPanel), "Search in ${getTitle(scopeTag)}", Dialog.ModalityType.MODELESS) {
-        private val searchField = SearchTextField()
-        private val prevButton = JButton("Prev")
-        private val nextButton = JButton("Next")
-        private val findAllButton = JButton("Find All")
-        private val countLabel = JLabel("0/0")
-        private val resultsList = com.intellij.ui.components.JBList<Pair<XmlTag, JComponent>>()
-        private val resultsScrollPane = JBScrollPane(resultsList)
-
-        private var searchMatches = listOf<Pair<XmlTag, JComponent>>()
-        private var currentMatchIndex = -1
-
-        init {
-            layout = BorderLayout()
-            val topPanel = JPanel(BorderLayout())
-            topPanel.border = JBUI.Borders.empty(5)
-
-            val controls = JPanel(FlowLayout(FlowLayout.RIGHT, 5, 0))
-            prevButton.margin = Insets(0, 5, 0, 5)
-            nextButton.margin = Insets(0, 5, 0, 5)
-            findAllButton.margin = Insets(0, 5, 0, 5)
-
-            controls.add(countLabel)
-            controls.add(prevButton)
-            controls.add(nextButton)
-            controls.add(findAllButton)
-
-            topPanel.add(searchField, BorderLayout.CENTER)
-            topPanel.add(controls, BorderLayout.EAST)
-
-            add(topPanel, BorderLayout.NORTH)
-
-            resultsScrollPane.isVisible = false
-            resultsScrollPane.preferredSize = Dimension(400, 200)
-            add(resultsScrollPane, BorderLayout.CENTER)
-
-            // Set up renderer for the list
-            resultsList.cellRenderer = object : DefaultListCellRenderer() {
-                override fun getListCellRendererComponent(list: JList<*>, value: Any?, index: Int, isSelected: Boolean, cellHasFocus: Boolean): Component {
-                    val comp = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus)
-                    if (value is Pair<*, *>) {
-                        val tag = value.first as? XmlTag
-                        if (tag != null) {
-                            val key = tag.getAttributeValue("Key") ?: ""
-                            val caption = tag.getAttributeValue("Caption") ?: ""
-                            val parentTag = findParentGridTag(tag) ?: tag.parentTag
-                            val parentKey = parentTag?.getAttributeValue("Key") ?: parentTag?.name ?: ""
-                            val parentCaption = parentTag?.getAttributeValue("Caption") ?: ""
-
-                            val itemText = "[$key] $caption"
-                            val contextText = " in [$parentKey] $parentCaption"
-                            text = "$itemText - $contextText"
-                            icon = getIconForTag(tag)
-                        }
-                    }
-                    return comp
-                }
-            }
-
-            // Single-click navigation for list items
-            resultsList.addMouseListener(object : MouseAdapter() {
-                override fun mouseClicked(e: MouseEvent) {
-                    val index = resultsList.locationToIndex(e.point)
-                    if (index >= 0 && index < searchMatches.size) {
-                        currentMatchIndex = index
-                        updateSearchUI(true)
-                    }
-                }
-            })
-
-            // Search actions
-            searchField.addKeyboardListener(object : KeyAdapter() {
-                override fun keyPressed(e: KeyEvent) {
-                    if (e.keyCode == KeyEvent.VK_ENTER) {
-                        runSearch()
-                        if (e.isShiftDown) moveSelection(-1) else moveSelection(1)
-                    } else if (e.keyCode == KeyEvent.VK_ESCAPE) {
-                        clearHighlight()
-                        dispose()
-                    }
-                }
-            })
-
-            prevButton.addActionListener {
-                runSearch()
-                moveSelection(-1)
-            }
-            nextButton.addActionListener {
-                runSearch()
-                moveSelection(1)
-            }
-            findAllButton.addActionListener {
-                runSearch()
-                showAllResults()
-            }
-
-            pack()
-            isAlwaysOnTop = true
-            setLocationRelativeTo(this@YigoLayoutPanel)
-
-            addWindowListener(object : WindowAdapter() {
-                override fun windowClosing(e: WindowEvent?) {
-                    clearHighlight()
-                }
-            })
-        }
-
-        fun showDialog() {
-            isVisible = true
-            searchField.requestFocusInWindow()
-        }
-
-        private fun runSearch() {
-            val text = searchField.text.trim().lowercase()
-            if (text.isEmpty()) {
-                searchMatches = emptyList()
-                currentMatchIndex = -1
-                updateSearchUI(false)
-                return
-            }
-
-            ApplicationManager.getApplication().runReadAction {
-                val validComponents = tagToComponent.entries.filter { it.key.isValid }
-                searchMatches = validComponents.filter { (tag, _) ->
-                    PsiTreeUtil.isAncestor(scopeTag, tag, false) && (
-                            (tag.getAttributeValue("Key")?.lowercase()?.contains(text) == true) ||
-                                    (tag.getAttributeValue("Caption")?.lowercase()?.contains(text) == true)
-                            )
-                }.map { it.toPair() }.sortedBy { it.second.y }
-            }
-
-            if (searchMatches.isEmpty()) {
-                currentMatchIndex = -1
-            } else if (currentMatchIndex < 0 || currentMatchIndex >= searchMatches.size) {
-                currentMatchIndex = 0
-            }
-        }
-
-        private fun moveSelection(direction: Int) {
-            if (searchMatches.isEmpty()) return
-            currentMatchIndex = (currentMatchIndex + direction).mod(searchMatches.size)
-            updateSearchUI(true)
-        }
-
-        private fun showAllResults() {
-            if (searchMatches.isNotEmpty()) {
-                val model = DefaultListModel<Pair<XmlTag, JComponent>>()
-                searchMatches.forEach { model.addElement(it) }
-                resultsList.model = model
-                resultsScrollPane.isVisible = true
-                pack() // resize to fit list
-            } else {
-                resultsScrollPane.isVisible = false
-                pack()
-            }
-        }
-
-        private fun updateSearchUI(highlight: Boolean) {
-            if (searchMatches.isEmpty()) {
-                countLabel.text = "0/0"
-                countLabel.foreground = Color.RED
-                prevButton.isEnabled = false
-                nextButton.isEnabled = false
-                clearHighlight()
-            } else {
-                countLabel.text = "${currentMatchIndex + 1}/${searchMatches.size}"
-                countLabel.foreground = Color.BLACK
-                prevButton.isEnabled = true
-                nextButton.isEnabled = true
-
-                if (highlight) {
-                    clearHighlight()
-                    val (tag, comp) = searchMatches[currentMatchIndex]
-                    setHighlightBorder(comp, Color.MAGENTA, 3)
-                    ensureComponentVisible(comp)
-                    lastSearchHighlight = comp
-
-                    val currentEditor = FileEditorManager.getInstance(project).selectedTextEditor
-                    val currentPsi = if (currentEditor != null) PsiDocumentManager.getInstance(project).getPsiFile(currentEditor.document) else null
-
-                    if (currentPsi != null && tag.containingFile == currentPsi) {
-                        navigateToTag(tag, false)
-                    }
-                }
-            }
-        }
-
-        private fun clearHighlight() {
-            if (lastSearchHighlight != null) {
-                restoreBorder(lastSearchHighlight!!)
-                lastSearchHighlight = null
-            }
-        }
-    }
-
     // ===================== Delete Feature =====================
     
     private fun showLeafDeleteMenu(e: MouseEvent, tag: XmlTag) {
-        val menu = JPopupMenu()
-        val deleteItem = JMenuItem("Delete")
-        deleteItem.icon = com.intellij.icons.AllIcons.Actions.GC
-        deleteItem.addActionListener {
-            deleteTagsWithCascade(listOf(tag))
-        }
-        menu.add(deleteItem)
-        menu.show(e.component, e.x, e.y)
-    }
-    
-    private fun showBatchDeleteDialog(containerTag: XmlTag) {
-        val childTags = mutableListOf<Pair<XmlTag, String>>()
-        
-        ApplicationManager.getApplication().runReadAction {
-            if (!containerTag.isValid) return@runReadAction
-            
-            when (containerTag.name) {
-                "Grid" -> {
-                    // Only list GridColumns, not GridCells
-                    val colCollection = containerTag.findFirstSubTag("GridColumnCollection")
-                    colCollection?.findSubTags("GridColumn")?.forEach { col ->
-                        val key = col.getAttributeValue("Key") ?: col.name
-                        val caption = col.getAttributeValue("Caption") ?: ""
-                        val display = if (caption.isNotEmpty()) "$key ($caption)" else key
-                        childTags.add(col to display)
-                    }
-                }
-                else -> {
-                    // GridLayoutPanel, FlexGridLayoutPanel, FlexFlowLayoutPanel, etc.
-                    containerTag.subTags.filter { isValidGridChild(it.name) }.forEach { child ->
-                        val key = child.getAttributeValue("Key") ?: child.name
-                        val caption = child.getAttributeValue("Caption") ?: ""
-                        val display = if (caption.isNotEmpty()) "$key ($caption)" else "$key [${child.name}]"
-                        childTags.add(child to display)
-                    }
-                }
-            }
-        }
-        
-        if (childTags.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No deletable items found.", "Batch Delete", JOptionPane.INFORMATION_MESSAGE)
-            return
-        }
-        
-        // Build dialog with JTable checkboxes
-        val dialog = JDialog(SwingUtilities.getWindowAncestor(this), "Batch Delete", Dialog.ModalityType.APPLICATION_MODAL)
-        dialog.layout = BorderLayout()
-        
-        val columnNames = arrayOf("", "Name")
-        val data = Array(childTags.size) { arrayOf(false as Any, childTags[it].second as Any) }
-        val tableModel = object : DefaultTableModel(data, columnNames) {
-            override fun getColumnClass(columnIndex: Int): Class<*> {
-                return if (columnIndex == 0) java.lang.Boolean::class.java else String::class.java
-            }
-            override fun isCellEditable(row: Int, column: Int): Boolean = column == 0
-        }
-        val table = javax.swing.JTable(tableModel)
-        table.columnModel.getColumn(0).preferredWidth = 30
-        table.columnModel.getColumn(0).maxWidth = 40
-        table.columnModel.getColumn(1).preferredWidth = 350
-        table.rowHeight = 24
-        
-        val tableScrollPane = JBScrollPane(table)
-        tableScrollPane.preferredSize = Dimension(420, Math.min(childTags.size * 24 + 30, 400))
-        dialog.add(tableScrollPane, BorderLayout.CENTER)
-        
-        // Buttons panel
-        val buttonsPanel = JPanel(FlowLayout(FlowLayout.RIGHT))
-        val selectAllBtn = JButton("Select All")
-        selectAllBtn.addActionListener {
-            for (i in 0 until tableModel.rowCount) tableModel.setValueAt(true, i, 0)
-        }
-        val deselectAllBtn = JButton("Deselect All")
-        deselectAllBtn.addActionListener {
-            for (i in 0 until tableModel.rowCount) tableModel.setValueAt(false, i, 0)
-        }
-        val deleteBtn = JButton("Delete Selected")
-        deleteBtn.addActionListener {
-            val selectedTags = mutableListOf<XmlTag>()
-            for (i in 0 until tableModel.rowCount) {
-                if (tableModel.getValueAt(i, 0) == true) {
-                    selectedTags.add(childTags[i].first)
-                }
-            }
-            if (selectedTags.isEmpty()) {
-                JOptionPane.showMessageDialog(dialog, "No items selected.", "Batch Delete", JOptionPane.WARNING_MESSAGE)
-                return@addActionListener
-            }
-            dialog.dispose()
-            deleteTagsWithCascade(selectedTags)
-        }
-        val cancelBtn = JButton("Cancel")
-        cancelBtn.addActionListener { dialog.dispose() }
-        
-        buttonsPanel.add(selectAllBtn)
-        buttonsPanel.add(deselectAllBtn)
-        buttonsPanel.add(deleteBtn)
-        buttonsPanel.add(cancelBtn)
-        dialog.add(buttonsPanel, BorderLayout.SOUTH)
-        
-        dialog.pack()
-        dialog.setLocationRelativeTo(this)
-        dialog.isVisible = true
-    }
-    
-    /**
-     * Cascade-delete the given tags.
-     * - GridColumn: deletes associated GridCells + DataBinding Column tags with matching ColumnKey
-     * - Grid: deletes corresponding Table in DataSource's DataObject
-     * - Panel containers: recursively scans children for GridColumns and cascades
-     * Checks for references via ReferencesSearch before deleting (warning only, not blocking).
-     */
-    private fun deleteTagsWithCascade(tags: List<XmlTag>) {
-        val allTagsToDelete = mutableListOf<XmlTag>()
-        val warningMessages = mutableListOf<String>()
-        
-        ApplicationManager.getApplication().runReadAction {
-            for (tag in tags) {
-                if (!tag.isValid) continue
-                allTagsToDelete.add(tag)
-                collectCascadeTargets(tag, allTagsToDelete, warningMessages)
-            }
-        }
-        
-        ApplicationManager.getApplication().invokeLater {
-            // Remove Swing components before deleting XML to avoid full rerender
-            isDeletingControls = true
-            try {
-                // Remove UI components for all tags being deleted (including cascade targets like GridCells)
-                for (tag in allTagsToDelete) {
-                    val comp = tagToComponent[tag]
-                    if (comp != null) {
-                        val parent = comp.parent
-                        // If wrapped in JScrollPane, remove the scroll pane instead
-                        val toRemove = if (parent is javax.swing.JViewport && parent.parent is JBScrollPane) {
-                            parent.parent
-                        } else {
-                            comp
-                        }
-                        toRemove.parent?.remove(toRemove)
-                        toRemove.parent?.let { it.revalidate(); it.repaint() }
-                        tagToComponent.remove(tag)
-                    }
-                }
-                rootPanel.revalidate()
-                rootPanel.repaint()
-                
-                // Collect parent Grids BEFORE deleting XML (parentTag will be invalid after delete)
-                val gridsToRefresh = mutableSetOf<XmlTag>()
-                for (tag in tags) {
-                    if (tag.name == "GridColumn" && tag.isValid) {
-                        val gridTag = tag.parentTag?.parentTag // GridColumn -> GridColumnCollection -> Grid
-                        if (gridTag != null && gridTag.name == "Grid") {
-                            gridsToRefresh.add(gridTag)
-                        }
-                    }
-                }
-                
-                WriteCommandAction.runWriteCommandAction(project, "Delete Controls", null, Runnable {
-                    for (t in allTagsToDelete) {
-                        if (t.isValid) {
-                            t.delete()
-                        }
-                    }
-                })
-                
-                // Refresh parent Grid components after deletion to rebuild layout
-                ApplicationManager.getApplication().runReadAction {
-                    for (gridTag in gridsToRefresh) {
-                        if (gridTag.isValid) {
-                            refreshGridComponent(gridTag)
-                        }
-                    }
-                }
-            } finally {
-                isDeletingControls = false
-            }
-        }
-    }
-    
-    /**
-     * Recursively collect cascade targets for the given tag.
-     */
-    private fun collectCascadeTargets(tag: XmlTag, result: MutableList<XmlTag>, warnings: MutableList<String>) {
-        when (tag.name) {
-            "GridColumn" -> {
-                val colKey = tag.getAttributeValue("Key") ?: return
-                val gridTag = tag.parentTag?.parentTag ?: return
-                var gridCell = findGridCellsForColumn(gridTag, colKey)
-                var refColumn: XmlAttributeValue? = null
-                if (gridCell.size > 0) {
-                    result.addAll(gridCell)
-                    for (xmlTag in gridCell.first().subTags) {
-                        if (xmlTag.name == "DataBinding") {
-                            refColumn = xmlTag.getAttribute("ColumnKey")?.valueElement
-                        }
-                    }
-                }
-
-                if (refColumn != null) {
-                    var def = refColumn.references.first()?.resolve()
-                    if (def != null) {
-                        result.add(def.parent.parent as XmlTag)
-                    }
-
-                }
-            }
-            "Grid" -> {
-                // Cascade: delete all GridColumns inside (which cascades their cells + DataBinding)
-                val colCollection = tag.findFirstSubTag("GridColumnCollection")
-                colCollection?.findSubTags("GridColumn")?.forEach { col ->
-                    collectCascadeTargets(col, result, warnings)
-                }
-                // Cascade: delete corresponding Table in DataSource DataObject
-                val rowCollection = tag.findFirstSubTag("GridRowCollection")
-                val firstRow = rowCollection?.findSubTags("GridRow")?.firstOrNull()
-                val tableKey = firstRow?.getAttributeValue("TableKey")
-                if (tableKey != null) {
-                    var def = firstRow.getAttribute("TableKey")?.valueElement?.references?.first()?.resolve()
-                    if (def != null) {
-                        result.add(def.parent.parent as XmlTag)
-                    }
-
-                }
-            }
-            in VariableReference.variableDefinitionTagNames ->{
-                var refColumn: XmlAttributeValue? = null
-                for (xmlTag in tag.subTags) {
-                    if (xmlTag.name == "DataBinding") {
-                        refColumn = xmlTag.getAttribute("ColumnKey")?.valueElement
-                    }
-                }
-                var defPsi = refColumn?.references?.first()?.resolve()
-                if (defPsi != null) {
-                    result.add(defPsi.parent.parent as XmlTag)
-                }
-            }
-            else -> {
-                // Panel containers: recursively scan children
-                for (child in tag.subTags) {
-                    if (child.name == "Grid") {
-                        collectCascadeTargets(child, result, warnings)
-                    } else if (child.name == "GridColumn") {
-                        collectCascadeTargets(child, result, warnings)
-                    } else if (child.name in VariableReference.variableDefinitionTagNames) {
-                        collectCascadeTargets(child, result, warnings)
-                    } else if (isValidGridChild(child.name)) {
-                        // Recurse into sub-panels
-                        collectCascadeTargets(child, result, warnings)
-                    }
-                }
-            }
-        }
-    }
-    
-    private fun findGridCellsForColumn(gridTag: XmlTag, columnKey: String): List<XmlTag> {
-        val result = mutableListOf<XmlTag>()
-        val rowCollection = gridTag.findFirstSubTag("GridRowCollection") ?: return result
-        for (row in rowCollection.findSubTags("GridRow")) {
-            for (cell in row.findSubTags("GridCell")) {
-                if (cell.getAttributeValue("Key") == columnKey) {
-                    result.add(cell)
-                }
-            }
-        }
-        return result
-    }
-    
-    private fun findDataBindingColumnTags(formTag: XmlTag, columnKey: String): List<XmlTag> {
-        val result = mutableListOf<XmlTag>()
-        collectDataBindingColumnTags(formTag, columnKey, result)
-        return result
-    }
-    
-    private fun collectDataBindingColumnTags(tag: XmlTag, columnKey: String, result: MutableList<XmlTag>) {
-        if (tag.name == "Column" && tag.parentTag?.name == "DataBinding") {
-            if (tag.getAttributeValue("ColumnKey") == columnKey) {
-                result.add(tag)
-            }
-        }
-        for (sub in tag.subTags) {
-            collectDataBindingColumnTags(sub, columnKey, result)
-        }
-    }
-    
-    /**
-     * Find a Table tag in DataSource by TableKey.
-     * Supports both inline DataObject and RefObjectKey-referenced DataObject.
-     */
-    private fun findTableInDataSource(dataSourceTag: XmlTag, tableKey: String): XmlTag? {
-        val refKey = dataSourceTag.getAttributeValue("RefObjectKey")
-        val dataObjectTag = if (refKey != null) {
-            val defAttr = example.index.DataObjectIndex.findDataObjectDefinition(project, refKey)
-            (defAttr?.parent?.parent as? XmlTag)
-        } else {
-            dataSourceTag.findFirstSubTag("DataObject")
-        }
-        if (dataObjectTag == null) return null
-        
-        val tableCollection = dataObjectTag.findFirstSubTag("TableCollection") ?: return null
-        return tableCollection.findSubTags("Table").firstOrNull { it.getAttributeValue("Key") == tableKey }
-    }
-    
-    private fun findRootFormTag(tag: XmlTag): XmlTag? {
-        var current: XmlTag? = tag
-        while (current != null) {
-            if (current.name == "Form") return current
-            current = current.parentTag
-        }
-        return null
+        deleteHandler.showLeafDeleteMenu(e, tag)
     }
 
 }

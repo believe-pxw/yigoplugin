@@ -32,4 +32,31 @@ object YigoIcons {
         @JvmField val Image = IconLoader.getIcon("/icons/controls/image.svg", YigoIcons::class.java)
         @JvmField val HyperLink = IconLoader.getIcon("/icons/controls/hyperlink.svg", YigoIcons::class.java)
     }
+
+    fun getIconForTag(tagName: String): Icon? {
+        return when (tagName) {
+            "CheckBox" -> Controls.CheckBox
+            "CheckListBox" -> Controls.CheckListBox
+            "RadioButton" -> Controls.RadioButton
+            "ComboBox" -> Controls.ComboBox
+            "DropdownButton" -> Controls.DropdownButton
+            "Dict" -> Controls.Dict
+            "DynamicDict" -> Controls.DynamicDict
+            "TextEditor" -> Controls.TextEditor
+            "TextArea" -> Controls.TextArea
+            "RichEditor" -> Controls.RichEditor
+            "PasswordEditor" -> Controls.PasswordEditor
+            "NumberEditor" -> Controls.NumberEditor
+            "DatePicker" -> Controls.DatePicker
+            "UTCDatePicker" -> Controls.UTCDatePicker
+            "MonthPicker" -> Controls.MonthPicker
+            "TimePicker" -> Controls.TimePicker
+            "Button" -> Controls.Button
+            "TextButton" -> Controls.TextButton
+            "Label" -> Controls.Label
+            "Image" -> Controls.Image
+            "HyperLink" -> Controls.HyperLink
+            else -> null
+        }
+    }
 }
