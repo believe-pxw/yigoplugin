@@ -1,30 +1,22 @@
 package com.github.believepxw.yigo.tool
 
+import com.github.believepxw.yigo.util.YigoUtils
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
 import com.intellij.psi.xml.XmlTag
 import com.intellij.ui.SearchTextField
+import com.intellij.ui.components.JBList
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.util.ui.JBUI
-import java.awt.BorderLayout
-import java.awt.Component
-import java.awt.Dialog
-import java.awt.Dimension
-import java.awt.FlowLayout
-import java.awt.GridBagConstraints
-import java.awt.GridBagLayout
+import example.index.DataElementIndex
+import example.index.DomainIndex
+import java.awt.*
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
-import javax.swing.DefaultListModel
-import javax.swing.JButton
-import javax.swing.JDialog
-import javax.swing.JLabel
-import javax.swing.JPanel
-import javax.swing.JTextField
-import javax.swing.SwingUtilities
+import javax.swing.*
 
 class YigoControlBuilder(private val project: Project) {
 
@@ -37,7 +29,7 @@ class YigoControlBuilder(private val project: Project) {
 
         val tableKeyField = JTextField(20)
         val columnKeyField = SearchTextField()
-        val columnList = com.intellij.ui.components.JBList<String>()
+        val columnList = JBList<String>()
         val listModel = DefaultListModel<String>()
         columnList.model = listModel
 
@@ -45,7 +37,15 @@ class YigoControlBuilder(private val project: Project) {
 
         val suggestedTableKey = ApplicationManager.getApplication().runReadAction<String?> {
             if (!gridTag.isValid) return@runReadAction null
-            gridTag.subTags.firstOrNull { it.name == "DataBinding" }?.getAttributeValue("TableKey")
+            for (control in gridTag.subTags) {
+                for (subTag in control.subTags) {
+                    if (subTag.name == "DataBinding") {
+                        val tableKey = subTag.getAttributeValue("TableKey")
+                        if (tableKey != null) return@runReadAction tableKey
+                    }
+                }
+            }
+            null
         }
         if (suggestedTableKey != null) tableKeyField.text = suggestedTableKey
 
@@ -72,15 +72,9 @@ class YigoControlBuilder(private val project: Project) {
             val tableKey = tableKeyField.text.trim()
             if (tableKey.isNotEmpty()) {
                 ApplicationManager.getApplication().runReadAction {
-                    val table = com.github.believepxw.yigo.util.YigoUtils.findTable(gridTag, tableKey)
+                    val table = YigoUtils.findTable(gridTag, tableKey)
                     if (table != null) {
-                        val columnCollection = table.findFirstSubTag("ColumnCollection")
-                        allColumns = columnCollection?.findSubTags("Column")?.mapNotNull {
-                            val key = it.getAttributeValue("Key")
-                            val caption = it.getAttributeValue("Caption") ?: ""
-                            if (key != null) key to caption else null
-                        } ?: emptyList()
-
+                        allColumns = getAllColumn(table)
                         listModel.clear()
                         allColumns.forEach { (key, caption) ->
                             listModel.addElement("$key - $caption")
@@ -103,7 +97,7 @@ class YigoControlBuilder(private val project: Project) {
 
         columnList.addMouseListener(object : MouseAdapter() {
             override fun mouseClicked(e: MouseEvent) {
-                if (e.clickCount == 2) {
+                if (e.clickCount == 1) {
                     val selected = columnList.selectedValue
                     if (selected != null) {
                         columnKeyField.text = selected.substringBefore(" - ")
@@ -136,6 +130,33 @@ class YigoControlBuilder(private val project: Project) {
         dialog.isVisible = true
     }
 
+    val ignoreList = listOf("VERID", "DVERID", "TLeft", "TRight", "Enable", "ClientID", "Creator", "CreateTime","Modifier","ModifyTime")
+
+    fun getAllColumn(table: XmlTag) : List<Pair<String, String>>{
+        val codeColumnKey = mutableListOf<String>()
+        table.findSubTags("Column")?.mapNotNull {
+            if(it.getAttributeValue("CodeColumnKey")?.isNotEmpty() == true){
+                codeColumnKey.add(it.getAttributeValue("CodeColumnKey").orEmpty())
+            }
+        } ?: emptyList()
+        var allColumns: List<Pair<String, String>>
+        allColumns = table.findSubTags("Column")?.mapNotNull {
+            val key = it.getAttributeValue("Key")
+            if (ignoreList.contains(key)) {
+                return@mapNotNull null
+            }
+            if (codeColumnKey.contains(key)) {
+                return@mapNotNull null
+            }
+            if(it.getAttributeValue("CodeColumnKey")?.isNotEmpty() == true){
+                codeColumnKey.add(it.getAttributeValue("CodeColumnKey").orEmpty())
+            }
+            val caption = it.getAttributeValue("Caption") ?: ""
+            if (key != null) key to caption else null
+        } ?: emptyList()
+        return allColumns
+    }
+
     fun showAddGridColumnDialog(parent: Component, gridTag: XmlTag) {
         val dialog = JDialog(SwingUtilities.getWindowAncestor(parent), "Add Grid Column", Dialog.ModalityType.APPLICATION_MODAL)
         dialog.layout = BorderLayout()
@@ -145,7 +166,7 @@ class YigoControlBuilder(private val project: Project) {
 
         val tableKeyField = JTextField(20)
         val columnKeyField = SearchTextField()
-        val columnList = com.intellij.ui.components.JBList<String>()
+        val columnList = JBList<String>()
         val listModel = DefaultListModel<String>()
         columnList.model = listModel
 
@@ -181,15 +202,9 @@ class YigoControlBuilder(private val project: Project) {
             val tableKey = tableKeyField.text.trim()
             if (tableKey.isNotEmpty()) {
                 ApplicationManager.getApplication().runReadAction {
-                    val table = com.github.believepxw.yigo.util.YigoUtils.findTable(gridTag, tableKey)
+                    val table = YigoUtils.findTable(gridTag, tableKey)
                     if (table != null) {
-                        val columnCollection = table.findFirstSubTag("ColumnCollection")
-                        allColumns = columnCollection?.findSubTags("Column")?.mapNotNull {
-                            val key = it.getAttributeValue("Key")
-                            val caption = it.getAttributeValue("Caption") ?: ""
-                            if (key != null) key to caption else null
-                        } ?: emptyList()
-
+                        allColumns = getAllColumn(table)
                         listModel.clear()
                         allColumns.forEach { (key, caption) ->
                             listModel.addElement("$key - $caption")
@@ -212,7 +227,7 @@ class YigoControlBuilder(private val project: Project) {
 
         columnList.addMouseListener(object : MouseAdapter() {
             override fun mouseClicked(e: MouseEvent) {
-                if (e.clickCount == 2) {
+                if (e.clickCount == 1) {
                     val selected = columnList.selectedValue
                     if (selected != null) {
                         columnKeyField.text = selected.substringBefore(" - ")
@@ -249,11 +264,11 @@ class YigoControlBuilder(private val project: Project) {
     private fun createControlFromDomain(gridTag: XmlTag, tableKey: String, columnKey: String, clickX: Int, clickY: Int) {
         ApplicationManager.getApplication().invokeLater {
             WriteCommandAction.runWriteCommandAction(project) {
-                val column = com.github.believepxw.yigo.util.YigoUtils.findColumnInTable(gridTag, tableKey, columnKey) ?: return@runWriteCommandAction
+                val column = YigoUtils.findColumnInTable(gridTag, tableKey, columnKey) ?: return@runWriteCommandAction
                 val deKey = column.getAttributeValue("DataElementKey") ?: return@runWriteCommandAction
-                val deTag = example.index.DataElementIndex.findDEDefinition(project, deKey) ?: return@runWriteCommandAction
+                val deTag = DataElementIndex.findDEDefinition(project, deKey) ?: return@runWriteCommandAction
                 val domainKey = deTag.getAttributeValue("DomainKey") ?: return@runWriteCommandAction
-                val domainTag = example.index.DomainIndex.findDomainDefinition(project, domainKey) ?: return@runWriteCommandAction
+                val domainTag = DomainIndex.findDomainDefinition(project, domainKey) ?: return@runWriteCommandAction
 
                 val controlType = domainTag.getAttributeValue("RefControlType") ?: "TextEditor"
                 val caption = deTag.getAttributeValue("Caption") ?: columnKey
@@ -311,9 +326,9 @@ class YigoControlBuilder(private val project: Project) {
         ApplicationManager.getApplication().invokeLater {
             WriteCommandAction.runWriteCommandAction(project) {
                 val deKey = "${tableKey}_$columnKey"
-                val deTag = example.index.DataElementIndex.findDEDefinition(project, deKey) ?: return@runWriteCommandAction
+                val deTag = DataElementIndex.findDEDefinition(project, deKey) ?: return@runWriteCommandAction
                 val domainKey = deTag.getAttributeValue("DomainKey") ?: return@runWriteCommandAction
-                val domainTag = example.index.DomainIndex.findDomainDefinition(project, domainKey) ?: return@runWriteCommandAction
+                val domainTag = DomainIndex.findDomainDefinition(project, domainKey) ?: return@runWriteCommandAction
 
                 val controlType = domainTag.getAttributeValue("RefControlType") ?: "TextEditor"
                 val caption = deTag.getAttributeValue("Caption") ?: columnKey
@@ -347,7 +362,7 @@ class YigoControlBuilder(private val project: Project) {
     }
 
     private fun applyDomainAttributes(controlTag: XmlTag, domainTag: XmlTag, controlType: String) {
-        val attrList = listOf("DataType", "Precision", "Scale", "Caption")
+        val attrList = listOf("DataType", "Caption", "RefControlType")
         for (attribute in domainTag.attributes) {
             var name1 = attribute.name
             if (controlType == "TextEditor" && name1 == "Length") {
