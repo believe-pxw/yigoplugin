@@ -1,0 +1,884 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DataElementDef>
+    <DataElementCollection>
+        <DataElement Key="DynInvestObjectID" Caption="分配对象" DomainKey="DynInvestObjectID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="对象" TextEn="Allocation Object"/>
+                <FieldLabel Key="Medium" Text="对象" TextEn="Allocation Object"/>
+                <FieldLabel Key="Long" Text="分配对象" TextEn="Allocation Object"/>
+                <FieldLabel Key="Header" Text="分配对象" TextEn="Allocation Object"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynAcceptorID" Caption="承兑人" DomainKey="DynAcceptorID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="承兑人" TextEn="Acceptor"/>
+                <FieldLabel Key="Medium" Text="承兑人" TextEn="Acceptor"/>
+                <FieldLabel Key="Long" Text="承兑人" TextEn="Acceptor"/>
+                <FieldLabel Key="Header" Text="承兑人" TextEn="Acceptor"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <!--    TODO 等待支持表达式后需要修改   com.bokesoft.erp.fi.voucher.analysis.VoucherAnalysisFormula.getAllAnalysisItemKey     -->
+        <DataElement Key="DynAccountID" Caption="科目" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="科目" TextEn="Account"/>
+                <FieldLabel Key="Medium" Text="科目" TextEn="Account"/>
+                <FieldLabel Key="Long" Text="科目" TextEn="Account"/>
+                <FieldLabel Key="Header" Text="科目" TextEn="Account"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynAgingObjectID" Caption="账龄对象" DomainKey="DynAgingObjectID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="账龄对象" TextEn="Aging Object"/>
+                <FieldLabel Key="Medium" Text="账龄对象" TextEn="Aging Object"/>
+                <FieldLabel Key="Long" Text="账龄对象" TextEn="Aging Object"/>
+                <FieldLabel Key="Header" Text="账龄对象" TextEn="Aging Object"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynAssociationTypeID" Caption="用户" DomainKey="DynAssociationTypeID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="用户" TextEn="User"/>
+                <FieldLabel Key="Medium" Text="用户" TextEn="User"/>
+                <FieldLabel Key="Long" Text="用户" TextEn="User"/>
+                <FieldLabel Key="Header" Text="用户" TextEn="User"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynChangedValueID" Caption="修改后的值" DomainKey="DynChangedValueID">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="修改后的值" TextEn="Modified Value"/>
+                <FieldLabel Key="Medium" Text="修改后的值" TextEn="Modified Value"/>
+                <FieldLabel Key="Long" Text="修改后的值" TextEn="Modified Value"/>
+                <FieldLabel Key="Header" Text="修改后的值" TextEn="Modified Value"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <!--    BC模块字典key,理论上是所有字典支持        -->
+        <DataElement Key="DynCharacteristic1ID" Caption="特性" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="特性" TextEn="Characteristic"/>
+                <FieldLabel Key="Medium" Text="特性" TextEn="Characteristic"/>
+                <FieldLabel Key="Long" Text="特性" TextEn="Characteristic"/>
+                <FieldLabel Key="Header" Text="特性" TextEn="Characteristic"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynCharacteristic2ID" Caption="特性" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="特性" TextEn="Characteristic"/>
+                <FieldLabel Key="Medium" Text="特性" TextEn="Characteristic"/>
+                <FieldLabel Key="Long" Text="特性" TextEn="Characteristic"/>
+                <FieldLabel Key="Header" Text="特性" TextEn="Characteristic"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynCharacteristic3ID" Caption="特性" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="特性" TextEn="Characteristic"/>
+                <FieldLabel Key="Medium" Text="特性" TextEn="Characteristic"/>
+                <FieldLabel Key="Long" Text="特性" TextEn="Characteristic"/>
+                <FieldLabel Key="Header" Text="特性" TextEn="Characteristic"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynCharacteristic4ID" Caption="特性" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="特性" TextEn="Characteristic"/>
+                <FieldLabel Key="Medium" Text="特性" TextEn="Characteristic"/>
+                <FieldLabel Key="Long" Text="特性" TextEn="Characteristic"/>
+                <FieldLabel Key="Header" Text="特性" TextEn="Characteristic"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynCharacteristic5ID" Caption="特性" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="特性" TextEn="Characteristic"/>
+                <FieldLabel Key="Medium" Text="特性" TextEn="Characteristic"/>
+                <FieldLabel Key="Long" Text="特性" TextEn="Characteristic"/>
+                <FieldLabel Key="Header" Text="特性" TextEn="Characteristic"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynConsOrgID" Caption="合并组织" DomainKey="DynConsOrgID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="合并组织" TextEn="Consolidation Organization"/>
+                <FieldLabel Key="Medium" Text="合并组织" TextEn="Consolidation Organization"/>
+                <FieldLabel Key="Long" Text="合并组织" TextEn="Consolidation Organization"/>
+                <FieldLabel Key="Header" Text="合并组织" TextEn="Consolidation Organization"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynCostObjectID" Caption="成本对象" DomainKey="DynCostObjectID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="成本对象" TextEn="Cost Object"/>
+                <FieldLabel Key="Medium" Text="成本对象" TextEn="Cost Object"/>
+                <FieldLabel Key="Long" Text="成本对象" TextEn="Cost Object"/>
+                <FieldLabel Key="Header" Text="成本对象" TextEn="Cost Object"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynCreditValueID" Caption="贷方值" DomainKey="DynCreditValueID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="贷方值" TextEn="Credit Value"/>
+                <FieldLabel Key="Medium" Text="贷方值" TextEn="Credit Value"/>
+                <FieldLabel Key="Long" Text="贷方值" TextEn="Credit Value"/>
+                <FieldLabel Key="Header" Text="贷方值" TextEn="Credit Value"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynCycleID" Caption="循环" DomainKey="DynCycleID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="循环" TextEn="Cycle"/>
+                <FieldLabel Key="Medium" Text="循环" TextEn="Cycle"/>
+                <FieldLabel Key="Long" Text="循环" TextEn="Cycle"/>
+                <FieldLabel Key="Header" Text="循环" TextEn="Cycle"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynDebitValueID" Caption="借方值" DomainKey="DynDebitValueID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="借方值" TextEn="Debit Value"/>
+                <FieldLabel Key="Medium" Text="借方值" TextEn="Debit Value"/>
+                <FieldLabel Key="Long" Text="借方值" TextEn="Debit Value"/>
+                <FieldLabel Key="Header" Text="借方值" TextEn="Debit Value"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynDefaultValueID" Caption="默认值" DomainKey="DynDefaultValueID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="默认值" TextEn="Default Value"/>
+                <FieldLabel Key="Medium" Text="默认值" TextEn="Default Value"/>
+                <FieldLabel Key="Long" Text="默认值" TextEn="Default Value"/>
+                <FieldLabel Key="Header" Text="默认值" TextEn="Default Value"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynDictDefaultValueID" Caption="字典字段默认值" DomainKey="DynDictDefaultValueID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="字典字段默认值" TextEn="Dictionary Field Default Value"/>
+                <FieldLabel Key="Medium" Text="字典字段默认值" TextEn="Dictionary Field Default Value"/>
+                <FieldLabel Key="Long" Text="字典字段默认值" TextEn="Dictionary Field Default Value"/>
+                <FieldLabel Key="Header" Text="字典字段默认值" TextEn="Dictionary Field Default Value"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <!--    TODO 等待支持表达式后需要修改   com.bokesoft.erp.fi.voucher.analysis.VoucherAnalysisFormula.getAllAnalysisItemKey     -->
+        <DataElement Key="DynDictID" Caption="动态字典ID" DomainKey="DynamicDict">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="DynDict1ID" TextEn="DynDict1ID"/>
+                <FieldLabel Key="Medium" Text="DynDict1ID" TextEn="DynDict1ID"/>
+                <FieldLabel Key="Long" Text="DynDict1ID" TextEn="DynDict1ID"/>
+                <FieldLabel Key="Header" Text="DynDict1ID" TextEn="DynDict1ID"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynDirectPurchOrderID" Caption="直接采购的订单" DomainKey="DynDirectPurchOrderID">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="直接采购的订单" TextEn="Direct Purchase Order"/>
+                <FieldLabel Key="Medium" Text="直接采购的订单" TextEn="Direct Purchase Order"/>
+                <FieldLabel Key="Long" Text="直接采购的订单" TextEn="Direct Purchase Order"/>
+                <FieldLabel Key="Header" Text="直接采购的订单" TextEn="Direct Purchase Order"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynDrawerID" Caption="出票人" DomainKey="DynDrawerID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="出票人" TextEn="Drawer"/>
+                <FieldLabel Key="Medium" Text="出票人" TextEn="Drawer"/>
+                <FieldLabel Key="Long" Text="出票人" TextEn="Drawer"/>
+                <FieldLabel Key="Header" Text="出票人" TextEn="Drawer"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynExpenseStandardID" Caption="费用标准" DomainKey="DynExpenseStandardID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="费用标准" TextEn="Expense Standard"/>
+                <FieldLabel Key="Medium" Text="费用标准" TextEn="Expense Standard"/>
+                <FieldLabel Key="Long" Text="费用标准" TextEn="Expense Standard"/>
+                <FieldLabel Key="Header" Text="费用标准" TextEn="Expense Standard"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <!--    增强配置的字典key,理论上是所有字典支持        -->
+        <DataElement Key="DynFieldDictValueID" Caption="字典" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="字典" TextEn="Dictionary"/>
+                <FieldLabel Key="Medium" Text="字典" TextEn="Dictionary"/>
+                <FieldLabel Key="Long" Text="字典" TextEn="Dictionary"/>
+                <FieldLabel Key="Header" Text="字典" TextEn="Dictionary"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynFieldValueID" Caption="值" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="值" TextEn="Value"/>
+                <FieldLabel Key="Medium" Text="值" TextEn="Value"/>
+                <FieldLabel Key="Long" Text="值" TextEn="Value"/>
+                <FieldLabel Key="Header" Text="值" TextEn="Value"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynFixValueID" Caption="固定值" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="固定值" TextEn="Fixed Value"/>
+                <FieldLabel Key="Medium" Text="固定值" TextEn="Fixed Value"/>
+                <FieldLabel Key="Long" Text="固定值" TextEn="Fixed Value"/>
+                <FieldLabel Key="Header" Text="固定值" TextEn="Fixed Value"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynFromIdentityID" Caption="特殊库存" DomainKey="DynFromIdentityID">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="特殊库存" TextEn="Special Stock"/>
+                <FieldLabel Key="Medium" Text="特殊库存" TextEn="Special Stock"/>
+                <FieldLabel Key="Long" Text="特殊库存" TextEn="Special Stock"/>
+                <FieldLabel Key="Header" Text="特殊库存" TextEn="Special Stock"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynFromOrderID" Caption="订单从" DomainKey="DynFromOrderID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="订单-从" TextEn="Order - From"/>
+                <FieldLabel Key="Medium" Text="订单-从" TextEn="Order - From"/>
+                <FieldLabel Key="Long" Text="订单-从" TextEn="Order - From"/>
+                <FieldLabel Key="Header" Text="订单-从" TextEn="Order - From"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <!--    TODO 等待支持表达式后需要修改   com.bokesoft.erp.fi.voucher.analysis.VoucherAnalysisFormula.getAllAnalysisItemKey     -->
+        <DataElement Key="DynFromValueID" Caption="从" DomainKey="DynamicDict">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="从" TextEn="From"/>
+                <FieldLabel Key="Medium" Text="从" TextEn="From"/>
+                <FieldLabel Key="Long" Text="从" TextEn="From"/>
+                <FieldLabel Key="Header" Text="从" TextEn="From"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynToValueID" Caption="到" DomainKey="DynamicDict">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="到" TextEn="To"/>
+                <FieldLabel Key="Medium" Text="到" TextEn="To"/>
+                <FieldLabel Key="Long" Text="到" TextEn="To"/>
+                <FieldLabel Key="Header" Text="到" TextEn="To"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynIdentityID" Caption="特殊库存" DomainKey="DynIdentityID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="特殊库存" TextEn="Special Stock"/>
+                <FieldLabel Key="Medium" Text="特殊库存" TextEn="Special Stock"/>
+                <FieldLabel Key="Long" Text="特殊库存" TextEn="Special Stock"/>
+                <FieldLabel Key="Header" Text="特殊库存" TextEn="Special Stock"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynIntegrationOrgID" Caption="集成组织" DomainKey="DynIntegrationOrgID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="集成组织" TextEn="Integrated Organization"/>
+                <FieldLabel Key="Medium" Text="集成组织" TextEn="Integrated Organization"/>
+                <FieldLabel Key="Long" Text="集成组织" TextEn="Integrated Organization"/>
+                <FieldLabel Key="Header" Text="集成组织" TextEn="Integrated Organization"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynInvoiceID" Caption="发票" DomainKey="DynInvoiceID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="发票" TextEn="Invoice"/>
+                <FieldLabel Key="Medium" Text="发票" TextEn="Invoice"/>
+                <FieldLabel Key="Long" Text="发票" TextEn="Invoice"/>
+                <FieldLabel Key="Header" Text="发票" TextEn="Invoice"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynItemCategoryID" Caption="项目类别" DomainKey="DynItemCategoryID">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="项目类别" TextEn="Item Category"/>
+                <FieldLabel Key="Medium" Text="项目类别" TextEn="Item Category"/>
+                <FieldLabel Key="Long" Text="项目类别" TextEn="Item Category"/>
+                <FieldLabel Key="Header" Text="项目类别" TextEn="Item Category"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynMaintenanceOrderSOID" Caption="维护订单" DomainKey="DynMaintenanceOrderSOID">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维护订单" TextEn="Maintenance Order"/>
+                <FieldLabel Key="Medium" Text="维护订单" TextEn="Maintenance Order"/>
+                <FieldLabel Key="Long" Text="维护订单" TextEn="Maintenance Order"/>
+                <FieldLabel Key="Header" Text="维护订单" TextEn="Maintenance Order"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynMeasurePointObjectID" Caption="计量对象" DomainKey="DynMeasurePointObjectID">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="计量点对象" TextEn="Measurement Point Object"/>
+                <FieldLabel Key="Medium" Text="计量点对象" TextEn="Measurement Point Object"/>
+                <FieldLabel Key="Long" Text="计量点对象" TextEn="Measurement Point Object"/>
+                <FieldLabel Key="Header" Text="计量点对象" TextEn="Measurement Point Object"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynObjectTypeID" Caption="对象类别" DomainKey="DynObjectTypeID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="对象类别" TextEn="Object Category"/>
+                <FieldLabel Key="Medium" Length="15" Text="对象类别" TextEn="Object Category"/>
+                <FieldLabel Key="Long" Length="20" Text="对象类别" TextEn="Object Category"/>
+                <FieldLabel Key="Header" Length="1" Text="对象类别" TextEn="Object Category"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynOffsettingAccountID" Caption="账户" DomainKey="DynOffsettingAccountID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="账户" TextEn="Account"/>
+                <FieldLabel Key="Medium" Text="账户" TextEn="Account"/>
+                <FieldLabel Key="Long" Text="账户" TextEn="Account"/>
+                <FieldLabel Key="Header" Text="账户" TextEn="Account"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynOrderFromID" Caption="订单(从)" DomainKey="DynOrderFromID">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="订单(从)" TextEn="Order (From)"/>
+                <FieldLabel Key="Medium" Text="订单(从)" TextEn="Order (From)"/>
+                <FieldLabel Key="Long" Text="订单(从)" TextEn="Order (From)"/>
+                <FieldLabel Key="Header" Text="订单(从)" TextEn="Order (From)"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynOrderID" Caption="订单" DomainKey="DynOrderID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="订单" TextEn="Order"/>
+                <FieldLabel Key="Medium" Length="15" Text="订单" TextEn="Order"/>
+                <FieldLabel Key="Long" Length="20" Text="订单" TextEn="Order"/>
+                <FieldLabel Key="Header" Length="12" Text="订单" TextEn="Order"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynOrderToID" Caption="订单(到)" DomainKey="DynOrderFromID">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="订单(到)" TextEn="Order (To)"/>
+                <FieldLabel Key="Medium" Text="订单(到)" TextEn="Order (To)"/>
+                <FieldLabel Key="Long" Text="订单(到)" TextEn="Order (To)"/>
+                <FieldLabel Key="Header" Text="订单(到)" TextEn="Order (To)"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynOrderTypeID" Caption="订单类型" DomainKey="DynOrderTypeID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="订单类型" TextEn="Order Type"/>
+                <FieldLabel Key="Medium" Length="15" Text="订单类型" TextEn="Order Type"/>
+                <FieldLabel Key="Long" Length="20" Text="订单类型" TextEn="Order Type"/>
+                <FieldLabel Key="Header" Length="4" Text="订单类型" TextEn="Order Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <!--    增强配置的字典key,理论上是所有字典支持        -->
+        <DataElement Key="DynOrgDictValueID" Caption="依赖组织" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="依赖组织" TextEn="Dependent Organization"/>
+                <FieldLabel Key="Medium" Text="依赖组织" TextEn="Dependent Organization"/>
+                <FieldLabel Key="Long" Text="依赖组织" TextEn="Dependent Organization"/>
+                <FieldLabel Key="Header" Text="依赖组织" TextEn="Dependent Organization"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynOrgValue1ID" Caption="组织1值" DomainKey="DynamicDict" DataDiffLog="true"/>
+        <DataElement Key="DynOrgValue2ID" Caption="组织2值" DomainKey="DynamicDict" DataDiffLog="true"/>
+        <DataElement Key="DynOrgValue3ID" Caption="组织3值" DomainKey="DynamicDict" DataDiffLog="true"/>
+        <DataElement Key="DynPayeeID" Caption="收款人" DomainKey="DynPayeeID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="收款人" TextEn="Payee"/>
+                <FieldLabel Key="Medium" Text="收款人" TextEn="Payee"/>
+                <FieldLabel Key="Long" Text="收款人" TextEn="Payee"/>
+                <FieldLabel Key="Header" Text="收款人" TextEn="Payee"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynRecOrderFactorID" Caption="订单" DomainKey="DynOrderID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="订单" TextEn="Order"/>
+                <FieldLabel Key="Medium" Text="订单" TextEn="Order"/>
+                <FieldLabel Key="Long" Text="订单" TextEn="Order"/>
+                <FieldLabel Key="Header" Text="订单" TextEn="Order"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynRecOrderID" Caption="订单" DomainKey="DynOrderID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="订单" TextEn="Order"/>
+                <FieldLabel Key="Medium" Text="订单" TextEn="Order"/>
+                <FieldLabel Key="Long" Text="订单" TextEn="Order"/>
+                <FieldLabel Key="Header" Text="订单" TextEn="Order"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynReceiveCostObjectID" Caption="接收方成本对象" DomainKey="DynReceiveCostObjectID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="接收方成本对象" TextEn="Recipient Cost Object"/>
+                <FieldLabel Key="Medium" Text="接收方成本对象" TextEn="Recipient Cost Object"/>
+                <FieldLabel Key="Long" Text="接收方成本对象" TextEn="Recipient Cost Object"/>
+                <FieldLabel Key="Header" Text="接收方成本对象" TextEn="Recipient Cost Object"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynReceiveOrderID" Caption="订单" DomainKey="DynOrderID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="订单" TextEn="Order"/>
+                <FieldLabel Key="Medium" Text="订单" TextEn="Order"/>
+                <FieldLabel Key="Long" Text="订单" TextEn="Order"/>
+                <FieldLabel Key="Header" Text="订单" TextEn="Order"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <!--     TODO 等待支持表达式 com.bokesoft.erp.config.BillMetaDataFormula.getFormKeysByType       -->
+        <DataElement Key="DynRecordingRules1ID" Caption="记账规则1" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="记账规则1" TextEn="Posting Rule 1"/>
+                <FieldLabel Key="Medium" Text="记账规则1" TextEn="Posting Rule 1"/>
+                <FieldLabel Key="Long" Text="记账规则1" TextEn="Posting Rule 1"/>
+                <FieldLabel Key="Header" Text="记账规则1" TextEn="Posting Rule 1"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynRecordingRules2ID" Caption="记账规则2" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="记账规则2" TextEn="Posting Rule 2"/>
+                <FieldLabel Key="Medium" Text="记账规则2" TextEn="Posting Rule 2"/>
+                <FieldLabel Key="Long" Text="记账规则2" TextEn="Posting Rule 2"/>
+                <FieldLabel Key="Header" Text="记账规则2" TextEn="Posting Rule 2"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynRecordingRules3ID" Caption="记账规则3" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="记账规则3" TextEn="Posting Rule 3"/>
+                <FieldLabel Key="Medium" Text="记账规则3" TextEn="Posting Rule 3"/>
+                <FieldLabel Key="Long" Text="记账规则3" TextEn="Posting Rule 3"/>
+                <FieldLabel Key="Header" Text="记账规则3" TextEn="Posting Rule 3"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynRefCharacteristic1ID" Caption="依赖特性1" DomainKey="DynRefCharacteristic1ID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="特性" TextEn="Characteristic"/>
+                <FieldLabel Key="Medium" Text="特性" TextEn="Characteristic"/>
+                <FieldLabel Key="Long" Text="特性" TextEn="Characteristic"/>
+                <FieldLabel Key="Header" Text="特性" TextEn="Characteristic"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynRefCharacteristic2ID" Caption="依赖特性2" DomainKey="DynRefCharacteristic1ID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="特性" TextEn="Characteristic"/>
+                <FieldLabel Key="Medium" Text="特性" TextEn="Characteristic"/>
+                <FieldLabel Key="Long" Text="特性" TextEn="Characteristic"/>
+                <FieldLabel Key="Header" Text="特性" TextEn="Characteristic"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynPRTID" Caption="生产资源工具(PRT)" DomainKey="DynPRTID">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="生产资源工具(PRT)" TextEn="Production Resource Tool (PRT)"/>
+                <FieldLabel Key="Medium" Text="生产资源工具(PRT)" TextEn="Production Resource Tool (PRT)"/>
+                <FieldLabel Key="Long" Text="生产资源工具(PRT)" TextEn="Production Resource Tool (PRT)"/>
+                <FieldLabel Key="Header" Text="生产资源工具(PRT)" TextEn="Production Resource Tool (PRT)"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynResponsibleID" Caption="有责任的" DomainKey="DynResponsibleID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="有责任的" TextEn="Responsible"/>
+                <FieldLabel Key="Medium" Length="15" Text="有责任的" TextEn="Responsible"/>
+                <FieldLabel Key="Long" Length="20" Text="有责任的" TextEn="Responsible"/>
+                <FieldLabel Key="Header" Length="12" Text="有责任的" TextEn="Responsible"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynSendOrderID" Caption="订单" DomainKey="DynOrderID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="订单" TextEn="Order"/>
+                <FieldLabel Key="Medium" Text="订单" TextEn="Order"/>
+                <FieldLabel Key="Long" Text="订单" TextEn="Order"/>
+                <FieldLabel Key="Header" Text="订单" TextEn="Order"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynPPOrderNoID" Caption="订单" DomainKey="DynOrderID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="订单" TextEn="Order"/>
+                <FieldLabel Key="Medium" Text="订单" TextEn="Order"/>
+                <FieldLabel Key="Long" Text="订单" TextEn="Order"/>
+                <FieldLabel Key="Header" Text="订单" TextEn="Order"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynSettlementOrderID" Caption="结算订单" DomainKey="DynSettlementOrderID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="结算订单" TextEn="StlmtOrder"/>
+                <FieldLabel Key="Medium" Length="15" Text="结算订单" TextEn="Settlement Order"/>
+                <FieldLabel Key="Long" Length="20" Text="结算订单" TextEn="Settlement order"/>
+                <FieldLabel Key="Header" Text="" TextEn=""/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynSrcCorrelationID" Caption="相互关联源ID" DomainKey="DynSrcCorrelationID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="关联ID" TextEn="Associated Identifier"/>
+                <FieldLabel Key="Medium" Text="关联ID" TextEn="Associated Identifier"/>
+                <FieldLabel Key="Long" Text="关联ID" TextEn="Associated Identifier"/>
+                <FieldLabel Key="Header" Text="关联ID" TextEn="Associated Identifier"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <!--    增强配置的字典key,理论上是所有字典支持        -->
+        <DataElement Key="DynSrcOrgValue1ID" Caption="源字段1组织" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="源字段1组织" TextEn="Source Field 1 Organization"/>
+                <FieldLabel Key="Medium" Text="源字段1组织" TextEn="Source Field 1 Organization"/>
+                <FieldLabel Key="Long" Text="源字段1组织" TextEn="Source Field 1 Organization"/>
+                <FieldLabel Key="Header" Text="源字段1组织" TextEn="Source Field 1 Organization"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynSrcOrgValue2ID" Caption="源字段2组织" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="源字段2组织" TextEn="Source Field 2 Organization"/>
+                <FieldLabel Key="Medium" Text="源字段2组织" TextEn="Source Field 2 Organization"/>
+                <FieldLabel Key="Long" Text="源字段2组织" TextEn="Source Field 2 Organization"/>
+                <FieldLabel Key="Header" Text="源字段2组织" TextEn="Source Field 2 Organization"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynSrcOrgValue3ID" Caption="源字段3组织" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="源字段3组织" TextEn="Source Field 3 Organization"/>
+                <FieldLabel Key="Medium" Text="源字段3组织" TextEn="Source Field 3 Organization"/>
+                <FieldLabel Key="Long" Text="源字段3组织" TextEn="Source Field 3 Organization"/>
+                <FieldLabel Key="Header" Text="源字段3组织" TextEn="Source Field 3 Organization"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynSrcOrgValue4ID" Caption="源字段4组织" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="源字段4组织" TextEn="Source Field 4 Organization"/>
+                <FieldLabel Key="Medium" Text="源字段4组织" TextEn="Source Field 4 Organization"/>
+                <FieldLabel Key="Long" Text="源字段4组织" TextEn="Source Field 4 Organization"/>
+                <FieldLabel Key="Header" Text="源字段4组织" TextEn="Source Field 4 Organization"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynSrcOrgValue5ID" Caption="源字段5组织" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="源字段5组织" TextEn="Source Field 5 Organization"/>
+                <FieldLabel Key="Medium" Text="源字段5组织" TextEn="Source Field 5 Organization"/>
+                <FieldLabel Key="Long" Text="源字段5组织" TextEn="Source Field 5 Organization"/>
+                <FieldLabel Key="Header" Text="源字段5组织" TextEn="Source Field 5 Organization"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynSrcValue1ID" Caption="源字段1" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="源字段1" TextEn="Source Field 1"/>
+                <FieldLabel Key="Medium" Text="源字段1" TextEn="Source Field 1"/>
+                <FieldLabel Key="Long" Text="源字段1" TextEn="Source Field 1"/>
+                <FieldLabel Key="Header" Text="源字段1" TextEn="Source Field 1"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynSrcValue2ID" Caption="源字段2" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="源字段2" TextEn="Source Field 2"/>
+                <FieldLabel Key="Medium" Text="源字段2" TextEn="Source Field 2"/>
+                <FieldLabel Key="Long" Text="源字段2" TextEn="Source Field 2"/>
+                <FieldLabel Key="Header" Text="源字段2" TextEn="Source Field 2"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynSrcValue3ID" Caption="源字段3" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="源字段3" TextEn="Source Field 3"/>
+                <FieldLabel Key="Medium" Text="源字段3" TextEn="Source Field 3"/>
+                <FieldLabel Key="Long" Text="源字段3" TextEn="Source Field 3"/>
+                <FieldLabel Key="Header" Text="源字段3" TextEn="Source Field 3"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynSrcValue4ID" Caption="源字段4" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="源字段4" TextEn="Source Field 4"/>
+                <FieldLabel Key="Medium" Text="源字段4" TextEn="Source Field 4"/>
+                <FieldLabel Key="Long" Text="源字段4" TextEn="Source Field 4"/>
+                <FieldLabel Key="Header" Text="源字段4" TextEn="Source Field 4"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynSrcValue5ID" Caption="源字段5" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="源字段5" TextEn="Source Field 5"/>
+                <FieldLabel Key="Medium" Text="源字段5" TextEn="Source Field 5"/>
+                <FieldLabel Key="Long" Text="源字段5" TextEn="Source Field 5"/>
+                <FieldLabel Key="Header" Text="源字段5" TextEn="Source Field 5"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynTgtOrgValue1ID" Caption="目标字段1组织" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="目标字段1组织" TextEn="Target Field 1 Organization"/>
+                <FieldLabel Key="Medium" Text="目标字段1组织" TextEn="Target Field 1 Organization"/>
+                <FieldLabel Key="Long" Text="目标字段1组织" TextEn="Target Field 1 Organization"/>
+                <FieldLabel Key="Header" Text="目标字段1组织" TextEn="Target Field 1 Organization"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynTgtOrgValue2ID" Caption="目标字段2组织" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="目标字段2组织" TextEn="Target Field 2 Organization"/>
+                <FieldLabel Key="Medium" Text="目标字段2组织" TextEn="Target Field 2 Organization"/>
+                <FieldLabel Key="Long" Text="目标字段2组织" TextEn="Target Field 2 Organization"/>
+                <FieldLabel Key="Header" Text="目标字段2组织" TextEn="Target Field 2 Organization"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynTgtOrgValue3ID" Caption="目标字段3组织" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="目标字段3组织" TextEn="Target Field 3 Organization"/>
+                <FieldLabel Key="Medium" Text="目标字段3组织" TextEn="Target Field 3 Organization"/>
+                <FieldLabel Key="Long" Text="目标字段3组织" TextEn="Target Field 3 Organization"/>
+                <FieldLabel Key="Header" Text="目标字段3组织" TextEn="Target Field 3 Organization"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynTgtValue1ID" Caption="目标字段1" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="目标字段1" TextEn="Target Field 1"/>
+                <FieldLabel Key="Medium" Text="目标字段1" TextEn="Target Field 1"/>
+                <FieldLabel Key="Long" Text="目标字段1" TextEn="Target Field 1"/>
+                <FieldLabel Key="Header" Text="目标字段1" TextEn="Target Field 1"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynTgtValue2ID" Caption="目标字段2" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="目标字段2" TextEn="Target Field 2"/>
+                <FieldLabel Key="Medium" Text="目标字段2" TextEn="Target Field 2"/>
+                <FieldLabel Key="Long" Text="目标字段2" TextEn="Target Field 2"/>
+                <FieldLabel Key="Header" Text="目标字段2" TextEn="Target Field 2"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynTgtValue3ID" Caption="目标字段3" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="目标字段3" TextEn="Target Field 3"/>
+                <FieldLabel Key="Medium" Text="目标字段3" TextEn="Target Field 3"/>
+                <FieldLabel Key="Long" Text="目标字段3" TextEn="Target Field 3"/>
+                <FieldLabel Key="Header" Text="目标字段3" TextEn="Target Field 3"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynTechObjectID" Caption="技术对象ID" DomainKey="DynTechObjectID">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="技术对象" TextEn="Technical Object"/>
+                <FieldLabel Key="Medium" Text="技术对象" TextEn="Technical Object"/>
+                <FieldLabel Key="Long" Text="技术对象" TextEn="Technical Object"/>
+                <FieldLabel Key="Header" Text="技术对象" TextEn="Technical Object"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynToIdentityID" Caption="特殊库存" DomainKey="DynIdentityID">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="特殊库存" TextEn="Special Stock"/>
+                <FieldLabel Key="Medium" Text="特殊库存" TextEn="Special Stock"/>
+                <FieldLabel Key="Long" Text="特殊库存" TextEn="Special Stock"/>
+                <FieldLabel Key="Header" Text="特殊库存" TextEn="Special Stock"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynToOrderID" Caption="订单到" DomainKey="DynOrderFromID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="订单字典数据元素-到" TextEn="Order Dictionary Data Element - To"/>
+                <FieldLabel Key="Medium" Text="订单字典数据元素-到" TextEn="Order Dictionary Data Element - To"/>
+                <FieldLabel Key="Long" Text="订单字典数据元素-到" TextEn="Order Dictionary Data Element - To"/>
+                <FieldLabel Key="Header" Text="订单字典数据元素-到" TextEn="Order Dictionary Data Element - To"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynValuationAreaID" Caption="评估范围" DomainKey="DynValuationAreaID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="评估范围" TextEn="Valuation Area"/>
+                <FieldLabel Key="Medium" Length="15" Text="评估范围" TextEn="Valuation Area"/>
+                <FieldLabel Key="Long" Length="20" Text="评估范围" TextEn="Valuation Area"/>
+                <FieldLabel Key="Header" Length="4" Text="评估范围" TextEn="Valuation Area"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynValueID" Caption="特征值" DomainKey="DynValueID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="特征值" TextEn="Characteristic Value"/>
+                <FieldLabel Key="Medium" Text="特征值" TextEn="Characteristic Value"/>
+                <FieldLabel Key="Long" Text="特征值" TextEn="Characteristic Value"/>
+                <FieldLabel Key="Header" Text="特征值" TextEn="Characteristic Value"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <!--        权限        -->
+        <DataElement Key="DynamicDict_EditValue" Caption="动态字典(EditValue)" DomainKey="DynamicDict_EditValue">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="标识Key" TextEn="ID Key"/>
+                <FieldLabel Key="Medium" Text="标识Key" TextEn="ID Key"/>
+                <FieldLabel Key="Long" Text="标识Key" TextEn="ID Key"/>
+                <FieldLabel Key="Header" Text="标识Key" TextEn="ID Key"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <!--    TODO 等待支持表达式后需要修改   com.bokesoft.erp.fi.voucher.analysis.VoucherAnalysisFormula.getAnalysisFieldTypeIsDic     -->
+        <DataElement Key="DynAnalysisID" Caption="源字段2" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="分析点值" TextEn="Analysis Point Value"/>
+                <FieldLabel Key="Medium" Text="分析点值" TextEn="Analysis Point Value"/>
+                <FieldLabel Key="Long" Text="分析点值" TextEn="Analysis Point Value"/>
+                <FieldLabel Key="Header" Text="分析点值" TextEn="Analysis Point Value"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <!--    TODO 等待支持表达式后需要修改   com.bokesoft.erp.fi.customreport.base.DimensionFormula.getDimensionItemKey      -->
+        <DataElement Key="DynShowDimension1ID" Caption="维度1" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维度1" TextEn="Dimension 1"/>
+                <FieldLabel Key="Medium" Text="维度1" TextEn="Dimension 1"/>
+                <FieldLabel Key="Long" Text="维度1" TextEn="Dimension 1"/>
+                <FieldLabel Key="Header" Text="维度1" TextEn="Dimension 1"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynShowDimension2ID" Caption="维度2" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维度2" TextEn="Dimension 2"/>
+                <FieldLabel Key="Medium" Text="维度2" TextEn="Dimension 2"/>
+                <FieldLabel Key="Long" Text="维度2" TextEn="Dimension 2"/>
+                <FieldLabel Key="Header" Text="维度2" TextEn="Dimension 2"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynShowDimension3ID" Caption="维度3" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维度3" TextEn="Dimension 3"/>
+                <FieldLabel Key="Medium" Text="维度3" TextEn="Dimension 3"/>
+                <FieldLabel Key="Long" Text="维度3" TextEn="Dimension 3"/>
+                <FieldLabel Key="Header" Text="维度3" TextEn="Dimension 3"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynShowDimension4ID" Caption="维度4" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维度4" TextEn="Dimension 4"/>
+                <FieldLabel Key="Medium" Text="维度4" TextEn="Dimension 4"/>
+                <FieldLabel Key="Long" Text="维度4" TextEn="Dimension 4"/>
+                <FieldLabel Key="Header" Text="维度4" TextEn="Dimension 4"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynShowDimension5ID" Caption="维度5" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维度5" TextEn="Dimension 5"/>
+                <FieldLabel Key="Medium" Text="维度5" TextEn="Dimension 5"/>
+                <FieldLabel Key="Long" Text="维度5" TextEn="Dimension 5"/>
+                <FieldLabel Key="Header" Text="维度5" TextEn="Dimension 5"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynShowDimension6ID" Caption="维度6" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维度6" TextEn="Dimension 6"/>
+                <FieldLabel Key="Medium" Text="维度6" TextEn="Dimension 6"/>
+                <FieldLabel Key="Long" Text="维度6" TextEn="Dimension 6"/>
+                <FieldLabel Key="Header" Text="维度6" TextEn="Dimension 6"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynShowDimension7ID" Caption="维度7" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维度7" TextEn="Dimension 7"/>
+                <FieldLabel Key="Medium" Text="维度7" TextEn="Dimension 7"/>
+                <FieldLabel Key="Long" Text="维度7" TextEn="Dimension 7"/>
+                <FieldLabel Key="Header" Text="维度7" TextEn="Dimension 7"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynShowDimension8ID" Caption="维度8" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维度8" TextEn="Dimension 8"/>
+                <FieldLabel Key="Medium" Text="维度8" TextEn="Dimension 8"/>
+                <FieldLabel Key="Long" Text="维度8" TextEn="Dimension 8"/>
+                <FieldLabel Key="Header" Text="维度8" TextEn="Dimension 8"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynShowDimension9ID" Caption="维度9" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维度9" TextEn="Dimension 9"/>
+                <FieldLabel Key="Medium" Text="维度9" TextEn="Dimension 9"/>
+                <FieldLabel Key="Long" Text="维度9" TextEn="Dimension 9"/>
+                <FieldLabel Key="Header" Text="维度9" TextEn="Dimension 9"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynShowDimension10ID" Caption="维度10" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维度10" TextEn="Dimension 10"/>
+                <FieldLabel Key="Medium" Text="维度10" TextEn="Dimension 10"/>
+                <FieldLabel Key="Long" Text="维度10" TextEn="Dimension 10"/>
+                <FieldLabel Key="Header" Text="维度10" TextEn="Dimension 10"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynShowDimension11ID" Caption="维度11" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维度11" TextEn="Dimension 11"/>
+                <FieldLabel Key="Medium" Text="维度11" TextEn="Dimension 11"/>
+                <FieldLabel Key="Long" Text="维度11" TextEn="Dimension 11"/>
+                <FieldLabel Key="Header" Text="维度11" TextEn="Dimension 11"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynShowDimension12ID" Caption="维度12" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维度12" TextEn="Dimension 12"/>
+                <FieldLabel Key="Medium" Text="维度12" TextEn="Dimension 12"/>
+                <FieldLabel Key="Long" Text="维度12" TextEn="Dimension 12"/>
+                <FieldLabel Key="Header" Text="维度12" TextEn="Dimension 12"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynShowDimension13ID" Caption="维度13" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维度13" TextEn="Dimension 13"/>
+                <FieldLabel Key="Medium" Text="维度13" TextEn="Dimension 13"/>
+                <FieldLabel Key="Long" Text="维度13" TextEn="Dimension 13"/>
+                <FieldLabel Key="Header" Text="维度13" TextEn="Dimension 13"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynShowDimension14ID" Caption="维度14" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维度14" TextEn="Dimension 14"/>
+                <FieldLabel Key="Medium" Text="维度14" TextEn="Dimension 14"/>
+                <FieldLabel Key="Long" Text="维度14" TextEn="Dimension 14"/>
+                <FieldLabel Key="Header" Text="维度14" TextEn="Dimension 14"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynShowDimension15ID" Caption="维度15" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维度15" TextEn="Dimension 15"/>
+                <FieldLabel Key="Medium" Text="维度15" TextEn="Dimension 15"/>
+                <FieldLabel Key="Long" Text="维度15" TextEn="Dimension 15"/>
+                <FieldLabel Key="Header" Text="维度15" TextEn="Dimension 15"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynShowDimension16ID" Caption="维度16" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维度16" TextEn="Dimension 16"/>
+                <FieldLabel Key="Medium" Text="维度16" TextEn="Dimension 16"/>
+                <FieldLabel Key="Long" Text="维度16" TextEn="Dimension 16"/>
+                <FieldLabel Key="Header" Text="维度16" TextEn="Dimension 16"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynShowDimension17ID" Caption="维度17" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维度17" TextEn="Dimension 17"/>
+                <FieldLabel Key="Medium" Text="维度17" TextEn="Dimension 17"/>
+                <FieldLabel Key="Long" Text="维度17" TextEn="Dimension 17"/>
+                <FieldLabel Key="Header" Text="维度17" TextEn="Dimension 17"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynShowDimension18ID" Caption="维度18" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维度18" TextEn="Dimension 18"/>
+                <FieldLabel Key="Medium" Text="维度18" TextEn="Dimension 18"/>
+                <FieldLabel Key="Long" Text="维度18" TextEn="Dimension 18"/>
+                <FieldLabel Key="Header" Text="维度18" TextEn="Dimension 18"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynShowDimension19ID" Caption="维度19" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维度19" TextEn="Dimension 19"/>
+                <FieldLabel Key="Medium" Text="维度19" TextEn="Dimension 19"/>
+                <FieldLabel Key="Long" Text="维度19" TextEn="Dimension 19"/>
+                <FieldLabel Key="Header" Text="维度19" TextEn="Dimension 19"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynShowDimension20ID" Caption="维度20" DomainKey="DynamicDict" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维度20" TextEn="Dimension 20"/>
+                <FieldLabel Key="Medium" Text="维度20" TextEn="Dimension 20"/>
+                <FieldLabel Key="Long" Text="维度20" TextEn="Dimension 20"/>
+                <FieldLabel Key="Header" Text="维度20" TextEn="Dimension 20"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <!--    源字段是不持久化的        -->
+        <DataElement Key="DynDependSuperiorID" Caption="依赖的上级ID" DomainKey="DynamicDict"/>
+        <DataElement Key="DynSuperiorID" Caption="上级ID" DomainKey="DynamicDict"/>
+        <DataElement Key="DynSelfID" Caption="自我ID" DomainKey="DynamicDict"/>
+        <DataElement Key="DynDependSelfID" Caption="依赖自我ID" DomainKey="DynamicDict"/>
+        <DataElement Key="DynDependReferenceID" Caption="依赖参考ID" DomainKey="DynamicDict"/>
+        <DataElement Key="DynReferenceID" Caption="参考" DomainKey="DynamicDict" DataDiffLog="true"/>
+        <DataElement Key="DynFromOrderTypeID" Caption="订单类型从" DomainKey="DynOrderTypeID">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="订单类型" TextEn="Order Type"/>
+                <FieldLabel Key="Medium" Text="订单类型" TextEn="Order Type"/>
+                <FieldLabel Key="Long" Text="订单类型" TextEn="Order Type"/>
+                <FieldLabel Key="Header" Text="订单类型" TextEn="Order Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynToOrderTypeID" Caption="订单类型到" DomainKey="DynOrderTypeID">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="到" TextEn="To"/>
+                <FieldLabel Key="Medium" Text="到" TextEn="To"/>
+                <FieldLabel Key="Long" Text="到" TextEn="To"/>
+                <FieldLabel Key="Header" Text="到" TextEn="To"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="OLEDictItemID" Caption="动态字典" DomainKey="DynamicDict">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="字典" TextEn="Dictionary"/>
+                <FieldLabel Key="Medium" Text="字典" TextEn="Dictionary"/>
+                <FieldLabel Key="Long" Text="字典" TextEn="Dictionary"/>
+                <FieldLabel Key="Header" Text="字典" TextEn="Dictionary"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Classification_ObjectID" Caption="对象" DomainKey="DynamicDict">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="对象" TextEn="Object"/>
+                <FieldLabel Key="Medium" Text="对象" TextEn="Object"/>
+                <FieldLabel Key="Long" Text="对象" TextEn="Object"/>
+                <FieldLabel Key="Header" Text="对象" TextEn="Object"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynReferenceDocumentID" Caption="参考凭证" DomainKey="DynReferenceDocumentID" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="凭证" TextEn="Document"/>
+                <FieldLabel Key="Medium" Text="凭证" TextEn="Document"/>
+                <FieldLabel Key="Long" Text="凭证" TextEn="Document"/>
+                <FieldLabel Key="Header" Text="凭证" TextEn="Document"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <!--    源字段是不持久化的        -->
+        <DataElement Key="PRTID" Caption="生产资源工具" DomainKey="DynamicDict">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="生产资源工具" TextEn="Production Resource Tool"/>
+                <FieldLabel Key="Medium" Text="生产资源工具" TextEn="Production Resource Tool"/>
+                <FieldLabel Key="Long" Text="生产资源工具" TextEn="Production Resource Tool"/>
+                <FieldLabel Key="Header" Text="生产资源工具" TextEn="Production Resource Tool"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DynDerivationKeyValueID" Caption="条件字段值" DomainKey="DynamicDict" DataDiffLog="true"/>
+    </DataElementCollection>
+</DataElementDef>

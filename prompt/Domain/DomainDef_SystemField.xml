@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DomainDef>
+        <DomainCollection>
+            <Domain Key="Code_3" Caption="字典Code_长度3" RefControlType="TextEditor" DataType="Varchar" Length="3"/>
+            <Domain Key="Code_6" Caption="字典Code_长度6" RefControlType="TextEditor" DataType="Varchar" Length="6"/>
+            <Domain Key="Code_30" Caption="字典Code_长度30" DataType="Varchar" Length="30" RefControlType="TextEditor"/>
+            <Domain Key="Code_50" Caption="字典Code_长度50" DataType="Varchar" Length="50" RefControlType="TextEditor"/>
+            <Domain Key="Code_100" Caption="字典Code_长度100" DataType="Varchar" Length="100" RefControlType="TextEditor"/>
+            <Domain Key="Code_200" Caption="字典Code_长度200" DataType="Varchar" Length="200" RefControlType="TextEditor"/>
+            <Domain Key="Name_255" Caption="字典Name_长度255" RefControlType="TextEditor" DataType="Varchar"/>
+            <Domain Key="NodeType" Caption="节点类型" RefControlType="ComboBox" DataType="Integer" SourceType="ParaGroup" GroupKey="NodeType"/>
+            <Domain Key="EnableStatus" Caption="启用标记" RefControlType="ComboBox" DataType="Integer" SourceType="ParaGroup" GroupKey="EnableStatus"/>
+            <Domain Key="Status" Caption="流程状态" RefControlType="ComboBox" DataType="Integer" SourceType="Status"/>
+			<Domain Key="Status_Varchar" Caption="流程状态" RefControlType="ComboBox" DataType="Varchar" Length="30" SourceType="Status"/>
+            <Domain Key="Status_CheckListBox" Caption="流程状态" RefControlType="CheckListBox" DataType="Varchar" Length="50" SourceType="Status"/>
+        </DomainCollection>
+</DomainDef>

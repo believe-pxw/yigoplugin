@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DataElementDef>
+    <DataElementCollection>
+        <DataElement Key="TextButton_Formula_255" Caption="公式按钮" DomainKey="TextButton_Varchar_255"/>
+        <DataElement Key="TextButton_Formula_2000" Caption="公式按钮(2000)" DomainKey="TextButton_Varchar_2000"/>
+        <DataElement Key="RefProcessNo_TextButton" Caption="对应的工序" DomainKey="TextButton_Varchar_4" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="工序" TextEn="Operation"/>
+                <FieldLabel Key="Medium" Text="工序" TextEn="Operation"/>
+                <FieldLabel Key="Long" Text="工序" TextEn="Operation"/>
+                <FieldLabel Key="Header" Text="工序" TextEn="Operation"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SubProcessNo_TextButton" Caption="子工序" DomainKey="TextButton_Varchar_4">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="子工序" TextEn="Sub Process"/>
+                <FieldLabel Key="Medium" Text="子工序" TextEn="Sub Process"/>
+                <FieldLabel Key="Long" Text="子工序" TextEn="Sub Process"/>
+                <FieldLabel Key="Header" Text="子工序" TextEn="Sub Process"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SSCItem" Caption="SSC项" DomainKey="TextButton_Varchar_18" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="SSC项" TextEn="SSC Item"/>
+                <FieldLabel Key="Medium" Length="15" Text="SSC项" TextEn="SSC Item"/>
+                <FieldLabel Key="Long" Length="20" Text="SSC项" TextEn="SSC Item"/>
+                <FieldLabel Key="Header" Length="18" Text="SSC项" TextEn="SSC Item"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="AcceptorBankAccount" Caption="账号" DomainKey="TextButton_Varchar_50" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="银行账号" TextEn="Bank Account"/>
+                <FieldLabel Key="Medium" Text="银行账号" TextEn="Bank Account"/>
+                <FieldLabel Key="Long" Text="银行账号" TextEn="Bank Account"/>
+                <FieldLabel Key="Header" Text="银行账号" TextEn="Bank Account"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="BankAccountNumber_TextButton" Caption="银行账号" DomainKey="TextButton_Varchar_50" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="银行账号" TextEn="Bank Account"/>
+                <FieldLabel Key="Medium" Text="银行账号" TextEn="Bank Account"/>
+                <FieldLabel Key="Long" Text="银行账号" TextEn="Bank Account"/>
+                <FieldLabel Key="Header" Text="银行账号" TextEn="Bank Account"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CustomerBankAccountNumber" Caption="银行账号" DomainKey="TextButton_Varchar_50" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="客户银行账号" TextEn="Customer Bank Account"/>
+                <FieldLabel Key="Medium" Text="客户银行账号" TextEn="Customer Bank Account"/>
+                <FieldLabel Key="Long" Text="客户银行账号" TextEn="Customer Bank Account"/>
+                <FieldLabel Key="Header" Text="客户银行账号" TextEn="Customer Bank Account"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DrawerBankAccount" Caption="账号" DomainKey="TextButton_Varchar_50" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="银行账号" TextEn="Bank Account"/>
+                <FieldLabel Key="Medium" Text="银行账号" TextEn="Bank Account"/>
+                <FieldLabel Key="Long" Text="银行账号" TextEn="Bank Account"/>
+                <FieldLabel Key="Header" Text="银行账号" TextEn="Bank Account"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PayeeBankAccount" Caption="账号" DomainKey="TextButton_Varchar_50" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="银行账号" TextEn="Bank Account"/>
+                <FieldLabel Key="Medium" Text="银行账号" TextEn="Bank Account"/>
+                <FieldLabel Key="Long" Text="银行账号" TextEn="Bank Account"/>
+                <FieldLabel Key="Header" Text="银行账号" TextEn="Bank Account"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Provider" Caption="供方负责人" DomainKey="TextButton_Varchar_50" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="供应方负责人" TextEn="Supply Party Responsible"/>
+                <FieldLabel Key="Medium" Text="供应方负责人" TextEn="Supply Party Responsible"/>
+                <FieldLabel Key="Long" Text="供应方负责人" TextEn="Supply Party Responsible"/>
+                <FieldLabel Key="Header" Text="供应方负责人" TextEn="Supply Party Responsible"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ReversalDocumentNumber" Caption="被冲销的WMS单据编号" DomainKey="TextButton_Varchar_50">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="冲销单号" TextEn="Reverse Document Number"/>
+                <FieldLabel Key="Medium" Text="冲销单号" TextEn="Reverse Document Number"/>
+                <FieldLabel Key="Long" Text="冲销单号" TextEn="Reverse Document Number"/>
+                <FieldLabel Key="Header" Text="冲销单号" TextEn="Reverse Document Number"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SalespersonName" Caption="销售负责人" DomainKey="TextButton_Varchar_50" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="销售负责人" TextEn="Sales Responsible"/>
+                <FieldLabel Key="Medium" Text="销售负责人" TextEn="Sales Responsible"/>
+                <FieldLabel Key="Long" Text="销售负责人" TextEn="Sales Responsible"/>
+                <FieldLabel Key="Header" Text="销售负责人" TextEn="Sales Responsible"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CauseBrokenDown" Caption="细分" DomainKey="TextButton_Varchar_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="细分" TextEn="Segment"/>
+                <FieldLabel Key="Medium" Length="15" Text="细分" TextEn="Segment"/>
+                <FieldLabel Key="Long" Length="20" Text="细分" TextEn="Segment"/>
+                <FieldLabel Key="Header" Length="4" Text="细分" TextEn="Segment"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CodingCodeGroup" Caption="代码组 - 编码" DomainKey="TextButton_Varchar_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="编码代码组" TextEn="Code Code Group"/>
+                <FieldLabel Key="Medium" Text="编码代码组" TextEn="Code Code Group"/>
+                <FieldLabel Key="Long" Text="编码代码组" TextEn="Code Code Group"/>
+                <FieldLabel Key="Header" Text="编码代码组" TextEn="Code Code Group"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CauseCodeGroup" Caption="代码组 - 原因" DomainKey="TextButton_Varchar_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Medium" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Long" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Header" Text="代码组" TextEn="Code Group"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CauseNotBrokenDown" Caption="不细分" DomainKey="TextButton_Varchar_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="不细分" TextEn="Non-Split"/>
+                <FieldLabel Key="Medium" Length="15" Text="不细分" TextEn="Non-Split"/>
+                <FieldLabel Key="Long" Length="20" Text="不细分" TextEn="Non-Split"/>
+                <FieldLabel Key="Header" Length="4" Text="不细分" TextEn="Non-Split"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CauseUndecided" Caption="未定" DomainKey="TextButton_Varchar_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="未定" TextEn="Undefined"/>
+                <FieldLabel Key="Medium" Length="15" Text="未定" TextEn="Undefined"/>
+                <FieldLabel Key="Long" Length="20" Text="未定" TextEn="Undefined"/>
+                <FieldLabel Key="Header" Length="4" Text="未定" TextEn="Undefined"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CodeGroupProblem" Caption="故障" DomainKey="TextButton_Varchar_100">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="故障" TextEn="Fault"/>
+                <FieldLabel Key="Medium" Text="故障" TextEn="Fault"/>
+                <FieldLabel Key="Long" Text="故障" TextEn="Fault"/>
+                <FieldLabel Key="Header" Text="故障" TextEn="Fault"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CodeGroupTask" Caption="任务" DomainKey="TextButton_Varchar_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="任务" TextEn="Task"/>
+                <FieldLabel Key="Medium" Text="任务" TextEn="Task"/>
+                <FieldLabel Key="Long" Text="任务" TextEn="Task"/>
+                <FieldLabel Key="Header" Text="任务" TextEn="Task"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CodeGroup_TextButton" Caption="代码组" DomainKey="TextButton_Varchar_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Medium" Length="15" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Long" Length="20" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Header" Length="8" Text="代码组" TextEn="Code Group"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ActivityCodeGroup" Caption="代码组 - 作业" DomainKey="TextButton_Varchar_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Medium" Length="15" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Long" Length="20" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Header" Length="6" Text="代码组" TextEn="Code Group"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DefectCodeGroup" Caption="一般拒绝的缺陷代码组" DomainKey="TextButton_Varchar_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="缺陷代码组" TextEn="Defect Code Group"/>
+                <FieldLabel Key="Medium" Length="15" Text="缺陷代码组" TextEn="Defect Code Group"/>
+                <FieldLabel Key="Long" Length="40" Text="缺陷代码组" TextEn="Defect Code Group"/>
+                <FieldLabel Key="Header" Length="8" Text="缺陷代码组" TextEn="Defect Code Group"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CodeProblem" Caption="缺陷类型" DomainKey="TextButton_Varchar_100">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="缺陷类型" TextEn="Defect Type"/>
+                <FieldLabel Key="Medium" Text="缺陷类型" TextEn="Defect Type"/>
+                <FieldLabel Key="Long" Text="缺陷类型" TextEn="Defect Type"/>
+                <FieldLabel Key="Header" Text="缺陷类型" TextEn="Defect Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CodeTask" Caption="任务代码" DomainKey="TextButton_Varchar_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="任务代码" TextEn="Task Code"/>
+                <FieldLabel Key="Medium" Text="任务代码" TextEn="Task Code"/>
+                <FieldLabel Key="Long" Text="任务代码" TextEn="Task Code"/>
+                <FieldLabel Key="Header" Text="任务代码" TextEn="Task Code"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DefectCode" Caption="缺陷代码" DomainKey="TextButton_Varchar_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="缺陷代码" TextEn="Defect Code"/>
+                <FieldLabel Key="Medium" Length="16" Text="缺陷代码:一般" TextEn="Defect code: gen"/>
+                <FieldLabel Key="Long" Length="20" Text="缺陷代码:一般" TextEn="Defect code: gen"/>
+                <FieldLabel Key="Header" Length="4" Text="缺陷代码:一般" TextEn="Defect code: gen"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DocumentNumberFrom" Caption="单据编号" DomainKey="TextButton_Varchar_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="订单(从)" TextEn="Order (From)"/>
+                <FieldLabel Key="Medium" Text="订单(从)" TextEn="Order (From)"/>
+                <FieldLabel Key="Long" Text="订单(从)" TextEn="Order (From)"/>
+                <FieldLabel Key="Header" Text="订单(从)" TextEn="Order (From)"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DocumentNumberTo" Caption="单据编号" DomainKey="TextButton_Varchar_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="订单(到)" TextEn="Order (To)"/>
+                <FieldLabel Key="Medium" Text="订单(到)" TextEn="Order (To)"/>
+                <FieldLabel Key="Long" Text="订单(到)" TextEn="Order (To)"/>
+                <FieldLabel Key="Header" Text="订单(到)" TextEn="Order (To)"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ICCodeCauses" Caption="原因代码" DomainKey="TextButton_Varchar_100">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="原因代码" TextEn="Reason Code"/>
+                <FieldLabel Key="Medium" Text="原因代码" TextEn="Reason Code"/>
+                <FieldLabel Key="Long" Text="原因代码" TextEn="Reason Code"/>
+                <FieldLabel Key="Header" Text="原因代码" TextEn="Reason Code"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ICCodeGroupCauses" Caption="原因" DomainKey="TextButton_Varchar_100">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="原因" TextEn="Reason"/>
+                <FieldLabel Key="Medium" Text="原因" TextEn="Reason"/>
+                <FieldLabel Key="Long" Text="原因" TextEn="Reason"/>
+                <FieldLabel Key="Header" Text="原因" TextEn="Reason"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="InboundDeliveryDocNo" Caption="内向交货单编号" DomainKey="TextButton_Varchar_100">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="内向交货单" TextEn="Inbound Delivery"/>
+                <FieldLabel Key="Medium" Text="内向交货单" TextEn="Inbound Delivery"/>
+                <FieldLabel Key="Long" Text="内向交货单" TextEn="Inbound Delivery"/>
+                <FieldLabel Key="Header" Text="内向交货单" TextEn="Inbound Delivery"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="InspectionPointCodeGroup" Caption="检验点代码组" DomainKey="TextButton_Varchar_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Medium" Length="15" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Long" Length="20" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Header" Length="8" Text="代码组" TextEn="Code Group"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="LocationCodeGroup" Caption="代码组 - 缺陷库位" DomainKey="TextButton_Varchar_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Medium" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Long" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Header" Text="代码组" TextEn="Code Group"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ProblemCodeGroup" Caption="代码组 - 问题" DomainKey="TextButton_Varchar_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Medium" Length="15" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Long" Length="20" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Header" Length="8" Text="代码组" TextEn="Code Group"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ProblemPlanned" Caption="计划的" DomainKey="TextButton_Varchar_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="计划的" TextEn="Planned"/>
+                <FieldLabel Key="Medium" Length="15" Text="计划的" TextEn="Planned"/>
+                <FieldLabel Key="Long" Length="20" Text="计划的" TextEn="Planned"/>
+                <FieldLabel Key="Header" Length="4" Text="计划的" TextEn="Planned"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ProblemUnPlanned" Caption="未计划的" DomainKey="TextButton_Varchar_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="未计划的" TextEn="Unplanned"/>
+                <FieldLabel Key="Medium" Length="15" Text="未计划的" TextEn="Unplanned"/>
+                <FieldLabel Key="Long" Length="20" Text="未计划的" TextEn="Unplanned"/>
+                <FieldLabel Key="Header" Length="4" Text="未计划的" TextEn="Unplanned"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="TaskCodeGroup" Caption="代码组 - 任务" DomainKey="TextButton_Varchar_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Medium" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Long" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Header" Text="代码组" TextEn="Code Group"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="TaskListGroup_TextButton" Caption="任务清单组" DomainKey="TextButton_Varchar_100">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="任务清单组" TextEn="Task List Group"/>
+                <FieldLabel Key="Medium" Text="任务清单组" TextEn="Task List Group"/>
+                <FieldLabel Key="Long" Text="任务清单组" TextEn="Task List Group"/>
+                <FieldLabel Key="Header" Text="任务清单组" TextEn="Task List Group"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="UDSelectedset" Caption="UD 选择集" DomainKey="TextButton_Varchar_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="UD 选择集" TextEn="UD Selection Set"/>
+                <FieldLabel Key="Medium" Length="15" Text="UD 选择集" TextEn="UD Selection Set"/>
+                <FieldLabel Key="Long" Length="20" Text="UD 选择集" TextEn="UD Selection Set"/>
+                <FieldLabel Key="Header" Length="8" Text="UD 选择集" TextEn="UD Selection Set"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ValuationCode_TextButton" Caption="评估代码" DomainKey="TextButton_Varchar_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Medium" Length="15" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Long" Length="20" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Header" Length="4" Text="代码" TextEn="Code"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="AuthorityFieldValue" Caption="权限字段值" DomainKey="TextButton_Varchar_255">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="权限字段值" TextEn="Permission Field Value"/>
+                <FieldLabel Key="Medium" Text="权限字段值" TextEn="Permission Field Value"/>
+                <FieldLabel Key="Long" Text="权限字段值" TextEn="Permission Field Value"/>
+                <FieldLabel Key="Header" Text="权限字段值" TextEn="Permission Field Value"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CO_CostElementCode" Caption="成本要素代码" DomainKey="TextButton_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="成本要素" TextEn="Cost Element"/>
+                <FieldLabel Key="Medium" Text="成本要素" TextEn="Cost Element"/>
+                <FieldLabel Key="Long" Text="成本要素" TextEn="Cost Element"/>
+                <FieldLabel Key="Header" Text="成本要素" TextEn="Cost Element"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CostCommentDocNo" Caption="订单号" DomainKey="TextButton_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="订单号" TextEn="Order Number"/>
+                <FieldLabel Key="Medium" Text="订单号" TextEn="Order Number"/>
+                <FieldLabel Key="Long" Text="订单号" TextEn="Order Number"/>
+                <FieldLabel Key="Header" Text="订单号" TextEn="Order Number"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DataFormula" Caption="数据来源公式" DomainKey="TextButton_Varchar_255">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="来源公式" TextEn="Source Formula"/>
+                <FieldLabel Key="Medium" Text="来源公式" TextEn="Source Formula"/>
+                <FieldLabel Key="Long" Text="来源公式" TextEn="Source Formula"/>
+                <FieldLabel Key="Header" Text="来源公式" TextEn="Source Formula"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DocumentNumber_TextButton" Caption="单据编号" DomainKey="TextButton_Varchar_255">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="文档编号" TextEn="Document Number"/>
+                <FieldLabel Key="Medium" Text="文档编号" TextEn="Document Number"/>
+                <FieldLabel Key="Long" Text="文档编号" TextEn="Document Number"/>
+                <FieldLabel Key="Header" Text="文档编号" TextEn="Document Number"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ECS_BankAccountNumber" Caption="银行账号" DomainKey="TextButton_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="银行账号" TextEn="Bank Account"/>
+                <FieldLabel Key="Medium" Text="银行账号" TextEn="Bank Account"/>
+                <FieldLabel Key="Long" Text="银行账号" TextEn="Bank Account"/>
+                <FieldLabel Key="Header" Text="银行账号" TextEn="Bank Account"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PayeeBankAccountNumber" Caption="收款人银行账号" DomainKey="TextButton_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="收款人银行账号" TextEn="Payee Bank Account"/>
+                <FieldLabel Key="Medium" Text="收款人银行账号" TextEn="Payee Bank Account"/>
+                <FieldLabel Key="Long" Text="收款人银行账号" TextEn="Payee Bank Account"/>
+                <FieldLabel Key="Header" Text="收款人银行账号" TextEn="Payee Bank Account"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RegulationDocumentNumber" Caption="条例编号" DomainKey="TextButton_Varchar_255">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="条例编号" TextEn="Regulation Number"/>
+                <FieldLabel Key="Medium" Text="条例编号" TextEn="Regulation Number"/>
+                <FieldLabel Key="Long" Text="条例编号" TextEn="Regulation Number"/>
+                <FieldLabel Key="Header" Text="条例编号" TextEn="Regulation Number"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ReportPoint" Caption="报告点" DomainKey="TextButton_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="报告点" TextEn="Report Point"/>
+                <FieldLabel Key="Medium" Text="报告点" TextEn="Report Point"/>
+                <FieldLabel Key="Long" Text="报告点" TextEn="Report Point"/>
+                <FieldLabel Key="Header" Text="报告点" TextEn="Report Point"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RowClick" Caption="行点击事件" DomainKey="TextButton_Varchar_255">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="行点击事件" TextEn="Row Click Event"/>
+                <FieldLabel Key="Medium" Text="行点击事件" TextEn="Row Click Event"/>
+                <FieldLabel Key="Long" Text="行点击事件" TextEn="Row Click Event"/>
+                <FieldLabel Key="Header" Text="行点击事件" TextEn="Row Click Event"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RowDBClick" Caption="行双击事件" DomainKey="TextButton_Varchar_255">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="行双击事件" TextEn="Row Double-Click Event"/>
+                <FieldLabel Key="Medium" Text="行双击事件" TextEn="Row Double-Click Event"/>
+                <FieldLabel Key="Long" Text="行双击事件" TextEn="Row Double-Click Event"/>
+                <FieldLabel Key="Header" Text="行双击事件" TextEn="Row Double-Click Event"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SelectedSetOrCodeGroup" Caption="代码组或选择集" DomainKey="TextButton_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="代码组或选择集" TextEn="Code Group or Selection Set"/>
+                <FieldLabel Key="Medium" Length="15" Text="代码组或选择集" TextEn="Code Group or Selection Set"/>
+                <FieldLabel Key="Long" Length="20" Text="代码组或选择集" TextEn="Code Group or Selection Set"/>
+                <FieldLabel Key="Header" Length="8" Text="代码组或选择集" TextEn="Code Group or Selection Set"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SourceDocumentNumber" Caption="文档编号（源文档）" DomainKey="TextButton_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="源文档编号" TextEn="Source Document Number"/>
+                <FieldLabel Key="Medium" Text="源文档编号" TextEn="Source Document Number"/>
+                <FieldLabel Key="Long" Text="源文档编号" TextEn="Source Document Number"/>
+                <FieldLabel Key="Header" Text="源文档编号" TextEn="Source Document Number"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SuperiorDocumentVoucher" Caption="凭证" DomainKey="TextButton_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="凭证" TextEn="Document"/>
+                <FieldLabel Key="Medium" Text="凭证" TextEn="Document"/>
+                <FieldLabel Key="Long" Text="凭证" TextEn="Document"/>
+                <FieldLabel Key="Header" Text="凭证" TextEn="Document"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="TextButton_AccessStrategyDocumentNumber" Caption="准入策略单号" DomainKey="TextButton_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="准入策略单号" TextEn="Approval Policy Number"/>
+                <FieldLabel Key="Medium" Text="准入策略单号" TextEn="Approval Policy Number"/>
+                <FieldLabel Key="Long" Text="准入策略单号" TextEn="Approval Policy Number"/>
+                <FieldLabel Key="Header" Text="准入策略单号" TextEn="Approval Policy Number"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="TextButton_BatchCode" Caption="批次" DomainKey="TextButton_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="批次" TextEn="Batch"/>
+                <FieldLabel Key="Medium" Text="批次" TextEn="Batch"/>
+                <FieldLabel Key="Long" Text="批次" TextEn="Batch"/>
+                <FieldLabel Key="Header" Text="批次" TextEn="Batch"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="TextButton_InspectionStandardDocNo" Caption="考察标准单号" DomainKey="TextButton_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="考察标准单号" TextEn="Inspection Standard Number"/>
+                <FieldLabel Key="Medium" Text="考察标准单号" TextEn="Inspection Standard Number"/>
+                <FieldLabel Key="Long" Text="考察标准单号" TextEn="Inspection Standard Number"/>
+                <FieldLabel Key="Header" Text="考察标准单号" TextEn="Inspection Standard Number"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="TextButton_PurchaseOrderDocumentNumber" Caption="委外订单号" DomainKey="TextButton_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="委外订单号" TextEn="Subcontracting Order Number"/>
+                <FieldLabel Key="Medium" Text="委外订单号" TextEn="Subcontracting Order Number"/>
+                <FieldLabel Key="Long" Text="委外订单号" TextEn="Subcontracting Order Number"/>
+                <FieldLabel Key="Header" Text="委外订单号" TextEn="Subcontracting Order Number"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ItemFilter" Caption="字典过滤公式" DomainKey="TextButton_Varchar_500" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="字典过滤公式" TextEn="Dictionary Filter Formula"/>
+                <FieldLabel Key="Medium" Text="字典过滤公式" TextEn="Dictionary Filter Formula"/>
+                <FieldLabel Key="Long" Text="字典过滤公式" TextEn="Dictionary Filter Formula"/>
+                <FieldLabel Key="Header" Text="字典过滤公式" TextEn="Dictionary Filter Formula"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DefaultValue" Caption="默认值(常量/公式)" DomainKey="TextButton_Varchar_2000">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="默认值(常量/公式)" TextEn="Default Value (Constant/Formula)"/>
+                <FieldLabel Key="Medium" Text="默认值(常量/公式)" TextEn="Default Value (Constant/Formula)"/>
+                <FieldLabel Key="Long" Text="默认值(常量/公式)" TextEn="Default Value (Constant/Formula)"/>
+                <FieldLabel Key="Header" Text="默认值(常量/公式)" TextEn="Default Value (Constant/Formula)"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DrillFormula" Caption="穿透公式" DomainKey="TextButton_Varchar_2000" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="穿透公式" TextEn="Penetration Formula"/>
+                <FieldLabel Key="Medium" Text="穿透公式" TextEn="Penetration Formula"/>
+                <FieldLabel Key="Long" Text="穿透公式" TextEn="Penetration Formula"/>
+                <FieldLabel Key="Header" Text="穿透公式" TextEn="Penetration Formula"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Money_Formula" Caption="金额公式按钮(2000)" DomainKey="TextButton_Varchar_2000" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="金额" TextEn="Amount"/>
+                <FieldLabel Key="Medium" Text="金额" TextEn="Amount"/>
+                <FieldLabel Key="Long" Text="金额" TextEn="Amount"/>
+                <FieldLabel Key="Header" Text="金额" TextEn="Amount"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ZBFormula" Caption="指标公式" DomainKey="TextButton_Varchar_2000" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="指标公式" TextEn="Indicator Formula"/>
+                <FieldLabel Key="Medium" Text="指标公式" TextEn="Indicator Formula"/>
+                <FieldLabel Key="Long" Text="指标公式" TextEn="Indicator Formula"/>
+                <FieldLabel Key="Header" Text="指标公式" TextEn="Indicator Formula"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DecideERPDataElement" Caption="确认使用的ERP数据元素" DomainKey="TextButton_Varchar_255">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="确认使用的ERP数据元素" TextEn="Confirmation ERP Data Element"/>
+                <FieldLabel Key="Medium" Text="确认使用的ERP数据元素" TextEn="Confirmation ERP Data Element"/>
+                <FieldLabel Key="Long" Text="确认使用的ERP数据元素" TextEn="Confirmation ERP Data Element"/>
+                <FieldLabel Key="Header" Text="确认使用的ERP数据元素" TextEn="Confirmation ERP Data Element"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="OrderDocNo_Btn" Caption="订单" DomainKey="TextButton_Varchar_255">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="订单" TextEn="Order"/>
+                <FieldLabel Key="Medium" Text="订单" TextEn="Order"/>
+                <FieldLabel Key="Long" Text="订单" TextEn="Order"/>
+                <FieldLabel Key="Header" Text="订单" TextEn="Order"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FormField_Field_Formula" Caption="表单字段" DomainKey="TextButton_Varchar_255">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="表达式" TextEn="Expression"/>
+                <FieldLabel Key="Medium" Text="表达式" TextEn="Expression"/>
+                <FieldLabel Key="Long" Text="表达式" TextEn="Expression"/>
+                <FieldLabel Key="Header" Text="表达式" TextEn="Expression"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ProductionOrderOID" Caption="生产订单号" DomainKey="TextButton_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="生产订单号" TextEn="Production Order Number"/>
+                <FieldLabel Key="Medium" Text="生产订单号" TextEn="Production Order Number"/>
+                <FieldLabel Key="Long" Text="生产订单号" TextEn="Production Order Number"/>
+                <FieldLabel Key="Header" Text="生产订单号" TextEn="Production Order Number"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DemandPlan_Btn" Caption="需求计划" DomainKey="TextButton_Varchar_255">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="需求计划" TextEn="Demand Plan"/>
+                <FieldLabel Key="Medium" Text="需求计划" TextEn="Demand Plan"/>
+                <FieldLabel Key="Long" Text="需求计划" TextEn="Demand Plan"/>
+                <FieldLabel Key="Header" Text="需求计划" TextEn="Demand Plan"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FirstItem_CauseText" Caption="需求计划" DomainKey="TextButton_Varchar_255">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="原因" TextEn="Reason"/>
+                <FieldLabel Key="Medium" Text="原因" TextEn="Reason"/>
+                <FieldLabel Key="Long" Text="原因" TextEn="Reason"/>
+                <FieldLabel Key="Header" Text="原因" TextEn="Reason"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FirstItem_Btn" Caption="首项文本" DomainKey="TextButton_Varchar_999">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Medium" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Long" Text="代码组" TextEn="Code Group"/>
+                <FieldLabel Key="Header" Text="代码组" TextEn="Code Group"/>
+            </FieldLabelCollection>
+        </DataElement>
+    </DataElementCollection>
+</DataElementDef>

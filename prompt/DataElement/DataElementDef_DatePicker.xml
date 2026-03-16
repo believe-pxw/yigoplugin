@@ -1,0 +1,745 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DataElementDef>
+    <DataElementCollection>
+        <DataElement Key="DateTime" Caption="DateTime" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="结束时间" TextEn="End Time"/>
+                <FieldLabel Key="Medium" Text="结束时间" TextEn="End Time"/>
+                <FieldLabel Key="Long" Text="结束时间" TextEn="End Time"/>
+                <FieldLabel Key="Header" Text="结束时间" TextEn="End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PlanTime" Caption="计划日期" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="计划修改日期" TextEn="Plan Modification Date"/>
+                <FieldLabel Key="Medium" Text="计划修改日期" TextEn="Plan Modification Date"/>
+                <FieldLabel Key="Long" Text="计划修改日期" TextEn="Plan Modification Date"/>
+                <FieldLabel Key="Header" Text="计划修改日期" TextEn="Plan Modification Date"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="EndTime_Date" Caption="结束时间" DomainKey="Date">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="结束日期" TextEn="End Date"/>
+                <FieldLabel Key="Medium" Text="结束日期" TextEn="End Date"/>
+                <FieldLabel Key="Long" Text="结束日期" TextEn="End Date"/>
+                <FieldLabel Key="Header" Text="结束日期" TextEn="End Date"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="LastLoginDateTime" Caption="最后登录时间" DomainKey="Date">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="最后登录日期" TextEn="Last Login Date"/>
+                <FieldLabel Key="Medium" Text="最后登录日期" TextEn="Last Login Date"/>
+                <FieldLabel Key="Long" Text="最后登录日期" TextEn="Last Login Date"/>
+                <FieldLabel Key="Header" Text="最后登录日期" TextEn="Last Login Date"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="StartTime_Date" Caption="开始时间" DomainKey="Date">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="开始日期" TextEn="Start Date"/>
+                <FieldLabel Key="Medium" Text="开始日期" TextEn="Start Date"/>
+                <FieldLabel Key="Long" Text="开始日期" TextEn="Start Date"/>
+                <FieldLabel Key="Header" Text="开始日期" TextEn="Start Date"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ActualGITime" Caption="实际发货时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="实际发货时间" TextEn="Actual Shipment Time"/>
+                <FieldLabel Key="Medium" Text="实际发货时间" TextEn="Actual Shipment Time"/>
+                <FieldLabel Key="Long" Text="实际发货时间" TextEn="Actual Shipment Time"/>
+                <FieldLabel Key="Header" Text="实际发货时间" TextEn="Actual Shipment Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="AddTime" Caption="添加时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="添加时间" TextEn="Add Time"/>
+                <FieldLabel Key="Medium" Text="添加时间" TextEn="Add Time"/>
+                <FieldLabel Key="Long" Text="添加时间" TextEn="Add Time"/>
+                <FieldLabel Key="Header" Text="添加时间" TextEn="Add Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="AuditTime" Caption="记账时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="记账时间" TextEn="Posting Time"/>
+                <FieldLabel Key="Medium" Text="记账时间" TextEn="Posting Time"/>
+                <FieldLabel Key="Long" Text="记账时间" TextEn="Posting Time"/>
+                <FieldLabel Key="Header" Text="记账时间" TextEn="Posting Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="BankCommMessageTime" Caption="银行通信消息时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="银行通信消息时间" TextEn="Bank Communication Message Time"/>
+                <FieldLabel Key="Medium" Text="银行通信消息时间" TextEn="Bank Communication Message Time"/>
+                <FieldLabel Key="Long" Text="银行通信消息时间" TextEn="Bank Communication Message Time"/>
+                <FieldLabel Key="Header" Text="银行通信消息时间" TextEn="Bank Communication Message Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="BatchLastGRGITime" Caption="入库时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="入库时间" TextEn="Inbound Time"/>
+                <FieldLabel Key="Medium" Text="入库时间" TextEn="Inbound Time"/>
+                <FieldLabel Key="Long" Text="入库时间" TextEn="Inbound Time"/>
+                <FieldLabel Key="Header" Text="入库时间" TextEn="Inbound Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="BiddingEndTime" Caption="竞价结束时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="竞价结束时间" TextEn="Bid End Time"/>
+                <FieldLabel Key="Medium" Text="竞价结束时间" TextEn="Bid End Time"/>
+                <FieldLabel Key="Long" Text="竞价结束时间" TextEn="Bid End Time"/>
+                <FieldLabel Key="Header" Text="竞价结束时间" TextEn="Bid End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="BiddingStartTime" Caption="竞价开始时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="竞价开始时间" TextEn="Bid Start Time"/>
+                <FieldLabel Key="Medium" Text="竞价开始时间" TextEn="Bid Start Time"/>
+                <FieldLabel Key="Long" Text="竞价开始时间" TextEn="Bid Start Time"/>
+                <FieldLabel Key="Header" Text="竞价开始时间" TextEn="Bid Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CalculateTime" Caption="计算时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="计算时间" TextEn="Calculation Time"/>
+                <FieldLabel Key="Medium" Text="计算时间" TextEn="Calculation Time"/>
+                <FieldLabel Key="Long" Text="计算时间" TextEn="Calculation Time"/>
+                <FieldLabel Key="Header" Text="计算时间" TextEn="Calculation Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CardEndTime" Caption="取卡结束时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="取卡结束时间" TextEn="Card End Time"/>
+                <FieldLabel Key="Medium" Text="取卡结束时间" TextEn="Card End Time"/>
+                <FieldLabel Key="Long" Text="取卡结束时间" TextEn="Card End Time"/>
+                <FieldLabel Key="Header" Text="取卡结束时间" TextEn="Card End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CardStartTime" Caption="取卡开始时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="取卡开始时间" TextEn="Card Start Time"/>
+                <FieldLabel Key="Medium" Text="取卡开始时间" TextEn="Card Start Time"/>
+                <FieldLabel Key="Long" Text="取卡开始时间" TextEn="Card Start Time"/>
+                <FieldLabel Key="Header" Text="取卡开始时间" TextEn="Card Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ChangeUsageDicisionTime" Caption="时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Medium" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Long" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Header" Text="时间" TextEn="Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckTime" Caption="审批时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="复核时间" TextEn="Review Time"/>
+                <FieldLabel Key="Medium" Text="复核时间" TextEn="Review Time"/>
+                <FieldLabel Key="Long" Text="复核时间" TextEn="Review Time"/>
+                <FieldLabel Key="Header" Text="复核时间" TextEn="Review Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ClearingTime" Caption="清账时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="清账时间" TextEn="Clearing Time"/>
+                <FieldLabel Key="Medium" Text="清账时间" TextEn="Clearing Time"/>
+                <FieldLabel Key="Long" Text="清账时间" TextEn="Clearing Time"/>
+                <FieldLabel Key="Header" Text="清账时间" TextEn="Clearing Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CompletionTime" Caption="完成时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="完成时间" TextEn="Completion Time"/>
+                <FieldLabel Key="Medium" Text="完成时间" TextEn="Completion Time"/>
+                <FieldLabel Key="Long" Text="完成时间" TextEn="Completion Time"/>
+                <FieldLabel Key="Header" Text="完成时间" TextEn="Completion Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CreateDateTime" Caption="创建日期" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="创建日期" TextEn="Creation Date"/>
+                <FieldLabel Key="Medium" Text="创建日期" TextEn="Creation Date"/>
+                <FieldLabel Key="Long" Text="创建日期" TextEn="Creation Date"/>
+                <FieldLabel Key="Header" Text="创建日期" TextEn="Creation Date"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DeadlineTime" Caption="有效截止时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="有效截止时间" TextEn="Valid Cutoff Time"/>
+                <FieldLabel Key="Medium" Text="有效截止时间" TextEn="Valid Cutoff Time"/>
+                <FieldLabel Key="Long" Text="有效截止时间" TextEn="Valid Cutoff Time"/>
+                <FieldLabel Key="Header" Text="有效截止时间" TextEn="Valid Cutoff Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DrawingNumberApproveTime" Caption="批准时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="在" TextEn="In"/>
+                <FieldLabel Key="Long" Length="20" Text="在" TextEn="In"/>
+                <FieldLabel Key="Header" Length="8" Text="在" TextEn="In"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DrawingNumberCreateTime" Caption="创建时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="在" TextEn="In"/>
+                <FieldLabel Key="Long" Length="20" Text="在" TextEn="In"/>
+                <FieldLabel Key="Header" Length="10" Text="在" TextEn="In"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="EndDateTime" Caption="结束计算时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="结束计算时间" TextEn="End Calculation Time"/>
+                <FieldLabel Key="Medium" Text="结束计算时间" TextEn="End Calculation Time"/>
+                <FieldLabel Key="Long" Text="结束计算时间" TextEn="End Calculation Time"/>
+                <FieldLabel Key="Header" Text="结束计算时间" TextEn="End Calculation Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="EndExpectArrivalTime" Caption="预计到达日期时间至" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="至" TextEn="To"/>
+                <FieldLabel Key="Medium" Text="至" TextEn="To"/>
+                <FieldLabel Key="Long" Text="至" TextEn="To"/>
+                <FieldLabel Key="Header" Text="至" TextEn="To"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="EndExpectSendTime" Caption="预计发货日期时间至" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="至" TextEn="To"/>
+                <FieldLabel Key="Medium" Text="至" TextEn="To"/>
+                <FieldLabel Key="Long" Text="至" TextEn="To"/>
+                <FieldLabel Key="Header" Text="至" TextEn="To"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="EndTime" Caption="结束时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="结束时间" TextEn="End Time"/>
+                <FieldLabel Key="Medium" Text="结束时间" TextEn="End Time"/>
+                <FieldLabel Key="Long" Text="结束时间" TextEn="End Time"/>
+                <FieldLabel Key="Header" Text="结束时间" TextEn="End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ExamineDateTime" Caption="审批日期" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="审批日期" TextEn="Approval Date"/>
+                <FieldLabel Key="Medium" Text="审批日期" TextEn="Approval Date"/>
+                <FieldLabel Key="Long" Text="审批日期" TextEn="Approval Date"/>
+                <FieldLabel Key="Header" Text="审批日期" TextEn="Approval Date"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ExecTime" Caption="执行时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="执行时间" TextEn="Execution Time"/>
+                <FieldLabel Key="Medium" Text="执行时间" TextEn="Execution Time"/>
+                <FieldLabel Key="Long" Text="执行时间" TextEn="Execution Time"/>
+                <FieldLabel Key="Header" Text="执行时间" TextEn="Execution Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FI_ValuationTime" Caption="评估时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="评估时间" TextEn="Valuation Time"/>
+                <FieldLabel Key="Medium" Text="评估时间" TextEn="Valuation Time"/>
+                <FieldLabel Key="Long" Text="评估时间" TextEn="Valuation Time"/>
+                <FieldLabel Key="Header" Text="评估时间" TextEn="Valuation Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FinishTime" Caption="提交时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="完成时间" TextEn="Completion Time"/>
+                <FieldLabel Key="Medium" Text="完成时间" TextEn="Completion Time"/>
+                <FieldLabel Key="Long" Text="完成时间" TextEn="Completion Time"/>
+                <FieldLabel Key="Header" Text="完成时间" TextEn="Completion Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FinshTime" Caption="本次执行结束时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="结束时间" TextEn="End Time"/>
+                <FieldLabel Key="Medium" Text="结束时间" TextEn="End Time"/>
+                <FieldLabel Key="Long" Text="结束时间" TextEn="End Time"/>
+                <FieldLabel Key="Header" Text="结束时间" TextEn="End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FirstUsageDicisionTime" Caption="时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Medium" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Long" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Header" Text="时间" TextEn="Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FullTime" Caption="时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Medium" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Long" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Header" Text="时间" TextEn="Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="HR_ActualEndTime" Caption="实际结束时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="实际结束时间" TextEn="Actual End Time"/>
+                <FieldLabel Key="Medium" Text="实际结束时间" TextEn="Actual End Time"/>
+                <FieldLabel Key="Long" Text="实际结束时间" TextEn="Actual End Time"/>
+                <FieldLabel Key="Header" Text="实际结束时间" TextEn="Actual End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="HR_ActualStartTime" Caption="实际开始时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="实际开始时间" TextEn="Actual Start Time"/>
+                <FieldLabel Key="Medium" Text="实际开始时间" TextEn="Actual Start Time"/>
+                <FieldLabel Key="Long" Text="实际开始时间" TextEn="Actual Start Time"/>
+                <FieldLabel Key="Header" Text="实际开始时间" TextEn="Actual Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="HalfwaySignInTime" Caption="中途打卡时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="中途打卡时间" TextEn="Midway Clock Time"/>
+                <FieldLabel Key="Medium" Text="中途打卡时间" TextEn="Midway Clock Time"/>
+                <FieldLabel Key="Long" Text="中途打卡时间" TextEn="Midway Clock Time"/>
+                <FieldLabel Key="Header" Text="中途打卡时间" TextEn="Midway Clock Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="InStockTime" Caption="入库时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="入库时间" TextEn="Inbound Time"/>
+                <FieldLabel Key="Medium" Text="入库时间" TextEn="Inbound Time"/>
+                <FieldLabel Key="Long" Text="入库时间" TextEn="Inbound Time"/>
+                <FieldLabel Key="Header" Text="入库时间" TextEn="Inbound Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="InitialInputTime" Caption="初始输入时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="初始输入" TextEn="Initial Input"/>
+                <FieldLabel Key="Medium" Text="初始输入" TextEn="Initial Input"/>
+                <FieldLabel Key="Long" Text="初始输入" TextEn="Initial Input"/>
+                <FieldLabel Key="Header" Text="初始输入" TextEn="Initial Input"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="LastActiveTime" Caption="最后活动" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="最后活动" TextEn="Last Activity"/>
+                <FieldLabel Key="Medium" Text="最后活动" TextEn="Last Activity"/>
+                <FieldLabel Key="Long" Text="最后活动" TextEn="Last Activity"/>
+                <FieldLabel Key="Header" Text="最后活动" TextEn="Last Activity"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="LastBatchGRInTime" Caption="批次最后入库时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="批次最后入库时间" TextEn="Batch Last Incoming Time"/>
+                <FieldLabel Key="Medium" Text="批次最后入库时间" TextEn="Batch Last Incoming Time"/>
+                <FieldLabel Key="Long" Text="批次最后入库时间" TextEn="Batch Last Incoming Time"/>
+                <FieldLabel Key="Header" Text="批次最后入库时间" TextEn="Batch Last Incoming Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="LastBatchGROutTime" Caption="批次最后出库时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="批次最后出库时间" TextEn="Batch Last Outgoing Time"/>
+                <FieldLabel Key="Medium" Text="批次最后出库时间" TextEn="Batch Last Outgoing Time"/>
+                <FieldLabel Key="Long" Text="批次最后出库时间" TextEn="Batch Last Outgoing Time"/>
+                <FieldLabel Key="Header" Text="批次最后出库时间" TextEn="Batch Last Outgoing Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="LastLoginTime" Caption="最后登录时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="最后登录时间" TextEn="Last Login Time"/>
+                <FieldLabel Key="Medium" Text="最后登录时间" TextEn="Last Login Time"/>
+                <FieldLabel Key="Long" Text="最后登录时间" TextEn="Last Login Time"/>
+                <FieldLabel Key="Header" Text="最后登录时间" TextEn="Last Login Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="LastMRPPlanTime" Caption="上次MRP计划时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="MRP计算执行时间" TextEn="MRP Calculation Execution Time"/>
+                <FieldLabel Key="Medium" Text="MRP计算执行时间" TextEn="MRP Calculation Execution Time"/>
+                <FieldLabel Key="Long" Text="MRP计算执行时间" TextEn="MRP Calculation Execution Time"/>
+                <FieldLabel Key="Header" Text="MRP计算执行时间" TextEn="MRP Calculation Execution Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="LastModifyTime" Caption="最后修改时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="最后修改时间" TextEn="Last Modification Time"/>
+                <FieldLabel Key="Medium" Text="最后修改时间" TextEn="Last Modification Time"/>
+                <FieldLabel Key="Long" Text="最后修改时间" TextEn="Last Modification Time"/>
+                <FieldLabel Key="Header" Text="最后修改时间" TextEn="Last Modification Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="LastVisitEndTime" Caption="上次拜访结束时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="结束时间" TextEn="End Time"/>
+                <FieldLabel Key="Medium" Text="结束时间" TextEn="End Time"/>
+                <FieldLabel Key="Long" Text="结束时间" TextEn="End Time"/>
+                <FieldLabel Key="Header" Text="结束时间" TextEn="End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="LastVisitStartTime" Caption="上次拜访开始时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Medium" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Long" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Header" Text="开始时间" TextEn="Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="LeaveEndTime" Caption="休假结束时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="休假结束时间" TextEn="Leave End Time"/>
+                <FieldLabel Key="Medium" Text="休假结束时间" TextEn="Leave End Time"/>
+                <FieldLabel Key="Long" Text="休假结束时间" TextEn="Leave End Time"/>
+                <FieldLabel Key="Header" Text="休假结束时间" TextEn="Leave End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="LeaveStartTime" Caption="休假开始时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Medium" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Long" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Header" Text="开始时间" TextEn="Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="LockDateTime" Caption="锁定时间" DomainKey="DateTime"/>
+        <DataElement Key="LoginTime" Caption="登录时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="登陆时间" TextEn="Login Time"/>
+                <FieldLabel Key="Medium" Text="登陆时间" TextEn="Login Time"/>
+                <FieldLabel Key="Long" Text="登陆时间" TextEn="Login Time"/>
+                <FieldLabel Key="Header" Text="登陆时间" TextEn="Login Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="MaintenancePlanCompleteTime" Caption="维护计划完成时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="完成时间" TextEn="Completion Time"/>
+                <FieldLabel Key="Medium" Text="完成时间" TextEn="Completion Time"/>
+                <FieldLabel Key="Long" Text="完成时间" TextEn="Completion Time"/>
+                <FieldLabel Key="Header" Text="完成时间" TextEn="Completion Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="MeasurementTime" Caption="度量时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="度量时间" TextEn="Measure Time"/>
+                <FieldLabel Key="Medium" Text="度量时间" TextEn="Measure Time"/>
+                <FieldLabel Key="Long" Text="度量时间" TextEn="Measure Time"/>
+                <FieldLabel Key="Header" Text="度量时间" TextEn="Measure Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="OldEndTime" Caption="结束时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="校验前结束时间" TextEn="Pre-Validation End Time"/>
+                <FieldLabel Key="Medium" Text="校验前结束时间" TextEn="Pre-Validation End Time"/>
+                <FieldLabel Key="Long" Text="校验前结束时间" TextEn="Pre-Validation End Time"/>
+                <FieldLabel Key="Header" Text="校验前结束时间" TextEn="Pre-Validation End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="OldStartTime" Caption="开始时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="校验前开始时间" TextEn="Pre-Validation Start Time"/>
+                <FieldLabel Key="Medium" Text="校验前开始时间" TextEn="Pre-Validation Start Time"/>
+                <FieldLabel Key="Long" Text="校验前开始时间" TextEn="Pre-Validation Start Time"/>
+                <FieldLabel Key="Header" Text="校验前开始时间" TextEn="Pre-Validation Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="OperateTime" Caption="操作时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="操作时间" TextEn="Operation Time"/>
+                <FieldLabel Key="Medium" Text="操作时间" TextEn="Operation Time"/>
+                <FieldLabel Key="Long" Text="操作时间" TextEn="Operation Time"/>
+                <FieldLabel Key="Header" Text="操作时间" TextEn="Operation Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="OptTime" Caption="用户操作时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="操作时间从" TextEn="Operation Time From"/>
+                <FieldLabel Key="Medium" Text="操作时间从" TextEn="Operation Time From"/>
+                <FieldLabel Key="Long" Text="操作时间从" TextEn="Operation Time From"/>
+                <FieldLabel Key="Header" Text="操作时间从" TextEn="Operation Time From"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PARunTime" Caption="薪资发放运行日期" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="薪资发放运行日期" TextEn="Payroll Run Date"/>
+                <FieldLabel Key="Medium" Text="薪资发放运行日期" TextEn="Payroll Run Date"/>
+                <FieldLabel Key="Long" Text="薪资发放运行日期" TextEn="Payroll Run Date"/>
+                <FieldLabel Key="Header" Text="薪资发放运行日期" TextEn="Payroll Run Date"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PickTime" Caption="拣配时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="拣配时间" TextEn="Picking Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="拣配时间" TextEn="Picking Time"/>
+                <FieldLabel Key="Long" Length="20" Text="拣配时间" TextEn="Picking Time"/>
+                <FieldLabel Key="Header" Length="10" Text="拣配时间" TextEn="Picking Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PlannedGITime" Caption="计划发货时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="计划发货时间" TextEn="Planned Shipping Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="计划发货时间" TextEn="Planned Shipping Time"/>
+                <FieldLabel Key="Long" Length="20" Text="计划发货时间" TextEn="Planned Shipping Time"/>
+                <FieldLabel Key="Header" Length="10" Text="计划发货时间" TextEn="Planned Shipping Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PurchaserResponseTime" Caption="采购方回复时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="采购方回复时间" TextEn="Purchasing Party Reply Time"/>
+                <FieldLabel Key="Medium" Text="采购方回复时间" TextEn="Purchasing Party Reply Time"/>
+                <FieldLabel Key="Long" Text="采购方回复时间" TextEn="Purchasing Party Reply Time"/>
+                <FieldLabel Key="Header" Text="采购方回复时间" TextEn="Purchasing Party Reply Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RFQEndTime" Caption="询价截止时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="询价截止时间" TextEn="Inquiry Deadline"/>
+                <FieldLabel Key="Medium" Text="询价截止时间" TextEn="Inquiry Deadline"/>
+                <FieldLabel Key="Long" Text="询价截止时间" TextEn="Inquiry Deadline"/>
+                <FieldLabel Key="Header" Text="询价截止时间" TextEn="Inquiry Deadline"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RFQStartTime" Caption="询价开始时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="询价开始时间" TextEn="Inquiry Start Time"/>
+                <FieldLabel Key="Medium" Text="询价开始时间" TextEn="Inquiry Start Time"/>
+                <FieldLabel Key="Long" Text="询价开始时间" TextEn="Inquiry Start Time"/>
+                <FieldLabel Key="Header" Text="询价开始时间" TextEn="Inquiry Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RegenDateTime" Caption="执行日期" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="执行时间" TextEn="Execution Time"/>
+                <FieldLabel Key="Medium" Text="执行时间" TextEn="Execution Time"/>
+                <FieldLabel Key="Long" Text="执行时间" TextEn="Execution Time"/>
+                <FieldLabel Key="Header" Text="执行时间" TextEn="Execution Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RelationEndDate" Caption="关系结束时间" DomainKey="DateTime"/>
+        <DataElement Key="RelationStartDate" Caption="关系开始时间" DomainKey="DateTime"/>
+        <DataElement Key="ReportCreatTime" Caption="开始时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="报文创建时间" TextEn="Message Creation Time"/>
+                <FieldLabel Key="Medium" Text="报文创建时间" TextEn="Message Creation Time"/>
+                <FieldLabel Key="Long" Text="报文创建时间" TextEn="Message Creation Time"/>
+                <FieldLabel Key="Header" Text="报文创建时间" TextEn="Message Creation Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ReprotSentTime" Caption="结束时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="报文发送时间" TextEn="Message Sending Time"/>
+                <FieldLabel Key="Medium" Text="报文发送时间" TextEn="Message Sending Time"/>
+                <FieldLabel Key="Long" Text="报文发送时间" TextEn="Message Sending Time"/>
+                <FieldLabel Key="Header" Text="报文发送时间" TextEn="Message Sending Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RespondEndTime" Caption="应标截止时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="应标截止时间" TextEn="Bid Deadline"/>
+                <FieldLabel Key="Medium" Text="应标截止时间" TextEn="Bid Deadline"/>
+                <FieldLabel Key="Long" Text="应标截止时间" TextEn="Bid Deadline"/>
+                <FieldLabel Key="Header" Text="应标截止时间" TextEn="Bid Deadline"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RunTime" Caption="本次执行开始时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Medium" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Long" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Header" Text="开始时间" TextEn="Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ScoringTime" Caption="评分时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="评分时间" TextEn="Rating Time"/>
+                <FieldLabel Key="Medium" Text="评分时间" TextEn="Rating Time"/>
+                <FieldLabel Key="Long" Text="评分时间" TextEn="Rating Time"/>
+                <FieldLabel Key="Header" Text="评分时间" TextEn="Rating Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ShiftEndTime" Caption="工作时段下班时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="工作时段下班时间" TextEn="Work Shift End Time"/>
+                <FieldLabel Key="Medium" Text="工作时段下班时间" TextEn="Work Shift End Time"/>
+                <FieldLabel Key="Long" Text="工作时段下班时间" TextEn="Work Shift End Time"/>
+                <FieldLabel Key="Header" Text="工作时段下班时间" TextEn="Work Shift End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ShiftStartTime" Caption="工作时段上班时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="工作时段上班时间" TextEn="Work Shift Start Time"/>
+                <FieldLabel Key="Medium" Text="工作时段上班时间" TextEn="Work Shift Start Time"/>
+                <FieldLabel Key="Long" Text="工作时段上班时间" TextEn="Work Shift Start Time"/>
+                <FieldLabel Key="Header" Text="工作时段上班时间" TextEn="Work Shift Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SignInTime" Caption="签到时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="签到时间" TextEn="Check-In Time"/>
+                <FieldLabel Key="Medium" Text="签到时间" TextEn="Check-In Time"/>
+                <FieldLabel Key="Long" Text="签到时间" TextEn="Check-In Time"/>
+                <FieldLabel Key="Header" Text="签到时间" TextEn="Check-In Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SignOutTime" Caption="签退时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="签退时间" TextEn="Sign-Off Time"/>
+                <FieldLabel Key="Medium" Text="签退时间" TextEn="Sign-Off Time"/>
+                <FieldLabel Key="Long" Text="签退时间" TextEn="Sign-Off Time"/>
+                <FieldLabel Key="Header" Text="签退时间" TextEn="Sign-Off Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SignTime" Caption="签卡时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="签卡时间" TextEn="Card Time"/>
+                <FieldLabel Key="Medium" Text="签卡时间" TextEn="Card Time"/>
+                <FieldLabel Key="Long" Text="签卡时间" TextEn="Card Time"/>
+                <FieldLabel Key="Header" Text="签卡时间" TextEn="Card Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="StartDateTime" Caption="开始计算日期" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="开始计算时间" TextEn="Start Calculation Time"/>
+                <FieldLabel Key="Medium" Text="开始计算时间" TextEn="Start Calculation Time"/>
+                <FieldLabel Key="Long" Text="开始计算时间" TextEn="Start Calculation Time"/>
+                <FieldLabel Key="Header" Text="开始计算时间" TextEn="Start Calculation Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="StartExpectArrivalTime" Caption="预计到达日期时间起" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="预计到达时间" TextEn="Estimated Time of Arrival"/>
+                <FieldLabel Key="Medium" Text="预计到达时间" TextEn="Estimated Time of Arrival"/>
+                <FieldLabel Key="Long" Text="预计到达时间" TextEn="Estimated Time of Arrival"/>
+                <FieldLabel Key="Header" Text="预计到达时间" TextEn="Estimated Time of Arrival"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="StartExpectSendTime" Caption="预计发货日期时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="预计发货时间" TextEn="Estimated Shipment Time"/>
+                <FieldLabel Key="Medium" Text="预计发货时间" TextEn="Estimated Shipment Time"/>
+                <FieldLabel Key="Long" Text="预计发货时间" TextEn="Estimated Shipment Time"/>
+                <FieldLabel Key="Header" Text="预计发货时间" TextEn="Estimated Shipment Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="StartTime" Caption="开始时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Medium" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Long" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Header" Text="开始时间" TextEn="Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="TerminateTime" Caption="销差时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="销差时间" TextEn="Offset Time"/>
+                <FieldLabel Key="Medium" Text="销差时间" TextEn="Offset Time"/>
+                <FieldLabel Key="Long" Text="销差时间" TextEn="Offset Time"/>
+                <FieldLabel Key="Header" Text="销差时间" TextEn="Offset Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="TimeExplainApprovalDate" Caption="时间说明类型的批准日期" DomainKey="DateTime"/>
+        <DataElement Key="TransactionTime" Caption="交易时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="交易时间" TextEn="Transaction Time"/>
+                <FieldLabel Key="Medium" Text="交易时间" TextEn="Transaction Time"/>
+                <FieldLabel Key="Long" Text="交易时间" TextEn="Transaction Time"/>
+                <FieldLabel Key="Header" Text="交易时间" TextEn="Transaction Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="TripEndTime" Caption="出差结束时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="结束时间" TextEn="End Time"/>
+                <FieldLabel Key="Medium" Text="结束时间" TextEn="End Time"/>
+                <FieldLabel Key="Long" Text="结束时间" TextEn="End Time"/>
+                <FieldLabel Key="Header" Text="结束时间" TextEn="End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="TripStartTime" Caption="出差开始时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Medium" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Long" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Header" Text="开始时间" TextEn="Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="TrueEndTime" Caption="实际结束时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="实际结束时间" TextEn="Actual End Time"/>
+                <FieldLabel Key="Medium" Text="实际结束时间" TextEn="Actual End Time"/>
+                <FieldLabel Key="Long" Text="实际结束时间" TextEn="Actual End Time"/>
+                <FieldLabel Key="Header" Text="实际结束时间" TextEn="Actual End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="TrueStartTime" Caption="实际开始时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="实际开始时间" TextEn="Actual Start Time"/>
+                <FieldLabel Key="Medium" Text="实际开始时间" TextEn="Actual Start Time"/>
+                <FieldLabel Key="Long" Text="实际开始时间" TextEn="Actual Start Time"/>
+                <FieldLabel Key="Header" Text="实际开始时间" TextEn="Actual Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="UploadTime" Caption="上传时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="上传时间" TextEn="Upload Time"/>
+                <FieldLabel Key="Medium" Text="上传时间" TextEn="Upload Time"/>
+                <FieldLabel Key="Long" Text="上传时间" TextEn="Upload Time"/>
+                <FieldLabel Key="Header" Text="上传时间" TextEn="Upload Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="UserFieldDate1Time" Caption="用户定义字段-日期1" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="Date2" TextEn="Date2"/>
+                <FieldLabel Key="Medium" Length="15" Text="Date2" TextEn="Date2"/>
+                <FieldLabel Key="Long" Length="20" Text="Date2" TextEn="Date2"/>
+                <FieldLabel Key="Header" Length="55" Text="Date2" TextEn="Date2"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Cond_ModifyTime" Caption="修改时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="修改时间" TextEn="Modification Time"/>
+                <FieldLabel Key="Medium" Text="修改时间" TextEn="Modification Time"/>
+                <FieldLabel Key="Long" Text="修改时间" TextEn="Modification Time"/>
+                <FieldLabel Key="Header" Text="修改时间" TextEn="Modification Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Cond_CreateTime" Caption="创建时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="制单时间" TextEn="Document Creation Time"/>
+                <FieldLabel Key="Medium" Text="制单时间" TextEn="Document Creation Time"/>
+                <FieldLabel Key="Long" Text="制单时间" TextEn="Document Creation Time"/>
+                <FieldLabel Key="Header" Text="制单时间" TextEn="Document Creation Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="MonthLastTime" Caption="当月最后的故障开始时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="当月最后的故障开始时间" TextEn="Last Fault Start Time in Month"/>
+                <FieldLabel Key="Medium" Text="当月最后的故障开始时间" TextEn="Last Fault Start Time in Month"/>
+                <FieldLabel Key="Long" Text="当月最后的故障开始时间" TextEn="Last Fault Start Time in Month"/>
+                <FieldLabel Key="Header" Text="当月最后的故障开始时间" TextEn="Last Fault Start Time in Month"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="MonthFirstTime" Caption="当月第一次故障开始时间" DomainKey="DateTime">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="当月第一次故障开始时间" TextEn="First Fault Start Time in Month"/>
+                <FieldLabel Key="Medium" Text="当月第一次故障开始时间" TextEn="First Fault Start Time in Month"/>
+                <FieldLabel Key="Long" Text="当月第一次故障开始时间" TextEn="First Fault Start Time in Month"/>
+                <FieldLabel Key="Header" Text="当月第一次故障开始时间" TextEn="First Fault Start Time in Month"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FromExpectTime" Caption="预计发货时间从" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="预计发货时间" TextEn="Estimated Shipment Time"/>
+                <FieldLabel Key="Medium" Text="预计发货时间" TextEn="Estimated Shipment Time"/>
+                <FieldLabel Key="Long" Text="预计发货时间" TextEn="Estimated Shipment Time"/>
+                <FieldLabel Key="Header" Text="预计发货时间" TextEn="Estimated Shipment Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ToExpectTime" Caption="预计发货时间到" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="到" TextEn="To"/>
+                <FieldLabel Key="Medium" Text="到" TextEn="To"/>
+                <FieldLabel Key="Long" Text="到" TextEn="To"/>
+                <FieldLabel Key="Header" Text="到" TextEn="To"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DataInterfaceExecuteTime" Caption="执行时间" DomainKey="DateTime" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="执行时间" TextEn="Execution Time"/>
+                <FieldLabel Key="Medium" Text="执行时间" TextEn="Execution Time"/>
+                <FieldLabel Key="Long" Text="执行时间" TextEn="Execution Time"/>
+                <FieldLabel Key="Header" Text="执行时间" TextEn="Execution Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+    </DataElementCollection>
+</DataElementDef>

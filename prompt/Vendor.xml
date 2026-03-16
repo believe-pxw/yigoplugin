@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DataObject Key="Vendor" Caption="供应商" PrimaryTableKey="BK_Vendor" SecondaryType="ChainDict" PrimaryType="Entity" Version="7" MaintainDict="false">
+    <TableCollection>
+        <Table Key="BK_Vendor" Caption="供应商主表">
+            <Column Key="OID" Caption="对象标识" DataElementKey="OID"/>
+            <Column Key="SOID" Caption="主对象标识" DataElementKey="SOID"/>
+            <Column Key="POID" Caption="父对象标识" DataElementKey="POID"/>
+            <Column Key="VERID" Caption="对象版本" DataElementKey="VERID"/>
+            <Column Key="DVERID" Caption="对象明细版本" DataElementKey="DVERID"/>
+            <Column Key="Enable" Caption="启用标记" DefaultValue="1" DataElementKey="Enable"/>
+            <Column Key="TLeft" Cache="true" DataElementKey="TLeft"/>
+            <Column Key="TRight" Cache="true" DataElementKey="TRight"/>
+            <Column Key="NodeType" Caption="节点类型" DataElementKey="NodeType"/>
+            <Column Key="ParentID" Caption="上级节点" DataElementKey="ParentID"/>
+            <Column Key="Code" Caption="代码" Cache="true" DefaultValue="" DataElementKey="Code" PrimaryKey="true"/>
+            <Column Key="Name" Caption="名称" Persist="false" Cache="true" DefaultValue="" SupportI18n="true" DataElementKey="Name"/>
+            <Column Key="NameTwo" Caption="名称2" Description="名称" DataElementKey="NameTwo"/>
+            <Column Key="Creator" Caption="创建人员" Cache="true" DataElementKey="Creator"/>
+            <Column Key="CreateTime" Caption="创建时间" Cache="true" DataElementKey="CreateTime"/>
+            <Column Key="Modifier" Caption="修改人员" Cache="true" DataElementKey="Modifier"/>
+            <Column Key="ModifyTime" Caption="修改时间" Cache="true" DataElementKey="ModifyTime"/>
+            <Column Key="Notes" Caption="备注" Cache="true" DefaultValue="" DataElementKey="Notes"/>
+            <Column Key="ClientID" Caption="集团" DataElementKey="ClientID"/>
+            <Column Key="ResetPattern" Caption="流水号模式" DataElementKey="ResetPattern"/>
+            <Column Key="SequenceValue" Caption="流水号" DataElementKey="SequenceValue"/>
+            <Column Key="CountryID" Caption="国家" Cache="true" DataElementKey="GlobalCountryID"/>
+            <Column Key="CustomerID" Caption="客户" Cache="true" DataElementKey="CustomerID"/>
+            <Column Key="StreetAddress" Caption="街道地址" Cache="true" DefaultValue="" DataElementKey="StreetAddress"/>
+            <Column Key="RoomNumber" Caption="门牌号" Cache="true" DefaultValue="" DataElementKey="RoomNumber"/>
+            <Column Key="PostalCode" Caption="邮政编码" Cache="true" DefaultValue="" DataElementKey="PostalCode"/>
+            <Column Key="City" Caption="城市" Cache="true" DefaultValue="" DataElementKey="GPOrganizationCityAddress"/>
+            <Column Key="PostOfficeBox" Caption="邮政信箱" Cache="true" DefaultValue="" DataElementKey="PostOfficeBox"/>
+            <Column Key="PostalCodeDtl" Caption="邮政编码" Cache="true" DefaultValue="" DataElementKey="PostalCode"/>
+            <Column Key="Language" Caption="语言" Cache="true" DefaultValue="" DataElementKey="TextEditor_100"/>
+            <Column Key="Telephone" Caption="电话" Cache="true" DefaultValue="" DataElementKey="OneOfTelephoneNumber"/>
+            <Column Key="TelephoneExtension" Caption="分机号" Cache="true" DefaultValue="" Description="电话分机号" DataElementKey="TelephoneExtension"/>
+            <Column Key="MobilePhone" Caption="移动电话" Cache="true" DefaultValue="" DataElementKey="MobilePhone"/>
+            <Column Key="Fax" Caption="传真" Cache="true" DefaultValue="" DataElementKey="Fax"/>
+            <Column Key="FaxExtension" Caption="分机号" Cache="true" DefaultValue="" Description="传真分机号" DataElementKey="FaxExtension"/>
+            <Column Key="RegionID" Caption="地区" Cache="true" DataElementKey="RegionID"/>
+            <Column Key="VATRegNo" Caption="增值税登记号" Cache="true" DefaultValue="" DataElementKey="VATRegNo"/>
+            <Column Key="VendorAccountGroupID" Caption="账户组" Cache="true" DataElementKey="VendorAccountGroupID"/>
+            <Column Key="PlantID" Caption="工厂" Cache="true" DataElementKey="OwnedOrExternalPlantID"/>
+            <Column Key="PartnerSchemaID" Caption="账户组采购组织级伙伴方案" Cache="true" Description="账户组采购组织级伙伴方案，根据账户组中数据计算得到" DataElementKey="PartnerSchemaID"/>
+            <Column Key="Block_FI" Caption="中心记账冻结" Cache="true" DataElementKey="Block_FI"/>
+            <Column Key="Block_PO" Caption="中心施加的采购冻结" Cache="true" DataElementKey="Block_PO"/>
+            <Column Key="Block_Value" Caption="将被冻结的功能" Cache="true" DataElementKey="Block_Value"/>
+            <Column Key="TradePartnerID" Caption="贸易伙伴" Cache="true" DataElementKey="TradePartnerID"/>
+            <Column Key="VendorClassificationID" Caption="供应商分类" DataElementKey="VendorClassificationID"/>
+            <Column Key="Contact" Caption="联系人" Cache="true" DefaultValue="" DataElementKey="Contact"/>
+            <Column Key="SystemVestKey" Caption="单据Key" Description="记录马甲的标识" DataElementKey="SystemVestKey"/>
+            <Column Key="ForwardingAgentGroupID" Caption="服务代理过程组" DataElementKey="ServiceAgentGroupID"/>
+            <Column Key="AuthorizationGroupID" Caption="权限组" DataElementKey="AuthorizationGroupID_BRGRU"/>
+            <Column Key="IndustryCode" Caption="行业" DataElementKey="Code"/>
+            <Column Key="IndustryID" Caption="行业" CodeColumnKey="IndustryCode" DataElementKey="IndustryID"/>
+            <Column Key="TransportationZoneID" Caption="运输区域" DataElementKey="EndTransportationZoneID"/>
+            <Column Key="Email" Caption="电子邮箱" DataElementKey="Email"/>
+            <Column Key="ExternalSystemID" Caption="外部系统标识" DataElementKey="ExternalSystemID"/>
+            <Column Key="ExternalSystemPrimaryKey" Caption="外部系统关键字" DataElementKey="ExternalSystemPrimaryKey"/>
+            <Column Key="PurchasingOrganizationID_NODB4Other" Caption="采购组织" Persist="false" DataElementKey="PurchasingOrganizationID" IgnoreQuery="true"/>
+            <Column Key="NatureEnterprise" Caption="企业性质" Cache="true" DataElementKey="NatureEnterprise"/>
+            <Column Key="MM_ClientCustomerGroupID" Caption="业务伙伴集团组" Cache="true" DataElementKey="MM_ClientCustomerGroupID"/>
+            <Column Key="VendorLevelID" Caption="供应商等级" Cache="true" DataElementKey="VendorLevelID"/>
+            <Column Key="MM_CustomGroupID" Caption="自定义分组" Cache="true" DataElementKey="MM_CustomGroupID"/>
+            <Column Key="NameFilter_NODB4Other" Caption="名称" Persist="false" DataElementKey="Name" IgnoreQuery="true"/>
+            <Column Key="IsShowAlternativeData" Caption="控制附加数据显示字段-隐藏" Persist="false" DataElementKey="IsShowAlternativeData" IgnoreQuery="true"/>
+            <Column Key="StatusFilter_NODB4Other" Caption="状态" Persist="false" DataElementKey="StatusFilter" IgnoreQuery="true"/>
+            <Column Key="IsFI_NODB4Other" Caption="财务" Persist="false" DataElementKey="IsFI" IgnoreQuery="true"/>
+            <Column Key="IsPurchase_NODB4Other" Caption="采购" Persist="false" DataElementKey="IsPurchase" IgnoreQuery="true"/>
+            <Column Key="CompanyCodeID_NODB4Other" Caption="公司代码" Persist="false" DataElementKey="CompanyCodeID" IgnoreQuery="true"/>
+            <Column Key="IsBasic_NODB4Other" Caption="基本" Persist="false" DataElementKey="IsBasic" IgnoreQuery="true"/>
+            <Column Key="IsSRMSuplier" Caption="SRM供应商" Persist="false" DataElementKey="IsSRMSuplier" IgnoreQuery="true"/>
+            <Column Key="CodeFilter_NODB4Other" Caption="代码" Persist="false" DataElementKey="Code" IgnoreQuery="true"/>
+            <Column Key="IsPurOrgText_NODB4Other" Caption="采购组织文本" Persist="false" DataElementKey="IsPurOrgText" IgnoreQuery="true"/>
+            <Column Key="SearchTerm" Caption="搜索项" DataElementKey="SearchTerm" Cache="true"/>
+            <Column Key="SrcOID" Caption="源单OID" DataElementKey="SrcOID"/>
+            <Column Key="SrcSOID" Caption="源单SOID" DataElementKey="SrcSOID"/>
+            <Column Key="SrcSequence" Caption="SrcSequence" DataElementKey="Sequence"/>
+            <Column Key="MapKey" Caption="MapKey" DataElementKey="MapKey"/>
+            <Column Key="SrcDocumentNumber" Caption="SrcDocumentNumber" DataElementKey="DocumentNumber"/>
+            <Column Key="SrcFormKey" Caption="来源单据Key" DataElementKey="SrcFormKey"/>
+            <Column Key="SrcBusinessPartnerID" Caption="业务伙伴" DataElementKey="SD_BusinessPartnerID"/>
+        </Table>
+        <Table Key="EGS_VBasisText" Caption="基本文本" TableMode="Detail">
+            <Column Key="OID" Caption="对象标识" DataElementKey="OID"/>
+            <Column Key="SOID" Caption="主对象标识" DataElementKey="SOID"/>
+            <Column Key="POID" Caption="父对象标识" DataElementKey="POID"/>
+            <Column Key="VERID" Caption="对象版本" DataElementKey="VERID"/>
+            <Column Key="DVERID" Caption="对象明细版本" DataElementKey="DVERID"/>
+            <Column Key="LanguageID" Caption="语言" DataElementKey="LanguageID"/>
+            <Column Key="TextTypeID" Caption="文本类" DataElementKey="TextTypeID"/>
+            <Column Key="Text" Caption="文本" DataElementKey="Text"/>
+            <Column Key="Sequence" Caption="序号" DataElementKey="Sequence"/>
+            <Column Key="ExternalSystemPrimaryKey" Caption="外部系统关键字" DataElementKey="ExternalSystemPrimaryKey"/>
+        </Table>
+    </TableCollection>
+</DataObject>

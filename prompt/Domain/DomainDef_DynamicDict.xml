@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DomainDef>
+    <DomainCollection>
+        <Domain Key="DynInvestObjectID" Caption="分配对象" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="PS_WBSElement" Caption="WBS元素" Value="PS_WBSElement"/>
+                <Item Key="CO_CostOrder" Caption="内部订单" Value="CO_CostOrder"/>
+                <Item Key="IM_InvestProgramStruct" Caption="投资程序结构" Value="IM_InvestProgramStruct"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynamicDict" Caption="动态字典" RefControlType="DynamicDict" DataType="Long"/>
+        <Domain Key="DynamicDict_EditValue" Caption="动态字典(EditValue)" RefControlType="DynamicDict" DataType="Varchar"/>
+        <Domain Key="DynamicDict_Multi" Caption="动态字典(多选)" RefControlType="DynamicDict" DataType="Varchar" AllowMultiSelection="true"/>
+        <Domain Key="DynamicDict_Multi_2000" Caption="动态字典(多选)" RefControlType="DynamicDict" DataType="Varchar" Length="2000" AllowMultiSelection="true"/>
+
+        <Domain Key="DynAcceptorID" Caption="承兑人" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="CompanyCode" Caption="公司代码" Value="CompanyCode"/>
+                <Item Key="FI_HouseBank" Caption="开户行" Value="FI_HouseBank"/>
+                <Item Key="FI_BankCode" Caption="银行代码" Value="FI_BankCode"/>
+                <Item Key="Customer" Caption="客户" Value="Customer"/>
+            </ItemKeyCollection>
+        </Domain>
+<!--        <Domain Key="DynAccountID" Caption="科目" RefControlType="DynamicDict" DataType="Long">-->
+<!--            <ItemKeyCollection>-->
+<!--                <Item Key="Account" Caption="科目" Value="Account"/>-->
+<!--                <Item Key="Customer" Caption="客户" Value="Customer"/>-->
+<!--                <Item Key="Vendor" Caption="供应商" Value="Vendor"/>-->
+<!--                <Item Key="AM_AssetCard" Caption="资产卡片" Value="AM_AssetCard"/>-->
+<!--                <Item Key="CostCenter" Caption="成本中心" Value="CostCenter"/>-->
+<!--                <Item Key="ProfitCenter" Caption="利润中心" Value="ProfitCenter"/>-->
+<!--                <Item Key="BusinessArea" Caption="业务范围" Value="BusinessArea"/>-->
+<!--                <Item Key="FI_Segment" Caption="段" Value="FI_Segment"/>-->
+<!--                <Item Key="FunctionalArea" Caption="功能范围" Value="FunctionalArea"/>-->
+<!--                <Item Key="FI_BankAccount__Dic" Caption="银行账号" Value="FI_BankAccount__Dic"/>-->
+<!--                <Item Key="HR_Employee" Caption="人员" Value="HR_Employee"/>-->
+<!--                <Item Key="AM_LeaseContract__Dic" Caption="租赁合同" Value="AM_LeaseContract__Dic"/>-->
+<!--                <Item Key="CM_PurchaseContract__Dic" Caption="采购合同" Value="CM_PurchaseContract__Dic"/>-->
+<!--                <Item Key="SD_SaleContract__Dic" Caption="销售合同" Value="SD_SaleContract__Dic"/>-->
+<!--                <Item Key="PS_Project" Caption="项目" Value="PS_Project"/>-->
+<!--                <Item Key="Company" Caption="公司" Value="Company"/>-->
+<!--            </ItemKeyCollection>-->
+<!--        </Domain>-->
+        <Domain Key="DynAgingObjectID" Caption="账龄对象" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="Customer" Caption="客户" Value="Customer"/>
+                <Item Key="Vendor" Caption="供应商" Value="Vendor"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynAssociationTypeID" Caption="用户" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="HR_Job" Caption="职务" Value="HR_Job"/>
+                <Item Key="HR_Position" Caption="职位" Value="HR_Position"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynChangedValueID" Caption="修改后的值" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="CostCenter" Caption="成本中心" Value="CostCenter"/>
+                <Item Key="HR_Employee" Caption="人员" Value="HR_Employee"/>
+                <Item Key="AM_AssetCategory" Caption="资产类别" Value="AM_AssetCategory"/>
+                <Item Key="AM_UseState" Caption="使用状态" Value="AM_UseState"/>
+                <Item Key="Location" Caption="位置" Value="Location"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynConsOrgID" Caption="合并组织" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="BC_ConsUnit" Caption="合并单元" Value="BC_ConsUnit"/>
+                <Item Key="BC_ConsGroup" Caption="合并组" Value="BC_ConsGroup"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynCostObjectID" Caption="成本对象" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="PS_Project" Caption="项目" Value="PS_Project"/>
+                <Item Key="PS_WBSElement" Caption="WBS元素" Value="PS_WBSElement"/>
+                <Item Key="PS_Network" Caption="网络" Value="PS_Network"/>
+                <Item Key="PS_Activity" Caption="作业" Value="PS_Activity"/>
+                <Item Key="FI_EmptyDic" Caption="空字典" Value="FI_EmptyDic"/>
+                <Item Key="CO_CostOrder" Caption="内部订单" Value="CO_CostOrder"/>
+                <Item Key="CO_ProductionOrder__Dic" Caption="成本控制生产订单" Value="CO_ProductionOrder__Dic"/>
+                <Item Key="PP_ProductCostCollector__Dic" Caption="产品成本收集器" Value="PP_ProductCostCollector__Dic"/>
+                <Item Key="QM_QualityManagementOrder" Caption="质量管理订单" Value="QM_QualityManagementOrder"/>
+                <Item Key="PP_ProductionOrder__Dic" Caption="生产订单" Value="PP_ProductionOrder__Dic"/>
+                <Item Key="PM_MaintenanceOrder__Dic" Caption="维护订单" Value="PM_MaintenanceOrder__Dic"/>
+                <Item Key="PI_ProcessOrder__Dic" Caption="流程订单" Value="PI_ProcessOrder__Dic"/>
+                <Item Key="Account" Caption="总账科目" Value="Account"/>
+                <Item Key="CostCenter" Caption="成本中心" Value="CostCenter"/>
+                <Item Key="Material" Caption="物料" Value="Material"/>
+                <Item Key="AM_AssetCard__Dic" Caption="固定资产" Value="AM_AssetCard__Dic"/>
+                <Item Key="COPA_ProfitSegment__Dic" Caption="获利能力段" Value="COPA_ProfitSegment__Dic"/>
+                <Item Key="PP_ProductionOrderBom__Dic" Caption="生产订单BOM" Value="PP_ProductionOrderBom__Dic"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynCreditValueID" Caption="贷方值" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="BC_FSItem" Caption="报表项目" Value="BC_FSItem"/>
+                <Item Key="BC_ConsUnit" Caption="合并单元" Value="BC_ConsUnit"/>
+                <Item Key="BC_ProductGroup" Caption="产品组" Value="BC_ProductGroup"/>
+                <Item Key="BC_SubItemCategory" Caption="子项类别" Value="BC_SubItemCategory"/>
+                <Item Key="BC_SubItem" Caption="子项" Value="BC_SubItem"/>
+                <Item Key="FI_ConsolidationType" Caption="合并事务类型" Value="FI_ConsolidationType"/>
+                <Item Key="Currency" Caption="货币" Value="Currency"/>
+                <Item Key="BC_Dimension" Caption="维" Value="BC_Dimension"/>
+                <Item Key="FI_CashFlowItem" Caption="现金流量项目" Value="FI_CashFlowItem"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynCycleID" Caption="循环" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="COPA_AllocationCycleDefine" Caption="COPA分摊循环定义" Value="COPA_AllocationCycleDefine"/>
+                <Item Key="CO_CostCenterCycle" Caption="成本中心循环定义" Value="CO_CostCenterCycle"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynDebitValueID" Caption="借方值" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="BC_FSItem" Caption="报表项目" Value="BC_FSItem"/>
+                <Item Key="BC_ConsUnit" Caption="合并单元" Value="BC_ConsUnit"/>
+                <Item Key="BC_ProductGroup" Caption="产品组" Value="BC_ProductGroup"/>
+                <Item Key="BC_SubItemCategory" Caption="子项类别" Value="BC_SubItemCategory"/>
+                <Item Key="BC_SubItem" Caption="子项" Value="BC_SubItem"/>
+                <Item Key="FI_ConsolidationType" Caption="合并事务类型" Value="FI_ConsolidationType"/>
+                <Item Key="Currency" Caption="货币" Value="Currency"/>
+                <Item Key="BC_Dimension" Caption="维" Value="BC_Dimension"/>
+                <Item Key="FI_CashFlowItem" Caption="现金流量项目" Value="FI_CashFlowItem"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynDefaultValueID" Caption="默认值" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="BC_Dimension" Caption="维" Value="BC_Dimension"/>
+                <Item Key="BC_SubItemCategory" Caption="子项类别" Value="BC_SubItemCategory"/>
+                <Item Key="BC_SubItem" Caption="子项" Value="BC_SubItem"/>
+                <Item Key="BC_ConsUnit" Caption="合并单元" Value="BC_ConsUnit"/>
+                <Item Key="V_Unit" Caption="单位" Value="V_Unit"/>
+                <Item Key="FI_CashFlowItem" Caption="现金流量项目" Value="FI_CashFlowItem"/>
+                <Item Key="V_FunctionalArea" Caption="控制范围" Value="V_FunctionalArea"/>
+                <Item Key="BC_ProductGroup" Caption="产品组" Value="BC_ProductGroup"/>
+                <Item Key="V_Currency" Caption="币种" Value="V_Currency"/>
+                <Item Key="BC_FSItem" Caption="报表项目" Value="BC_FSItem"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynDictDefaultValueID" Caption="字典字段默认值" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="CompanyCode" Caption="公司代码" Value="CompanyCode"/>
+                <Item Key="FI_Ledger" Caption="分类账" Value="FI_Ledger"/>
+                <Item Key="ProfitCenter" Caption="利润中心" Value="ProfitCenter"/>
+                <Item Key="FI_Segment" Caption="段" Value="FI_Segment"/>
+                <Item Key="BusinessArea" Caption="业务范围" Value="BusinessArea"/>
+            </ItemKeyCollection>
+        </Domain>
+<!--        <Domain Key="DynDictID" Caption="字典字段默认值" RefControlType="DynamicDict" DataType="Long">-->
+<!--            <ItemKeyCollection>-->
+<!--                <Item Key="Account" Caption="科目" Value="Account"/>-->
+<!--                <Item Key="Customer" Caption="客户" Value="Customer"/>-->
+<!--                <Item Key="Vendor" Caption="供应商" Value="Vendor"/>-->
+<!--                <Item Key="AM_AssetCard" Caption="资产卡片" Value="AM_AssetCard"/>-->
+<!--                <Item Key="CostCenter" Caption="成本中心" Value="CostCenter"/>-->
+<!--                <Item Key="ProfitCenter" Caption="利润中心" Value="ProfitCenter"/>-->
+<!--                <Item Key="BusinessArea" Caption="业务范围" Value="BusinessArea"/>-->
+<!--                <Item Key="FI_Segment" Caption="段" Value="FI_Segment"/>-->
+<!--                <Item Key="FunctionalArea" Caption="功能范围" Value="FunctionalArea"/>-->
+<!--                <Item Key="FI_BankAccount__Dic" Caption="银行账号" Value="FI_BankAccount__Dic"/>-->
+<!--                <Item Key="HR_Employee" Caption="人员" Value="HR_Employee"/>-->
+<!--                <Item Key="AM_LeaseContract__Dic" Caption="租赁合同" Value="AM_LeaseContract__Dic"/>-->
+<!--                <Item Key="CM_PurchaseContract__Dic" Caption="采购合同" Value="CM_PurchaseContract__Dic"/>-->
+<!--                <Item Key="SD_SaleContract__Dic" Caption="销售合同" Value="SD_SaleContract__Dic"/>-->
+<!--                <Item Key="PS_Project" Caption="项目" Value="PS_Project"/>-->
+<!--                <Item Key="Company" Caption="公司" Value="Company"/>-->
+<!--            </ItemKeyCollection>-->
+<!--        </Domain>-->
+        <Domain Key="DynDirectPurchOrderID" Caption="直接采购的订单" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="MM_PurchaseRequisition__Dic" Caption="采购申请" Value="MM_PurchaseRequisition__Dic"/>
+                <Item Key="PP_PlanOrder__Dic" Caption="计划订单" Value="PP_PlanOrder__Dic"/>
+                <Item Key="DirectPurchaseItemKey_0" Caption="无" Value="_"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynDrawerID" Caption="出票人" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="CompanyCode" Caption="公司代码" Value="CompanyCode"/>
+                <Item Key="Customer" Caption="客户" Value="Customer"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynExpenseStandardID" Caption="费用标准" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="ECS_ExpenseStandardTrain" Caption="火车标准" Value="ECS_ExpenseStandardTrain"/>
+                <Item Key="ECS_ExpenseStandardAirplane" Caption="机票标准" Value="ECS_ExpenseStandardAirplane"/>
+                <Item Key="ECS_ExpenseStandardSteamer" Caption="轮船标准" Value="ECS_ExpenseStandardSteamer"/>
+                <Item Key="ECS_ExpenseStandardHotel" Caption="住宿标准" Value="ECS_ExpenseStandardHotel"/>
+                <Item Key="ECS_ExpenseStandardTelecom" Caption="通讯费标准" Value="ECS_ExpenseStandardTelecom"/>
+                <Item Key="ECS_ExpenseStandardSubsidy" Caption="补贴标准" Value="ECS_ExpenseStandardSubsidy"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynFromIdentityID" Caption="特殊库存" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="Customer" Caption="客户" Value="Customer"/>
+                <Item Key="SD_SaleOrderDtl__Dic" Caption="销售订单明细" Value="SD_SaleOrderDtl__Dic"/>
+                <Item Key="SD_OutboundDeliveryDtl__Dic" Caption="外向交货单行项目字典" Value="SD_OutboundDeliveryDtl__Dic"/>
+                <Item Key="Vendor" Caption="供应商" Value="Vendor"/>
+                <Item Key="PS_WBSElement" Caption="WBS元素" Value="PS_WBSElement"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynFromOrderID" Caption="订单从" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="FI_EmptyDic" Caption="空字典" Value="FI_EmptyDic"/>
+                <Item Key="CO_CostOrder" Caption="内部订单" Value="CO_CostOrder"/>
+                <Item Key="CO_ProductionOrder__Dic" Caption="成本控制生产订单" Value="CO_ProductionOrder__Dic"/>
+                <Item Key="PP_ProductCostCollector__Dic" Caption="产品成本收集器" Value="PP_ProductCostCollector__Dic"/>
+                <Item Key="QM_QualityManagementOrder" Caption="质量管理订单" Value="QM_QualityManagementOrder"/>
+                <Item Key="PP_ProductionOrder__Dic" Caption="生产订单" Value="PP_ProductionOrder__Dic"/>
+                <Item Key="PM_MaintenanceOrder__Dic" Caption="维护订单" Value="PM_MaintenanceOrder__Dic"/>
+                <Item Key="PI_ProcessOrder__Dic" Caption="流程订单" Value="PI_ProcessOrder__Dic"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynIdentityID" Caption="特殊库存" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="Customer" Caption="客户" Value="Customer"/>
+                <Item Key="SD_SaleOrderDtl__Dic" Caption="销售订单明细" Value="SD_SaleOrderDtl__Dic"/>
+                <Item Key="SD_OutboundDeliveryDtl__Dic" Caption="外向交货单行项目字典" Value="SD_OutboundDeliveryDtl__Dic"/>
+                <Item Key="Vendor" Caption="供应商" Value="Vendor"/>
+                <Item Key="PS_WBSElement" Caption="WBS元素" Value="PS_WBSElement"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynIntegrationOrgID" Caption="特殊库存" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="Company" Caption="公司" Value="Company"/>
+                <Item Key="ProfitCenter" Caption="利润中心" Value="ProfitCenter"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynInvoiceID" Caption="特殊库存" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="FI_OCRPlaneTicket__Dic" Caption="航空运输电子客票行程单" Value="FI_OCRPlaneTicket__Dic"/>
+                <Item Key="FI_OCRTrainTicket__Dic" Caption="火车票" Value="FI_OCRTrainTicket__Dic"/>
+                <Item Key="FI_OCRSteamerTicket__Dic" Caption="船票" Value="FI_OCRSteamerTicket__Dic"/>
+                <Item Key="FI_OCRBusTicket__Dic" Caption="汽车票" Value="FI_OCRBusTicket__Dic"/>
+                <Item Key="FI_OCRTaxiTicket__Dic" Caption="出租车票" Value="FI_OCRTaxiTicket__Dic"/>
+                <Item Key="FI_OCRTollInvoice__Dic" Caption="增值税发票" Value="FI_OCRTollInvoice__Dic"/>
+                <Item Key="FI_OCRSmallTicket__Dic" Caption="小票" Value="FI_OCRSmallTicket__Dic"/>
+                <Item Key="FI_OCRElectInvoice__Dic" Caption="电子发票" Value="FI_OCRElectInvoice__Dic"/>
+                <Item Key="FI_OCRQuotaInvoice__Dic" Caption="定额发票" Value="FI_OCRQuotaInvoice__Dic"/>
+                <Item Key="FI_VATInvoice__Dic" Caption="增值税发票" Value="FI_VATInvoice__Dic"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynItemCategoryID" Caption="项目类别" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="MM_ItemCategory" Caption="项目类别" Value="MM_ItemCategory"/>
+                <Item Key="SD_ItemCategory" Caption="项目类别" Value="SD_ItemCategory"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynMaintenanceOrderSOID" Caption="维护订单" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="PM_MaintenanceOrder__Dic" Caption="维护订单单据字典" Value="PM_MaintenanceOrder__Dic"/>
+                <Item Key="PM_Notification__Dic" Caption="维护通知单据字典" Value="PM_Notification__Dic"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynMeasurePointObjectID" Caption="计量对象" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="PM_Equipment__Dic" Caption="设备" Value="PM_Equipment__Dic"/>
+                <Item Key="PM_FunctionalLocation__Dic" Caption="功能位置字典" Value="PM_FunctionalLocation__Dic"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynObjectTypeID" Caption="对象类别" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="PM_EquipmentCategory" Caption="设备种类" Value="PM_EquipmentCategory"/>
+                <Item Key="PM_FunctionalLocationCategory" Caption="功能位置种类" Value="PM_FunctionalLocationCategory"/>
+                <Item Key="PM_MeasuringPointCategory" Caption="计量点种类" Value="PM_MeasuringPointCategory"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynOffsettingAccountID" Caption="对象类别" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="Customer" Caption="客户" Value="Customer"/>
+                <Item Key="Account" Caption="科目" Value="Account"/>
+                <Item Key="Vendor" Caption="供应商" Value="Vendor"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynOrderFromID" Caption="订单(从)" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="FI_EmptyDic" Caption="空字典" Value="FI_EmptyDic"/>
+                <Item Key="CO_CostOrder" Caption="内部订单" Value="CO_CostOrder"/>
+                <Item Key="CO_ProductionOrder__Dic" Caption="生产订单" Value="CO_ProductionOrder__Dic"/>
+                <Item Key="PP_ProductCostCollector__Dic" Caption="产品成本收集器单据字典" Value="PP_ProductCostCollector__Dic"/>
+                <Item Key="QM_QualityManagementOrder" Caption="质量管理订单" Value="QM_QualityManagementOrder"/>
+                <Item Key="PP_ProductionOrder__Dic" Caption="生产订单单据字典" Value="PP_ProductionOrder__Dic"/>
+                <Item Key="PM_MaintenanceOrder__Dic" Caption="维护订单" Value="PM_MaintenanceOrder__Dic"/>
+                <Item Key="PI_ProcessOrder__Dic" Caption="流程订单单据字典" Value="PI_ProcessOrder__Dic"/>
+            </ItemKeyCollection>
+        </Domain>
+        <!--        com.bokesoft.erp.fi.voucher.VoucherFormula.getOrderItemKey          -->
+        <Domain Key="DynOrderID" Caption="订单" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="FI_EmptyDic" Caption="空字典" Value="FI_EmptyDic"/>
+                <Item Key="CO_CostOrder" Caption="内部订单" Value="CO_CostOrder"/>
+                <Item Key="CO_ProductionOrder__Dic" Caption="成本控制生产订单" Value="CO_ProductionOrder__Dic"/>
+                <Item Key="PP_ProductCostCollector__Dic" Caption="产品成本收集器" Value="PP_ProductCostCollector__Dic"/>
+                <Item Key="QM_QualityManagementOrder" Caption="质量管理订单" Value="QM_QualityManagementOrder"/>
+                <Item Key="PP_ProductionOrder__Dic" Caption="生产订单" Value="PP_ProductionOrder__Dic"/>
+                <Item Key="PM_MaintenanceOrder__Dic" Caption="维护订单" Value="PM_MaintenanceOrder__Dic"/>
+                <Item Key="PI_ProcessOrder__Dic" Caption="流程订单" Value="PI_ProcessOrder__Dic"/>
+                <Item Key="PS_Network" Caption="网络" Value="PS_Network"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynOrderTypeID" Caption="订单类型" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="CO_PCCType" Caption="产品成本收集器订单类型" Value="CO_PCCType"/>
+                <Item Key="PP_ProductOrderType" Caption="生产订单类型" Value="PP_ProductOrderType"/>
+                <Item Key="CO_OrderType" Caption="内部订单类型" Value="CO_OrderType"/>
+                <Item Key="PM_OrderType" Caption="维护订单类型" Value="PM_OrderType"/>
+                <Item Key="QM_OrderType" Caption="质量订单类型" Value="QM_OrderType"/>
+                <Item Key="PS_NetworkType" Caption="网络类型" Value="PS_NetworkType"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynPayeeID" Caption="收款人" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="Vendor" Caption="供应商" Value="Vendor"/>
+                <Item Key="CompanyCode" Caption="公司代码" Value="CompanyCode"/>
+                <Item Key="Customer" Caption="客户" Value="Customer"/>
+            </ItemKeyCollection> 
+        </Domain>
+        <Domain Key="DynReceiveCostObjectID" Caption="接收方成本对象" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="CostCenter" Caption="成本中心" Value="CostCenter"/>
+                <Item Key="COPA_ProfitSegment__Dic" Caption="获利能力段字典" Value="COPA_ProfitSegment__Dic"/>
+                <Item Key="Account" Caption="科目" Value="Account"/>
+                <Item Key="FI_EmptyDic" Caption="空字典" Value="FI_EmptyDic"/>
+                <Item Key="CO_CostOrder" Caption="内部订单" Value="CO_CostOrder"/>
+                <Item Key="CO_ProductionOrder__Dic" Caption="成本控制生产订单" Value="CO_ProductionOrder__Dic"/>
+                <Item Key="PP_ProductCostCollector__Dic" Caption="产品成本收集器" Value="PP_ProductCostCollector__Dic"/>
+                <Item Key="QM_QualityManagementOrder" Caption="质量管理订单" Value="QM_QualityManagementOrder"/>
+                <Item Key="PP_ProductionOrder__Dic" Caption="生产订单" Value="PP_ProductionOrder__Dic"/>
+                <Item Key="PM_MaintenanceOrder__Dic" Caption="维护订单" Value="PM_MaintenanceOrder__Dic"/>
+                <Item Key="PI_ProcessOrder__Dic" Caption="流程订单" Value="PI_ProcessOrder__Dic"/>
+                <Item Key="PS_Network" Caption="网络" Value="PS_Network"/>
+                <Item Key="AM_AssetCard__Dic" Caption="网络" Value="AM_AssetCard__Dic"/>
+                <Item Key="Material" Caption="网络" Value="Material"/>
+                <Item Key="PS_WBSElement" Caption="网络" Value="PS_WBSElement"/>
+                <Item Key="PP_ProductionOrderBom__Dic" Caption="网络" Value="PP_ProductionOrderBom__Dic"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynRefCharacteristic1ID" Caption="依赖特性1" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="BC_Dimension" Caption="维" Value="BC_Dimension"/>
+                <Item Key="BC_SubItemCategory" Caption="子项类别" Value="BC_SubItemCategory"/>
+                <Item Key="BC_SubItem" Caption="子项" Value="BC_SubItem"/>
+                <Item Key="BC_ConsUnit" Caption="合并单元" Value="BC_ConsUnit"/>
+                <Item Key="V_Unit" Caption="单位" Value="V_Unit"/>
+                <Item Key="FI_CashFlowItem" Caption="现金流量" Value="FI_CashFlowItem"/>
+                <Item Key="V_FunctionalArea" Caption="控制范围" Value="V_FunctionalArea"/>
+                <Item Key="BC_ProductGroup" Caption="产品组" Value="BC_ProductGroup"/>
+                <Item Key="V_Currency" Caption="币种" Value="V_Currency"/>
+                <Item Key="BC_FSItem" Caption="报表项目" Value="BC_FSItem"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynPRTID" Caption="生产资源工具(PRT)" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="PP_ProductResourceTool" Caption="生产资源/工具" Value="PP_ProductResourceTool"/>
+                <Item Key="PM_Equipment__Dic" Caption="设备单据字典" Value="PM_Equipment__Dic"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynResponsibleID" Caption="生产资源工具(PRT)" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="Customer" Caption="客户" Value="Customer"/>
+                <Item Key="Vendor" Caption="供应商" Value="Vendor"/>
+                <Item Key="Operator" Caption="操作员" Value="Operator"/>
+            </ItemKeyCollection>
+        </Domain>
+        <!--        com.bokesoft.erp.mm.function.MSEGUtils.getDicFromOrderCategory      -->
+        <Domain Key="DynSettlementOrderID" Caption="结算订单" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="CO_CostOrder" Caption="内部订单" Value="CO_CostOrder"/>
+                <Item Key="CO_ProductionOrder__Dic" Caption="成本控制生产订单" Value="CO_ProductionOrder__Dic"/>
+                <Item Key="PP_ProductCostCollector__Dic" Caption="产品成本收集器" Value="PP_ProductCostCollector__Dic"/>
+                <Item Key="QM_QualityManagementOrder" Caption="质量管理订单" Value="QM_QualityManagementOrder"/>
+                <Item Key="PP_ProductionOrder__Dic" Caption="生产订单" Value="PP_ProductionOrder__Dic"/>
+                <Item Key="PM_MaintenanceOrder__Dic" Caption="维护订单" Value="PM_MaintenanceOrder__Dic"/>
+                <Item Key="PI_ProcessOrder__Dic" Caption="流程订单" Value="PI_ProcessOrder__Dic"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynSrcCorrelationID" Caption="相互关联源ID" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="BC_AccountChart" Caption="合并科目表" Value="BC_AccountChart"/>
+                <Item Key="BC_ItemHierarchy" Caption="报表层次" Value="BC_ItemHierarchy"/>
+                <Item Key="BC_FSItem" Caption="报表项目" Value="BC_FSItem"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynTechObjectID" Caption="技术对象" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="PM_ReferenceLocation__Dic" Caption="参考位置" Value="PM_ReferenceLocation__Dic"/>
+                <Item Key="PM_FunctionalLocation__Dic" Caption="功能位置" Value="PM_FunctionalLocation__Dic"/>
+                <Item Key="PM_Equipment__Dic" Caption="设备" Value="PM_Equipment__Dic"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynValuationAreaID" Caption="评估范围" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="Plant" Caption="工厂" Value="Plant"/>
+                <Item Key="CompanyCode" Caption="公司代码" Value="CompanyCode"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynValueID" Caption="特征值" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="BC_FSItem" Caption="报表项目" Value="BC_FSItem"/>
+                <Item Key="BC_ConsUnit" Caption="合并单元" Value="BC_ConsUnit"/>
+                <Item Key="Currency" Caption="货币" Value="Currency"/>
+                <Item Key="BC_ProductGroup" Caption="产品组" Value="BC_ProductGroup"/>
+                <Item Key="BC_SubItemCategory" Caption="子项类别" Value="BC_SubItemCategory"/>
+                <Item Key="BC_SubItem" Caption="子项" Value="BC_SubItem"/>
+                <Item Key="FI_ConsolidationType" Caption="合并类型" Value="FI_ConsolidationType"/>
+                <Item Key="BC_Dimension" Caption="维" Value="BC_Dimension"/>
+                <Item Key="FI_CashFlowItem" Caption="现金流量项目" Value="FI_CashFlowItem"/>
+            </ItemKeyCollection>
+        </Domain>
+        <Domain Key="DynReferenceDocumentID" Caption="参考凭证" RefControlType="DynamicDict" DataType="Long">
+            <ItemKeyCollection>
+                <Item Key="SD_OutboundDelivery__Dic" Caption="外向交货单单据字典" Value="SD_OutboundDelivery__Dic"/>
+                <Item Key="SD_SaleOrder__Dic" Caption="销售订单" Value="SD_SaleOrder__Dic"/>
+                <Item Key="SD_SaleBilling__Dic" Caption="销售发票" Value="SD_SaleBilling__Dic"/>
+            </ItemKeyCollection>
+        </Domain>
+    </DomainCollection>
+</DomainDef>

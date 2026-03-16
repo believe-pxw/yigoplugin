@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DataElementDef>
+    <DataElementCollection>
+        <DataElement Key="ClientID" Caption="集团" DomainKey="Client" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="集团" TextEn="Group"/>
+                <FieldLabel Key="Medium" Length="15" Text="集团" TextEn="Group"/>
+                <FieldLabel Key="Long" Length="20" Text="集团" TextEn="Group"/>
+                <FieldLabel Key="Header" Length="3" Text="集团" TextEn="Group"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ClientID_Multi" Caption="集团(多选)" DomainKey="Client_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="集团" TextEn="Group"/>
+                <FieldLabel Key="Medium" Text="集团" TextEn="Group"/>
+                <FieldLabel Key="Long" Text="集团" TextEn="Group"/>
+                <FieldLabel Key="Header" Text="集团" TextEn="Group"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Notes" Caption="备注" DomainKey="Notes_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="描述" TextEn="Description"/>
+                <FieldLabel Key="Medium" Text="描述" TextEn="Description"/>
+                <FieldLabel Key="Long" Text="描述" TextEn="Description"/>
+                <FieldLabel Key="Header" Text="描述" TextEn="Description"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Notes_1000" Caption="备注(1000)" DomainKey="Notes_1000" DataDiffLog="true"/>
+        <DataElement Key="Notes_2000" Caption="备注(2000)" DomainKey="Notes_2000" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="行项目文本" TextEn="Item Text"/>
+                <FieldLabel Key="Medium" Text="行项目文本" TextEn="Item Text"/>
+                <FieldLabel Key="Long" Text="行项目文本" TextEn="Item Text"/>
+                <FieldLabel Key="Header" Text="行项目文本" TextEn="Item Text"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DocumentNumber" Caption="单据编号" DomainKey="DocumentNumber_50" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="单据编号" TextEn="Document Number"/>
+                <FieldLabel Key="Medium" Text="单据编号" TextEn="Document Number"/>
+                <FieldLabel Key="Long" Text="单据编号" TextEn="Document Number"/>
+                <FieldLabel Key="Header" Text="单据编号" TextEn="Document Number"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DocumentNumber_100" Caption="单据编号(长度100)" DomainKey="DocumentNumber_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="物料凭证" TextEn="Material Document"/>
+                <FieldLabel Key="Medium" Text="物料凭证" TextEn="Material Document"/>
+                <FieldLabel Key="Long" Text="物料凭证" TextEn="Material Document"/>
+                <FieldLabel Key="Header" Text="物料凭证" TextEn="Material Document"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DocumentDate" Caption="凭证日期" DomainKey="DocumentDate" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="凭证日期" TextEn="Document Date"/>
+                <FieldLabel Key="Medium" Text="凭证日期" TextEn="Document Date"/>
+                <FieldLabel Key="Long" Text="凭证日期" TextEn="Document Date"/>
+                <FieldLabel Key="Header" Text="凭证日期" TextEn="Document Date"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PostingDate" Caption="过账日期" DomainKey="PostingDate" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="记账日期" TextEn="Posting Date"/>
+                <FieldLabel Key="Medium" Length="15" Text="过账日期" TextEn="Posting Date"/>
+                <FieldLabel Key="Long" Length="20" Text="过账日期" TextEn="Posting Date"/>
+                <FieldLabel Key="Header" Length="10" Text="过账日期" TextEn="Posting Date"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="COPAPostingDate" Caption="过帐日期" DomainKey="PostingDate" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="记账日期" TextEn="Posting Date"/>
+                <FieldLabel Key="Medium" Length="15" Text="记账日期" TextEn="Posting Date"/>
+                <FieldLabel Key="Long" Length="20" Text="记账日期" TextEn="Posting Date"/>
+                <FieldLabel Key="Header" Length="10" Text="记账日期" TextEn="Posting Date"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CostDealPostingDate" Caption="过账日期" DomainKey="PostingDate" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="过账日期" TextEn="Posting Date"/>
+                <FieldLabel Key="Medium" Length="15" Text="过账日期" TextEn="Posting Date"/>
+                <FieldLabel Key="Long" Length="20" Text="过账日期" TextEn="Posting Date"/>
+                <FieldLabel Key="Header" Length="10" Text="过账日期" TextEn="Posting Date"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="AutoPayPostingDate" Caption="程序将运行的日期" DomainKey="PostingDate" DataDiffLog="true"/>
+        <DataElement Key="PaymentPostingDate" Caption="付款凭证的记帐日期" DomainKey="PostingDate" DataDiffLog="true"/>
+        <DataElement Key="ServiceConfirmPostingDate" Caption="凭证中的过账日期" DomainKey="PostingDate" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="过账日期" TextEn="Posting Date"/>
+                <FieldLabel Key="Medium" Length="15" Text="确认日期" TextEn="Confirmation Date"/>
+                <FieldLabel Key="Long" Length="20" Text="过账日期" TextEn="Posting Date"/>
+                <FieldLabel Key="Header" Length="10" Text="过账日期" TextEn="Posting Date"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FiscalYear" Caption="会计期年度" DomainKey="FiscalYear" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="会计年度" TextEn="Fiscal Year"/>
+                <FieldLabel Key="Medium" Length="15" Text="会计年度" TextEn="Fiscal Year"/>
+                <FieldLabel Key="Long" Length="20" Text="会计年度" TextEn="Fiscal Year"/>
+                <FieldLabel Key="Header" Length="4" Text="年度" TextEn="Year"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PostingYear" Caption="会计期年度" DomainKey="FiscalYear" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="会计年度" TextEn="Fiscal Year"/>
+                <FieldLabel Key="Medium" Text="会计年度" TextEn="Fiscal Year"/>
+                <FieldLabel Key="Long" Length="20" Text="会计年度" TextEn="Fiscal Year"/>
+                <FieldLabel Key="Header" Length="4" Text="会计年度" TextEn="Fiscal Year"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FiscalPeriod" Caption="会计期月份" DomainKey="FiscalPeriod" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="期间" TextEn="Period"/>
+                <FieldLabel Key="Medium" Length="15" Text="会计期间" TextEn="Fiscal Period"/>
+                <FieldLabel Key="Long" Length="20" Text="过账期间" TextEn="Posting Period"/>
+                <FieldLabel Key="Header" Text="过账期间" TextEn="Posting Period"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CuurentFiscalPeriod" Caption="当前期间 (记账期间)" DomainKey="FiscalPeriod" DataDiffLog="true"/>
+        <DataElement Key="PostingPeriodInSettle" Caption="记帐期间" DomainKey="FiscalPeriod" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="过账期间" TextEn="Posting Period"/>
+                <FieldLabel Key="Medium" Length="15" Text="过账期间" TextEn="Posting Period"/>
+                <FieldLabel Key="Long" Length="20" Text="过账期间" TextEn="Posting Period"/>
+                <FieldLabel Key="Header" Length="3" Text="过账期间" TextEn="Posting Period"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="COPAFiscalPeriod" Caption="会计期月份" DomainKey="FiscalPeriod" DataDiffLog="true"/>
+        <DataElement Key="CostPeriod" Caption="成本期间" DomainKey="FiscalPeriod" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="期间" TextEn="Period"/>
+                <FieldLabel Key="Medium" Length="15" Text="会计期间" TextEn="Fiscal Period"/>
+                <FieldLabel Key="Long" Length="20" Text="会计期间" TextEn="Fiscal Period"/>
+                <FieldLabel Key="Header" Length="3" Text="会计期间" TextEn="Fiscal Period"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DepCalPeriod" Caption="折旧计算期" DomainKey="FiscalPeriod" DataDiffLog="true"/>
+        <DataElement Key="FiscalYearPeriod" Caption="会计期年月" DomainKey="FiscalYearPeriod" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="期间" TextEn="Period"/>
+                <FieldLabel Key="Medium" Length="20" Text="会计期" TextEn="Accounting Period"/>
+                <FieldLabel Key="Long" Length="20" Text="期间/年度" TextEn="Period/Year"/>
+                <FieldLabel Key="Header" Length="7" Text="期间" TextEn="Period"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="COPAFiscalYearPeriod" Caption="会计期年月" DomainKey="FiscalYearPeriod" DataDiffLog="true"/>
+        <DataElement Key="SequenceValue" Caption="流水号" DomainKey="SequenceValue" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="流水号" TextEn="Serial Number"/>
+                <FieldLabel Key="Medium" Text="流水号" TextEn="Serial Number"/>
+                <FieldLabel Key="Long" Text="流水号" TextEn="Serial Number"/>
+                <FieldLabel Key="Header" Text="流水号" TextEn="Serial Number"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ResetPattern" Caption="流水号模式" DomainKey="ResetPattern_50" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="流水号模式" TextEn="Serial Number Mode"/>
+                <FieldLabel Key="Medium" Text="流水号模式" TextEn="Serial Number Mode"/>
+                <FieldLabel Key="Long" Text="流水号模式" TextEn="Serial Number Mode"/>
+                <FieldLabel Key="Header" Text="流水号模式" TextEn="Serial Number Mode"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="UseCode" Caption="UseCode" DomainKey="UseCode_30" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Medium" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Long" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Header" Text="代码" TextEn="Code"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="UseCode_100" Caption="UseCode(100),BK_FavoriteVariant中使用" DomainKey="UseCode_100" DataDiffLog="true"/>
+        <DataElement Key="ExternalSystemID" Caption="外部系统标识" DomainKey="ExternalSystem" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="外部系统标识" TextEn="External System Identifier"/>
+                <FieldLabel Key="Medium" Text="外部系统标识" TextEn="External System Identifier"/>
+                <FieldLabel Key="Long" Text="外部系统标识" TextEn="External System Identifier"/>
+                <FieldLabel Key="Header" Text="外部系统标识" TextEn="External System Identifier"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ExternalSystemPrimaryKey" Caption="外部系统关键字" DomainKey="ExternalSystemPrimaryKey" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="外部系统关键字" TextEn="External System Key"/>
+                <FieldLabel Key="Medium" Text="外部系统关键字" TextEn="External System Key"/>
+                <FieldLabel Key="Long" Text="外部系统关键字" TextEn="External System Key"/>
+                <FieldLabel Key="Header" Text="外部系统关键字" TextEn="External System Key"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <!-- 涉及到表内数据升级的数据元素 begin -->
+        <DataElement Key="FormKey_ComboBox" Caption="单据Key(下拉框)" DomainKey="FormKey" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="表单" TextEn="Form"/>
+                <FieldLabel Key="Medium" Text="表单" TextEn="Form"/>
+                <FieldLabel Key="Long" Text="表单" TextEn="Form"/>
+                <FieldLabel Key="Header" Text="表单" TextEn="Form"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FormKey_100_ComboBox" Caption="单据Key(下拉框)(长度100)" DomainKey="FormKey_100_Combox" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="表单" TextEn="Form"/>
+                <FieldLabel Key="Medium" Text="表单" TextEn="Form"/>
+                <FieldLabel Key="Long" Text="表单" TextEn="Form"/>
+                <FieldLabel Key="Header" Text="表单" TextEn="Form"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FieldKey_ComboBox" Caption="字段Key(下拉框)" DomainKey="FieldKey" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="字段" TextEn="Field"/>
+                <FieldLabel Key="Medium" Length="15" Text="字段" TextEn="Field"/>
+                <FieldLabel Key="Long" Length="18" Text="字段" TextEn="Field"/>
+                <FieldLabel Key="Header" Length="10" Text="字段名" TextEn="Field Name"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="COPAQuantityFieldKey" Caption="在SD里定义的数量字段的字段名" DomainKey="FieldKey" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="值字段" TextEn="Value Field"/>
+                <FieldLabel Key="Medium" Length="15" Text="值字段" TextEn="Value Field"/>
+                <FieldLabel Key="Long" Length="20" Text="值字段" TextEn="Value Field"/>
+                <FieldLabel Key="Header" Length="10" Text="值字段" TextEn="Value Field"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="COPA4ActualCostsValueField" Caption="实际成本的 CO-PA 值字段" DomainKey="FieldKey" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="实际成本值字段" TextEn="Actual Cost Value Field"/>
+                <FieldLabel Key="Medium" Length="15" Text="实际成本值字段" TextEn="Actual Cost Value Field"/>
+                <FieldLabel Key="Long" Length="22" Text="实际成本值字段" TextEn="Actual Cost Value Field"/>
+                <FieldLabel Key="Header" Length="22" Text="实际成本值字段" TextEn="Actual Cost Value Field"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="COPAValueFieldKey" Caption="CO-PA值字段" DomainKey="FieldKey" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="值字段" TextEn="Value Field"/>
+                <FieldLabel Key="Medium" Length="15" Text="值字段" TextEn="Value Field"/>
+                <FieldLabel Key="Long" Length="20" Text="值字段" TextEn="Value Field"/>
+                <FieldLabel Key="Header" Length="8" Text="值字段" TextEn="Value Field"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="QuantityInSDFieldKey" Caption="在销售&amp;分配中定义的数量字段的字段名" DomainKey="FieldKey" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="销售模块数量字段" TextEn="Sales Module Quantity Field"/>
+                <FieldLabel Key="Medium" Text="销售模块数量字段" TextEn="Sales Module Quantity Field"/>
+                <FieldLabel Key="Long" Text="销售模块数量字段" TextEn="Sales Module Quantity Field"/>
+                <FieldLabel Key="Header" Text="销售模块数量字段" TextEn="Sales Module Quantity Field"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FieldStatusGroupFieldKey_ComboBox" Caption="科目/记帐关键字段选择" DomainKey="FieldKey" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="字段" TextEn="Field"/>
+                <FieldLabel Key="Medium" Text="字段" TextEn="Field"/>
+                <FieldLabel Key="Long" Text="字段" TextEn="Field"/>
+                <FieldLabel Key="Header" Text="字段" TextEn="Field"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="AssignmentRuleFieldKey_ComboBox" Caption="被复制的字符数 (字段 1)" DomainKey="FieldKey" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="字段" TextEn="Field"/>
+                <FieldLabel Key="Medium" Text="字段" TextEn="Field"/>
+                <FieldLabel Key="Long" Text="字段" TextEn="Field"/>
+                <FieldLabel Key="Header" Text="字段" TextEn="Field"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="GroupRuleFieldKey_ComboBox" Caption="表 BSID 或 BSIK 中的字段名" DomainKey="FieldKey" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="字段1" TextEn="Field 1"/>
+                <FieldLabel Key="Medium" Length="15" Text="字段1" TextEn="Field 1"/>
+                <FieldLabel Key="Long" Length="20" Text="字段1" TextEn="Field 1"/>
+                <FieldLabel Key="Header" Length="30" Text="字段1" TextEn="Field 1"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FieldKey1_ComboBox" Caption="标准 1" DomainKey="FieldKey" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="6" Text="标准1" TextEn="Standard 1"/>
+                <FieldLabel Key="Medium" Length="15" Text="标准1" TextEn="Standard 1"/>
+                <FieldLabel Key="Long" Length="20" Text="标准1" TextEn="Standard 1"/>
+                <FieldLabel Key="Header" Length="5" Text="标准1" TextEn="Standard 1"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FieldKey2_ComboBox" Caption="标准 2" DomainKey="FieldKey" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="6" Text="标准2" TextEn="Standard 2"/>
+                <FieldLabel Key="Medium" Length="15" Text="标准2" TextEn="Standard 2"/>
+                <FieldLabel Key="Long" Length="20" Text="标准2" TextEn="Standard 2"/>
+                <FieldLabel Key="Header" Length="5" Text="标准2" TextEn="Standard 2"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FieldKey3_ComboBox" Caption="标准 3" DomainKey="FieldKey" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="6" Text="标准3" TextEn="Standard 3"/>
+                <FieldLabel Key="Medium" Length="15" Text="标准3" TextEn="Standard 3"/>
+                <FieldLabel Key="Long" Length="20" Text="标准3" TextEn="Standard 3"/>
+                <FieldLabel Key="Header" Length="5" Text="标准3" TextEn="Standard 3"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FieldKey4_ComboBox" Caption="标准 4" DomainKey="FieldKey" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="6" Text="标准4" TextEn="Standard 4"/>
+                <FieldLabel Key="Medium" Length="15" Text="标准4" TextEn="Standard 4"/>
+                <FieldLabel Key="Long" Length="20" Text="标准4" TextEn="Standard 4"/>
+                <FieldLabel Key="Header" Length="5" Text="标准4" TextEn="Standard 4"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FieldKey5_ComboBox" Caption="标准5" DomainKey="FieldKey" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="6" Text="标准5" TextEn="Standard 5"/>
+                <FieldLabel Key="Medium" Length="15" Text="标准5" TextEn="Standard 5"/>
+                <FieldLabel Key="Long" Length="20" Text="标准5" TextEn="Standard 5"/>
+                <FieldLabel Key="Header" Length="5" Text="标准5" TextEn="Standard 5"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="TableKey_ComboBox" Caption="TableKey(下拉框)" DomainKey="TableKey" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="单据表" TextEn="Document Table"/>
+                <FieldLabel Key="Medium" Text="单据表" TextEn="Document Table"/>
+                <FieldLabel Key="Long" Text="单据表" TextEn="Document Table"/>
+                <FieldLabel Key="Header" Text="单据表" TextEn="Document Table"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="TableKey_50_ComboBox" Caption="TableKey_50(下拉框)" DomainKey="TableKey_50_ComboBox" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="表名" TextEn="Table Name"/>
+                <FieldLabel Key="Medium" Text="表名" TextEn="Table Name"/>
+                <FieldLabel Key="Long" Text="表名" TextEn="Table Name"/>
+                <FieldLabel Key="Header" Text="表名" TextEn="Table Name"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ColumnKey_ComboBox" Caption="ColumnKey(下拉框)" DomainKey="ColumnKey" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="ERP列" TextEn="ERP Column"/>
+                <FieldLabel Key="Medium" Text="ERP列" TextEn="ERP Column"/>
+                <FieldLabel Key="Long" Text="ERP列" TextEn="ERP Column"/>
+                <FieldLabel Key="Header" Text="ERP列" TextEn="ERP Column"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PartnerFieldKey" Caption="为凭证分离的科目分配对象的货币字段" DomainKey="ColumnKey" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="伙伴字段" TextEn="Partner Field"/>
+                <FieldLabel Key="Medium" Text="伙伴字段" TextEn="Partner Field"/>
+                <FieldLabel Key="Long" Text="伙伴字段" TextEn="Partner Field"/>
+                <FieldLabel Key="Header" Text="伙伴字段" TextEn="Partner Field"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ItemKey_ComboBox" Caption="ItemKey(下拉框)" DomainKey="ItemKey" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="字典标识" TextEn="Dictionary Identifier"/>
+                <FieldLabel Key="Medium" Text="字典标识" TextEn="Dictionary Identifier"/>
+                <FieldLabel Key="Long" Text="字典标识" TextEn="Dictionary Identifier"/>
+                <FieldLabel Key="Header" Text="字典标识" TextEn="Dictionary Identifier"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DataObjectKey_ComboBox" Caption="DataObjectKey(下拉框)" DomainKey="DataObjectKey" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="数据对象" TextEn="Data Object"/>
+                <FieldLabel Key="Medium" Text="数据对象" TextEn="Data Object"/>
+                <FieldLabel Key="Long" Text="数据对象" TextEn="Data Object"/>
+                <FieldLabel Key="Header" Text="数据对象" TextEn="Data Object"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SrcFormKey" Caption="来源单据" DomainKey="SrcFormKey_50" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="来源单据Key" TextEn="Source Document Key"/>
+                <FieldLabel Key="Medium" Text="来源单据Key" TextEn="Source Document Key"/>
+                <FieldLabel Key="Long" Text="来源单据Key" TextEn="Source Document Key"/>
+                <FieldLabel Key="Header" Text="来源单据Key" TextEn="Source Document Key"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SystemVestKey" Caption="单据Key" DomainKey="SystemVestKey_50" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="单据Key" TextEn="Document Key"/>
+                <FieldLabel Key="Medium" Text="单据Key" TextEn="Document Key"/>
+                <FieldLabel Key="Long" Text="单据Key" TextEn="Document Key"/>
+                <FieldLabel Key="Header" Text="单据Key" TextEn="Document Key"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FormKey" Caption="单据Key" DomainKey="FormKey_50" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="表单Key" TextEn="Form Key"/>
+                <FieldLabel Key="Medium" Text="表单Key" TextEn="Form Key"/>
+                <FieldLabel Key="Long" Text="表单Key" TextEn="Form Key"/>
+                <FieldLabel Key="Header" Text="表单Key" TextEn="Form Key"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FieldKey" Caption="字段Key" DomainKey="FieldKey_50" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="字段" TextEn="Field"/>
+                <FieldLabel Key="Medium" Length="20" Text="业务单据条件值字段" TextEn="Business Document Condition Value Field"/>
+                <FieldLabel Key="Long" Length="30" Text="业务单据条件值字段" TextEn="Business Document Condition Value Field"/>
+                <FieldLabel Key="Header" Length="30" Text="字段" TextEn="Field"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FieldKey1" Caption="字段名" DomainKey="FieldKey_50" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="字段" TextEn="Field"/>
+                <FieldLabel Key="Medium" Text="字段" TextEn="Field"/>
+                <FieldLabel Key="Long" Text="字段" TextEn="Field"/>
+                <FieldLabel Key="Header" Text="字段" TextEn="Field"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DataObjectKey" Caption="数据对象Key" DomainKey="DataObjectKey_50">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="数据对象" TextEn="Data Object"/>
+                <FieldLabel Key="Medium" Text="数据对象" TextEn="Data Object"/>
+                <FieldLabel Key="Long" Text="数据对象" TextEn="Data Object"/>
+                <FieldLabel Key="Header" Text="数据对象" TextEn="Data Object"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ItemKey" Caption="字典Key" DomainKey="ItemKey_50" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="字典Key" TextEn="Dictionary Key"/>
+                <FieldLabel Key="Medium" Text="字典Key" TextEn="Dictionary Key"/>
+                <FieldLabel Key="Long" Text="字典Key" TextEn="Dictionary Key"/>
+                <FieldLabel Key="Header" Text="字典Key" TextEn="Dictionary Key"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="TableKey" Caption="TableKey(持久化)" DomainKey="TableKey_30" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="链接表格" TextEn="Link Table"/>
+                <FieldLabel Key="Medium" Text="链接表格" TextEn="Link Table"/>
+                <FieldLabel Key="Long" Text="链接表格" TextEn="Link Table"/>
+                <FieldLabel Key="Header" Text="链接表格" TextEn="Link Table"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="TableKey_50" Caption="TableKey(非持久化)" DomainKey="TableKey_50" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="绑定表" TextEn="Bind Table"/>
+                <FieldLabel Key="Medium" Text="绑定表" TextEn="Bind Table"/>
+                <FieldLabel Key="Long" Text="绑定表" TextEn="Bind Table"/>
+                <FieldLabel Key="Header" Text="绑定表" TextEn="Bind Table"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ColumnKey" Caption="数据列Key" DomainKey="ColumnKey_30" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="关系字段" TextEn="Relation Field"/>
+                <FieldLabel Key="Medium" Text="关系字段" TextEn="Relation Field"/>
+                <FieldLabel Key="Long" Text="关系字段" TextEn="Relation Field"/>
+                <FieldLabel Key="Header" Text="关系字段" TextEn="Relation Field"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="GridKey" Caption="表格Key" DomainKey="GridKey_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="表格标识" TextEn="Grid Identifier"/>
+                <FieldLabel Key="Medium" Text="表格标识" TextEn="Grid Identifier"/>
+                <FieldLabel Key="Long" Text="表格标识" TextEn="Grid Identifier"/>
+                <FieldLabel Key="Header" Text="表格标识" TextEn="Grid Identifier"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="TabKey" Caption="组件Tab的Key" DomainKey="TabKey_100"/>
+        <DataElement Key="PanelKey" Caption="组件(Grid、Tab之外)的Key" DomainKey="PanelKey_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="面板标识" TextEn="Panel ID"/>
+                <FieldLabel Key="Medium" Text="面板标识" TextEn="Panel ID"/>
+                <FieldLabel Key="Long" Text="面板标识" TextEn="Panel ID"/>
+                <FieldLabel Key="Header" Text="面板标识" TextEn="Panel ID"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Formula_2000" Caption="公式_长度2000" DomainKey="Formula_2000" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="可见性" TextEn="Visibility"/>
+                <FieldLabel Key="Medium" Text="可见性" TextEn="Visibility"/>
+                <FieldLabel Key="Long" Text="可见性" TextEn="Visibility"/>
+                <FieldLabel Key="Header" Text="可见性" TextEn="Visibility"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Formula_50" Caption="公式_长度50" DomainKey="Formula_50"/>
+        <DataElement Key="Formula_500" Caption="公式_长度500" DomainKey="Formula_500" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="单据字段" TextEn="Document Field"/>
+                <FieldLabel Key="Medium" Text="单据字段" TextEn="Document Field"/>
+                <FieldLabel Key="Long" Text="单据字段" TextEn="Document Field"/>
+                <FieldLabel Key="Header" Text="单据字段" TextEn="Document Field"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Formula" Caption="公式_长度255" DomainKey="Formula_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="公式" TextEn="Formula"/>
+                <FieldLabel Key="Medium" Length="15" Text="业务数量计算公式" TextEn="Business Quantity Calculation Formula"/>
+                <FieldLabel Key="Long" Length="20" Text="业务数量计算公式" TextEn="Business Quantity Calculation Formula"/>
+                <FieldLabel Key="Header" Length="55" Text="业务数量计算公式" TextEn="Business Quantity Calculation Formula"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="AP_Formula" Caption="公式" DomainKey="Formula_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="公式" TextEn="Formula"/>
+                <FieldLabel Key="Medium" Length="15" Text="公式" TextEn="Formula"/>
+                <FieldLabel Key="Long" Length="20" Text="公式" TextEn="Formula"/>
+                <FieldLabel Key="Header" Length="55" Text="公式" TextEn="Formula"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Formula4ScaleBaseValue" Caption="基本价值等级公式" DomainKey="Formula_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="等级公式" TextEn="Grade Formula"/>
+                <FieldLabel Key="Medium" Length="15" Text="等级公式" TextEn="Grade Formula"/>
+                <FieldLabel Key="Long" Length="20" Text="等级公式" TextEn="Grade Formula"/>
+                <FieldLabel Key="Header" Length="6" Text="等级公式" TextEn="Grade Formula"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="QMFormula" Caption="公式字段" DomainKey="Formula_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="公式" TextEn="Formula"/>
+                <FieldLabel Key="Medium" Length="15" Text="公式" TextEn="Formula"/>
+                <FieldLabel Key="Long" Length="20" Text="公式" TextEn="Formula"/>
+                <FieldLabel Key="Header" Length="55" Text="公式" TextEn="Formula"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RefTableKey" Caption="参考TableKey" DomainKey="TableKey_50" DataDiffLog="true"/>
+        <DataElement Key="PanelAndFieldKey" Caption="FieldKey与PanelKey" DomainKey="PanelKey_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="字段标识" TextEn="Field ID"/>
+                <FieldLabel Key="Medium" Text="字段标识" TextEn="Field ID"/>
+                <FieldLabel Key="Long" Text="字段标识" TextEn="Field ID"/>
+                <FieldLabel Key="Header" Text="字段标识" TextEn="Field ID"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <!-- 涉及到表内数据升级的数据元素 end -->
+    </DataElementCollection>
+</DataElementDef>

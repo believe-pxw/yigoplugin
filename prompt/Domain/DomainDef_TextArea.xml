@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DomainDef>
+        <DomainCollection>
+            <Domain Key="TextArea_Text" Caption="TextArea_文本" RefControlType="TextArea" DataType="Text"/>
+            <Domain Key="TextArea_Varchar_100" Caption="TextArea_字符串_长度100" RefControlType="TextArea" DataType="Varchar" Length="100"/>
+            <Domain Key="TextArea_Varchar_255" Caption="TextArea_字符串_长度255" RefControlType="TextArea" DataType="Varchar"/>
+            <Domain Key="TextArea_Varchar_1000" Caption="TextArea_字符串_长度1000" RefControlType="TextArea" DataType="Varchar" Length="1000"/>
+            <Domain Key="TextArea_Varchar_2000" Caption="TextArea_字符串_长度2000" RefControlType="TextArea" DataType="Varchar" Length="2000"/>
+            <Domain Key="TextArea_Varchar_4000" Caption="TextArea_字符串_长度4000" RefControlType="TextArea" DataType="Varchar" Length="4000"/>
+        </DomainCollection>
+</DomainDef>

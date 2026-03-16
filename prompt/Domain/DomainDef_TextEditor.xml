@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DomainDef>
+        <DomainCollection>
+            <Domain Key="IPv4" Caption="IPv4" RefControlType="TextEditor" DataType="Varchar" Length="15"/>
+            <Domain Key="IPv6" Caption="IPv6" RefControlType="TextEditor" DataType="Varchar" Length="40"/>
+            <Domain Key="MD5" Caption="MD5" RefControlType="TextEditor" DataType="Varchar" Length="32"/>
+            <Domain Key="UUID" Caption="UUID" RefControlType="TextEditor" DataType="Varchar" Length="32"/>
+            <Domain Key="API" Caption="API" RefControlType="TextEditor" DataType="Varchar" Length="200"/>
+            <Domain Key="ClientID_255" Caption="客户端标识_长度255" RefControlType="TextEditor" DataType="Varchar"/>
+            <Domain Key="Numeric_String" Caption="存储数字的字符串(长度22)" RefControlType="TextEditor" DataType="Varchar" Length="22"/>
+            <Domain Key="Text" Caption="Text类型" RefControlType="TextEditor" DataType="Text"/>
+            <Domain Key="Varchar_2" Caption="字符串_长度2" RefControlType="TextEditor" DataType="Varchar" Length="2"/>
+            <Domain Key="Varchar_3" Caption="字符串_长度3" RefControlType="TextEditor" DataType="Varchar" Length="3"/>
+            <Domain Key="Varchar_4" Caption="字符串_长度4" RefControlType="TextEditor" DataType="Varchar" Length="4"/>
+            <Domain Key="Varchar_5" Caption="字符串_长度5" RefControlType="TextEditor" DataType="Varchar" Length="5"/>
+            <Domain Key="Varchar_6" Caption="字符串_长度6" RefControlType="TextEditor" DataType="Varchar" Length="6"/>
+            <Domain Key="Varchar_7" Caption="字符串_长度7" RefControlType="TextEditor" DataType="Varchar" Length="7"/>
+            <Domain Key="Varchar_10" Caption="字符串_长度10" RefControlType="TextEditor" DataType="Varchar" Length="10"/>
+            <Domain Key="Varchar_16" Caption="字符串_长度16" RefControlType="TextEditor" DataType="Varchar" Length="16"/>
+            <Domain Key="Varchar_18" Caption="字符串_长度16" RefControlType="TextEditor" DataType="Varchar" Length="18"/>
+            <Domain Key="Varchar_20" Caption="字符串_长度20" RefControlType="TextEditor" DataType="Varchar" Length="20"/>
+            <Domain Key="Varchar_30" Caption="字符串_长度30" RefControlType="TextEditor" DataType="Varchar" Length="30"/>
+            <Domain Key="Varchar_40" Caption="字符串_长度40" RefControlType="TextEditor" DataType="Varchar" Length="40"/>
+            <Domain Key="Varchar_50" Caption="字符串_长度50" RefControlType="TextEditor" DataType="Varchar" Length="50"/>
+            <Domain Key="Varchar_60" Caption="字符串_长度60" RefControlType="TextEditor" DataType="Varchar" Length="60"/>
+            <Domain Key="Varchar_72" Caption="字符串_长度72" RefControlType="TextEditor" DataType="Varchar" Length="72"/>
+            <Domain Key="Varchar_100" Caption="字符串_长度100" RefControlType="TextEditor" DataType="Varchar" Length="100"/>
+            <Domain Key="Varchar_200" Caption="字符串_长度200" RefControlType="TextEditor" DataType="Varchar" Length="200"/>
+            <Domain Key="Varchar_255" Caption="字符串_长度255" RefControlType="TextEditor" DataType="Varchar"/>
+            <Domain Key="Varchar_500" Caption="字符串_长度500" RefControlType="TextEditor" DataType="Varchar" Length="500"/>
+            <Domain Key="Varchar_999" Caption="字符串_长度999" RefControlType="TextEditor" DataType="Varchar" Length="999"/>
+            <Domain Key="Varchar_1000" Caption="字符串_长度1000" RefControlType="TextEditor" DataType="Varchar" Length="1000"/>
+            <Domain Key="Varchar_2000" Caption="字符串_长度2000" RefControlType="TextEditor" DataType="Varchar" Length="2000"/>
+            <Domain Key="Varchar_4000" Caption="字符串_长度4000" RefControlType="TextEditor" DataType="Varchar" Length="4000"/>
+        </DomainCollection>
+</DomainDef>

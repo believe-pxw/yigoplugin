@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DomainDef>
+        <DomainCollection>
+            <Domain Key="DateLong" Caption="UTC日期" RefControlType="UTCDatePicker" DataType="Long"/>
+        </DomainCollection>
+</DomainDef>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DataElementDef>
+        <DataElementCollection>
+            <DataElement Key="DynAnalysisKeyValueID_Multi" Caption="动态分析点值（多选）" DomainKey="DynamicDict_Multi_2000" DataDiffLog="true"/>
+            <DataElement Key="DynValueID_Multi" Caption="动态查询条件值（多选）" DomainKey="DynamicDict_Multi_2000"/>
+        </DataElementCollection>
+</DataElementDef>

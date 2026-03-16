@@ -1303,46 +1303,60 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         panel.addMouseListener(object : MouseAdapter() {
             override fun mousePressed(e: MouseEvent) { handlePopup(e) }
             override fun mouseReleased(e: MouseEvent) { handlePopup(e) }
-            
+
             private fun handlePopup(e: MouseEvent) {
                 if (e.isPopupTrigger) {
                     val menu = JPopupMenu()
-                    
-                    if (tag.name == "GridLayoutPanel" || tag.name == "Grid") {
-                        val itemRow = JMenuItem("Go to RowDefCollection") // No icon for now
+
+                    if (tag.name == "GridLayoutPanel") {
+                        val addControlItem = JMenuItem("Add Control...")
+                        addControlItem.addActionListener {
+                            YigoControlBuilder(project).showAddControlDialog(addControlItem,tag, e.x, e.y)
+                        }
+                        menu.add(addControlItem)
+                        menu.addSeparator()
+
+                        val itemRow = JMenuItem("Go to RowDefCollection")
                         itemRow.addActionListener {
                             findChildTag(tag, "RowDefCollection")?.let { navigateToTag(it) }
                         }
                         menu.add(itemRow)
-                        
+
                         val itemCol = JMenuItem("Go to ColumnDefCollection")
                         itemCol.addActionListener {
                              findChildTag(tag, "ColumnDefCollection")?.let { navigateToTag(it) }
                         }
                         menu.add(itemCol)
                         menu.addSeparator()
+                    } else if (tag.name == "Grid") {
+                        val addColumnItem = JMenuItem("Add Column...")
+                        addColumnItem.addActionListener {
+                            YigoControlBuilder(project).showAddGridColumnDialog(addColumnItem, tag)
+                        }
+                        menu.add(addColumnItem)
+                        menu.addSeparator()
                     }
-                    
+
                     val itemSearch = JMenuItem("Search in this container...")
                     itemSearch.addActionListener {
                         ScopeSearchDialog(tag).showDialog()
                     }
                     menu.add(itemSearch)
-                    
+
                     menu.addSeparator()
                     val batchDeleteItem = JMenuItem("Batch Delete...")
                     batchDeleteItem.addActionListener {
                         showBatchDeleteDialog(tag)
                     }
                     menu.add(batchDeleteItem)
-                    
+
                     val deleteItem = JMenuItem("Delete")
                     deleteItem.icon = com.intellij.icons.AllIcons.Actions.GC
                     deleteItem.addActionListener {
                         deleteTagsWithCascade(listOf(tag))
                     }
                     menu.add(deleteItem)
-                    
+
                     menu.show(e.component, e.x, e.y)
                 }
             }
@@ -2028,6 +2042,7 @@ class YigoLayoutPanel(private val project: Project, private val toolWindow: Tool
         }
         return null
     }
+
 }
 
     

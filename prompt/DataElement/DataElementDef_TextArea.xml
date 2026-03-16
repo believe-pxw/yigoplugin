@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DataElementDef>
+    <DataElementCollection>
+        <DataElement Key="TextArea_Text" Caption="TextArea_Text" DomainKey="TextArea_Text" DataDiffLog="true"/>
+        <DataElement Key="TextArea_Varchar_255" Caption="TextArea_Varchar_255" DomainKey="TextArea_Varchar_255" DataDiffLog="true"/>
+        <DataElement Key="TextArea_Varchar_2000" Caption="TextArea_Varchar_2000" DomainKey="TextArea_Varchar_2000"/>
+        <DataElement Key="TextArea_Varchar_4000" Caption="TextArea_Varchar_4000" DomainKey="TextArea_Varchar_4000"/>
+        <DataElement Key="CanPopupDict" Caption="支持追溯的字典" DomainKey="TextArea_Text">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="支持追溯的字典" TextEn="Traceability Dictionary"/>
+                <FieldLabel Key="Medium" Text="支持追溯的字典" TextEn="Traceability Dictionary"/>
+                <FieldLabel Key="Long" Text="支持追溯的字典" TextEn="Traceability Dictionary"/>
+                <FieldLabel Key="Header" Text="支持追溯的字典" TextEn="Traceability Dictionary"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CellValue" Caption="单元格值" DomainKey="TextArea_Text">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="单元格值" TextEn="Cell Value"/>
+                <FieldLabel Key="Medium" Text="单元格值" TextEn="Cell Value"/>
+                <FieldLabel Key="Long" Text="单元格值" TextEn="Cell Value"/>
+                <FieldLabel Key="Header" Text="单元格值" TextEn="Cell Value"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CellValueTxt" Caption="单元格值" DomainKey="TextArea_Text">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="单元格值" TextEn="Cell Value"/>
+                <FieldLabel Key="Medium" Text="单元格值" TextEn="Cell Value"/>
+                <FieldLabel Key="Long" Text="单元格值" TextEn="Cell Value"/>
+                <FieldLabel Key="Header" Text="单元格值" TextEn="Cell Value"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckContent" Caption="检查内容" DomainKey="TextArea_Text" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="检查内容" TextEn="Check Content"/>
+                <FieldLabel Key="Medium" Text="检查内容" TextEn="Check Content"/>
+                <FieldLabel Key="Long" Text="检查内容" TextEn="Check Content"/>
+                <FieldLabel Key="Header" Text="检查内容" TextEn="Check Content"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ConditionContent" Caption="先决条件" DomainKey="TextArea_Text" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="先决条件" TextEn="Precondition"/>
+                <FieldLabel Key="Medium" Text="先决条件" TextEn="Precondition"/>
+                <FieldLabel Key="Long" Text="先决条件" TextEn="Precondition"/>
+                <FieldLabel Key="Header" Text="先决条件" TextEn="Precondition"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Define" Caption="定义" DomainKey="TextArea_Text" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="定义" TextEn="Definition"/>
+                <FieldLabel Key="Medium" Text="定义" TextEn="Definition"/>
+                <FieldLabel Key="Long" Text="定义" TextEn="Definition"/>
+                <FieldLabel Key="Header" Text="定义" TextEn="Definition"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DerivationRule" Caption="维护规则" DomainKey="TextArea_Text" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维护规则" TextEn="Maintenance Rule"/>
+                <FieldLabel Key="Medium" Text="维护规则" TextEn="Maintenance Rule"/>
+                <FieldLabel Key="Long" Text="维护规则" TextEn="Maintenance Rule"/>
+                <FieldLabel Key="Header" Text="维护规则" TextEn="Maintenance Rule"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ExecutionContent" Caption="执行内容" DomainKey="TextArea_Text" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="执行内容" TextEn="Execution Content"/>
+                <FieldLabel Key="Medium" Text="执行内容" TextEn="Execution Content"/>
+                <FieldLabel Key="Long" Text="执行内容" TextEn="Execution Content"/>
+                <FieldLabel Key="Header" Text="执行内容" TextEn="Execution Content"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FieldAdvancedQueryJson" Caption="FieldAdvancedQueryJson内容" DomainKey="TextArea_Text">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="FieldAdvancedQueryJson" TextEn="FieldAdvancedQueryJson"/>
+                <FieldLabel Key="Medium" Text="FieldAdvancedQueryJson" TextEn="FieldAdvancedQueryJson"/>
+                <FieldLabel Key="Long" Text="FieldAdvancedQueryJson" TextEn="FieldAdvancedQueryJson"/>
+                <FieldLabel Key="Header" Text="FieldAdvancedQueryJson" TextEn="FieldAdvancedQueryJson"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FieldValueTxt" Caption="字段值" DomainKey="TextArea_Text">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="字段值" TextEn="Field Value"/>
+                <FieldLabel Key="Medium" Text="字段值" TextEn="Field Value"/>
+                <FieldLabel Key="Long" Text="字段值" TextEn="Field Value"/>
+                <FieldLabel Key="Header" Text="字段值" TextEn="Field Value"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="HtmlData" Caption="标题" DomainKey="TextArea_Text">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="版本信息" TextEn="Version Information"/>
+                <FieldLabel Key="Medium" Text="版本信息" TextEn="Version Information"/>
+                <FieldLabel Key="Long" Text="版本信息" TextEn="Version Information"/>
+                <FieldLabel Key="Header" Text="版本信息" TextEn="Version Information"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ImageBase64Data" Caption="图片BASE64字符串" DomainKey="TextArea_Text"/>
+        <DataElement Key="ImpMessage" Caption="导入消息" DomainKey="TextArea_Text" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="导入消息" TextEn="Import Message"/>
+                <FieldLabel Key="Medium" Text="导入消息" TextEn="Import Message"/>
+                <FieldLabel Key="Long" Text="导入消息" TextEn="Import Message"/>
+                <FieldLabel Key="Header" Text="导入消息" TextEn="Import Message"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="InspectionMethodLongText" Caption="检验方法描述" DomainKey="TextArea_Text">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="检验方法描述" TextEn="Inspection Method Description"/>
+                <FieldLabel Key="Medium" Text="检验方法描述" TextEn="Inspection Method Description"/>
+                <FieldLabel Key="Long" Text="检验方法描述" TextEn="Inspection Method Description"/>
+                <FieldLabel Key="Header" Text="检验方法描述" TextEn="Inspection Method Description"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ORGDefine" Caption="原定义" DomainKey="TextArea_Text" DataDiffLog="true"/>
+        <DataElement Key="ORGRelation" Caption="原相关" DomainKey="TextArea_Text" DataDiffLog="true"/>
+        <DataElement Key="ORGStep" Caption="原步骤" DomainKey="TextArea_Text" DataDiffLog="true"/>
+        <DataElement Key="ORGUse" Caption="原使用" DomainKey="TextArea_Text" DataDiffLog="true"/>
+        <DataElement Key="PrimaryKeyData" Caption="主键数据" DomainKey="TextArea_Text" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="PrimaryKeyData" TextEn="PrimaryKeyData"/>
+                <FieldLabel Key="Medium" Text="PrimaryKeyData" TextEn="PrimaryKeyData"/>
+                <FieldLabel Key="Long" Text="PrimaryKeyData" TextEn="PrimaryKeyData"/>
+                <FieldLabel Key="Header" Text="PrimaryKeyData" TextEn="PrimaryKeyData"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Property" Caption="其他属性" DomainKey="TextArea_Text" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="其他属性" TextEn="Other Attributes"/>
+                <FieldLabel Key="Medium" Text="其他属性" TextEn="Other Attributes"/>
+                <FieldLabel Key="Long" Text="其他属性" TextEn="Other Attributes"/>
+                <FieldLabel Key="Header" Text="其他属性" TextEn="Other Attributes"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ResultConstant" Caption="结果" DomainKey="TextArea_Text" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="结果" TextEn="Result"/>
+                <FieldLabel Key="Medium" Text="结果" TextEn="Result"/>
+                <FieldLabel Key="Long" Text="结果" TextEn="Result"/>
+                <FieldLabel Key="Header" Text="结果" TextEn="Result"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SubSelect" Caption="子查询" DomainKey="TextArea_Text">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="子查询" TextEn="Sub Query"/>
+                <FieldLabel Key="Medium" Text="子查询" TextEn="Sub Query"/>
+                <FieldLabel Key="Long" Text="子查询" TextEn="Sub Query"/>
+                <FieldLabel Key="Header" Text="子查询" TextEn="Sub Query"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="TaskPara" Caption="任务参数" DomainKey="TextArea_Text">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="任务参数" TextEn="Task Parameter"/>
+                <FieldLabel Key="Medium" Text="任务参数" TextEn="Task Parameter"/>
+                <FieldLabel Key="Long" Text="任务参数" TextEn="Task Parameter"/>
+                <FieldLabel Key="Header" Text="任务参数" TextEn="Task Parameter"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Use" Caption="使用" DomainKey="TextArea_Text" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="使用" TextEn="Usage"/>
+                <FieldLabel Key="Medium" Text="使用" TextEn="Usage"/>
+                <FieldLabel Key="Long" Text="使用" TextEn="Usage"/>
+                <FieldLabel Key="Header" Text="使用" TextEn="Usage"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ActionContext" Caption="内容" DomainKey="TextArea_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="内容" TextEn="Content"/>
+                <FieldLabel Key="Medium" Text="内容" TextEn="Content"/>
+                <FieldLabel Key="Long" Text="内容" TextEn="Content"/>
+                <FieldLabel Key="Header" Text="内容" TextEn="Content"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CipherText" Caption="密码区" DomainKey="TextArea_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="密码区" TextEn="Password Area"/>
+                <FieldLabel Key="Medium" Text="密码区" TextEn="Password Area"/>
+                <FieldLabel Key="Long" Text="密码区" TextEn="Password Area"/>
+                <FieldLabel Key="Header" Text="密码区" TextEn="Password Area"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CompanyIntroduction" Caption="公司介绍" DomainKey="TextArea_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="公司介绍" TextEn="Company Introduction"/>
+                <FieldLabel Key="Medium" Text="公司介绍" TextEn="Company Introduction"/>
+                <FieldLabel Key="Long" Text="公司介绍" TextEn="Company Introduction"/>
+                <FieldLabel Key="Header" Text="公司介绍" TextEn="Company Introduction"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ContextSummary" Caption="内容摘要" DomainKey="TextArea_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="内容摘要" TextEn="Content Summary"/>
+                <FieldLabel Key="Medium" Text="内容摘要" TextEn="Content Summary"/>
+                <FieldLabel Key="Long" Text="内容摘要" TextEn="Content Summary"/>
+                <FieldLabel Key="Header" Text="内容摘要" TextEn="Content Summary"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CurrentPeriod" Caption="当前期间" DomainKey="TextArea_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="当前期间" TextEn="Current Period"/>
+                <FieldLabel Key="Medium" Text="当前期间" TextEn="Current Period"/>
+                <FieldLabel Key="Long" Text="当前期间" TextEn="Current Period"/>
+                <FieldLabel Key="Header" Text="当前期间" TextEn="Current Period"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="OtherIndexNotes" Caption="其他指标文本" DomainKey="TextArea_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="其他指标" TextEn="Other Indicators"/>
+                <FieldLabel Key="Medium" Text="其他指标" TextEn="Other Indicators"/>
+                <FieldLabel Key="Long" Text="其他指标" TextEn="Other Indicators"/>
+                <FieldLabel Key="Header" Text="其他指标" TextEn="Other Indicators"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ProjectDescribe" Caption="项目简介" DomainKey="TextArea_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="项目描述" TextEn="Project Description"/>
+                <FieldLabel Key="Medium" Text="项目描述" TextEn="Project Description"/>
+                <FieldLabel Key="Long" Text="项目描述" TextEn="Project Description"/>
+                <FieldLabel Key="Header" Text="项目描述" TextEn="Project Description"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PublicVacationCalendarID" Caption="公休日历标识ID" DomainKey="TextArea_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="PublicVacationCalendarID" TextEn="Let's vacuum calendarid"/>
+                <FieldLabel Key="Medium" Text="PublicVacationCalendarID" TextEn="Let's vacuum calendarid"/>
+                <FieldLabel Key="Long" Text="PublicVacationCalendarID" TextEn="Let's vacuum calendarid"/>
+                <FieldLabel Key="Header" Text="PublicVacationCalendarID" TextEn="Let's vacuum calendarid"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SchoolExperience" Caption="在校经历" DomainKey="TextArea_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="在校经历" TextEn="Campus Experience"/>
+                <FieldLabel Key="Medium" Text="在校经历" TextEn="Campus Experience"/>
+                <FieldLabel Key="Long" Text="在校经历" TextEn="Campus Experience"/>
+                <FieldLabel Key="Header" Text="在校经历" TextEn="Campus Experience"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ScoreCriteria" Caption="评分标准" DomainKey="TextArea_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="评分标准" TextEn="Scoring Criteria"/>
+                <FieldLabel Key="Medium" Text="评分标准" TextEn="Scoring Criteria"/>
+                <FieldLabel Key="Long" Text="评分标准" TextEn="Scoring Criteria"/>
+                <FieldLabel Key="Header" Text="评分标准" TextEn="Scoring Criteria"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ScoreFormula" Caption="评分公式" DomainKey="TextArea_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="评分公式" TextEn="Scoring Formula"/>
+                <FieldLabel Key="Medium" Text="评分公式" TextEn="Scoring Formula"/>
+                <FieldLabel Key="Long" Text="评分公式" TextEn="Scoring Formula"/>
+                <FieldLabel Key="Header" Text="评分公式" TextEn="Scoring Formula"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ScoreIntroduce" Caption="评分说明" DomainKey="TextArea_Varchar_255">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="评分说明" TextEn="Scoring Note"/>
+                <FieldLabel Key="Medium" Text="评分说明" TextEn="Scoring Note"/>
+                <FieldLabel Key="Long" Text="评分说明" TextEn="Scoring Note"/>
+                <FieldLabel Key="Header" Text="评分说明" TextEn="Scoring Note"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ScoreStandard" Caption="评分标准" DomainKey="TextArea_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="评分标准" TextEn="Scoring Criteria"/>
+                <FieldLabel Key="Medium" Text="评分标准" TextEn="Scoring Criteria"/>
+                <FieldLabel Key="Long" Text="评分标准" TextEn="Scoring Criteria"/>
+                <FieldLabel Key="Header" Text="评分标准" TextEn="Scoring Criteria"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="StandardText" Caption="标准文本" DomainKey="TextArea_Varchar_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="标准文本" TextEn="Standard Text"/>
+                <FieldLabel Key="Medium" Text="标准文本" TextEn="Standard Text"/>
+                <FieldLabel Key="Long" Text="标准文本" TextEn="Standard Text"/>
+                <FieldLabel Key="Header" Text="标准文本" TextEn="Standard Text"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Memo" Caption="流程作业描述" DomainKey="TextArea_Varchar_1000">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="操作说明" TextEn="Operation Instruction"/>
+                <FieldLabel Key="Medium" Text="操作说明" TextEn="Operation Instruction"/>
+                <FieldLabel Key="Long" Text="操作说明" TextEn="Operation Instruction"/>
+                <FieldLabel Key="Header" Text="操作说明" TextEn="Operation Instruction"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SensitiveWord" Caption="敏感词" DomainKey="TextArea_Varchar_1000" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="敏感词" TextEn="Sensitive Word"/>
+                <FieldLabel Key="Medium" Text="敏感词" TextEn="Sensitive Word"/>
+                <FieldLabel Key="Long" Text="敏感词" TextEn="Sensitive Word"/>
+                <FieldLabel Key="Header" Text="敏感词" TextEn="Sensitive Word"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SubjectLongText" Caption="维护通知单长文本" DomainKey="TextArea_Varchar_1000" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="长文本" TextEn="Long Text"/>
+                <FieldLabel Key="Medium" Text="长文本" TextEn="Long Text"/>
+                <FieldLabel Key="Long" Text="长文本" TextEn="Long Text"/>
+                <FieldLabel Key="Header" Text="长文本" TextEn="Long Text"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Text" Caption="文本" DomainKey="TextArea_Varchar_1000" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="文本" TextEn="Text"/>
+                <FieldLabel Key="Medium" Length="15" Text="文本" TextEn="Text"/>
+                <FieldLabel Key="Long" Length="20" Text="文本" TextEn="Text"/>
+                <FieldLabel Key="Header" Length="10" Text="文本" TextEn="Text"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="TextInfo" Caption="文本" DomainKey="TextArea_Varchar_1000" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="文本" TextEn="Text"/>
+                <FieldLabel Key="Medium" Text="文本" TextEn="Text"/>
+                <FieldLabel Key="Long" Text="文本" TextEn="Text"/>
+                <FieldLabel Key="Header" Text="文本" TextEn="Text"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="HonoraryAward" Caption="荣誉奖项" DomainKey="TextArea_Varchar_2000" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="荣誉奖项" TextEn="Honors and Awards"/>
+                <FieldLabel Key="Medium" Text="荣誉奖项" TextEn="Honors and Awards"/>
+                <FieldLabel Key="Long" Text="荣誉奖项" TextEn="Honors and Awards"/>
+                <FieldLabel Key="Header" Text="荣誉奖项" TextEn="Honors and Awards"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RunResult" Caption="执行结果" DomainKey="TextArea_Varchar_2000">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="执行结果" TextEn="Execution Result"/>
+                <FieldLabel Key="Medium" Text="执行结果" TextEn="Execution Result"/>
+                <FieldLabel Key="Long" Text="执行结果" TextEn="Execution Result"/>
+                <FieldLabel Key="Header" Text="执行结果" TextEn="Execution Result"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ProfessionalSkill" Caption="专业技能" DomainKey="TextArea_Varchar_2000" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="专业技能" TextEn="Professional Skills"/>
+                <FieldLabel Key="Medium" Text="专业技能" TextEn="Professional Skills"/>
+                <FieldLabel Key="Long" Text="专业技能" TextEn="Professional Skills"/>
+                <FieldLabel Key="Header" Text="专业技能" TextEn="Professional Skills"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="QualificationCertificate" Caption="资格证书" DomainKey="TextArea_Varchar_2000" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="资格证书" TextEn="Certification"/>
+                <FieldLabel Key="Medium" Text="资格证书" TextEn="Certification"/>
+                <FieldLabel Key="Long" Text="资格证书" TextEn="Certification"/>
+                <FieldLabel Key="Header" Text="资格证书" TextEn="Certification"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RectificationTextArea" Caption="整改结论" DomainKey="TextArea_Varchar_2000" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="整改结论" TextEn="Rectification Conclusion"/>
+                <FieldLabel Key="Medium" Text="整改结论" TextEn="Rectification Conclusion"/>
+                <FieldLabel Key="Long" Text="整改结论" TextEn="Rectification Conclusion"/>
+                <FieldLabel Key="Header" Text="整改结论" TextEn="Rectification Conclusion"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SelfEvaluation" Caption="自我评价" DomainKey="TextArea_Varchar_2000" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="自我评价" TextEn="Self-Evaluation"/>
+                <FieldLabel Key="Medium" Text="自我评价" TextEn="Self-Evaluation"/>
+                <FieldLabel Key="Long" Text="自我评价" TextEn="Self-Evaluation"/>
+                <FieldLabel Key="Header" Text="自我评价" TextEn="Self-Evaluation"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CategoryDescription" Caption="类别说明" DomainKey="TextArea_Varchar_4000" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="类别说明" TextEn="Category Description"/>
+                <FieldLabel Key="Medium" Text="类别说明" TextEn="Category Description"/>
+                <FieldLabel Key="Long" Text="类别说明" TextEn="Category Description"/>
+                <FieldLabel Key="Header" Text="类别说明" TextEn="Category Description"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Comprehensive" Caption="综合评价" DomainKey="TextArea_Varchar_4000" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="综合评价" TextEn="Comprehensive Evaluation"/>
+                <FieldLabel Key="Medium" Text="综合评价" TextEn="Comprehensive Evaluation"/>
+                <FieldLabel Key="Long" Text="综合评价" TextEn="Comprehensive Evaluation"/>
+                <FieldLabel Key="Header" Text="综合评价" TextEn="Comprehensive Evaluation"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Suggestion" Caption="改进建议" DomainKey="TextArea_Varchar_4000" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="改进建议" TextEn="Improvement Suggestion"/>
+                <FieldLabel Key="Medium" Text="改进建议" TextEn="Improvement Suggestion"/>
+                <FieldLabel Key="Long" Text="改进建议" TextEn="Improvement Suggestion"/>
+                <FieldLabel Key="Header" Text="改进建议" TextEn="Improvement Suggestion"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="WindowTitle" Caption="名称简写" DomainKey="TextArea_Varchar_4000">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="系统简称" TextEn="System Abbreviation"/>
+                <FieldLabel Key="Medium" Text="系统简称" TextEn="System Abbreviation"/>
+                <FieldLabel Key="Long" Text="系统简称" TextEn="System Abbreviation"/>
+                <FieldLabel Key="Header" Text="系统简称" TextEn="System Abbreviation"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ReviewOpinion" Caption="评审意见" DomainKey="TextArea_Text" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="评审意见" TextEn="Review Comments"/>
+                <FieldLabel Key="Medium" Text="评审意见" TextEn="Review Comments"/>
+                <FieldLabel Key="Long" Text="评审意见" TextEn="Review Comments"/>
+                <FieldLabel Key="Header" Text="评审意见" TextEn="Review Comments"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckerDes" Caption="密码规则" DomainKey="TextArea_Text">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="密码规则" TextEn="Password Rule"/>
+                <FieldLabel Key="Medium" Text="密码规则" TextEn="Password Rule"/>
+                <FieldLabel Key="Long" Text="密码规则" TextEn="Password Rule"/>
+                <FieldLabel Key="Header" Text="密码规则" TextEn="Password Rule"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="AttentionItem" Caption="注意:" DomainKey="TextArea_Text">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="注意:" TextEn="Be careful:"/>
+                <FieldLabel Key="Medium" Text="注意:" TextEn="Be careful:"/>
+                <FieldLabel Key="Long" Text="注意:" TextEn="Be careful:"/>
+                <FieldLabel Key="Header" Text="注意:" TextEn="Be careful:"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="OldPreview" Caption="原预览" DomainKey="TextArea_Text">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="原预览" TextEn="Original Preview"/>
+                <FieldLabel Key="Medium" Text="原预览" TextEn="Original Preview"/>
+                <FieldLabel Key="Long" Text="原预览" TextEn="Original Preview"/>
+                <FieldLabel Key="Header" Text="原预览" TextEn="Original Preview"/>
+            </FieldLabelCollection>
+        </DataElement>
+    </DataElementCollection>
+</DataElementDef>

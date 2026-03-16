@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DataElementDef>
+        <DataElementCollection>
+            <DataElement Key="GoodsReceiptImage" Caption="收货" DomainKey="Image_Varchar_255"/>
+            <DataElement Key="HR_EmployeePhotoUrl" Caption="HR图片ID" DomainKey="Image_Varchar_255" DataDiffLog="true"/>
+            <DataElement Key="LicenseImage" Caption="证照图片" DomainKey="Image_Varchar_255" DataDiffLog="true"/>
+            <DataElement Key="MessageType" Caption="消息类型" DomainKey="Image_Varchar_255"/>
+            <DataElement Key="MonitorIcon" Caption="图标" DomainKey="Image_Varchar_255"/>
+            <DataElement Key="OrganizationChart" Caption="组织架构图" DomainKey="Image_Varchar_255" DataDiffLog="true"/>
+            <DataElement Key="OverallState" Caption="总体状态" DomainKey="Image_Varchar_255"/>
+            <DataElement Key="Photograph" Caption="拍照" DomainKey="Image_Varchar_255"/>
+            <DataElement Key="TaskStatus" Caption="任务" DomainKey="Image_Varchar_255"/>
+            <DataElement Key="QMActivate" Caption="QM激活" DomainKey="Image_Varchar_255"/>
+            <DataElement Key="InspectionLotStatus" Caption="检验批" DomainKey="Image_Varchar_255"/>
+            <DataElement Key="UsageDecisionStatus" Caption="使用决策" DomainKey="Image_Varchar_255"/>
+            <DataElement Key="LockImage" Caption="已锁定" DomainKey="Image_Varchar_255"/>
+            <DataElement Key="GRImage" Caption="单独收货" DomainKey="Image_Varchar_255"/>
+        </DataElementCollection>
+</DataElementDef>

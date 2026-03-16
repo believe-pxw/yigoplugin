@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DomainDef>
+        <DomainCollection>
+            <Domain Key="WebBrowser_Varchar" Caption="浏览器_Varchar" RefControlType="WebBrowser" DataType="Varchar"/>
+        </DomainCollection>
+</DomainDef>

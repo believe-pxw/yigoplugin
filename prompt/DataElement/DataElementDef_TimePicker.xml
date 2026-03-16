@@ -1,0 +1,779 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DataElementDef>
+    <DataElementCollection>
+        <DataElement Key="TimePicker" Caption="检验的开始时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Medium" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Long" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Header" Text="时间" TextEn="Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="InspectionEndTime" Caption="检验的结束时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="检验结束" TextEn="Insp. end"/>
+                <FieldLabel Key="Medium" Length="15" Text="检验结束时间" TextEn="Inspection End Time"/>
+                <FieldLabel Key="Long" Length="20" Text="检验结束时间" TextEn="Insp. end time"/>
+                <FieldLabel Key="Header" Length="6" Text="结束" TextEn="End"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="InspectionStartTime" Caption="检验的开始时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="开始时间" TextEn="Start time"/>
+                <FieldLabel Key="Medium" Length="15" Text="检验的开始时间" TextEn="Inspection Start Time"/>
+                <FieldLabel Key="Long" Length="20" Text="检验开始时间" TextEn="Insp. start time"/>
+                <FieldLabel Key="Header" Length="6" Text="开始" TextEn="Start"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ActualCheckInTime" Caption="实际登记时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="登记(实际时间)" TextEn="Registration (Actual Time)"/>
+                <FieldLabel Key="Medium" Length="15" Text="登记(实际时间)" TextEn="Registration (Actual Time)"/>
+                <FieldLabel Key="Long" Length="20" Text="登记(实际时间)" TextEn="Registration (Actual Time)"/>
+                <FieldLabel Key="Header" Length="8" Text="登记(实际时间)" TextEn="Registration (Actual Time)"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ActualEndExecutionTime" Caption="实际完成：执行时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="实际完工时间" TextEn="Actual Completion Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="实际完工时间" TextEn="Actual Completion Time"/>
+                <FieldLabel Key="Long" Length="20" Text="实际完工时间" TextEn="Actual Completion Time"/>
+                <FieldLabel Key="Header" Length="10" Text="实际完工时间" TextEn="Actual Completion Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ActualEndTime" Caption="实际结束时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="实际结束时间" TextEn="Actual End Time"/>
+                <FieldLabel Key="Medium" Text="实际结束时间" TextEn="Actual End Time"/>
+                <FieldLabel Key="Long" Text="实际结束时间" TextEn="Actual End Time"/>
+                <FieldLabel Key="Header" Text="实际结束时间" TextEn="Actual End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ActualFinishTime" Caption="实际完成时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="实际完成时间" TextEn="Actual Finish Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="实际完成时间" TextEn="Actual Finish Time"/>
+                <FieldLabel Key="Long" Length="20" Text="实际完成时间" TextEn="Actual Finish Time"/>
+                <FieldLabel Key="Header" Length="12" Text="实际完成时间" TextEn="Actual Finish Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ActualLoadingEndTime" Caption="实际装载结束时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="装载结束(实际时间)" TextEn="Loading End (Actual Time)"/>
+                <FieldLabel Key="Medium" Length="15" Text="装载结束(实际时间)" TextEn="Loading End (Actual Time)"/>
+                <FieldLabel Key="Long" Length="20" Text="装载结束(实际时间)" TextEn="Loading End (Actual Time)"/>
+                <FieldLabel Key="Header" Length="6" Text="装载结束(实际时间)" TextEn="Loading End (Actual Time)"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ActualLoadingStartTime" Caption="实际装载开始时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="装载开始(实际时间)" TextEn="Loading Start (Actual Time)"/>
+                <FieldLabel Key="Medium" Length="15" Text="装载开始(实际时间)" TextEn="Loading Start (Actual Time)"/>
+                <FieldLabel Key="Long" Length="20" Text="装载开始(实际时间)" TextEn="Loading Start (Actual Time)"/>
+                <FieldLabel Key="Header" Length="6" Text="装载开始(实际时间)" TextEn="Loading Start (Actual Time)"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ActualPlaningTime" Caption="实际计划的时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="计划(实际时间)" TextEn="Plan (Actual Time)"/>
+                <FieldLabel Key="Medium" Text="计划(实际时间)" TextEn="Plan (Actual Time)"/>
+                <FieldLabel Key="Long" Text="计划(实际时间)" TextEn="Plan (Actual Time)"/>
+                <FieldLabel Key="Header" Text="计划(实际时间)" TextEn="Plan (Actual Time)"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ActualShpmtComplTime" Caption="实际装运完成时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="装运完成(实际时间)" TextEn="Shipping Completion (Actual Time)"/>
+                <FieldLabel Key="Medium" Text="装运完成(实际时间)" TextEn="Shipping Completion (Actual Time)"/>
+                <FieldLabel Key="Long" Text="装运完成(实际时间)" TextEn="Shipping Completion (Actual Time)"/>
+                <FieldLabel Key="Header" Text="装运完成(实际时间)" TextEn="Shipping Completion (Actual Time)"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ActualShpmtEndTime" Caption="实际装运结束时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="运输完成(实际时间)" TextEn="Transportation Completion (Actual Time)"/>
+                <FieldLabel Key="Medium" Text="运输完成(实际时间)" TextEn="Transportation Completion (Actual Time)"/>
+                <FieldLabel Key="Long" Text="运输完成(实际时间)" TextEn="Transportation Completion (Actual Time)"/>
+                <FieldLabel Key="Header" Text="运输完成(实际时间)" TextEn="Transportation Completion (Actual Time)"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ActualShpmtStartTime" Caption="实际装运开始时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="运输开始(实际时间)" TextEn="Transportation Start (Actual Time)"/>
+                <FieldLabel Key="Medium" Text="运输开始(实际时间)" TextEn="Transportation Start (Actual Time)"/>
+                <FieldLabel Key="Long" Text="运输开始(实际时间)" TextEn="Transportation Start (Actual Time)"/>
+                <FieldLabel Key="Header" Text="运输开始(实际时间)" TextEn="Transportation Start (Actual Time)"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ActualShpmtStepEndTime" Caption="步骤：实际装运终止时间" DomainKey="TimePicker"/>
+        <DataElement Key="ActualShpmtStepStartTime" Caption="步骤：当前装运开始时间" DomainKey="TimePicker"/>
+        <DataElement Key="ActualStartExecutionTime" Caption="实际开始：执行/准备(时间)" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="实际开始时间" TextEn="Actual Start Time"/>
+                <FieldLabel Key="Medium" Text="实际开始时间" TextEn="Actual Start Time"/>
+                <FieldLabel Key="Long" Text="实际开始时间" TextEn="Actual Start Time"/>
+                <FieldLabel Key="Header" Text="实际开始时间" TextEn="Actual Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ActualStartTime" Caption="实际开始时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="实际开始时间" TextEn="Actual Start Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="实际开始时间" TextEn="Actual Start Time"/>
+                <FieldLabel Key="Long" Length="20" Text="实际开始时间" TextEn="Actual Start Time"/>
+                <FieldLabel Key="Header" Length="10" Text="实际开始时间" TextEn="Actual Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PMActualStartTime" Caption="实际开始时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="8" Text="实际开始" TextEn="ActStart"/>
+                <FieldLabel Key="Medium" Length="12" Text="实际开始" TextEn="ActualStart"/>
+                <FieldLabel Key="Long" Length="16" Text="实际开始时间" TextEn="Actual Start Time"/>
+                <FieldLabel Key="Header" Length="10" Text="实际开始" TextEn="ActlStart"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PRTActualStartTime" Caption="PRT 使用的实际开工（时间）" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="实际开始时间" TextEn="Actual Start Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="实际开始时间" TextEn="Actual Start Time"/>
+                <FieldLabel Key="Long" Length="20" Text="实际开始时间" TextEn="Actual Start Time"/>
+                <FieldLabel Key="Header" Length="12" Text="实际开始时间" TextEn="Actual Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="BasicEndTime" Caption="基本完成时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="基本完成时间" TextEn="Basic Finish Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="基本完成时间" TextEn="Basic Finish Time"/>
+                <FieldLabel Key="Long" Length="20" Text="基本完成时间" TextEn="Basic Finish Time"/>
+                <FieldLabel Key="Header" Length="10" Text="基本完成时间" TextEn="Basic Finish Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="BasicStartTime" Caption="基本开始时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="基本开始时间" TextEn="Basic Start Time"/>
+                <FieldLabel Key="Medium" Text="基本开始时间" TextEn="Basic Start Time"/>
+                <FieldLabel Key="Long" Text="基本开始时间" TextEn="Basic Start Time"/>
+                <FieldLabel Key="Header" Text="基本开始时间" TextEn="Basic Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="BreakTime" Caption="休息时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="休息时间" TextEn="Break Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="休息时间" TextEn="Break Time"/>
+                <FieldLabel Key="Long" Length="20" Text="休息时间" TextEn="Break Time"/>
+                <FieldLabel Key="Header" Length="10" Text="休息时间" TextEn="Break Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CO_ConfirmTime" Caption="确认时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="输入时间" TextEn="Input Time"/>
+                <FieldLabel Key="Medium" Text="输入时间" TextEn="Input Time"/>
+                <FieldLabel Key="Long" Text="输入时间" TextEn="Input Time"/>
+                <FieldLabel Key="Header" Text="输入时间" TextEn="Input Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ChangeTime" Caption="更改时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Medium" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Long" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Header" Text="时间" TextEn="Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ChildEquipInstallTime" Caption="安装时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="安装时间" TextEn="Installation Time"/>
+                <FieldLabel Key="Medium" Text="安装时间" TextEn="Installation Time"/>
+                <FieldLabel Key="Long" Text="安装时间" TextEn="Installation Time"/>
+                <FieldLabel Key="Header" Text="安装时间" TextEn="Installation Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ChildEquipmentInstallTime" Caption="安装时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="安装时间" TextEn="Installation Time"/>
+                <FieldLabel Key="Medium" Text="安装时间" TextEn="Installation Time"/>
+                <FieldLabel Key="Long" Text="安装时间" TextEn="Installation Time"/>
+                <FieldLabel Key="Header" Text="安装时间" TextEn="Installation Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CompletedTime" Caption="完成时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="完成时间" TextEn="Completion Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="完成时间" TextEn="Completion Time"/>
+                <FieldLabel Key="Long" Length="20" Text="完成时间" TextEn="Completion Time"/>
+                <FieldLabel Key="Header" Length="8" Text="完成时间" TextEn="Completion Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ConstraintForBasicEndTime" Caption="作业基本结束时间限制" DomainKey="TimePicker"/>
+        <DataElement Key="ConstraintForBasicStartTime" Caption="作业基本开始时间限制" DomainKey="TimePicker"/>
+        <DataElement Key="CostAssignedTime" Caption="成本账目分配时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="科目分配时间" TextEn="Account Assignment Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="科目分配时间" TextEn="Account Assignment Time"/>
+                <FieldLabel Key="Long" Length="20" Text="科目分配时间" TextEn="Account Assignment Time"/>
+                <FieldLabel Key="Header" Length="6" Text="科目分配时间" TextEn="Account Assignment Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CostCalculatedTime" Caption="成本计算时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="成本计算时间" TextEn="Cost Calculation Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="成本计算时间" TextEn="Cost Calculation Time"/>
+                <FieldLabel Key="Long" Length="20" Text="成本计算时间" TextEn="Cost Calculation Time"/>
+                <FieldLabel Key="Header" Length="6" Text="成本计算时间" TextEn="Cost Calculation Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CostTransferredTime" Caption="成本传输时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="传输时间" TextEn="Transmit Time"/>
+                <FieldLabel Key="Medium" Text="传输时间" TextEn="Transmit Time"/>
+                <FieldLabel Key="Long" Text="传输时间" TextEn="Transmit Time"/>
+                <FieldLabel Key="Header" Text="传输时间" TextEn="Transmit Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DispatchedEndTime" Caption="工序的分配的结束时间" DomainKey="TimePicker"/>
+        <DataElement Key="DispatchedStartTime" Caption="工序的分配的开始时间" DomainKey="TimePicker"/>
+        <DataElement Key="EarliestEndTime" Caption="最早下班时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="最早下班时间" TextEn="Earliest End Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="最早下班时间" TextEn="Earliest End Time"/>
+                <FieldLabel Key="Long" Length="20" Text="最早下班时间" TextEn="Earliest End Time"/>
+                <FieldLabel Key="Header" Length="15" Text="最早下班时间" TextEn="Earliest End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="EarliestScheduledEndTime" Caption="最早完成时间" DomainKey="TimePicker"/>
+        <DataElement Key="EarliestScheduledStartTime" Caption="最早开始时间" DomainKey="TimePicker"/>
+        <DataElement Key="EarliestStartTime" Caption="最早上班时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="最早上班时间" TextEn="Earliest Start Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="最早上班时间" TextEn="Earliest Start Time"/>
+                <FieldLabel Key="Long" Length="20" Text="最早上班时间" TextEn="Earliest Start Time"/>
+                <FieldLabel Key="Header" Length="15" Text="最早开始时间" TextEn="Earliest Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="EndLimitTime" Caption="完成限制时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="作业完成时间" TextEn="Activity Finish Time"/>
+                <FieldLabel Key="Medium" Text="作业完成时间" TextEn="Activity Finish Time"/>
+                <FieldLabel Key="Long" Text="作业完成时间" TextEn="Activity Finish Time"/>
+                <FieldLabel Key="Header" Text="作业完成时间" TextEn="Activity Finish Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="EndTimePicker" Caption="结束时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="完成" TextEn="Finish"/>
+                <FieldLabel Key="Medium" Length="15" Text="结束" TextEn="End"/>
+                <FieldLabel Key="Long" Length="20" Text="完成" TextEn="Finish"/>
+                <FieldLabel Key="Header" Length="8" Text="完成" TextEn="Finish"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Second4EndTimePicker" Caption="以秒计的完成时间（内部）" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="结束时间" TextEn="End Time"/>
+                <FieldLabel Key="Medium" Text="结束时间" TextEn="End Time"/>
+                <FieldLabel Key="Long" Text="结束时间" TextEn="End Time"/>
+                <FieldLabel Key="Header" Text="结束时间" TextEn="End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ActivityEndTime" Caption="作业结束时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Long" Length="20" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Header" Length="3" Text="时间" TextEn="Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="EquipmentDeleteTime" Caption="设备拆除时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="设备拆除时间" TextEn="Equipment Dismantle Time"/>
+                <FieldLabel Key="Medium" Text="设备拆除时间" TextEn="Equipment Dismantle Time"/>
+                <FieldLabel Key="Long" Text="设备拆除时间" TextEn="Equipment Dismantle Time"/>
+                <FieldLabel Key="Header" Text="设备拆除时间" TextEn="Equipment Dismantle Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="EquipmentInstallTime" Caption="设备安装时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="设备安装时间" TextEn="Equipment Installation Time"/>
+                <FieldLabel Key="Medium" Text="设备安装时间" TextEn="Equipment Installation Time"/>
+                <FieldLabel Key="Long" Text="设备安装时间" TextEn="Equipment Installation Time"/>
+                <FieldLabel Key="Header" Text="设备安装时间" TextEn="Equipment Installation Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ErrorTime" Caption="错误时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Medium" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Long" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Header" Text="时间" TextEn="Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FirstChildEquipInstallTime" Caption="首次安装时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="安装时间" TextEn="Installation Time"/>
+                <FieldLabel Key="Medium" Text="安装时间" TextEn="Installation Time"/>
+                <FieldLabel Key="Long" Text="安装时间" TextEn="Installation Time"/>
+                <FieldLabel Key="Header" Text="安装时间" TextEn="Installation Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FixedTime" Caption="固定时间" DomainKey="TimePicker"/>
+        <DataElement Key="ForecastEndTime" Caption="预测结束时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="预测结束时间" TextEn="Forecast End Time"/>
+                <FieldLabel Key="Medium" Text="预测结束时间" TextEn="Forecast End Time"/>
+                <FieldLabel Key="Long" Text="预测结束时间" TextEn="Forecast End Time"/>
+                <FieldLabel Key="Header" Text="预测结束时间" TextEn="Forecast End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ForecastFinishFromConfirmTime" Caption="从确认中预测工序的完成时间" DomainKey="TimePicker"/>
+        <DataElement Key="HMSCompletionTime" Caption="完成时间（时分秒）" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="完成时间" TextEn="Completion Time"/>
+                <FieldLabel Key="Medium" Text="完成时间" TextEn="Completion Time"/>
+                <FieldLabel Key="Long" Text="完成时间" TextEn="Completion Time"/>
+                <FieldLabel Key="Header" Text="完成时间" TextEn="Completion Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CompletionTime_TimePicker" Caption="完成时间（时分秒）" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="参考时间" TextEn="Reference Time"/>
+                <FieldLabel Key="Medium" Text="参考时间" TextEn="Reference Time"/>
+                <FieldLabel Key="Long" Text="参考时间" TextEn="Reference Time"/>
+                <FieldLabel Key="Header" Text="参考时间" TextEn="Reference Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="MaintenancePlanCompleteTime_TimePicker" Caption="完成时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="完成时间" TextEn="Completion Time"/>
+                <FieldLabel Key="Medium" Text="完成时间" TextEn="Completion Time"/>
+                <FieldLabel Key="Long" Text="完成时间" TextEn="Completion Time"/>
+                <FieldLabel Key="Header" Text="完成时间" TextEn="Completion Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="HMSStartTime" Caption="开始时间（时分秒）" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Long" Length="20" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Header" Length="20" Text="开始时间" TextEn="Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="HR_CardEndTime" Caption="刷卡结束时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="刷卡结束时间" TextEn="Clock End Time"/>
+                <FieldLabel Key="Medium" Text="刷卡结束时间" TextEn="Clock End Time"/>
+                <FieldLabel Key="Long" Text="刷卡结束时间" TextEn="Clock End Time"/>
+                <FieldLabel Key="Header" Text="刷卡结束时间" TextEn="Clock End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="HR_CardStartTime" Caption="刷卡开始时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="刷卡开始时间" TextEn="Clock Start Time"/>
+                <FieldLabel Key="Medium" Text="刷卡开始时间" TextEn="Clock Start Time"/>
+                <FieldLabel Key="Long" Text="刷卡开始时间" TextEn="Clock Start Time"/>
+                <FieldLabel Key="Header" Text="刷卡开始时间" TextEn="Clock Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="InstallOrDeleteTime" Caption="设备安装/拆卸时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="设备安装/拆卸时间" TextEn="Equipment Installation/Dismantle Time"/>
+                <FieldLabel Key="Medium" Text="设备安装/拆卸时间" TextEn="Equipment Installation/Dismantle Time"/>
+                <FieldLabel Key="Long" Text="设备安装/拆卸时间" TextEn="Equipment Installation/Dismantle Time"/>
+                <FieldLabel Key="Header" Text="设备安装/拆卸时间" TextEn="Equipment Installation/Dismantle Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="InstallOrDismantTime" Caption="设备安装/拆卸时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="安装/拆卸时间" TextEn="Installation/Disassembly Time"/>
+                <FieldLabel Key="Medium" Text="安装/拆卸时间" TextEn="Installation/Disassembly Time"/>
+                <FieldLabel Key="Long" Text="安装/拆卸时间" TextEn="Installation/Disassembly Time"/>
+                <FieldLabel Key="Header" Text="安装/拆卸时间" TextEn="Installation/Disassembly Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Keyword7Time" Caption="检验点自定义字段7" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="检验点自定义字段7" TextEn="Inspection Point Custom Field 7"/>
+                <FieldLabel Key="Medium" Length="15" Text="检验点自定义字段7" TextEn="Inspection Point Custom Field 7"/>
+                <FieldLabel Key="Long" Length="20" Text="检验点自定义字段7" TextEn="Inspection Point Custom Field 7"/>
+                <FieldLabel Key="Header" Length="6" Text="检验点自定义字段7" TextEn="Inspection Point Custom Field 7"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="LatestEndTime" Caption="最晚下班时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="最晚下班时间" TextEn="Latest End Time"/>
+                <FieldLabel Key="Medium" Text="最晚下班时间" TextEn="Latest End Time"/>
+                <FieldLabel Key="Long" Text="最晚下班时间" TextEn="Latest End Time"/>
+                <FieldLabel Key="Header" Text="最晚下班时间" TextEn="Latest End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="LatestScheduledEndTime" Caption="最后完成时间" DomainKey="TimePicker"/>
+        <DataElement Key="LatestScheduledStartTime" Caption="最后开始时间" DomainKey="TimePicker"/>
+        <DataElement Key="LatestStartTime" Caption="最迟开始时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="最迟开始时间" TextEn="Latest Start Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="最迟开始时间" TextEn="Latest Start Time"/>
+                <FieldLabel Key="Long" Length="20" Text="最迟开始时间" TextEn="Latest Start Time"/>
+                <FieldLabel Key="Header" Length="15" Text="最迟开始时间" TextEn="Latest Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="MalfunctionEndTime" Caption="故障开始时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="故障结束时间" TextEn="Fault End Time"/>
+                <FieldLabel Key="Medium" Text="故障结束时间" TextEn="Fault End Time"/>
+                <FieldLabel Key="Long" Text="故障结束时间" TextEn="Fault End Time"/>
+                <FieldLabel Key="Header" Text="故障结束时间" TextEn="Fault End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="MalfunctionStartTime" Caption="故障开始时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="故障开始时间" TextEn="Fault Start Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="故障开始时间" TextEn="Fault Start Time"/>
+                <FieldLabel Key="Long" Length="25" Text="故障开始时间" TextEn="Fault Start Time"/>
+                <FieldLabel Key="Header" Length="8" Text="故障开始时间" TextEn="Fault Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="MeasurementIntTime" Caption="计量时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="计量时间" TextEn="Measurement Time"/>
+                <FieldLabel Key="Long" Length="20" Text="度量时间" TextEn="Measure Time"/>
+                <FieldLabel Key="Header" Length="8" Text="度量时间" TextEn="Measure Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="MilestoneActualTime" Caption="实际时间" DomainKey="TimePicker"/>
+        <DataElement Key="MostEarlyFinishTime" Caption="最早完成时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="最早完成时间" TextEn="Earliest Completion Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="最早完成时间" TextEn="Earliest Completion Time"/>
+                <FieldLabel Key="Long" Length="20" Text="最早完成时间" TextEn="Earliest Completion Time"/>
+                <FieldLabel Key="Header" Length="12" Text="最早完成时间" TextEn="Earliest Completion Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="MostEarlyStartTime" Caption="最早开始时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="最早开始时间" TextEn="Earliest Start Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="最早开始时间" TextEn="Earliest Start Time"/>
+                <FieldLabel Key="Long" Length="20" Text="最早开始时间" TextEn="Earliest Start Time"/>
+                <FieldLabel Key="Header" Length="12" Text="最早开始时间" TextEn="Earliest Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="MostLateFinishTime" Caption="最迟完成时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="最迟完成时间" TextEn="Latest Completion Time"/>
+                <FieldLabel Key="Medium" Text="最迟完成时间" TextEn="Latest Completion Time"/>
+                <FieldLabel Key="Long" Text="最迟完成时间" TextEn="Latest Completion Time"/>
+                <FieldLabel Key="Header" Text="最迟完成时间" TextEn="Latest Completion Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="MostLateStartTime" Caption="最迟开始时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="最迟开始时间" TextEn="Latest Start Time"/>
+                <FieldLabel Key="Medium" Text="最迟开始时间" TextEn="Latest Start Time"/>
+                <FieldLabel Key="Long" Text="最迟开始时间" TextEn="Latest Start Time"/>
+                <FieldLabel Key="Header" Text="最迟开始时间" TextEn="Latest Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="NightShiftEndTime" Caption="夜班结束时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="夜班结束时间" TextEn="Night Shift End Time"/>
+                <FieldLabel Key="Medium" Text="夜班结束时间" TextEn="Night Shift End Time"/>
+                <FieldLabel Key="Long" Text="夜班结束时间" TextEn="Night Shift End Time"/>
+                <FieldLabel Key="Header" Text="夜班结束时间" TextEn="Night Shift End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="NightShiftStartTime" Caption="夜班开始时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="夜班开始时间" TextEn="Night Shift Start Time"/>
+                <FieldLabel Key="Medium" Text="夜班开始时间" TextEn="Night Shift Start Time"/>
+                <FieldLabel Key="Long" Text="夜班开始时间" TextEn="Night Shift Start Time"/>
+                <FieldLabel Key="Header" Text="夜班开始时间" TextEn="Night Shift Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="NotificationReferenceTime" Caption="通知参考时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="参考时间" TextEn="Reference Time"/>
+                <FieldLabel Key="Medium" Text="参考时间" TextEn="Reference Time"/>
+                <FieldLabel Key="Long" Text="参考时间" TextEn="Reference Time"/>
+                <FieldLabel Key="Header" Text="参考时间" TextEn="Reference Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="NotificationTime" Caption="通知时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="通知时间" TextEn="Notice Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="通知时间" TextEn="Notice Time"/>
+                <FieldLabel Key="Long" Length="20" Text="通知时间" TextEn="Notice Time"/>
+                <FieldLabel Key="Header" Length="8" Text="通知时间" TextEn="Notice Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="NotificationCompletionTime" Caption="通知的完成时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="完成时间" TextEn="Completion Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="完成时间" TextEn="Completion Time"/>
+                <FieldLabel Key="Long" Length="20" Text="完成时间" TextEn="Completion Time"/>
+                <FieldLabel Key="Header" Length="8" Text="完成时间" TextEn="Completion Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PlanCheckInTime" Caption="计划登记时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="登记(计划时间)" TextEn="Registration (Planned Time)"/>
+                <FieldLabel Key="Medium" Length="15" Text="登记(计划时间)" TextEn="Registration (Planned Time)"/>
+                <FieldLabel Key="Long" Length="20" Text="登记(计划时间)" TextEn="Registration (Planned Time)"/>
+                <FieldLabel Key="Header" Length="8" Text="登记(计划时间)" TextEn="Registration (Planned Time)"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PlanLoadingEndTime" Caption="计划装载结束时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="装载结束(计划时间)" TextEn="Loading End (Planned Time)"/>
+                <FieldLabel Key="Medium" Length="15" Text="装载结束(计划时间)" TextEn="Loading End (Planned Time)"/>
+                <FieldLabel Key="Long" Length="20" Text="装载结束(计划时间)" TextEn="Loading End (Planned Time)"/>
+                <FieldLabel Key="Header" Length="6" Text="装载结束(计划时间)" TextEn="Loading End (Planned Time)"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PlanLoadingStartTime" Caption="计划装载开始时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="装载开始(计划时间)" TextEn="Loading Start (Planned Time)"/>
+                <FieldLabel Key="Medium" Length="15" Text="装载开始(计划时间)" TextEn="Loading Start (Planned Time)"/>
+                <FieldLabel Key="Long" Length="20" Text="装载开始(计划时间)" TextEn="Loading Start (Planned Time)"/>
+                <FieldLabel Key="Header" Length="6" Text="装载开始(计划时间)" TextEn="Loading Start (Planned Time)"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PlanShpmtComplTime" Caption="计划装运完成时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="Pl.Tm.Proc" TextEn="Pl.Tm.Proc"/>
+                <FieldLabel Key="Medium" Length="15" Text="计划处理时间" TextEn="Pl. Time Proc."/>
+                <FieldLabel Key="Long" Length="20" Text="计划处理时间" TextEn="Pl. processing time"/>
+                <FieldLabel Key="Header" Length="8" Text="装运完成(计划时间)" TextEn="Shipping Completion (Planned Time)"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PlanShpmtEndTime" Caption="计划装运结束时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="运输完成(计划时间)" TextEn="Transportation Completion (Planned Time)"/>
+                <FieldLabel Key="Medium" Length="15" Text="运输完成(计划时间)" TextEn="Transportation Completion (Planned Time)"/>
+                <FieldLabel Key="Long" Length="20" Text="运输完成(计划时间)" TextEn="Transportation Completion (Planned Time)"/>
+                <FieldLabel Key="Header" Length="6" Text="运输完成(计划时间)" TextEn="Transportation Completion (Planned Time)"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PlanShpmtStartTime" Caption="计划装运开始时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="PlanTrStTm" TextEn="PlanTrStTm"/>
+                <FieldLabel Key="Medium" Length="15" Text="计划运输开始时#" TextEn="PlanTransStTime"/>
+                <FieldLabel Key="Long" Length="20" Text="计划运输开始时间" TextEn="PlandTransStrtTime"/>
+                <FieldLabel Key="Header" Length="6" Text="运输开始(计划时间)" TextEn="Transportation Start (Planned Time)"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PlanShpmtStepEndTime" Caption="步骤：计划装运终止时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="运输完成(实际时间)" TextEn="Transportation Completion (Actual Time)"/>
+                <FieldLabel Key="Medium" Length="15" Text="运输完成(实际时间)" TextEn="Transportation Completion (Actual Time)"/>
+                <FieldLabel Key="Long" Length="20" Text="运输完成(实际时间)" TextEn="Transportation Completion (Actual Time)"/>
+                <FieldLabel Key="Header" Length="6" Text="运输完成(实际时间)" TextEn="Transportation Completion (Actual Time)"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PlanShpmtStepStartTime" Caption="步骤：计划装运开始时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="运输开始(实际时间)" TextEn="Transportation Start (Actual Time)"/>
+                <FieldLabel Key="Medium" Length="15" Text="运输开始(实际时间)" TextEn="Transportation Start (Actual Time)"/>
+                <FieldLabel Key="Long" Length="20" Text="运输开始(实际时间)" TextEn="Transportation Start (Actual Time)"/>
+                <FieldLabel Key="Header" Length="6" Text="运输开始(实际时间)" TextEn="Transportation Start (Actual Time)"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PlannedEndTime" Caption="已计划时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="已计划时间" TextEn="Planned Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="已计划时间" TextEn="Planned Time"/>
+                <FieldLabel Key="Long" Length="20" Text="已计划时间" TextEn="Planned Time"/>
+                <FieldLabel Key="Header" Length="3" Text="已计划时间" TextEn="Planned Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PlannedStartTime" Caption="已计划时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="已计划时间" TextEn="Planned Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="已计划时间" TextEn="Planned Time"/>
+                <FieldLabel Key="Long" Length="20" Text="已计划时间" TextEn="Planned Time"/>
+                <FieldLabel Key="Header" Length="3" Text="已计划时间" TextEn="Planned Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ReferenceTime" Caption="参考时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="参考时间" TextEn="Reference Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="参考时间" TextEn="Reference Time"/>
+                <FieldLabel Key="Long" Length="20" Text="参考时间" TextEn="Reference Time"/>
+                <FieldLabel Key="Header" Length="4" Text="参考时间" TextEn="Reference Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RequireEndTime" Caption="要求的结束时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="要求的结束时间" TextEn="Required End Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="要求的结束时间" TextEn="Required End Time"/>
+                <FieldLabel Key="Long" Length="25" Text="要求的结束时间" TextEn="Required End Time"/>
+                <FieldLabel Key="Header" Length="10" Text="要求的结束时间" TextEn="Required End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RequireStartTime" Caption="要求的起始时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="要求的起始时间" TextEn="Required Start Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="要求的起始时间" TextEn="Required Start Time"/>
+                <FieldLabel Key="Long" Length="25" Text="要求的起始时间" TextEn="Required Start Time"/>
+                <FieldLabel Key="Header" Length="10" Text="要求的起始时间" TextEn="Required Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RequirementTime" Caption="需求时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="需求时间" TextEn="Demand Time"/>
+                <FieldLabel Key="Medium" Text="需求时间" TextEn="Demand Time"/>
+                <FieldLabel Key="Long" Text="需求时间" TextEn="Demand Time"/>
+                <FieldLabel Key="Header" Text="需求时间" TextEn="Demand Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RestEnd" Caption="结束" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="结束" TextEn="End"/>
+                <FieldLabel Key="Medium" Length="15" Text="结束" TextEn="End"/>
+                <FieldLabel Key="Long" Length="20" Text="结束" TextEn="End"/>
+                <FieldLabel Key="Header" Length="8" Text="结束" TextEn="End"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RestEndTime" Caption="工休结束时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="结束时间" TextEn="End Time"/>
+                <FieldLabel Key="Medium" Text="结束时间" TextEn="End Time"/>
+                <FieldLabel Key="Long" Text="结束时间" TextEn="End Time"/>
+                <FieldLabel Key="Header" Text="结束时间" TextEn="End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RestStart" Caption="开始" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="开始" TextEn="Start"/>
+                <FieldLabel Key="Medium" Length="15" Text="开始" TextEn="Start"/>
+                <FieldLabel Key="Long" Length="20" Text="开始" TextEn="Start"/>
+                <FieldLabel Key="Header" Length="8" Text="开始" TextEn="Start"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RestStartTime" Caption="工休开始时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Medium" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Long" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Header" Text="开始时间" TextEn="Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RevisionEndTime" Caption="修正结束时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="修正结束时间" TextEn="Adjusted End Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="修正结束时间" TextEn="Adjusted End Time"/>
+                <FieldLabel Key="Long" Length="20" Text="修正结束时间" TextEn="Adjusted End Time"/>
+                <FieldLabel Key="Header" Length="8" Text="修正结束时间" TextEn="Adjusted End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RevisionStartTime" Caption="修正开始时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="修正开始时间" TextEn="Adjusted Start Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="修正开始时间" TextEn="Adjusted Start Time"/>
+                <FieldLabel Key="Long" Length="20" Text="修正开始时间" TextEn="Adjusted Start Time"/>
+                <FieldLabel Key="Header" Length="8" Text="修正开始时间" TextEn="Adjusted Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ScheduleEndTime" Caption="排产/计划结束时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="排产/计划结束时间" TextEn="Scheduling/Plan End Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="排产/计划结束时间" TextEn="Scheduling/Plan End Time"/>
+                <FieldLabel Key="Long" Length="20" Text="排产/计划结束时间" TextEn="Scheduling/Plan End Time"/>
+                <FieldLabel Key="Header" Length="10" Text="排产/计划结束时间" TextEn="Scheduling/Plan End Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ScheduleStartTime" Caption="排产/计划开始时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="排产/计划开始时间" TextEn="Scheduling/Plan Start Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="排产/计划开始时间" TextEn="Scheduling/Plan Start Time"/>
+                <FieldLabel Key="Long" Length="20" Text="排产/计划开始时间" TextEn="Scheduling/Plan Start Time"/>
+                <FieldLabel Key="Header" Length="10" Text="排产/计划开始时间" TextEn="Scheduling/Plan Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ScheduledTime" Caption="计划时间" DomainKey="TimePicker"/>
+        <DataElement Key="StartLimitTime" Caption="开始限制时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="作业开始时间" TextEn="Activity Start Time"/>
+                <FieldLabel Key="Medium" Text="作业开始时间" TextEn="Activity Start Time"/>
+                <FieldLabel Key="Long" Text="作业开始时间" TextEn="Activity Start Time"/>
+                <FieldLabel Key="Header" Text="作业开始时间" TextEn="Activity Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="StartTimePicker" Caption="开始时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Long" Length="20" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Header" Length="8" Text="开始时间" TextEn="Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SecondStartTimePicker" Caption="秒表示的开始时间 (内部的)" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Long" Length="20" Text="开始时间" TextEn="Start Time"/>
+                <FieldLabel Key="Header" Length="10" Text="开始时间" TextEn="Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ActivityStartTime" Caption="作业的启动时间" DomainKey="TimePicker" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Long" Length="20" Text="时间" TextEn="Time"/>
+                <FieldLabel Key="Header" Length="3" Text="时间" TextEn="Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="UsagePeriodTime" Caption="实际发货时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="实际发货时间" TextEn="Actual Shipment Time"/>
+                <FieldLabel Key="Medium" Text="实际发货时间" TextEn="Actual Shipment Time"/>
+                <FieldLabel Key="Long" Text="实际发货时间" TextEn="Actual Shipment Time"/>
+                <FieldLabel Key="Header" Text="实际发货时间" TextEn="Actual Shipment Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="WorkEndTime" Caption="工作结束时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="工作结束时间" TextEn="End of work time"/>
+                <FieldLabel Key="Medium" Length="15" Text="工作结束时间" TextEn="End of work time"/>
+                <FieldLabel Key="Long" Length="20" Text="工作结束时间" TextEn="End of work time"/>
+                <FieldLabel Key="Header" Length="13" Text="工作结束时间" TextEn="End of work time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="WorkStartTime" Caption="工作开始时间" DomainKey="TimePicker">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="工作开始时间" TextEn="Work Start Time"/>
+                <FieldLabel Key="Medium" Length="15" Text="工作开始时间" TextEn="Work Start Time"/>
+                <FieldLabel Key="Long" Length="20" Text="工作开始时间" TextEn="Work Start Time"/>
+                <FieldLabel Key="Header" Length="13" Text="工作开始时间" TextEn="Work Start Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ActualDeliveryTime" Caption="实际发货时间" DomainKey="TimePicker_ALL" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="实际发货时间" TextEn="Actual Shipment Time"/>
+                <FieldLabel Key="Medium" Text="实际发货时间" TextEn="Actual Shipment Time"/>
+                <FieldLabel Key="Long" Text="实际发货时间" TextEn="Actual Shipment Time"/>
+                <FieldLabel Key="Header" Text="实际发货时间" TextEn="Actual Shipment Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ExecuteTime" Caption="执行时间" DomainKey="TimePicker_ALL" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="执行时间" TextEn="Execution Time"/>
+                <FieldLabel Key="Medium" Text="执行时间" TextEn="Execution Time"/>
+                <FieldLabel Key="Long" Text="执行时间" TextEn="Execution Time"/>
+                <FieldLabel Key="Header" Text="执行时间" TextEn="Execution Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="InboundDelivery_PlannedDeliveryTime" Caption="计划发货时间" DomainKey="TimePicker_ALL" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="计划发货时间" TextEn="Planned Shipping Time"/>
+                <FieldLabel Key="Medium" Text="计划发货时间" TextEn="Planned Shipping Time"/>
+                <FieldLabel Key="Long" Text="计划发货时间" TextEn="Planned Shipping Time"/>
+                <FieldLabel Key="Header" Text="计划发货时间" TextEn="Planned Shipping Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PickingTime" Caption="拣配时间" DomainKey="TimePicker_ALL" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="计划发货时间" TextEn="Planned Shipping Time"/>
+                <FieldLabel Key="Medium" Text="计划发货时间" TextEn="Planned Shipping Time"/>
+                <FieldLabel Key="Long" Text="计划发货时间" TextEn="Planned Shipping Time"/>
+                <FieldLabel Key="Header" Text="计划发货时间" TextEn="Planned Shipping Time"/>
+            </FieldLabelCollection>
+        </DataElement>
+    </DataElementCollection>
+</DataElementDef>

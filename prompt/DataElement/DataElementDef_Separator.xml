@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DataElementDef>
+    <DataElementCollection>
+        <DataElement Key="Separator_Text" Caption="Separator_文本" DomainKey="Separator_Text"/>
+        <DataElement Key="Separator_Varchar" Caption="Separator_Varchar" DomainKey="Separator_Varchar"/>
+    </DataElementCollection>
+</DataElementDef>

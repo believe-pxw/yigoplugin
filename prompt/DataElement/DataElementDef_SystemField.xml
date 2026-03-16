@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DataElementDef>
+    <DataElementCollection>
+        <DataElement Key="Code" Caption="代码" DomainKey="Code_30" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Medium" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Long" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Header" Text="代码" TextEn="Code"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SrcAccountCode" Caption="科目号从" DomainKey="Code_30" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="科目从" TextEn="Account From"/>
+                <FieldLabel Key="Medium" Length="15" Text="科目从" TextEn="Account From"/>
+                <FieldLabel Key="Long" Length="20" Text="科目从" TextEn="Account From"/>
+                <FieldLabel Key="Header" Length="14" Text="科目从" TextEn="Account From"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="TgtAccountCode" Caption="帐户号至" DomainKey="Code_30" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="科目到" TextEn="Account To"/>
+                <FieldLabel Key="Medium" Length="15" Text="科目到" TextEn="Account To"/>
+                <FieldLabel Key="Long" Length="20" Text="科目到" TextEn="Account To"/>
+                <FieldLabel Key="Header" Length="15" Text="科目到" TextEn="Account To"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Code_3" Caption="代码_3" DomainKey="Code_3" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Medium" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Long" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Header" Text="代码" TextEn="Code"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Code_6" Caption="代码_6" DomainKey="Code_6" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Medium" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Long" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Header" Text="代码" TextEn="Code"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Code_50" Caption="代码_50" DomainKey="Code_50" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Medium" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Long" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Header" Text="代码" TextEn="Code"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Code_100" Caption="代码_100" DomainKey="Code_100" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Medium" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Long" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Header" Text="代码" TextEn="Code"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Code_200" Caption="代码_200" DomainKey="Code_200" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Medium" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Long" Text="代码" TextEn="Code"/>
+                <FieldLabel Key="Header" Text="代码" TextEn="Code"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Name" Caption="名称" DomainKey="Name_255" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="名称" TextEn="Name"/>
+                <FieldLabel Key="Medium" Text="名称" TextEn="Name"/>
+                <FieldLabel Key="Long" Text="名称" TextEn="Name"/>
+                <FieldLabel Key="Header" Text="名称" TextEn="Name"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="NodeType" Caption="节点类型" DomainKey="NodeType" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="节点类型" TextEn="Node Type"/>
+                <FieldLabel Key="Medium" Text="节点类型" TextEn="Node Type"/>
+                <FieldLabel Key="Long" Text="节点类型" TextEn="Node Type"/>
+                <FieldLabel Key="Header" Text="节点类型" TextEn="Node Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Enable" Caption="启用标记" DomainKey="EnableStatus" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="启用" TextEn="Activate"/>
+                <FieldLabel Key="Medium" Text="启用" TextEn="Activate"/>
+                <FieldLabel Key="Long" Text="启用" TextEn="Activate"/>
+                <FieldLabel Key="Header" Text="启用" TextEn="Activate"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Status" Caption="流程状态" DomainKey="Status" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="流程状态" TextEn="Process Status"/>
+                <FieldLabel Key="Medium" Text="流程状态" TextEn="Process Status"/>
+                <FieldLabel Key="Long" Text="流程状态" TextEn="Process Status"/>
+                <FieldLabel Key="Header" Text="流程状态" TextEn="Process Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Status_Varchar" Caption="流程状态" DomainKey="Status_Varchar" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="审批状态" TextEn="Approval Status"/>
+                <FieldLabel Key="Medium" Text="审批状态" TextEn="Approval Status"/>
+                <FieldLabel Key="Long" Text="审批状态" TextEn="Approval Status"/>
+                <FieldLabel Key="Header" Text="审批状态" TextEn="Approval Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Status_CheckListBox" Caption="流程状态" DomainKey="Status_CheckListBox" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="审批状态" TextEn="Approval Status"/>
+                <FieldLabel Key="Medium" Text="审批状态" TextEn="Approval Status"/>
+                <FieldLabel Key="Long" Text="审批状态" TextEn="Approval Status"/>
+                <FieldLabel Key="Header" Text="审批状态" TextEn="Approval Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+    </DataElementCollection>
+</DataElementDef>

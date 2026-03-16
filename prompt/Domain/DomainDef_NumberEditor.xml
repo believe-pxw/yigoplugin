@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DomainDef>
+        <DomainCollection>
+            <Domain Key="AdjustedTaxDiffMoney_16_3" Caption="误差调整金额_精度16_小数位3" RefControlType="NumberEditor" DataType="Numeric" Precision="16" Scale="3"/>
+            <Domain Key="ScrapRate_5_3" Caption="报废率_精度5_小数位3" RefControlType="NumberEditor" DataType="Numeric" Precision="5" Scale="3"/>
+            <Domain Key="GoldTaxPrice_20_10" Caption="金税系统价格_精度20_小数位10" RefControlType="NumberEditor" DataType="Numeric" Precision="20" Scale="10"/>
+            <Domain Key="Money_16_2" Caption="金额_精度16_小数位2" RefControlType="NumberEditor" DataType="Numeric" Precision="16" Scale="2"/>
+            <Domain Key="Numeric_1_0" Caption="数值_精度1_小数位0(一位数的Int)" RefControlType="NumberEditor" DataType="Numeric" Precision="1" Scale="0"/>
+            <Domain Key="Numeric_2_0" Caption="数值_精度2_小数位0" RefControlType="NumberEditor" DataType="Numeric" Precision="2" Scale="0"/>
+            <Domain Key="Numeric_3_0" Caption="数值_精度3_小数位0" RefControlType="NumberEditor" DataType="Numeric" Precision="3" Scale="0"/>
+            <Domain Key="Numeric_3_1" Caption="数值_精度3_小数位1" RefControlType="NumberEditor" DataType="Numeric" Precision="3" Scale="1"/>
+            <Domain Key="Numeric_4_1" Caption="数值_精度4_小数位1" RefControlType="NumberEditor" DataType="Numeric" Precision="4" Scale="1"/>
+            <Domain Key="Numeric_5_2" Caption="数值_精度5_小数位2" RefControlType="NumberEditor" DataType="Numeric" Precision="5" Scale="2"/>
+            <Domain Key="Numeric_7_4" Caption="数值_精度7_小数位4" RefControlType="NumberEditor" DataType="Numeric" Precision="7" Scale="4"/>
+            <Domain Key="Numeric_9_4" Caption="数值_精度9_小数位4" RefControlType="NumberEditor" DataType="Numeric" Precision="9" Scale="4"/>
+            <Domain Key="Numeric_10_0" Caption="数值_精度10_小数位0" RefControlType="NumberEditor" DataType="Numeric" Precision="10" Scale="0"/>
+            <Domain Key="Numeric_16_0" Caption="数值_精度16_小数位0" RefControlType="NumberEditor" DataType="Numeric" Precision="16" Scale="0"/>
+            <Domain Key="Numeric_16_1" Caption="数值_精度16_小数位1" RefControlType="NumberEditor" DataType="Numeric" Precision="16" Scale="1"/>
+            <Domain Key="Numeric_16_2" Caption="数值_精度16_小数位2" RefControlType="NumberEditor" DataType="Numeric" Precision="16" Scale="2"/>
+            <Domain Key="Numeric_16_3" Caption="数值_精度16_小数位3" RefControlType="NumberEditor" DataType="Numeric" Precision="16" Scale="3"/>
+            <Domain Key="Numeric_16_4" Caption="数值_精度16_小数位4" RefControlType="NumberEditor" DataType="Numeric" Precision="16" Scale="4"/>
+            <Domain Key="Numeric_16_6" Caption="数值_精度16_小数位6" RefControlType="NumberEditor" DataType="Numeric" Precision="16" Scale="6"/>
+            <Domain Key="Numeric_16_10" Caption="数值_精度16_小数位10" RefControlType="NumberEditor" DataType="Numeric" Precision="16" Scale="10"/>
+            <Domain Key="Numeric_Integer" Caption="数值_整型" RefControlType="NumberEditor" DataType="Integer"/>
+            <Domain Key="Numeric_Long" Caption="数值_长整型" RefControlType="NumberEditor" DataType="Long"/>
+            <Domain Key="Price_16_2" Caption="价格/单价_精度16_小数位2" RefControlType="NumberEditor" DataType="Numeric" Precision="16" Scale="2"/>
+            <Domain Key="Price_16_6" Caption="价格/单价_精度16_小数位6" RefControlType="NumberEditor" DataType="Numeric" Precision="16" Scale="6"/>
+            <Domain Key="Quantity_16_2" Caption="数量_精度16_小数位2" RefControlType="NumberEditor" DataType="Numeric" Precision="16" Scale="2"/>
+            <Domain Key="Quantity_16_3" Caption="数量_精度16_小数位3" RefControlType="NumberEditor" DataType="Numeric" Precision="16" Scale="3"/>
+            <Domain Key="Quantity_Integer" Caption="数量_整型" RefControlType="NumberEditor" DataType="Integer"/>
+        </DomainCollection>
+</DomainDef>

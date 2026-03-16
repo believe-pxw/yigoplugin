@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DomainDef>
+        <DomainCollection>
+            <Domain Key="Date" Caption="日期" RefControlType="DatePicker" DataType="Date"/>
+            <Domain Key="DateTime" Caption="时间" RefControlType="DatePicker" DataType="DateTime"/>
+        </DomainCollection>
+</DomainDef>

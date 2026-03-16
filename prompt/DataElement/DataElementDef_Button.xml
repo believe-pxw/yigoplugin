@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DataElementDef>
+        <DataElementCollection>
+            <DataElement Key="Button_Varchar_255" Caption="Button_Varchar_255" DomainKey="Button_Varchar_255"/>
+        </DataElementCollection>
+</DataElementDef>

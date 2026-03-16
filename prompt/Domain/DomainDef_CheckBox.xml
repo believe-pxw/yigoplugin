@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DomainDef>
+        <DomainCollection>
+            <Domain Key="CheckBox" Caption="复选框" RefControlType="CheckBox" DataType="Integer"/>
+        </DomainCollection>
+</DomainDef>

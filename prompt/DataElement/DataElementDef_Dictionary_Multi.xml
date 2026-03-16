@@ -1,0 +1,918 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DataElementDef>
+    <DataElementCollection>
+        <DataElement Key="AccountAssignmentCategoryID_Multi" Caption="科目账户分配类别" DomainKey="AccountAssignmentCategory_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="科目分配类别" TextEn="Account Assignment Category"/>
+                <FieldLabel Key="Medium" Text="科目分配类别" TextEn="Account Assignment Category"/>
+                <FieldLabel Key="Long" Text="科目分配类别" TextEn="Account Assignment Category"/>
+                <FieldLabel Key="Header" Text="科目分配类别" TextEn="Account Assignment Category"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="IntegrationCopyControlID_Multi" Caption="IntegrationCopyControlID" DomainKey="IntegrationCopyControl_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="复制控制" TextEn="Copy Control"/>
+                <FieldLabel Key="Medium" Text="复制控制" TextEn="Copy Control"/>
+                <FieldLabel Key="Long" Text="复制控制" TextEn="Copy Control"/>
+                <FieldLabel Key="Header" Text="复制控制" TextEn="Copy Control"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="BusinessAreaID_Multi" Caption="业务范围" DomainKey="BusinessArea_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="业务范围" TextEn="Business Area"/>
+                <FieldLabel Key="Medium" Text="业务范围" TextEn="Business Area"/>
+                <FieldLabel Key="Long" Text="业务范围" TextEn="Business Area"/>
+                <FieldLabel Key="Header" Text="业务范围" TextEn="Business Area"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CompanyCodeID_Multi" Caption="分配公司代码集合" DomainKey="CompanyCode_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="公司代码" TextEn="Company Code"/>
+                <FieldLabel Key="Medium" Text="公司代码" TextEn="Company Code"/>
+                <FieldLabel Key="Long" Text="公司代码" TextEn="Company Code"/>
+                <FieldLabel Key="Header" Text="公司代码" TextEn="Company Code"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SaleOrganizationID_Multi" Caption="销售组织" DomainKey="SaleOrganization_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="销售组织" TextEn="Sales Organization"/>
+                <FieldLabel Key="Medium" Text="销售组织" TextEn="Sales Organization"/>
+                <FieldLabel Key="Long" Text="销售组织" TextEn="Sales Organization"/>
+                <FieldLabel Key="Header" Text="销售组织" TextEn="Sales Organization"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DistributionChannelID_Multi" Caption="分销渠道" DomainKey="DistributionChannel_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="分销渠道" TextEn="Distribution Channel"/>
+                <FieldLabel Key="Medium" Text="分销渠道" TextEn="Distribution Channel"/>
+                <FieldLabel Key="Long" Text="分销渠道" TextEn="Distribution Channel"/>
+                <FieldLabel Key="Header" Text="分销渠道" TextEn="Distribution Channel"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DivisionID_Multi" Caption="产品部门" DomainKey="Division_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="产品部门" TextEn="Product Department"/>
+                <FieldLabel Key="Medium" Text="产品部门" TextEn="Product Department"/>
+                <FieldLabel Key="Long" Text="产品部门" TextEn="Product Department"/>
+                <FieldLabel Key="Header" Text="产品部门" TextEn="Product Department"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CostCenterID_Multi" Caption="负责的成本中心" DomainKey="CostCenter_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="成本中心" TextEn="Cost Center"/>
+                <FieldLabel Key="Medium" Text="成本中心" TextEn="Cost Center"/>
+                <FieldLabel Key="Long" Text="成本中心" TextEn="Cost Center"/>
+                <FieldLabel Key="Header" Text="成本中心" TextEn="Cost Center"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FunctionalAreaID_Multi" Caption="功能范围" DomainKey="FunctionalArea_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="功能范围" TextEn="Functional Area"/>
+                <FieldLabel Key="Medium" Text="功能范围" TextEn="Functional Area"/>
+                <FieldLabel Key="Long" Text="功能范围" TextEn="Functional Area"/>
+                <FieldLabel Key="Header" Text="功能范围" TextEn="Functional Area"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="MaterialID_Multi" Caption="物料" DomainKey="Material_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="物料" TextEn="Material"/>
+                <FieldLabel Key="Medium" Text="物料" TextEn="Material"/>
+                <FieldLabel Key="Long" Text="物料" TextEn="Material"/>
+                <FieldLabel Key="Header" Text="物料" TextEn="Material"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="MaterialGroupID_Multi" Caption="物料组" DomainKey="MaterialGroup_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="物料组" TextEn="Material Group"/>
+                <FieldLabel Key="Medium" Text="物料组" TextEn="Material Group"/>
+                <FieldLabel Key="Long" Text="物料组" TextEn="Material Group"/>
+                <FieldLabel Key="Header" Text="物料组" TextEn="Material Group"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PlantID_Multi" Caption="工厂" DomainKey="Plant_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="工厂" TextEn="Plant"/>
+                <FieldLabel Key="Medium" Text="工厂" TextEn="Plant"/>
+                <FieldLabel Key="Long" Text="工厂" TextEn="Plant"/>
+                <FieldLabel Key="Header" Text="工厂" TextEn="Plant"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ProfitCenterID_Multi" Caption="利润中心" DomainKey="ProfitCenter_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="利润中心" TextEn="Profit Center"/>
+                <FieldLabel Key="Medium" Text="利润中心" TextEn="Profit Center"/>
+                <FieldLabel Key="Long" Text="利润中心" TextEn="Profit Center"/>
+                <FieldLabel Key="Header" Text="利润中心" TextEn="Profit Center"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PurchasingOrganizationID_Multi" Caption="分配采购组织集合" DomainKey="PurchasingOrganization_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="采购组织" TextEn="Purchasing Organization"/>
+                <FieldLabel Key="Medium" Text="采购组织" TextEn="Purchasing Organization"/>
+                <FieldLabel Key="Long" Text="采购组织" TextEn="Purchasing Organization"/>
+                <FieldLabel Key="Header" Text="采购组织" TextEn="Purchasing Organization"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="VendorID_Multi" Caption="固定的供应商" DomainKey="Vendor_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="供应商" TextEn="Vendor"/>
+                <FieldLabel Key="Medium" Text="供应商" TextEn="Vendor"/>
+                <FieldLabel Key="Long" Text="供应商" TextEn="Vendor"/>
+                <FieldLabel Key="Header" Text="供应商" TextEn="Vendor"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ResponsiblePersonID_Multi" Caption="负责人" DomainKey="Operator_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="负责人" TextEn="Responsible Person"/>
+                <FieldLabel Key="Medium" Text="负责人" TextEn="Responsible Person"/>
+                <FieldLabel Key="Long" Text="负责人" TextEn="Responsible Person"/>
+                <FieldLabel Key="Header" Text="负责人" TextEn="Responsible Person"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Operator_Multi" Caption="操作员(多选)" DomainKey="Operator_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="创建人员" TextEn="Creator"/>
+                <FieldLabel Key="Medium" Text="创建人员" TextEn="Creator"/>
+                <FieldLabel Key="Long" Text="创建人员" TextEn="Creator"/>
+                <FieldLabel Key="Header" Text="创建人员" TextEn="Creator"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ClassificationID_Multi" Caption="分类" DomainKey="Classification_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="分类" TextEn="Classification"/>
+                <FieldLabel Key="Medium" Text="分类" TextEn="Classification"/>
+                <FieldLabel Key="Long" Text="分类" TextEn="Classification"/>
+                <FieldLabel Key="Header" Text="分类" TextEn="Classification"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="MM_ItemCategoryID_Multi" Caption="项目类别" DomainKey="MM_ItemCategory_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="项目类别" TextEn="Item Category"/>
+                <FieldLabel Key="Medium" Text="项目类别" TextEn="Item Category"/>
+                <FieldLabel Key="Long" Text="项目类别" TextEn="Item Category"/>
+                <FieldLabel Key="Header" Text="项目类别" TextEn="Item Category"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="BillingDocumentTypeID_Multi" Caption="红字发票类型" DomainKey="SD_BillingDocumentType_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="目标开票类型" TextEn="Target Billing Type"/>
+                <FieldLabel Key="Medium" Text="目标开票类型" TextEn="Target Billing Type"/>
+                <FieldLabel Key="Long" Text="目标开票类型" TextEn="Target Billing Type"/>
+                <FieldLabel Key="Header" Text="目标开票类型" TextEn="Target Billing Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="MRPControllerID_Multi" Caption="MRP控制者" DomainKey="PP_MRPController_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="MRP控制者" TextEn="MRP Controller"/>
+                <FieldLabel Key="Medium" Text="MRP控制者" TextEn="MRP Controller"/>
+                <FieldLabel Key="Long" Text="MRP控制者" TextEn="MRP Controller"/>
+                <FieldLabel Key="Header" Text="MRP控制者" TextEn="MRP Controller"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="MRPScopeID_Multi" Caption="MRP范围" DomainKey="PP_MRPScope_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="MRP范围" TextEn="MRP Scope"/>
+                <FieldLabel Key="Medium" Text="MRP范围" TextEn="MRP Scope"/>
+                <FieldLabel Key="Long" Text="MRP范围" TextEn="MRP Scope"/>
+                <FieldLabel Key="Header" Text="MRP范围" TextEn="MRP Scope"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PP_RequirementTypeID_Multi" Caption="需求类型" DomainKey="PP_RequirementType_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="需求类型" TextEn="Demand Type"/>
+                <FieldLabel Key="Medium" Text="需求类型" TextEn="Demand Type"/>
+                <FieldLabel Key="Long" Text="需求类型" TextEn="Demand Type"/>
+                <FieldLabel Key="Header" Text="需求类型" TextEn="Demand Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="AssetCardSOID_Multi" Caption="新增资产模板" DomainKey="AM_AssetCard__Dic_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="资产卡片" TextEn="Asset Card"/>
+                <FieldLabel Key="Medium" Text="资产卡片" TextEn="Asset Card"/>
+                <FieldLabel Key="Long" Text="资产卡片" TextEn="Asset Card"/>
+                <FieldLabel Key="Header" Text="资产卡片" TextEn="Asset Card"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ExpenseRequisitionSOID_Multi" Caption="来源申请单" DomainKey="ECS_ExpenseRequisition__Dic_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="费用申请单" TextEn="Expense Application"/>
+                <FieldLabel Key="Medium" Text="费用申请单" TextEn="Expense Application"/>
+                <FieldLabel Key="Long" Text="费用申请单" TextEn="Expense Application"/>
+                <FieldLabel Key="Header" Text="费用申请单" TextEn="Expense Application"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="AttchmentTypeID" Caption="附件分类类型" DomainKey="FI_AttachmentType_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="附件分类类型" TextEn="Attachment Category Type"/>
+                <FieldLabel Key="Medium" Text="附件分类类型" TextEn="Attachment Category Type"/>
+                <FieldLabel Key="Long" Text="附件分类类型" TextEn="Attachment Category Type"/>
+                <FieldLabel Key="Header" Text="附件分类类型" TextEn="Attachment Category Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="BankAccountPackageID_Multi" Caption="银行账套" DomainKey="FI_BankAccountPackage_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="银行账套" TextEn="Bank Account Set"/>
+                <FieldLabel Key="Medium" Text="银行账套" TextEn="Bank Account Set"/>
+                <FieldLabel Key="Long" Text="银行账套" TextEn="Bank Account Set"/>
+                <FieldLabel Key="Header" Text="银行账套" TextEn="Bank Account Set"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="BankAccountSOID_Multi" Caption="银行账户" DomainKey="FI_BankAccount__Dic_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="银行账号" TextEn="Bank Account"/>
+                <FieldLabel Key="Medium" Text="银行账号" TextEn="Bank Account"/>
+                <FieldLabel Key="Long" Text="银行账号" TextEn="Bank Account"/>
+                <FieldLabel Key="Header" Text="银行账号" TextEn="Bank Account"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="HouseBankID_Multi" Caption="开户银行" DomainKey="FI_HouseBank_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="开户行" TextEn="Bank"/>
+                <FieldLabel Key="Medium" Text="开户行" TextEn="Bank"/>
+                <FieldLabel Key="Long" Text="开户行" TextEn="Bank"/>
+                <FieldLabel Key="Header" Text="开户行" TextEn="Bank"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SpecialGLID_Multi" Caption="特别总账标识" DomainKey="FI_SpecialGL_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="特别总账标识" TextEn="Special General Ledger Identifier"/>
+                <FieldLabel Key="Medium" Text="特别总账标识" TextEn="Special General Ledger Identifier"/>
+                <FieldLabel Key="Long" Text="特别总账标识" TextEn="Special General Ledger Identifier"/>
+                <FieldLabel Key="Header" Text="特别总账标识" TextEn="Special General Ledger Identifier"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ActivityTypeID_Multi" Caption="作业类型" DomainKey="CO_ActivityType_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="作业类型" TextEn="Activity Type"/>
+                <FieldLabel Key="Medium" Text="作业类型" TextEn="Activity Type"/>
+                <FieldLabel Key="Long" Text="作业类型" TextEn="Activity Type"/>
+                <FieldLabel Key="Header" Text="作业类型" TextEn="Activity Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CostCenterCategoryID_Multi" Caption="成本中心类别" DomainKey="CO_CostCenterCategory_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Length="10" Text="成本中心类别" TextEn="Cost Center Category"/>
+                <FieldLabel Key="Medium" Length="15" Text="成本中心类别" TextEn="Cost Center Category"/>
+                <FieldLabel Key="Long" Length="20" Text="成本中心类别" TextEn="Cost Center Category"/>
+                <FieldLabel Key="Header" Length="8" Text="成本中心类别" TextEn="Cost Center Category"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="WBSElementID_Multi" Caption="WBS元素" DomainKey="PS_WBSElement_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="WBS元素" TextEn="WBS Element"/>
+                <FieldLabel Key="Medium" Text="WBS元素" TextEn="WBS Element"/>
+                <FieldLabel Key="Long" Text="WBS元素" TextEn="WBS Element"/>
+                <FieldLabel Key="Header" Text="WBS元素" TextEn="WBS Element"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PM_OrderTypeID_Multi" Caption="订单类型" DomainKey="PM_OrderType_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="订单类型" TextEn="Order Type"/>
+                <FieldLabel Key="Medium" Text="订单类型" TextEn="Order Type"/>
+                <FieldLabel Key="Long" Text="订单类型" TextEn="Order Type"/>
+                <FieldLabel Key="Header" Text="订单类型" TextEn="Order Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CountryGroupID_Multi" Caption="国家分组" DomainKey="HR_CountryGroup_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="国家分组" TextEn="Country Grouping"/>
+                <FieldLabel Key="Medium" Text="国家分组" TextEn="Country Grouping"/>
+                <FieldLabel Key="Long" Text="国家分组" TextEn="Country Grouping"/>
+                <FieldLabel Key="Header" Text="国家分组" TextEn="Country Grouping"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="EmployeeID_Multi" Caption="人员编号" DomainKey="HR_Employee_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="人员编号" TextEn="Person Number"/>
+                <FieldLabel Key="Medium" Text="人员编号" TextEn="Person Number"/>
+                <FieldLabel Key="Long" Text="人员编号" TextEn="Person Number"/>
+                <FieldLabel Key="Header" Text="人员编号" TextEn="Person Number"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PersonnelActionTypeID_Multi" Caption="禁止的后续行动类型" DomainKey="HR_PersonnelActionType_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="禁止的后续行动类型" TextEn="Prohibited Follow-up Action Type"/>
+                <FieldLabel Key="Medium" Text="禁止的后续行动类型" TextEn="Prohibited Follow-up Action Type"/>
+                <FieldLabel Key="Long" Text="禁止的后续行动类型" TextEn="Prohibited Follow-up Action Type"/>
+                <FieldLabel Key="Header" Text="禁止的后续行动类型" TextEn="Prohibited Follow-up Action Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SupplierID_Multi" Caption="供应商" DomainKey="SRM_Supplier_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="供应商" TextEn="Vendor"/>
+                <FieldLabel Key="Medium" Text="供应商" TextEn="Vendor"/>
+                <FieldLabel Key="Long" Text="供应商" TextEn="Vendor"/>
+                <FieldLabel Key="Header" Text="供应商" TextEn="Vendor"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PlanFlowItemID_Multi" Caption="流动性项目标识" DomainKey="TCM_PlanFlowItem_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="流动性项目标识" TextEn="Liquidity Item Identifier"/>
+                <FieldLabel Key="Medium" Text="流动性项目标识" TextEn="Liquidity Item Identifier"/>
+                <FieldLabel Key="Long" Text="流动性项目标识" TextEn="Liquidity Item Identifier"/>
+                <FieldLabel Key="Header" Text="流动性项目标识" TextEn="Liquidity Item Identifier"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RoleID_Multi" Caption="角色（多选）" DomainKey="Role_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="目标角色" TextEn="Target Role"/>
+                <FieldLabel Key="Medium" Text="目标角色" TextEn="Target Role"/>
+                <FieldLabel Key="Long" Text="目标角色" TextEn="Target Role"/>
+                <FieldLabel Key="Header" Text="目标角色" TextEn="Target Role"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PP_WorkCenterUsageID_Multi" Caption="工作中心用途(多选)" DomainKey="PP_WorkCenterUsage_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="用途" TextEn="Usage"/>
+                <FieldLabel Key="Medium" Text="用途" TextEn="Usage"/>
+                <FieldLabel Key="Long" Text="用途" TextEn="Usage"/>
+                <FieldLabel Key="Header" Text="用途" TextEn="Usage"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PP_WorkCenterCategoryID_Multi" Caption="工作中心类别(多选)" DomainKey="PP_WorkCenterCategory_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="工作中心类别" TextEn="Work Center Category"/>
+                <FieldLabel Key="Medium" Text="工作中心类别" TextEn="Work Center Category"/>
+                <FieldLabel Key="Long" Text="工作中心类别" TextEn="Work Center Category"/>
+                <FieldLabel Key="Header" Text="工作中心类别" TextEn="Work Center Category"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="VoucherTypeID_Multi" Caption="凭证类型(多选)" DomainKey="VoucherType_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="凭证类型" TextEn="Document Type"/>
+                <FieldLabel Key="Medium" Text="凭证类型" TextEn="Document Type"/>
+                <FieldLabel Key="Long" Text="凭证类型" TextEn="Document Type"/>
+                <FieldLabel Key="Header" Text="凭证类型" TextEn="Document Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CurrencyID_Multi" Caption="币种(多选)" DomainKey="Currency_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="货币" TextEn="Currency"/>
+                <FieldLabel Key="Medium" Text="货币" TextEn="Currency"/>
+                <FieldLabel Key="Long" Text="货币" TextEn="Currency"/>
+                <FieldLabel Key="Header" Text="货币" TextEn="Currency"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="AccountID_Multi" Caption="科目(多选)" DomainKey="Account_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="科目" TextEn="Account"/>
+                <FieldLabel Key="Medium" Text="科目" TextEn="Account"/>
+                <FieldLabel Key="Long" Text="科目" TextEn="Account"/>
+                <FieldLabel Key="Header" Text="科目" TextEn="Account"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CostCenterGroupID_Multi" Caption="成本中心组(多选)" DomainKey="CostCenterGroup_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="成本中心组" TextEn="Cost Center Group"/>
+                <FieldLabel Key="Medium" Text="成本中心组" TextEn="Cost Center Group"/>
+                <FieldLabel Key="Long" Text="成本中心组" TextEn="Cost Center Group"/>
+                <FieldLabel Key="Header" Text="成本中心组" TextEn="Cost Center Group"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="AssetClassID_Multi" Caption="资产分类(多选)" DomainKey="AssetClass_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="资产分类" TextEn="Asset Classification"/>
+                <FieldLabel Key="Medium" Text="资产分类" TextEn="Asset Classification"/>
+                <FieldLabel Key="Long" Text="资产分类" TextEn="Asset Classification"/>
+                <FieldLabel Key="Header" Text="资产分类" TextEn="Asset Classification"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DepreciationKeyID_Multi" Caption="折旧码(多选)" DomainKey="DepreciationKey_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="折旧码" TextEn="Depreciation Code"/>
+                <FieldLabel Key="Medium" Text="折旧码" TextEn="Depreciation Code"/>
+                <FieldLabel Key="Long" Text="折旧码" TextEn="Depreciation Code"/>
+                <FieldLabel Key="Header" Text="折旧码" TextEn="Depreciation Code"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DepreciationAreaID_Multi" Caption="折旧范围(多选)" DomainKey="DepreciationArea_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="折旧范围" TextEn="Depreciation Range"/>
+                <FieldLabel Key="Medium" Text="折旧范围" TextEn="Depreciation Range"/>
+                <FieldLabel Key="Long" Text="折旧范围" TextEn="Depreciation Range"/>
+                <FieldLabel Key="Header" Text="折旧范围" TextEn="Depreciation Range"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="TransactionTypeID_Multi" Caption="业务类型(多选)" DomainKey="TransactionType_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="业务类型" TextEn="Business Type"/>
+                <FieldLabel Key="Medium" Text="业务类型" TextEn="Business Type"/>
+                <FieldLabel Key="Long" Text="业务类型" TextEn="Business Type"/>
+                <FieldLabel Key="Header" Text="业务类型" TextEn="Business Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="InspectionLotOriginID_Multi" Caption="检验批来源(多选)" DomainKey="QM_InspectionLotOrigin_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="检验批来源" TextEn="Inspection Lot Source"/>
+                <FieldLabel Key="Medium" Text="检验批来源" TextEn="Inspection Lot Source"/>
+                <FieldLabel Key="Long" Text="检验批来源" TextEn="Inspection Lot Source"/>
+                <FieldLabel Key="Header" Text="检验批来源" TextEn="Inspection Lot Source"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PhysicalSampleTypeID_Multi" Caption="物理采样类型(多选)" DomainKey="QM_PhysicalSampleType_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="物理采样类型" TextEn="Physical Sampling Type"/>
+                <FieldLabel Key="Medium" Text="物理采样类型" TextEn="Physical Sampling Type"/>
+                <FieldLabel Key="Long" Text="物理采样类型" TextEn="Physical Sampling Type"/>
+                <FieldLabel Key="Header" Text="物理采样类型" TextEn="Physical Sampling Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DefectReportTypeID_Multi" Caption="缺陷报告类型(多选)" DomainKey="QM_DefectReportType_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="报表类型" TextEn="Report Type"/>
+                <FieldLabel Key="Medium" Text="报表类型" TextEn="Report Type"/>
+                <FieldLabel Key="Long" Text="报表类型" TextEn="Report Type"/>
+                <FieldLabel Key="Header" Text="报表类型" TextEn="Report Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="InspectionTypeID_Multi" Caption="检验类型(多选)" DomainKey="QM_InspectionType_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="检验类型" TextEn="Inspection Type"/>
+                <FieldLabel Key="Medium" Text="检验类型" TextEn="Inspection Type"/>
+                <FieldLabel Key="Long" Text="检验类型" TextEn="Inspection Type"/>
+                <FieldLabel Key="Header" Text="检验类型" TextEn="Inspection Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RoutingUsageID_Multi" Caption="工艺路线用途(多选)" DomainKey="PP_RoutingUsage_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="任务清单使用" TextEn="Task List Usage"/>
+                <FieldLabel Key="Medium" Text="任务清单使用" TextEn="Task List Usage"/>
+                <FieldLabel Key="Long" Text="任务清单使用" TextEn="Task List Usage"/>
+                <FieldLabel Key="Header" Text="任务清单使用" TextEn="Task List Usage"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="MaterialTypeID_Multi" Caption="物料类型" DomainKey="MaterialTypeID_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="物料类型" TextEn="Material Type"/>
+                <FieldLabel Key="Medium" Text="物料类型" TextEn="Material Type"/>
+                <FieldLabel Key="Long" Text="物料类型" TextEn="Material Type"/>
+                <FieldLabel Key="Header" Text="物料类型" TextEn="Material Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="NetworkID_Multi" Caption="网络" DomainKey="NetworkID_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="网络" TextEn="Network"/>
+                <FieldLabel Key="Medium" Text="网络" TextEn="Network"/>
+                <FieldLabel Key="Long" Text="网络" TextEn="Network"/>
+                <FieldLabel Key="Header" Text="网络" TextEn="Network"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ActivityID_Multi" Caption="作业" DomainKey="ActivityID_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="作业" TextEn="Activity"/>
+                <FieldLabel Key="Medium" Text="作业" TextEn="Activity"/>
+                <FieldLabel Key="Long" Text="作业" TextEn="Activity"/>
+                <FieldLabel Key="Header" Text="作业" TextEn="Activity"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ItemProjectID_Multi" Caption="项目" DomainKey="ItemProjectID_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="项目" TextEn="Item"/>
+                <FieldLabel Key="Medium" Text="项目" TextEn="Item"/>
+                <FieldLabel Key="Long" Text="项目" TextEn="Item"/>
+                <FieldLabel Key="Header" Text="项目" TextEn="Item"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="StorageLocationID_Multi" Caption="库存地点" DomainKey="StorageLocationID_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="库存地点" TextEn="Storage Location"/>
+                <FieldLabel Key="Medium" Text="库存地点" TextEn="Storage Location"/>
+                <FieldLabel Key="Long" Text="库存地点" TextEn="Storage Location"/>
+                <FieldLabel Key="Header" Text="库存地点" TextEn="Storage Location"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ProductionSchedulerID_Multi" Caption="生产调度员" DomainKey="ProductionSchedulerID_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="生产调度员" TextEn="Production Scheduler"/>
+                <FieldLabel Key="Medium" Text="生产调度员" TextEn="Production Scheduler"/>
+                <FieldLabel Key="Long" Text="生产调度员" TextEn="Production Scheduler"/>
+                <FieldLabel Key="Header" Text="生产调度员" TextEn="Production Scheduler"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PurchasingGroupID_Multi" Caption="采购组" DomainKey="PurchasingGroupID_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="采购组" TextEn="Purchasing Group"/>
+                <FieldLabel Key="Medium" Text="采购组" TextEn="Purchasing Group"/>
+                <FieldLabel Key="Long" Text="采购组" TextEn="Purchasing Group"/>
+                <FieldLabel Key="Header" Text="采购组" TextEn="Purchasing Group"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DocumentTypeID_Multi" Caption="单据类型" DomainKey="DocumentTypeID_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="单据类型" TextEn="Document Type"/>
+                <FieldLabel Key="Medium" Text="单据类型" TextEn="Document Type"/>
+                <FieldLabel Key="Long" Text="单据类型" TextEn="Document Type"/>
+                <FieldLabel Key="Header" Text="单据类型" TextEn="Document Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PurchaseContractID_Multi" Caption="采购合同" DomainKey="PurchaseContractID_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="合同号" TextEn="Contract Number"/>
+                <FieldLabel Key="Medium" Text="合同号" TextEn="Contract Number"/>
+                <FieldLabel Key="Long" Text="合同号" TextEn="Contract Number"/>
+                <FieldLabel Key="Header" Text="合同号" TextEn="Contract Number"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ValuationAreaID_Multi" Caption="评估范围(多选)" DomainKey="ValuationArea_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="评估范围" TextEn="Valuation Area"/>
+                <FieldLabel Key="Medium" Text="评估范围" TextEn="Valuation Area"/>
+                <FieldLabel Key="Long" Text="评估范围" TextEn="Valuation Area"/>
+                <FieldLabel Key="Header" Text="评估范围" TextEn="Valuation Area"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Creator_Multi" Caption="制单人(多选)" DomainKey="Operator_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="制单人" TextEn="Created By"/>
+                <FieldLabel Key="Medium" Text="制单人" TextEn="Created By"/>
+                <FieldLabel Key="Long" Text="制单人" TextEn="Created By"/>
+                <FieldLabel Key="Header" Text="制单人" TextEn="Created By"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="BusinessTransactionID_Multi" Caption="业务交易(多选)" DomainKey="BusinessTransaction_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="业务交易" TextEn="Business Transaction"/>
+                <FieldLabel Key="Medium" Text="业务交易" TextEn="Business Transaction"/>
+                <FieldLabel Key="Long" Text="业务交易" TextEn="Business Transaction"/>
+                <FieldLabel Key="Header" Text="业务交易" TextEn="Business Transaction"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DocSplittingMethodID_Multi" Caption="拆分方法(多选)" DomainKey="DocSplittingMethod_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="拆分方法" TextEn="Split Method"/>
+                <FieldLabel Key="Medium" Text="拆分方法" TextEn="Split Method"/>
+                <FieldLabel Key="Long" Text="拆分方法" TextEn="Split Method"/>
+                <FieldLabel Key="Header" Text="拆分方法" TextEn="Split Method"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="AutoPayParameterID_Multi" Caption="参数单据号(多选)" DomainKey="AutoPayParameter_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="参数单据号" TextEn="Parameter Document Number"/>
+                <FieldLabel Key="Medium" Text="参数单据号" TextEn="Parameter Document Number"/>
+                <FieldLabel Key="Long" Text="参数单据号" TextEn="Parameter Document Number"/>
+                <FieldLabel Key="Header" Text="参数单据号" TextEn="Parameter Document Number"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PaymentMethodID_Multi" Caption="付款方式(多选)" DomainKey="PaymentMethod_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="付款方式" TextEn="Payment Method"/>
+                <FieldLabel Key="Medium" Text="付款方式" TextEn="Payment Method"/>
+                <FieldLabel Key="Long" Text="付款方式" TextEn="Payment Method"/>
+                <FieldLabel Key="Header" Text="付款方式" TextEn="Payment Method"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SaleOrderSOID_Multi" Caption="销售订单单据字典(多选)" DomainKey="SaleOrderSOID_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="销售订单" TextEn="Sales Order"/>
+                <FieldLabel Key="Medium" Text="销售订单" TextEn="Sales Order"/>
+                <FieldLabel Key="Long" Text="销售订单" TextEn="Sales Order"/>
+                <FieldLabel Key="Header" Text="销售订单" TextEn="Sales Order"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SaleOrderDtlOID_Multi" Caption="销售订单行项目字典(多选)" DomainKey="SaleOrderDtlOID_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="销售订单项目" TextEn="Sales Order Item"/>
+                <FieldLabel Key="Medium" Text="销售订单项目" TextEn="Sales Order Item"/>
+                <FieldLabel Key="Long" Text="销售订单项目" TextEn="Sales Order Item"/>
+                <FieldLabel Key="Header" Text="销售订单项目" TextEn="Sales Order Item"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="GlobalValuationTypeID_Multi" Caption="评估类型(多选)" DomainKey="GlobalValuationType_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="评估类型" TextEn="Valuation Type"/>
+                <FieldLabel Key="Medium" Text="评估类型" TextEn="Valuation Type"/>
+                <FieldLabel Key="Long" Text="评估类型" TextEn="Valuation Type"/>
+                <FieldLabel Key="Header" Text="评估类型" TextEn="Valuation Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ERPSystemStatusID_Multi" Caption="系统状态(多选)" DomainKey="ERPSystemStatus_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="系统状态" TextEn="System Status"/>
+                <FieldLabel Key="Medium" Text="系统状态" TextEn="System Status"/>
+                <FieldLabel Key="Long" Text="系统状态" TextEn="System Status"/>
+                <FieldLabel Key="Header" Text="系统状态" TextEn="System Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CustomerID_Multi" Caption="客户(多选)" DomainKey="Customer_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="客户" TextEn="Customer"/>
+                <FieldLabel Key="Medium" Text="客户" TextEn="Customer"/>
+                <FieldLabel Key="Long" Text="客户" TextEn="Customer"/>
+                <FieldLabel Key="Header" Text="客户" TextEn="Customer"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SaleBillingSOID_Multi" Caption="销售发票单据字典(多选)" DomainKey="SD_SaleBilling__Dic__Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="销售发票" TextEn="Sales Invoice"/>
+                <FieldLabel Key="Medium" Text="销售发票" TextEn="Sales Invoice"/>
+                <FieldLabel Key="Long" Text="销售发票" TextEn="Sales Invoice"/>
+                <FieldLabel Key="Header" Text="销售发票" TextEn="Sales Invoice"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SaleDocumentTypeID_Multi" Caption="销售凭证类型(多选)" DomainKey="SD_SaleDocumentType_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="销售凭证类型" TextEn="Sales Document Type"/>
+                <FieldLabel Key="Medium" Text="销售凭证类型" TextEn="Sales Document Type"/>
+                <FieldLabel Key="Long" Text="销售凭证类型" TextEn="Sales Document Type"/>
+                <FieldLabel Key="Header" Text="销售凭证类型" TextEn="Sales Document Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DeliveryDocumentTypeID_Multi" Caption="交货类型(多选)" DomainKey="SD_DeliveryDocumentType_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="源交货类型" TextEn="Source Delivery Type"/>
+                <FieldLabel Key="Medium" Text="源交货类型" TextEn="Source Delivery Type"/>
+                <FieldLabel Key="Long" Text="源交货类型" TextEn="Source Delivery Type"/>
+                <FieldLabel Key="Header" Text="源交货类型" TextEn="Source Delivery Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ShippingPointID_Multi" Caption="装运点(多选)" DomainKey="SD_ShippingPoint_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="装运地点" TextEn="Shipping Location"/>
+                <FieldLabel Key="Medium" Text="装运地点" TextEn="Shipping Location"/>
+                <FieldLabel Key="Long" Text="装运地点" TextEn="Shipping Location"/>
+                <FieldLabel Key="Header" Text="装运地点" TextEn="Shipping Location"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SD_ItemCategoryID_Multi" Caption="项目类别(多选)" DomainKey="SD_ItemCategory_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="项目类别" TextEn="Item Category"/>
+                <FieldLabel Key="Medium" Text="项目类别" TextEn="Item Category"/>
+                <FieldLabel Key="Long" Text="项目类别" TextEn="Item Category"/>
+                <FieldLabel Key="Header" Text="项目类别" TextEn="Item Category"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RiskCategoryID_Multi" Caption="信用风险类别(多选)" DomainKey="SD_RiskCategory_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="风险类别" TextEn="Risk Category"/>
+                <FieldLabel Key="Medium" Text="风险类别" TextEn="Risk Category"/>
+                <FieldLabel Key="Long" Text="风险类别" TextEn="Risk Category"/>
+                <FieldLabel Key="Header" Text="风险类别" TextEn="Risk Category"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CreditControlAreaID_Multi" Caption="信贷控制范围(多选)" DomainKey="CreditControlArea_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="信贷控制范围" TextEn="Credit Control Area"/>
+                <FieldLabel Key="Medium" Text="信贷控制范围" TextEn="Credit Control Area"/>
+                <FieldLabel Key="Long" Text="信贷控制范围" TextEn="Credit Control Area"/>
+                <FieldLabel Key="Header" Text="信贷控制范围" TextEn="Credit Control Area"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CreditGroupID_Multi" Caption="信用代表组(多选)" DomainKey="SD_CreditGroup_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="信用代表组" TextEn="Credit Representative Group"/>
+                <FieldLabel Key="Medium" Text="信用代表组" TextEn="Credit Representative Group"/>
+                <FieldLabel Key="Long" Text="信用代表组" TextEn="Credit Representative Group"/>
+                <FieldLabel Key="Header" Text="信用代表组" TextEn="Credit Representative Group"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CustomerGroupID_Multi" Caption="客户组(多选)" DomainKey="SD_CustomerGroup_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="客户组" TextEn="Customer Group"/>
+                <FieldLabel Key="Medium" Text="客户组" TextEn="Customer Group"/>
+                <FieldLabel Key="Long" Text="客户组" TextEn="Customer Group"/>
+                <FieldLabel Key="Header" Text="客户组" TextEn="Customer Group"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CustomerAccountGroupID_Multi" Caption="账户组(多选)" DomainKey="CustomerAccountGroup_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="账户组" TextEn="Account Group"/>
+                <FieldLabel Key="Medium" Text="账户组" TextEn="Account Group"/>
+                <FieldLabel Key="Long" Text="账户组" TextEn="Account Group"/>
+                <FieldLabel Key="Header" Text="账户组" TextEn="Account Group"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CustomerClassificationID_Multi" Caption="客户分类(多选)" DomainKey="SD_CustomerClassification_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="客户分类" TextEn="Customer Classification"/>
+                <FieldLabel Key="Medium" Text="客户分类" TextEn="Customer Classification"/>
+                <FieldLabel Key="Long" Text="客户分类" TextEn="Customer Classification"/>
+                <FieldLabel Key="Header" Text="客户分类" TextEn="Customer Classification"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ValuationClassID_Multi" Caption="评估分类(多选)" DomainKey="ValuationClassID_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="评估类" TextEn="Valuation Class"/>
+                <FieldLabel Key="Medium" Text="评估类" TextEn="Valuation Class"/>
+                <FieldLabel Key="Long" Text="评估类" TextEn="Valuation Class"/>
+                <FieldLabel Key="Header" Text="评估类" TextEn="Valuation Class"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="InspectionConclusionID_Multi" Caption="考察结论(多选)" DomainKey="InspectionConclusionID_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="考察结论" TextEn="Inspection Conclusion"/>
+                <FieldLabel Key="Medium" Text="考察结论" TextEn="Inspection Conclusion"/>
+                <FieldLabel Key="Long" Text="考察结论" TextEn="Inspection Conclusion"/>
+                <FieldLabel Key="Header" Text="考察结论" TextEn="Inspection Conclusion"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SurchargeCostTypeID_Multi" Caption="费用类型(多选)" DomainKey="SurchargeCostTypeID_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="费用类型" TextEn="Expense Type"/>
+                <FieldLabel Key="Medium" Text="费用类型" TextEn="Expense Type"/>
+                <FieldLabel Key="Long" Text="费用类型" TextEn="Expense Type"/>
+                <FieldLabel Key="Header" Text="费用类型" TextEn="Expense Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="VendorAccountGroupID_Multi" Caption="供应商账户组(多选)" DomainKey="VendorAccountGroupID_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="供应商账户组" TextEn="Vendor Account Group"/>
+                <FieldLabel Key="Medium" Text="供应商账户组" TextEn="Vendor Account Group"/>
+                <FieldLabel Key="Long" Text="供应商账户组" TextEn="Vendor Account Group"/>
+                <FieldLabel Key="Header" Text="供应商账户组" TextEn="Vendor Account Group"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="UserOperatorID_Multi" Caption="用户名(多选)" DomainKey="Operator_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="用户名" TextEn="Username"/>
+                <FieldLabel Key="Medium" Text="用户名" TextEn="Username"/>
+                <FieldLabel Key="Long" Text="用户名" TextEn="Username"/>
+                <FieldLabel Key="Header" Text="用户名" TextEn="Username"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="MoveTypeID_Multi" Caption="移动类型(多选)" DomainKey="MoveType_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="移动类型" TextEn="Movement Type"/>
+                <FieldLabel Key="Medium" Text="移动类型" TextEn="Movement Type"/>
+                <FieldLabel Key="Long" Text="移动类型" TextEn="Movement Type"/>
+                <FieldLabel Key="Header" Text="移动类型" TextEn="Movement Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RecordTypeID_Multi" Caption="记录类型(多选)" DomainKey="COPA_RecordType_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="记录类型" TextEn="Record Type"/>
+                <FieldLabel Key="Medium" Text="记录类型" TextEn="Record Type"/>
+                <FieldLabel Key="Long" Text="记录类型" TextEn="Record Type"/>
+                <FieldLabel Key="Header" Text="记录类型" TextEn="Record Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SRM_RegulationTypeID_Multi" Caption="条例类型(多选)" DomainKey="SRM_RegulationTypeID_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="条例类型" TextEn="Regulation Type"/>
+                <FieldLabel Key="Medium" Text="条例类型" TextEn="Regulation Type"/>
+                <FieldLabel Key="Long" Text="条例类型" TextEn="Regulation Type"/>
+                <FieldLabel Key="Header" Text="条例类型" TextEn="Regulation Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="InspectionStandardTypeID_Multi" Caption="考察标准分类(多选)" DomainKey="InspectionStandardTypeID_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="考察标准分类" TextEn="Inspection Standard Category"/>
+                <FieldLabel Key="Medium" Text="考察标准分类" TextEn="Inspection Standard Category"/>
+                <FieldLabel Key="Long" Text="考察标准分类" TextEn="Inspection Standard Category"/>
+                <FieldLabel Key="Header" Text="考察标准分类" TextEn="Inspection Standard Category"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FromStatisticalKeyID_Multi" Caption="统计指标(多选)" DomainKey="StatisticalKeyID_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="统计指标" TextEn="Statistical Indicator"/>
+                <FieldLabel Key="Medium" Text="统计指标" TextEn="Statistical Indicator"/>
+                <FieldLabel Key="Long" Text="统计指标" TextEn="Statistical Indicator"/>
+                <FieldLabel Key="Header" Text="统计指标" TextEn="Statistical Indicator"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ProfitSegmentSOID_Multi" Caption="获利能力段(多选)" DomainKey="COPA_ProfitSegment_Dic_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="获利能力段" TextEn="Profitability Segment"/>
+                <FieldLabel Key="Medium" Text="获利能力段" TextEn="Profitability Segment"/>
+                <FieldLabel Key="Long" Text="获利能力段" TextEn="Profitability Segment"/>
+                <FieldLabel Key="Header" Text="获利能力段" TextEn="Profitability Segment"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="MaintenancePlanSOID_Multi" Caption="维护计划" DomainKey="PM_MaintenancePlan__Dic_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维护计划" TextEn="Maintenance Plan"/>
+                <FieldLabel Key="Medium" Text="维护计划" TextEn="Maintenance Plan"/>
+                <FieldLabel Key="Long" Text="维护计划" TextEn="Maintenance Plan"/>
+                <FieldLabel Key="Header" Text="维护计划" TextEn="Maintenance Plan"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="TCodeID_Multi" Caption="事务码(多选)" DomainKey="TCode_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="事务码" TextEn="Transaction Code"/>
+                <FieldLabel Key="Medium" Text="事务码" TextEn="Transaction Code"/>
+                <FieldLabel Key="Long" Text="事务码" TextEn="Transaction Code"/>
+                <FieldLabel Key="Header" Text="事务码" TextEn="Transaction Code"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CostElementID_Multi" Caption="成本要素(多选)" DomainKey="CostElementID_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="成本要素" TextEn="Cost Element"/>
+                <FieldLabel Key="Medium" Text="成本要素" TextEn="Cost Element"/>
+                <FieldLabel Key="Long" Text="成本要素" TextEn="Cost Element"/>
+                <FieldLabel Key="Header" Text="成本要素" TextEn="Cost Element"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ProgressID_Multi" Caption="业务事务(多选)" DomainKey="ProgressID_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="业务事务" TextEn="Business Transaction"/>
+                <FieldLabel Key="Medium" Text="业务事务" TextEn="Business Transaction"/>
+                <FieldLabel Key="Long" Text="业务事务" TextEn="Business Transaction"/>
+                <FieldLabel Key="Header" Text="业务事务" TextEn="Business Transaction"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="WorkCenterID_Multi" Caption="工作中心" DomainKey="WorkCenter_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="工作中心" TextEn="Work Center"/>
+                <FieldLabel Key="Medium" Text="工作中心" TextEn="Work Center"/>
+                <FieldLabel Key="Long" Text="工作中心" TextEn="Work Center"/>
+                <FieldLabel Key="Header" Text="工作中心" TextEn="Work Center"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ProductionOrderSOID_Multi" Caption="生产订单单据字典(多选)" DomainKey="PP_ProductionOrder__Dic_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="生产订单" TextEn="Production Order"/>
+                <FieldLabel Key="Medium" Text="生产订单" TextEn="Production Order"/>
+                <FieldLabel Key="Long" Text="生产订单" TextEn="Production Order"/>
+                <FieldLabel Key="Header" Text="生产订单" TextEn="Production Order"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PP_ProductOrderType_Multi" Caption="生产订单类型字典(多选)" DomainKey="PP_ProductOrderType_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="订单类型" TextEn="Order Type"/>
+                <FieldLabel Key="Medium" Text="订单类型" TextEn="Order Type"/>
+                <FieldLabel Key="Long" Text="订单类型" TextEn="Order Type"/>
+                <FieldLabel Key="Header" Text="订单类型" TextEn="Order Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ChannelPriceCategoryID_Multi" Caption="渠道价类别(多选)" DomainKey="ChannelPriceCategoryID_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="渠道价类别" TextEn="Channel Price Category"/>
+                <FieldLabel Key="Medium" Text="渠道价类别" TextEn="Channel Price Category"/>
+                <FieldLabel Key="Long" Text="渠道价类别" TextEn="Channel Price Category"/>
+                <FieldLabel Key="Header" Text="渠道价类别" TextEn="Channel Price Category"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PS_ProjectTypeID_Multi" Caption="项目类型" DomainKey="PS_ProjectType_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="项目类型" TextEn="Item Type"/>
+                <FieldLabel Key="Medium" Text="项目类型" TextEn="Item Type"/>
+                <FieldLabel Key="Long" Text="项目类型" TextEn="Item Type"/>
+                <FieldLabel Key="Header" Text="项目类型" TextEn="Item Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ProductOrderTypeID_Multi" Caption="生产订单类型_多选" DomainKey="PP_ProductOrderType_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="订单类型" TextEn="Order Type"/>
+                <FieldLabel Key="Medium" Text="订单类型" TextEn="Order Type"/>
+                <FieldLabel Key="Long" Text="订单类型" TextEn="Order Type"/>
+                <FieldLabel Key="Header" Text="订单类型" TextEn="Order Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CostOrderID_Multi" Caption="内部订单_多选" DomainKey="CO_CostOrder_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="内部订单" TextEn="Internal Order"/>
+                <FieldLabel Key="Medium" Text="内部订单" TextEn="Internal Order"/>
+                <FieldLabel Key="Long" Text="内部订单" TextEn="Internal Order"/>
+                <FieldLabel Key="Header" Text="内部订单" TextEn="Internal Order"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ControllingAreaID_Multi" Caption="成本控制范围_多选" DomainKey="ControllingArea_Multi" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="成本控制范围" TextEn="Cost Control Area"/>
+                <FieldLabel Key="Medium" Text="成本控制范围" TextEn="Cost Control Area"/>
+                <FieldLabel Key="Long" Text="成本控制范围" TextEn="Cost Control Area"/>
+                <FieldLabel Key="Header" Text="成本控制范围" TextEn="Cost Control Area"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ProductionVersionID_Multi" Caption="生产版本" DomainKey="PP_ProductionVersion_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="生产版本" TextEn="Production Version"/>
+                <FieldLabel Key="Medium" Text="生产版本" TextEn="Production Version"/>
+                <FieldLabel Key="Long" Text="生产版本" TextEn="Production Version"/>
+                <FieldLabel Key="Header" Text="生产版本" TextEn="Production Version"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ProductionLineID_Multi" Caption="生产线" DomainKey="WorkCenter_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="生产线" TextEn="Production Line"/>
+                <FieldLabel Key="Medium" Text="生产线" TextEn="Production Line"/>
+                <FieldLabel Key="Long" Text="生产线" TextEn="Production Line"/>
+                <FieldLabel Key="Header" Text="生产线" TextEn="Production Line"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PlanOrderSOID_Multi" Caption="计划订单单据字典(多选)" DomainKey="PP_PlanOrder__Dic_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="计划订单" TextEn="Planned Order"/>
+                <FieldLabel Key="Medium" Text="计划订单" TextEn="Planned Order"/>
+                <FieldLabel Key="Long" Text="计划订单" TextEn="Planned Order"/>
+                <FieldLabel Key="Header" Text="计划订单" TextEn="Planned Order"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SchedulingTypeID_Multi" Caption="计划类型(多选)" DomainKey="PP_SchedulingType_Multi">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="计划类型" TextEn="Plan Type"/>
+                <FieldLabel Key="Medium" Text="计划类型" TextEn="Plan Type"/>
+                <FieldLabel Key="Long" Text="计划类型" TextEn="Plan Type"/>
+                <FieldLabel Key="Header" Text="计划类型" TextEn="Plan Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="BudgetLedgerID_Multi" Caption="预算类别" DomainKey="FM_Ledger_Multi"/>
+        <DataElement Key="ConsUnitID_Multi" Caption="合并单元(多选)" DomainKey="ConsUnitID_Multi"/>
+        <DataElement Key="ConsTransactionTypeID_Multi" Caption="合并事务类型(多选)" DomainKey="ConsTransactionTypeID_Multi"/>
+        <DataElement Key="ProductGroupID_Multi" Caption="产品组(多选)" DomainKey="ProductGroupID_Multi"/>
+        <DataElement Key="SubItemCategoryID_Multi" Caption="子项类别(多选)" DomainKey="SubItemCategoryID_Multi"/>
+        <DataElement Key="BaseUnitID_Multi" Caption="基本单位(多选)" DomainKey="BaseUnitID_Multi"/>
+        <DataElement Key="CashFlowItemID_Multi" Caption="现金流量项目(多选)" DomainKey="CashFlowItemID_Multi"/>
+        <DataElement Key="FSItemID_Multi" Caption="报表项目(多选)" DomainKey="FSItemID_Multi"/>
+        <DataElement Key="SubItemID_Multi" Caption="子项(多选)" DomainKey="SubItemID_Multi"/>
+    </DataElementCollection>
+</DataElementDef>

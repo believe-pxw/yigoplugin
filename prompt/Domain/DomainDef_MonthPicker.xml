@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DomainDef>
+        <DomainCollection>
+            <Domain Key="MonthPicker" Caption="年月yyyyMM" RefControlType="MonthPicker" DataType="Integer"/>
+        </DomainCollection>
+</DomainDef>

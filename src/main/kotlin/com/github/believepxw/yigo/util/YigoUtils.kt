@@ -40,7 +40,7 @@ object YigoUtils {
         return null
     }
 
-    fun findColumnInTable(startElement: XmlElement, tableKey: String, columnKey: String): XmlTag? {
+    fun findTable(startElement: XmlElement, tableKey: String): XmlTag? {
         val rootTag = getRootFormTag(startElement) ?: return null
         val dataSourceTag = findChildTagByName(rootTag, "DataSource") ?: return null
 
@@ -70,34 +70,40 @@ object YigoUtils {
         }
 
         if (targetTable == null) {
-             val embedTableCollection = findChildTagByName(dataObjectTag, "EmbedTableCollection")
-             if (embedTableCollection != null) {
-                 val subTags = embedTableCollection.findSubTags("EmbedTable")
-                 for (subTag in subTags) {
-                     if (subTag.getAttributeValue("TableKeys") == tableKey) {
-                         val objectKey = subTag.getAttributeValue("ObjectKey")
-                         if (objectKey != null) {
-                             val dataObjectDefinition = DataObjectIndex.findDataObjectDefinition(startElement.project, objectKey)
-                             if (dataObjectDefinition != null) {
-                                  val linkedDataObjectTag = dataObjectDefinition.parent.parent as? XmlTag
-                                  if (linkedDataObjectTag != null) {
-                                      val linkedTableCollection = linkedDataObjectTag.findSubTags("TableCollection").firstOrNull()
-                                      if (linkedTableCollection != null) {
-                                          val linkedTables = linkedTableCollection.findSubTags("Table")
-                                          for (tag in linkedTables) {
-                                              if (tag.getAttributeValue("Key") == tableKey) {
-                                                  targetTable = tag
-                                                  break
-                                              }
-                                          }
-                                      }
-                                  }
-                             }
-                         }
-                     }
-                 }
-             }
+            val embedTableCollection = findChildTagByName(dataObjectTag, "EmbedTableCollection")
+            if (embedTableCollection != null) {
+                val subTags = embedTableCollection.findSubTags("EmbedTable")
+                for (subTag in subTags) {
+                    if (subTag.getAttributeValue("TableKeys") == tableKey) {
+                        val objectKey = subTag.getAttributeValue("ObjectKey")
+                        if (objectKey != null) {
+                            val dataObjectDefinition = DataObjectIndex.findDataObjectDefinition(startElement.project, objectKey)
+                            if (dataObjectDefinition != null) {
+                                val linkedDataObjectTag = dataObjectDefinition.parent.parent as? XmlTag
+                                if (linkedDataObjectTag != null) {
+                                    val linkedTableCollection = linkedDataObjectTag.findSubTags("TableCollection").firstOrNull()
+                                    if (linkedTableCollection != null) {
+                                        val linkedTables = linkedTableCollection.findSubTags("Table")
+                                        for (tag in linkedTables) {
+                                            if (tag.getAttributeValue("Key") == tableKey) {
+                                                targetTable = tag
+                                                break
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
+
+        return targetTable
+    }
+
+    fun findColumnInTable(startElement: XmlElement, tableKey: String, columnKey: String): XmlTag? {
+        var targetTable: XmlTag? = findTable(startElement, tableKey)
 
         if (targetTable == null) return null
 

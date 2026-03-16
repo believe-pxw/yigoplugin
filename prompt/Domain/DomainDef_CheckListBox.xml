@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DomainDef>
+        <DomainCollection>
+            <Domain Key="CheckListBox_CheckField" Caption="对账字段" RefControlType="CheckListBox" DataType="Varchar" Length="30" SourceType="Items">
+                <Item Key="Money" Caption="金额" Value="Money"/>
+                <Item Key="Direction" Caption="方向" Value="Direction"/>
+                <Item Key="Date" Caption="交易日期" Value="Date"/>
+                <Item Key="Notes" Caption="摘要" Value="Notes"/>
+                <Item Key="StatementNumber" Caption="银行流水号" Value="StatementNumber"/>
+            </Domain>
+            <Domain Key="CheckListBox_Component" Caption="组件分配" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="1" Caption="主数据管理" Value="1"/>
+                <Item Key="2" Caption="时间数据管理" Value="2"/>
+            </Domain>
+            <Domain Key="CheckListBox_ConfirmType" Caption="确认方式" RefControlType="CheckListBox" DataType="Varchar" Length="100" SourceType="Items">
+                <Item Key="1" Caption="工序确认" Value="1"/>
+                <Item Key="2" Caption="进度确认" Value="2"/>
+                <Item Key="3" Caption="订单确认" Value="3"/>
+            </Domain>
+            <Domain Key="CheckListBox_Data" Caption="CheckListBox_Data" RefControlType="CheckListBox" DataType="Varchar" SourceType="Formula"/>
+            <Domain Key="CheckListBox_DateType" Caption="时间类型(多选)" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="1" Caption="月度指标" Value="1"/>
+                <Item Key="2" Caption="季度指标" Value="2"/>
+                <Item Key="3" Caption="年度指标" Value="3"/>
+            </Domain>
+            <Domain Key="CheckListBox_DeductionNotes" Caption="扣款数据" RefControlType="CheckListBox" DataType="Varchar" SourceType="Formula"/>
+            <Domain Key="CheckListBox_DependencyBill" Caption="依赖信息类型" RefControlType="CheckListBox" DataType="Varchar" SourceType="Formula"/>
+            <Domain Key="CheckListBox_DependencyField" Caption="依赖字段" RefControlType="CheckListBox" DataType="Varchar" SourceType="Formula"/>
+            <Domain Key="CheckListBox_FunctionButton" Caption="操作功能" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="10" Caption="创建根节点" Value="CreateRootNode"/>
+                <Item Key="20" Caption="创建" Value="Create"/>
+                <Item Key="30" Caption="修改" Value="Modify"/>
+                <Item Key="40" Caption="分配" Value="Distribution"/>
+                <Item Key="50" Caption="删除" Value="Delete"/>
+                <Item Key="60" Caption="保存" Value="Save"/>
+                <Item Key="70" Caption="X" Value="70"/>
+                <Item Key="80" Caption="X" Value="80"/>
+                <Item Key="90" Caption="X" Value="90"/>
+            </Domain>
+            <Domain Key="CheckListBox_IndexGroup" Caption="指标分组" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="1" Caption="销售范围" Value="1"/>
+                <Item Key="2" Caption="销售区域" Value="2"/>
+                <Item Key="3" Caption="客户" Value="3"/>
+                <Item Key="4" Caption="业务员" Value="4"/>
+                <Item Key="5" Caption="物料" Value="5"/>
+            </Domain>
+            <Domain Key="CheckListBox_IndexType" Caption="指标类型(多选)" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="1" Caption="客户采购指标" Value="1"/>
+                <Item Key="9" Caption="其他指标" Value="9"/>
+            </Domain>
+            <Domain Key="CheckListBox_NecessaryAccessProcessList" Caption="必须准入环节" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="1" Caption="资质审查" Value="1"/>
+                <Item Key="2" Caption="样品检测" Value="2"/>
+                <Item Key="3" Caption="现场考察" Value="3"/>
+            </Domain>
+            <Domain Key="CheckListBox_PeakMonth" Caption="旺季月份" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="1" Caption="一月" Value="01"/>
+                <Item Key="2" Caption="二月" Value="02"/>
+                <Item Key="3" Caption="三月" Value="03"/>
+                <Item Key="4" Caption="四月" Value="04"/>
+                <Item Key="5" Caption="五月" Value="05"/>
+                <Item Key="6" Caption="六月" Value="06"/>
+                <Item Key="7" Caption="七月" Value="07"/>
+                <Item Key="8" Caption="八月" Value="08"/>
+                <Item Key="9" Caption="九月" Value="09"/>
+                <Item Key="10" Caption="十月" Value="10"/>
+                <Item Key="11" Caption="十一月" Value="11"/>
+                <Item Key="12" Caption="十二月" Value="12"/>
+            </Domain>
+            <Domain Key="CheckListBox_PrimaryFieldKey" Caption="主键字段" RefControlType="CheckListBox" DataType="Varchar" SourceType="Formula"/>
+            <Domain Key="CheckListBox_ReportInitiator" Caption="报文发起方" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="1" Caption="企业" Value="1"/>
+                <Item Key="2" Caption="银行" Value="2"/>
+            </Domain>
+            <Domain Key="CheckListBox_RowConfig" Caption="列配置" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="10" Caption="名称" Value="ObjectName"/>
+                <Item Key="20" Caption="简称" Value="ObjectShortName"/>
+                <Item Key="30" Caption="对象类型" Value="ObjectTypeID"/>
+                <Item Key="40" Caption="开始日期" Value="ObjectStartDate"/>
+                <Item Key="50" Caption="结束日期" Value="ObjectEndDate"/>
+                <Item Key="60" Caption="关系开始日期" Value="RelationStartDate"/>
+                <Item Key="70" Caption="关系结束日期" Value="RelationEndDate"/>
+                <Item Key="80" Caption="排序字段" Value="SortField"/>
+            </Domain>
+            <Domain Key="CheckListBox_SurchargeNotes" Caption="附加费用数据" RefControlType="CheckListBox" DataType="Varchar" SourceType="Formula"/>
+            <Domain Key="CheckListBox_Text" Caption="CheckListBox_Text" RefControlType="CheckListBox" DataType="Text" SourceType="Formula"/>
+            <Domain Key="CheckListBox_VoucherStatus" Caption="凭证状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="VoucherStatus"/>
+            <Domain Key="CheckListBox_Anadic" Caption="分析点" RefControlType="CheckListBox" DataType="Varchar" SourceType="Formula"/>
+            <Domain Key="CheckListBox_IsBlock" Caption="冻结" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="0" Caption="未冻结" Value="0"/>
+                <Item Key="1" Caption="已冻结" Value="1"/>
+            </Domain>
+            <Domain Key="CheckListBox_AssetCardStatus" Caption="冻结" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="0" Caption="新建" Value="0"/>
+                <Item Key="1" Caption="资本化" Value="1"/>
+                <Item Key="2" Caption="报废" Value="2"/>
+            </Domain>
+            <Domain Key="CheckListBox_BusinessStatus" Caption="单据状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="1" Caption="已创建" Value="1"/>
+                <Item Key="2" Caption="审批中" Value="2"/>
+                <Item Key="3" Caption="下达" Value="3"/>
+                <Item Key="4" Caption="已付款" Value="4"/>
+                <Item Key="5" Caption="支付进行中" Value="5"/>
+                <Item Key="6" Caption="支付至银行" Value="6"/>
+                <Item Key="7" Caption="银行已处理" Value="7"/>
+                <Item Key="8" Caption="付款已由银行拒绝" Value="8"/>
+            </Domain>
+            <Domain Key="CheckListBox_ParameterStatus" Caption="参数状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="1" Caption="已录入付款参数" Value="1"/>
+                <Item Key="2" Caption="已生成付款建议" Value="2"/>
+                <Item Key="3" Caption="已编辑付款建议" Value="3"/>
+                <Item Key="4" Caption="已完成付款运行" Value="4"/>
+            </Domain>
+            <Domain Key="CheckListBox_UDSituation" Caption="使用决策情况" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="0" Caption="未使用决策" Value="0"/>
+                <Item Key="1" Caption="已使用决策" Value="1"/>
+            </Domain>
+            <Domain Key="CheckListBox_TaskStatus" Caption="任务状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="TSOS" Caption="任务尚未完成" Value="TSOS"/>
+                <Item Key="TSRL" Caption="任务已下达" Value="TSRL"/>
+                <Item Key="TSCO" Caption="任务已完成" Value="TSCO"/>
+                <Item Key="TSSC" Caption="任务执行成功" Value="TSSC"/>
+            </Domain>
+            <Domain Key="CheckListBox_PostingSituation" Caption="过账情况" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="0" Caption="不需要过账" Value="0"/>
+                <Item Key="1" Caption="未过账" Value="1"/>
+                <Item Key="2" Caption="部分过账" Value="2"/>
+                <Item Key="3" Caption="完全过账" Value="3"/>
+            </Domain>
+            <Domain Key="CheckListBox_Status" Caption="状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="-1" Caption="作废" Value="-1"/>
+                <Item Key="0" Caption="停用" Value="0"/>
+                <Item Key="1" Caption="启用" Value="1"/>
+            </Domain>
+            <Domain Key="CheckListBox_UDValuationCode" Caption="评估代码" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="UDValuationCodeGroup"/>
+            <Domain Key="CheckListBox_ResultRecordType" Caption="记录结果类型" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="ResultRecordTypeGroup"/>
+            <Domain Key="CheckListBox_Show" Caption="显示" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="0" Caption="未维护的数据" Value="0"/>
+                <Item Key="1" Caption="已维护的数据" Value="1"/>
+            </Domain>
+            <Domain Key="CheckListBox_InspectionTypeActive" Caption="活动的" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="0" Caption="否" Value="0"/>
+                <Item Key="1" Caption="是" Value="1"/>
+            </Domain>
+            <Domain Key="CheckListBox_InspectionPoint" Caption="检验点" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="1" Caption="是" Value="1"/>
+                <Item Key="0" Caption="否" Value="0"/>
+            </Domain>
+            <Domain Key="CheckListBox_DefectsRecordType" Caption="缺陷记录类型" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="1" Caption="检验批记录" Value="1"/>
+                <Item Key="2" Caption="工序记录" Value="2"/>
+                <Item Key="3" Caption="特性记录" Value="3"/>
+            </Domain>
+            <Domain Key="CheckListBox_SampleCategory" Caption="样本类别" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="SampleCategoryGroup"/>
+            <Domain Key="CheckListBox_QMBusinessStatus" Caption="状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="QMBusinessStatusGroup"/>
+            <Domain Key="CheckListBox_PostStatus" Caption="发票状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="NormalInvoice" Caption="未过账" Value="1"/>
+                <Item Key="PostedInvoice" Caption="已过账" Value="3"/>
+            </Domain>
+            <Domain Key="CheckListBox_CheckBox" Caption="下拉形式的勾选框" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="0" Caption="不勾选" Value="0"/>
+                <Item Key="1" Caption="勾选" Value="1"/>
+            </Domain>
+            <Domain Key="CheckListBox_DataElementProcessPhase" Caption="数据元素处理情况" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="DataElementProcessPhase"/>
+            <Domain Key="CheckListBox_DataElementMatchSituation" Caption="匹配情况" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="DataElementMatchSituation"/>
+            <Domain Key="CheckListBox_InspectionStep" Caption="考察步骤" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="InspectionStep"/>
+            <Domain Key="CheckListBox_InspectionReason" Caption="考察原因" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="InspectionReason"/>
+            <Domain Key="CheckListBox_InspectionReason2" Caption="考察原因2" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="0" Caption="新供应引入" Value="0"/>
+                <Item Key="1" Caption="例行审核" Value="1"/>
+                <Item Key="2" Caption="质量异常" Value="2"/>
+            </Domain>
+            <Domain Key="CheckListBox_IsInvoicing" Caption="对账/开票" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="0" Caption="对账" Value="0"/>
+                <Item Key="1" Caption="开票" Value="1"/>
+            </Domain>
+            <Domain Key="CheckListBox_ReplenishStatus" Caption="补料状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="ReplenishStatus"/>
+            <Domain Key="CheckListBox_ResultSendStatus" Caption="评估结果发送状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="SendStatus"/>
+            <Domain Key="CheckListBox_DocumentStatus" Caption="绩效评估状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="PerformanceEvaluationStatus"/>
+            <Domain Key="CheckListBox_ApprovalStatus" Caption="审批状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="PerformanceEvaAuditStatus"/>
+            <Domain Key="CheckListBox_DutyPerson" Caption="责任方" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="DutyPerson"/>
+            <Domain Key="CheckListBox_SupplyDtlStatus" Caption="订单行状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="1" Caption="新建" Value="1"/>
+                <Item Key="2" Caption="待供应商确认" Value="2"/>
+                <Item Key="3" Caption="待采购方确认" Value="3"/>
+                <Item Key="4" Caption="供应商已拒绝" Value="4"/>
+                <Item Key="6" Caption="供应商已确认" Value="6"/>
+                <Item Key="7" Caption="采购方已拒绝" Value="7"/>
+                <Item Key="8" Caption="采购方已确认" Value="8"/>
+                <Item Key="9" Caption="已作废" Value="9"/>
+            </Domain>
+            <Domain Key="CheckListBox_AccessStrategyStatus" Caption="准入策略状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="0" Caption="已作废" Value="0"/>
+                <Item Key="1" Caption="新建" Value="1"/>
+                <Item Key="2" Caption="已发布" Value="2"/>
+            </Domain>
+            <Domain Key="CheckListBox_DistributionMode" Caption="配送方式" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="DistributionMode"/>
+            <Domain Key="CheckListBox_DispatchStatus" Caption="发货单据状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="DispatchNoticeStatus"/>
+            <Domain Key="CheckListBox_MaterialView" Caption="下拉形式的勾选框" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="A" Caption="工作计划" Value="A"/>
+                <Item Key="B" Caption="财务视图" Value="B"/>
+                <Item Key="D" Caption="MRP" Value="D"/>
+                <Item Key="E" Caption="采购视图" Value="E"/>
+                <Item Key="G" Caption="成本信息" Value="G"/>
+                <Item Key="L" Caption="库存视图" Value="L"/>
+                <Item Key="P" Caption="预测视图" Value="P"/>
+                <Item Key="Q" Caption="质量管理" Value="Q"/>
+                <Item Key="V" Caption="销售视图" Value="V"/>
+            </Domain>
+            <Domain Key="MessageType_CheckListBox" Caption="信息类型" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="1" Caption="警告" Value="1"/>
+                <Item Key="2" Caption="错误" Value="2"/>
+                <Item Key="3" Caption="成功" Value="3"/>
+            </Domain>
+            <Domain Key="CheckListBox_InspectionStatus" Caption="现场考察单据状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="SiteInspectionStatus"/>
+            <Domain Key="CheckListBox_QuotaStatus" Caption="指标状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="0" Caption="失效" Value="0"/>
+                <Item Key="1" Caption="有效" Value="1"/>
+            </Domain>
+            <Domain Key="CheckListBox_QuotaType" Caption="指标类型" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="QuotaType"/>
+            <Domain Key="CheckListBox_ScoringMode" Caption="打分方式" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="ScoringMode"/>
+            <Domain Key="CheckListBox_SupplyStatus" Caption="订单状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="1" Caption="新建" Value="1"/>
+                <Item Key="2" Caption="待供应商确认" Value="2"/>
+                <Item Key="3" Caption="待采购方确认" Value="3"/>
+                <Item Key="4" Caption="供应商已拒绝" Value="4"/>
+                <Item Key="5" Caption="供应商部分确认" Value="5"/>
+                <Item Key="6" Caption="供应商已确认" Value="6"/>
+                <Item Key="7" Caption="采购方已拒绝" Value="7"/>
+                <Item Key="8" Caption="采购方已确认" Value="8"/>
+                <Item Key="9" Caption="已作废" Value="9"/>
+            </Domain>
+            <Domain Key="CheckListBox_SRMDocumentStatus" Caption="单据状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="1" Caption="待寻源" Value="1"/>
+                <Item Key="2" Caption="询价中" Value="2"/>
+                <Item Key="5" Caption="询价完成" Value="5"/>
+                <Item Key="8" Caption="部分转订单" Value="8"/>
+                <Item Key="9" Caption="全部转订单" Value="9"/>
+                <Item Key="10" Caption="已退回" Value="10"/>
+            </Domain>
+            <Domain Key="CheckListBox_CreateMethod" Caption="创建方式" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="CreateMethod"/>
+            <Domain Key="CheckListBox_InspectionPlanStatus" Caption="考察计划状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="InspectionPlanStatus"/>
+            <Domain Key="CheckListBox_InspectionPlanCycle" Caption="考察计划周期" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="Cycle"/>
+            <Domain Key="CheckListBox_QuotaStatusPara" Caption="指标状态参数组" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="QuotaStatus"/>
+            <Domain Key="CheckListBox_ProcessKeyMulti" Caption="流程对象" RefControlType="CheckListBox" DataType="Varchar" SourceType="Formula"/>
+            <Domain Key="CheckListBox_ReturnItem" Caption="退货行项目" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="0" Caption="不含退货行项目" Value="0"/>
+                <Item Key="1" Caption="仅含退货行项目" Value="1"/>
+            </Domain>
+            <Domain Key="CheckListBox_MaterialView2" Caption="更新视图" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="A" Caption="工作计划" Value="A"/>
+                <Item Key="B" Caption="财务视图" Value="B"/>
+                <Item Key="D" Caption="MRP" Value="D"/>
+                <Item Key="E" Caption="采购视图" Value="E"/>
+                <Item Key="G" Caption="成本信息" Value="G"/>
+                <Item Key="K" Caption="基本信息" Value="K"/>
+                <Item Key="L" Caption="库存视图" Value="L"/>
+                <Item Key="Q" Caption="质量管理" Value="Q"/>
+                <Item Key="V" Caption="销售视图" Value="V"/>
+            </Domain>
+            <Domain Key="CheckListBox_POBillStatus" Caption="处理情况" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="0" Caption="初始状态" Value="0"/>
+                <Item Key="1" Caption="已收货" Value="1"/>
+                <Item Key="2" Caption="已开票" Value="2"/>
+            </Domain>
+            <Domain Key="ExistPurchaseRequisition" Caption="存在采购申请" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="1" Caption="是" Value="1"/>
+                <Item Key="2" Caption="否" Value="2"/>
+            </Domain>
+            <Domain Key="CheckListBox_Overdue" Caption="逾期情况" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="1" Caption="仅显示逾期" Value="1"/>
+                <Item Key="2" Caption="仅显示未逾期" Value="2"/>
+            </Domain>
+            <Domain Key="StatisticalDimension" Caption="统计维度" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="工厂" Caption="工厂" Value="工厂"/>
+                <Item Key="物料" Caption="物料" Value="物料"/>
+                <Item Key="库存地点" Caption="库存地点" Value="库存地点"/>
+                <Item Key="子库" Caption="子库" Value="子库"/>
+                <Item Key="批次" Caption="批次" Value="批次"/>
+            </Domain>
+            <Domain Key="CheckListBox_ShowCol" Caption="显示列" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="工厂" Caption="工厂" Value="工厂"/>
+                <Item Key="物料类型" Caption="物料类型" Value="物料类型"/>
+                <Item Key="物料组" Caption="物料组" Value="物料组"/>
+                <Item Key="库存地点" Caption="库存地点" Value="库存地点"/>
+                <Item Key="子库" Caption="子库" Value="子库"/>
+                <Item Key="库存类型" Caption="库存类型" Value="库存类型"/>
+            </Domain>
+            <Domain Key="CheckListBox_ShowView" Caption="显示视图" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="基本信息" Caption="基本信息" Value="基本信息"/>
+                <Item Key="会计信息" Caption="会计信息" Value="会计信息"/>
+                <Item Key="采购信息" Caption="采购信息" Value="采购信息"/>
+            </Domain>
+            <Domain Key="CheckListBox_ShowView2" Caption="显示视图" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="基本视图" Caption="基本视图" Value="基本视图"/>
+                <Item Key="采购视图" Caption="采购视图" Value="采购视图"/>
+                <Item Key="MRP视图" Caption="MRP视图" Value="MRP视图"/>
+                <Item Key="工作计划" Caption="工作计划" Value="工作计划"/>
+                <Item Key="库存视图" Caption="库存视图" Value="库存视图"/>
+                <Item Key="财务视图" Caption="财务视图" Value="财务视图"/>
+                <Item Key="成本视图" Caption="成本视图" Value="成本视图"/>
+                <Item Key="销售视图" Caption="销售视图" Value="销售视图"/>
+            </Domain>
+            <Domain Key="CheckListBox_BatchManagement" Caption="批次管理" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="显示未设置批次管理" Caption="显示未设置批次管理" Value="0"/>
+                <Item Key="显示设置批次管理" Caption="显示设置批次管理" Value="1"/>
+            </Domain>
+            <Domain Key="CheckListBox_StatusPara" Caption="状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="EnableStatus"/>
+            <Domain Key="CheckListBox_InfoTypeGroup" Caption="信息类别" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="InfoTypeGroup"/>
+            <Domain Key="CheckListBox_PhysDocument" Caption="库存盘点单状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="0" Caption="未盘点" Value="0"/>
+                <Item Key="1" Caption="全部盘点" Value="1"/>
+                <Item Key="2" Caption="部分盘点" Value="2"/>
+            </Domain>
+            <Domain Key="CheckListBox_PhysItems" Caption="库存盘点项状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="0" Caption="未盘点" Value="NO"/>
+                <Item Key="1" Caption="已盘点" Value="Ph"/>
+                <Item Key="2" Caption="已过账" Value="Po"/>
+                <Item Key="3" Caption="重新盘点" Value="Re"/>
+                <Item Key="4" Caption="已删除" Value="De"/>
+            </Domain>
+            <Domain Key="CheckListBox_PlantCondition" Caption="工厂层条件" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="1" Caption="只显示与工厂相关的条件" Value="1"/>
+                <Item Key="2" Caption="不显示与工厂相关的条件" Value="2"/>
+            </Domain>
+            <Domain Key="CheckListBox_Head_Complete" Caption="完工" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="0" Caption="未完工" Value="0"/>
+                <Item Key="1" Caption="已完工" Value="1"/>
+            </Domain>
+            <Domain Key="CheckListBox_BusinessType" Caption="业务类型" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="1" Caption="拒收订单" Value="1"/>
+                <Item Key="20" Caption="正向订单的应收调整(减少)-参考销售发票直接创建贷项凭证" Value="20"/>
+                <Item Key="21" Caption="正向订单的应收调整(减少)-参考销售发票创建贷项请求，然后创建贷项凭证" Value="21"/>
+            </Domain>
+            <Domain Key="CheckListBox_CheckDataDefault" Caption="对账数据默认" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="1" Caption="对账单价" Value="1"/>
+                <Item Key="2" Caption="对账数量" Value="2"/>
+            </Domain>
+            <Domain Key="CheckListBox_ContractType" Caption="合同类型" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="ContractType"/>
+            <Domain Key="CheckListBox_StatisticalDimension" Caption="统计维度" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="销售组织" Caption="销售组织" Value="销售组织"/>
+                <Item Key="工厂" Caption="工厂" Value="工厂"/>
+                <Item Key="业务员" Caption="业务员" Value="业务员"/>
+                <Item Key="客户" Caption="客户" Value="客户"/>
+                <Item Key="系统/群主" Caption="系统/群主" Value="系统/群主"/>
+                <Item Key="物料" Caption="物料" Value="物料"/>
+                <Item Key="品牌" Caption="品牌" Value="品牌"/>
+                <Item Key="大类" Caption="大类" Value="大类"/>
+                <Item Key="类别" Caption="类别" Value="类别"/>
+                <Item Key="系列" Caption="系列" Value="系列"/>
+                <Item Key="销售订单" Caption="销售订单" Value="销售订单"/>
+                <Item Key="送货单" Caption="送货单" Value="送货单"/>
+            </Domain>
+            <Domain Key="CheckListBox_Head_ShowCol" Caption="显示列" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="销售组织" Caption="销售组织" Value="销售组织"/>
+                <Item Key="工厂" Caption="工厂" Value="工厂"/>
+                <Item Key="业务员" Caption="业务员" Value="业务员"/>
+                <Item Key="客户" Caption="客户" Value="客户"/>
+                <Item Key="系统/群主" Caption="系统/群主" Value="系统/群主"/>
+                <Item Key="物料" Caption="物料" Value="物料"/>
+                <Item Key="品牌" Caption="品牌" Value="品牌"/>
+                <Item Key="大类" Caption="大类" Value="大类"/>
+                <Item Key="类别" Caption="类别" Value="类别"/>
+                <Item Key="系列" Caption="系列" Value="系列"/>
+                <Item Key="销售订单" Caption="销售订单" Value="销售订单"/>
+                <Item Key="送货单" Caption="送货单" Value="送货单"/>
+            </Domain>
+            <Domain Key="CheckListBox_SignForDataDefault" Caption="签收数据默认" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="1" Caption="签收数量" Value="1"/>
+                <Item Key="2" Caption="签收单价" Value="2"/>
+            </Domain>
+            <Domain Key="CheckListBox_Head_StatisticalDimension" Caption="统计维度" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="SalesMan" Caption="业务员" Value="1"/>
+                <Item Key="Store" Caption="门店" Value="2"/>
+                <Item Key="VisitNature" Caption="拜访性质" Value="3"/>
+                <Item Key="Time" Caption="签到签退时间" Value="4"/>
+            </Domain>
+            <Domain Key="CheckListBox_VisitNature" Caption="拜访性质(可多选)" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="VisitNature"/>
+            <Domain Key="CheckListBox_PurType" Caption="采购类型" RefControlType="CheckListBox" DataType="Varchar" Length="10" SourceType="ParaGroup" GroupKey="PurType"/>
+            <Domain Key="CheckListBox_ConfirmFlag" Caption="固定" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="0" Caption="仅显示未固定" Value="0"/>
+                <Item Key="1" Caption="仅显示已固定" Value="1"/>
+            </Domain>
+            <Domain Key="CheckListBox_SpecialGainType" Caption="特殊获取" RefControlType="CheckListBox" DataType="Varchar" Length="10" SourceType="ParaGroup" GroupKey="SpecialGainType"/>
+            <Domain Key="CheckListBox_DifferenceDisplay" Caption="差异显示" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="金额无差异不显示" Caption="金额无差异不显示" Value="金额无差异不显示"/>
+                <Item Key="数量无差异不显示" Caption="数量无差异不显示" Value="数量无差异不显示"/>
+            </Domain>
+            <Domain Key="CheckListBox_Difference" Caption="差异" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="仅显示无差异" Caption="仅显示无差异" Value="仅显示无差异"/>
+                <Item Key="仅显示有差异" Caption="仅显示有差异" Value="仅显示有差异"/>
+            </Domain>
+            <Domain Key="CheckListBox_TransactionHandle" Caption="业务处理" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="TransactionHandle"/>
+            <Domain Key="CheckListBox_RT_ConfirmType" Caption="确认类型" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="RT_ConfirmType"/>
+            <Domain Key="CheckListBox_ProcessStatus" Caption="工序状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="CRTD" Caption="创建" Value="CRTD"/>
+                <Item Key="REL" Caption="下达" Value="REL"/>
+                <Item Key="PCNF" Caption="部分确认" Value="PCNF"/>
+                <Item Key="CNF" Caption="已确认" Value="CNF"/>
+                <Item Key="CLSD" Caption="已关闭" Value="CLSD"/>
+                <Item Key="DLFL" Caption="删除标记" Value="DLFL"/>
+                <Item Key="OPGN" Caption="已生成的操作" Value="OPGN"/>
+                <Item Key="TECO" Caption="技术性完成" Value="TECO"/>
+                <Item Key="VCAL" Caption="差异计算" Value="VCAL"/>
+            </Domain>
+            <Domain Key="CheckListBox_PlanMode" Caption="计划" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="计划内领料" Caption="计划内领料" Value="计划内领料"/>
+                <Item Key="计划外领料" Caption="计划外领料" Value="计划外领料"/>
+            </Domain>
+            <Domain Key="CheckListBox_Requisite" Caption="领料情况" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="未领料" Caption="未领料" Value="未领料"/>
+                <Item Key="部分领料" Caption="部分领料" Value="部分领料"/>
+                <Item Key="领料完成" Caption="领料完成" Value="领料完成"/>
+                <Item Key="超额领料" Caption="超额领料" Value="超额领料"/>
+            </Domain>
+            <Domain Key="CheckListBox_StockType" Caption="库存状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="StockTypeGroup"/>
+            <Domain Key="CheckListBox_SpecialIdentity" Caption="特殊库存" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="SpecialIdentity"/>
+            <Domain Key="CheckListBox_SpecialIdentity_Formula" Caption="特殊库存" RefControlType="CheckListBox" DataType="Varchar" SourceType="Formula"/>
+            <Domain Key="CheckListBox_RoutingListType" Caption="任务清单类型" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="RoutingListType"/>
+            <Domain Key="CheckListBox_DocumentType" Caption="单据类型" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="计划订单" Caption="计划订单" Value="计划订单"/>
+                <Item Key="生产订单" Caption="生产订单" Value="生产订单"/>
+                <Item Key="报工确认" Caption="报工确认" Value="报工确认"/>
+                <Item Key="工艺路线" Caption="工艺路线" Value="工艺路线"/>
+                <Item Key="销售与运作计划" Caption="销售与运作计划" Value="销售与运作计划"/>
+                <Item Key="采购申请" Caption="采购申请" Value="采购申请"/>
+                <Item Key="采购订单" Caption="采购订单" Value="采购订单"/>
+                <Item Key="物料凭证" Caption="物料凭证" Value="物料凭证"/>
+                <Item Key="预留" Caption="预留" Value="预留"/>
+                <Item Key="盘点单" Caption="盘点单" Value="盘点单"/>
+                <Item Key="采购发票" Caption="采购发票" Value="采购发票"/>
+                <Item Key="批次" Caption="批次" Value="批次"/>
+                <Item Key="采购协议" Caption="采购协议" Value="采购协议"/>
+                <Item Key="询报价" Caption="询报价" Value="询报价"/>
+                <Item Key="采购信息记录" Caption="采购信息记录" Value="采购信息记录"/>
+                <Item Key="序列号" Caption="序列号" Value="序列号"/>
+                <Item Key="销售合同" Caption="销售合同" Value="销售合同"/>
+                <Item Key="销售订单" Caption="销售订单" Value="销售订单"/>
+                <Item Key="外向交货单" Caption="外向交货单" Value="外向交货单"/>
+                <Item Key="销售发票" Caption="销售发票" Value="销售发票"/>
+                <Item Key="检验计划" Caption="检验计划" Value="检验计划"/>
+                <Item Key="检验批" Caption="检验批" Value="检验批"/>
+                <Item Key="检验批-记录结果" Caption="检验批-记录结果" Value="检验批-记录结果"/>
+                <Item Key="检验批-记录缺陷" Caption="检验批-记录缺陷" Value="检验批-记录缺陷"/>
+                <Item Key="检验批-决策" Caption="检验批-决策" Value="检验批-决策"/>
+            </Domain>
+            <Domain Key="CheckListBox_ReceiptStatus" Caption="回单状态" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="ReceiptStatus"/>
+            <Domain Key="CheckListBox_PP_StatisticalDimension" Caption="统计维度_PP" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="生产版本" Caption="生产版本" Value="生产版本"/>
+                <Item Key="生产工厂" Caption="生产工厂" Value="生产工厂"/>
+                <Item Key="单据编号" Caption="单据编号" Value="单据编号"/>
+                <Item Key="物料" Caption="物料" Value="物料"/>
+                <Item Key="工作中心" Caption="工作中心" Value="工作中心"/>
+                <Item Key="创建人员" Caption="创建人员" Value="创建人员"/>
+                <Item Key="业务日期" Caption="业务日期" Value="业务日期"/>
+                <Item Key="制单日期" Caption="制单日期" Value="制单日期"/>
+                <Item Key="确认方式" Caption="确认方式" Value="确认方式"/>
+                <Item Key="成本要素" Caption="成本要素" Value="成本要素"/>
+                <Item Key="订单类型" Caption="订单类型" Value="订单类型"/>
+                <Item Key="生产管理员" Caption="生产管理员" Value="生产管理员"/>
+                <Item Key="MRP管理员" Caption="MRP管理员" Value="MRP管理员"/>
+                <Item Key="库存地点" Caption="库存地点" Value="库存地点"/>
+            </Domain>
+            <Domain Key="CheckListBox_PP_ShowCol" Caption="显示列_PP" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="订单类型" Caption="订单类型" Value="订单类型"/>
+                <Item Key="领用数量" Caption="领用数量" Value="领用数量"/>
+                <Item Key="完工" Caption="完工" Value="完工"/>
+                <Item Key="滞留天数" Caption="滞留天数" Value="滞留天数"/>
+                <Item Key="创建人员" Caption="创建人员" Value="创建人员"/>
+                <Item Key="特殊库存" Caption="特殊库存" Value="特殊库存"/>
+                <Item Key="报废数量" Caption="报废数量" Value="报废数量"/>
+                <Item Key="金额" Caption="金额" Value="金额"/>
+                <Item Key="工序状态" Caption="工序状态" Value="工序状态"/>
+                <Item Key="子库" Caption="子库" Value="子库"/>
+                <Item Key="订单完工" Caption="订单完工" Value="订单完工"/>
+                <Item Key="反冲" Caption="反冲" Value="反冲"/>
+                <Item Key="生产工厂" Caption="生产工厂" Value="生产工厂"/>
+                <Item Key="工序序号" Caption="工序序号" Value="工序序号"/>
+                <Item Key="系统状态" Caption="系统状态" Value="系统状态"/>
+            </Domain>
+            <Domain Key="CheckListBox_MessageType" Caption="信息类型" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="1" Caption="警告" Value="1"/>
+                <Item Key="2" Caption="错误" Value="2"/>
+                <Item Key="3" Caption="成功" Value="3"/>
+            </Domain>
+            <Domain Key="CheckListBox_RecordType" Caption="记录类型" RefControlType="CheckListBox" DataType="Varchar" SourceType="Items">
+                <Item Key="1" Caption="计划值" Value="1"/>
+                <Item Key="4" Caption="实际值" Value="4"/>
+            </Domain>
+            <Domain Key="CheckListBox_DerivationStrategyType" Caption="派生策略类型" RefControlType="CheckListBox" DataType="Varchar" SourceType="ParaGroup" GroupKey="DerivationStrategyType"/>
+        </DomainCollection>
+</DomainDef>

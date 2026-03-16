@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DomainDef>
+        <DomainCollection>
+            <Domain Key="RichEditor_Text" Caption="富文本_Text" RefControlType="RichEditor" DataType="Text"/>
+        </DomainCollection>
+</DomainDef>

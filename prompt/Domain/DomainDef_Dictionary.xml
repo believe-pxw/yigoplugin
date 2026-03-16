@@ -1,0 +1,1048 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DomainDef>
+        <DomainCollection>
+            <Domain Key="IM_InvestProgram" Caption="投资程序" RefControlType="Dict" DataType="Long" ItemKey="IM_InvestProgram"/>
+            <Domain Key="IM_InvestProgramType" Caption="投资程序类型" RefControlType="Dict" DataType="Long" ItemKey="IM_InvestProgramType"/>
+            <Domain Key="IM_InvestScale" Caption="投资规模" RefControlType="Dict" DataType="Long" ItemKey="IM_InvestScale"/>
+            <Domain Key="IM_InvestProgramStruct" Caption="投资程序结构" RefControlType="Dict" DataType="Long" ItemKey="IM_InvestProgramStruct"/>
+            <Domain Key="AccessSequence" Caption="存取顺序" RefControlType="Dict" DataType="Long" ItemKey="AccessSequence"/>
+            <Domain Key="AccountAssignmentCategory" Caption="科目账户分配类别" RefControlType="Dict" DataType="Long" ItemKey="AccountAssignmentCategory"/>
+            <Domain Key="AccountAssignmentCategory_Multi" Caption="科目分配类别" RefControlType="Dict" DataType="Varchar" ItemKey="AccountAssignmentCategory" AllowMultiSelection="true"/>
+            <Domain Key="AccountCategoryRef" Caption="账户分类参考" RefControlType="Dict" DataType="Long" ItemKey="AccountCategoryRef"/>
+            <Domain Key="AccountKey" Caption="科目确定关键字" RefControlType="Dict" DataType="Long" ItemKey="AccountKey"/>
+            <Domain Key="AuthorizationGroup" Caption="权限组" RefControlType="Dict" DataType="Long" ItemKey="AuthorizationGroup"/>
+            <Domain Key="BusinessTransaction" Caption="业务事务" RefControlType="Dict" DataType="Long" ItemKey="BusinessTransaction"/>
+            <Domain Key="Company" Caption="公司" RefControlType="Dict" DataType="Long" ItemKey="Company"/>
+            <Domain Key="ConditionExcludeGroup" Caption="条件排斥组" RefControlType="Dict" DataType="Long" ItemKey="ConditionExcludeGroup"/>
+            <Domain Key="ConditionProcessMessage" Caption="条件技术消息" RefControlType="Dict" DataType="Long" ItemKey="ConditionProcessMessage"/>
+            <Domain Key="ConditionType" Caption="条件类型" RefControlType="Dict" DataType="Long" ItemKey="ConditionType"/>
+            <Domain Key="DefineConditionTable" Caption="条件表定义" RefControlType="Dict" DataType="Long" ItemKey="DefineConditionTable"/>
+            <Domain Key="DocumentNumberRule" Caption="编码规则" RefControlType="Dict" DataType="Long" ItemKey="DocumentNumberRule"/>
+            <Domain Key="ERPSystemStatus" Caption="系统状态" RefControlType="Dict" DataType="Long" ItemKey="ERPSystemStatus"/>
+            <Domain Key="ERPSystemStatus_Multi" Caption="系统状态(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="ERPSystemStatus" AllowMultiSelection="true"/>
+            <Domain Key="ERPUserStatus" Caption="用户状态" RefControlType="Dict" DataType="Long" ItemKey="ERPUserStatus"/>
+            <Domain Key="EnhancementPoint" Caption="增强" RefControlType="Dict" DataType="Long" ItemKey="EnhancementPoint"/>
+            <Domain Key="GS_QuickBrowser_DS_Custom" Caption="自定义数据集" RefControlType="Dict" DataType="Long" ItemKey="GS_QuickBrowser_DS_Custom"/>
+            <Domain Key="ImportAndExportConfig" Caption="导入导出设置" RefControlType="Dict" DataType="Long" ItemKey="ImportAndExportConfig"/>
+            <Domain Key="IntegrationCopyControl_Multi" Caption="IntegrationCopyControlID" RefControlType="Dict" DataType="Varchar" ItemKey="IntegrationCopyControl" AllowMultiSelection="true"/>
+            <Domain Key="IntegrationInfluenceFactor" Caption="影响因素" RefControlType="Dict" DataType="Long" ItemKey="IntegrationInfluenceFactor"/>
+            <Domain Key="IntegrationMerge" Caption="业务集成合并方案" RefControlType="Dict" DataType="Long" ItemKey="IntegrationMerge"/>
+            <Domain Key="IntegrationMoveControl" Caption="业务集成迁移控制" RefControlType="Dict" DataType="Long" ItemKey="IntegrationMoveControl"/>
+            <Domain Key="IntegrationResume" Caption="凭证摘要方案" RefControlType="Dict" DataType="Long" ItemKey="IntegrationResume"/>
+            <Domain Key="IntegrationValueStrFilter" Caption="价值串条件" RefControlType="Dict" DataType="Long" ItemKey="IntegrationValueStrFilter"/>
+            <Domain Key="IntegrationValueStrLID" Caption="价值串决定项目标识" RefControlType="Dict" DataType="Long" ItemKey="IntegrationValueStrLID"/>
+            <Domain Key="Location" Caption="位置" RefControlType="Dict" DataType="Long" ItemKey="Location"/>
+            <Domain Key="LockDefine" Caption="定义锁" RefControlType="Dict" DataType="Long" ItemKey="LockDefine"/>
+            <Domain Key="MaterialStatus" Caption="定义物料状态" RefControlType="Dict" DataType="Long" ItemKey="MaterialStatus"/>
+            <Domain Key="Message" Caption="消息" RefControlType="Dict" DataType="Long" ItemKey="Message"/>
+            <Domain Key="MessageClass" Caption="消息类" RefControlType="Dict" DataType="Long" ItemKey="MessageClass"/>
+            <Domain Key="ObjectType" Caption="系统对象类型" RefControlType="Dict" DataType="Long" ItemKey="ObjectType"/>
+            <Domain Key="Procedure" Caption="计算过程" RefControlType="Dict" DataType="Long" ItemKey="Procedure"/>
+            <Domain Key="ReasonCode" Caption="原因码" RefControlType="Dict" DataType="Long" ItemKey="ReasonCode"/>
+            <Domain Key="ReportModel" Caption="报表模板" RefControlType="Dict" DataType="Long" ItemKey="ReportModel"/>
+            <Domain Key="ReportTitle" Caption="报表导出标题定义" RefControlType="Dict" DataType="Long" ItemKey="ReportTitle"/>
+            <Domain Key="StatusParaFile" Caption="状态参数文件" RefControlType="Dict" DataType="Long" ItemKey="StatusParaFile"/>
+            <Domain Key="SystemObjectType" Caption="对象类型" RefControlType="Dict" DataType="Long" ItemKey="SystemObjectType"/>
+            <Domain Key="SystemStatus" Caption="系统状态" RefControlType="Dict" DataType="Long" ItemKey="SystemStatus"/>
+            <Domain Key="TCode" Caption="事务码" RefControlType="Dict" DataType="Long" ItemKey="TCode"/>
+            <Domain Key="TaskGroup" Caption="异步任务组" RefControlType="Dict" DataType="Long" ItemKey="TaskGroup"/>
+            <Domain Key="TaxCode" Caption="税码" RefControlType="Dict" DataType="Long" ItemKey="TaxCode"/>
+            <Domain Key="TextType" Caption="文本类" RefControlType="Dict" DataType="Long" ItemKey="TextType"/>
+            <Domain Key="TransPortDomain" Caption="传输域控制器" RefControlType="Dict" DataType="Long" ItemKey="TransPortDomain"/>
+            <Domain Key="TransactionCodePackage" Caption="包" RefControlType="Dict" DataType="Long" ItemKey="TransactionCodePackage"/>
+            <Domain Key="TransactionGroup" Caption="事务码组" RefControlType="Dict" DataType="Long" ItemKey="TransactionGroup"/>
+            <Domain Key="TransactionKey" Caption="记账事务码" RefControlType="Dict" DataType="Long" ItemKey="TransactionKey"/>
+            <Domain Key="ValuationClass" Caption="评估类" RefControlType="Dict" DataType="Long" ItemKey="ValuationClass"/>
+            <Domain Key="ValueString" Caption="价值串" RefControlType="Dict" DataType="Long" ItemKey="ValueString"/>
+            <Domain Key="ValueStringDeterminate" Caption="价值串决定" RefControlType="Dict" DataType="Long" ItemKey="ValueStringDeterminate"/>
+            <Domain Key="VoucherFlow" Caption="凭证流" RefControlType="Dict" DataType="Long" ItemKey="VoucherFlow"/>
+            <Domain Key="Account" Caption="科目" RefControlType="Dict" DataType="Long" ItemKey="Account"/>
+            <Domain Key="AccountChart" Caption="科目表" RefControlType="Dict" DataType="Long" ItemKey="AccountChart"/>
+            <Domain Key="BusinessArea" Caption="业务范围" RefControlType="Dict" DataType="Long" ItemKey="BusinessArea"/>
+            <Domain Key="BusinessArea_Multi" Caption="业务范围" RefControlType="Dict" DataType="Varchar" ItemKey="BusinessArea" AllowMultiSelection="true"/>
+            <Domain Key="Calendar" Caption="工厂日历" RefControlType="Dict" DataType="Long" ItemKey="Calendar"/>
+            <Domain Key="CompanyCode" Caption="公司代码" RefControlType="Dict" DataType="Long" ItemKey="CompanyCode"/>
+            <Domain Key="CompanyCode_Multi" Caption="公司代码" RefControlType="Dict" DataType="Varchar" ItemKey="CompanyCode" AllowMultiSelection="true"/>
+            <Domain Key="ControllingArea" Caption="成本控制范围" RefControlType="Dict" DataType="Long" ItemKey="ControllingArea"/>
+            <Domain Key="ControllingArea_Multi" Caption="成本控制范围(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="ControllingArea"/>
+            <Domain Key="CostCenter" Caption="成本中心" RefControlType="Dict" DataType="Long" ItemKey="CostCenter"/>
+            <Domain Key="CostCenter_Multi" Caption="负责的成本中心" RefControlType="Dict" DataType="Varchar" ItemKey="CostCenter" AllowMultiSelection="true"/>
+            <Domain Key="CostCenterGroup" Caption="成本中心组" RefControlType="Dict" DataType="Long" ItemKey="CostCenterGroup"/>
+            <Domain Key="Country" Caption="国家地区" RefControlType="Dict" DataType="Long" ItemKey="Country"/>
+            <Domain Key="CreditControlArea" Caption="信用控制范围" RefControlType="Dict" DataType="Long" ItemKey="CreditControlArea"/>
+            <Domain Key="Currency" Caption="币种" RefControlType="Dict" DataType="Long" ItemKey="Currency"/>
+            <Domain Key="Currency_Multi" Caption="币种(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="Currency" AllowMultiSelection="true"/>
+            <Domain Key="Customer" Caption="客户" RefControlType="Dict" DataType="Long" ItemKey="Customer"/>
+            <Domain Key="CustomerAccountGroup" Caption="客户账户组" RefControlType="Dict" DataType="Long" ItemKey="CustomerAccountGroup"/>
+            <Domain Key="DMS_DocumentType" Caption="文档类型" RefControlType="Dict" DataType="Long" ItemKey="DMS_DocumentType"/>
+            <Domain Key="DMS_WorkstationApplication" Caption="工作站应用程序" RefControlType="Dict" DataType="Long" ItemKey="DMS_WorkstationApplication"/>
+            <Domain Key="DistributionChannel" Caption="分销渠道" RefControlType="Dict" DataType="Long" ItemKey="DistributionChannel"/>
+            <Domain Key="Division" Caption="产品部门" RefControlType="Dict" DataType="Long" ItemKey="Division"/>
+            <Domain Key="ExchangeRateType" Caption="汇率类型" RefControlType="Dict" DataType="Long" ItemKey="ExchangeRateType"/>
+            <Domain Key="FunctionalArea" Caption="功能范围" RefControlType="Dict" DataType="Long" ItemKey="FunctionalArea"/>
+            <Domain Key="FunctionalArea_Multi" Caption="功能范围" RefControlType="Dict" DataType="Varchar" ItemKey="FunctionalArea" AllowMultiSelection="true"/>
+            <Domain Key="Industry" Caption="行业" RefControlType="Dict" DataType="Long" ItemKey="Industry"/>
+            <Domain Key="IndustrySector" Caption="行业" RefControlType="Dict" DataType="Long" ItemKey="IndustrySector"/>
+            <Domain Key="Language" Caption="语言" RefControlType="Dict" DataType="Long" ItemKey="Language"/>
+            <Domain Key="Material" Caption="物料" RefControlType="Dict" DataType="Long" ItemKey="Material"/>
+            <Domain Key="Material_Multi" Caption="物料" RefControlType="Dict" DataType="Varchar" ItemKey="Material" AllowMultiSelection="true"/>
+            <Domain Key="MaterialGroup" Caption="物料组" RefControlType="Dict" DataType="Long" ItemKey="MaterialGroup"/>
+            <Domain Key="MaterialGroup_Multi" Caption="物料组" RefControlType="Dict" DataType="Varchar" ItemKey="MaterialGroup" AllowMultiSelection="true"/>
+            <Domain Key="MaterialTypeID_Multi" Caption="物料类型" RefControlType="Dict" DataType="Varchar" ItemKey="MaterialType" AllowMultiSelection="true"/>
+            <Domain Key="NetworkID_Multi" Caption="网络" RefControlType="Dict" DataType="Varchar" ItemKey="PS_Network" AllowMultiSelection="true"/>
+            <Domain Key="ActivityID_Multi" Caption="作业" RefControlType="Dict" DataType="Varchar" ItemKey="PS_Activity" AllowMultiSelection="true"/>
+            <Domain Key="ItemProjectID_Multi" Caption="项目" RefControlType="Dict" DataType="Varchar" ItemKey="PS_Project" AllowMultiSelection="true"/>
+            <Domain Key="StorageLocationID_Multi" Caption="库存地点" RefControlType="Dict" DataType="Varchar" ItemKey="StorageLocation" AllowMultiSelection="true"/>
+            <Domain Key="ProductionSchedulerID_Multi" Caption="生产调度员" RefControlType="Dict" DataType="Varchar" ItemKey="PP_ProductionScheduler" AllowMultiSelection="true"/>
+            <Domain Key="PurchasingGroupID_Multi" Caption="采购组" RefControlType="Dict" DataType="Varchar" ItemKey="PurchasingGroup" AllowMultiSelection="true"/>
+            <Domain Key="DocumentTypeID_Multi" Caption="单据类型" RefControlType="Dict" DataType="Varchar" ItemKey="MM_DocumentType" AllowMultiSelection="true"/>
+            <Domain Key="PurchaseContractID_Multi" Caption="采购合同" RefControlType="Dict" DataType="Varchar" ItemKey="CM_PurchaseContract__Dic" AllowMultiSelection="true"/>
+            <Domain Key="MaterialType" Caption="物料类型" RefControlType="Dict" DataType="Long" ItemKey="MaterialType"/>
+            <Domain Key="MaterialType_EditValue" Caption="物料类型" RefControlType="Dict" DataType="Varchar" Length="30" ItemKey="MaterialType"/>
+            <Domain Key="MultilLangTest" Caption="语言测试字典" RefControlType="Dict" DataType="Long" ItemKey="MultilLangTest"/>
+            <Domain Key="PeriodType" Caption="会计期方案" RefControlType="Dict" DataType="Long" ItemKey="PeriodType"/>
+            <Domain Key="Plant" Caption="工厂" RefControlType="Dict" DataType="Long" ItemKey="Plant"/>
+            <Domain Key="Plant_Multi" Caption="工厂" RefControlType="Dict" DataType="Varchar" ItemKey="Plant" AllowMultiSelection="true"/>
+            <Domain Key="ProductHierarchy" Caption="产品层次" RefControlType="Dict" DataType="Long" ItemKey="ProductHierarchy"/>
+            <Domain Key="ProductHierarchyStructure" Caption="产品层次" RefControlType="Dict" DataType="Long" ItemKey="ProductHierarchyStructure"/>
+            <Domain Key="ProfitCenter" Caption="利润中心" RefControlType="Dict" DataType="Long" ItemKey="ProfitCenter"/>
+            <Domain Key="ProfitCenter_Multi" Caption="利润中心" RefControlType="Dict" DataType="Varchar" ItemKey="ProfitCenter" AllowMultiSelection="true"/>
+            <Domain Key="PurchasingGroup" Caption="采购组" RefControlType="Dict" DataType="Long" ItemKey="PurchasingGroup"/>
+            <Domain Key="PurchasingOrganization" Caption="采购组织" RefControlType="Dict" DataType="Long" ItemKey="PurchasingOrganization"/>
+            <Domain Key="CellDimensionReportModel" Caption="维度模板" RefControlType="Dict" DataType="Long" ItemKey="CellDimensionReportModel"/>
+            <Domain Key="PurchasingOrganization_Multi" Caption="采购组织" RefControlType="Dict" DataType="Varchar" ItemKey="PurchasingOrganization" AllowMultiSelection="true"/>
+            <Domain Key="Region" Caption="地区" RefControlType="Dict" DataType="Long" ItemKey="Region"/>
+            <Domain Key="SaleOrganization" Caption="销售组织" RefControlType="Dict" DataType="Long" ItemKey="SaleOrganization"/>
+            <Domain Key="SaleOrganization_Multi" Caption="销售组织(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="SaleOrganization" AllowMultiSelection="true"/>
+            <Domain Key="DistributionChannel_Multi" Caption="分销渠道(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="DistributionChannel" AllowMultiSelection="true"/>
+            <Domain Key="Division_Multi" Caption="产品部门(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="Division" AllowMultiSelection="true"/>
+            <Domain Key="StorageLocation" Caption="库存地点" RefControlType="Dict" DataType="Long" ItemKey="StorageLocation"/>
+            <Domain Key="StoragePoint" Caption="子库" RefControlType="Dict" DataType="Long" ItemKey="StoragePoint"/>
+            <Domain Key="Unit" Caption="计量单位" RefControlType="Dict" DataType="Long" ItemKey="Unit"/>
+            <Domain Key="UnitSystem" Caption="维度" RefControlType="Dict" DataType="Long" ItemKey="UnitSystem"/>
+            <Domain Key="Vendor" Caption="供应商" RefControlType="Dict" DataType="Long" ItemKey="Vendor"/>
+            <Domain Key="Vendor_Multi" Caption="固定的供应商" RefControlType="Dict" DataType="Varchar" ItemKey="Vendor" AllowMultiSelection="true"/>
+            <Domain Key="VendorAccountGroup" Caption="供应商账户组" RefControlType="Dict" DataType="Long" ItemKey="VendorAccountGroup"/>
+            <Domain Key="MM_VendorClassification" Caption="供应商分类" RefControlType="Dict" DataType="Long" ItemKey="MM_VendorClassification"/>
+            <Domain Key="VoucherType" Caption="凭证类型" RefControlType="Dict" DataType="Long" ItemKey="VoucherType"/>
+            <Domain Key="VoucherType_Multi" Caption="凭证类型(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="VoucherType" AllowMultiSelection="true"/>
+            <Domain Key="WorkCenter" Caption="工作中心" RefControlType="Dict" DataType="Long" ItemKey="WorkCenter"/>
+            <Domain Key="WorkCenter_Multi" Caption="工作中心" RefControlType="Dict" DataType="Varchar" ItemKey="WorkCenter" AllowMultiSelection="true"/>
+            <Domain Key="Operator" Caption="操作员" RefControlType="Dict" DataType="Long" ItemKey="Operator"/>
+            <Domain Key="Operator_Multi" Caption="操作员（多选）" RefControlType="Dict" DataType="Varchar" ItemKey="Operator" AllowMultiSelection="true"/>
+            <Domain Key="Role" Caption="角色" RefControlType="Dict" DataType="Long" ItemKey="Role"/>
+            <Domain Key="Role_Multi" Caption="角色（多选）" RefControlType="Dict" DataType="Varchar" ItemKey="Role" AllowMultiSelection="true"/>
+            <Domain Key="AuthorityActivity" Caption="作业值" RefControlType="Dict" DataType="Long" ItemKey="AuthorityActivity"/>
+            <Domain Key="AuthorityField" Caption="上级节点" RefControlType="Dict" DataType="Long" ItemKey="AuthorityField"/>
+            <Domain Key="AuthorityObject" Caption="上级节点" RefControlType="Dict" DataType="Long" ItemKey="AuthorityObject"/>
+            <Domain Key="AuthorityObjectClass" Caption="权限对象类ID" RefControlType="Dict" DataType="Long" ItemKey="AuthorityObjectClass"/>
+            <Domain Key="AuthorityOrgVariable" Caption="权限组织变量" RefControlType="Dict" DataType="Long" ItemKey="AuthorityOrgVariable"/>
+            <Domain Key="AuthoritySingleProfile" Caption="权限参数文件" RefControlType="Dict" DataType="Long" ItemKey="AuthoritySingleProfile"/>
+            <Domain Key="AuthorizationKey" Caption="权限码" RefControlType="Dict" DataType="Long" ItemKey="AuthorizationKey"/>
+            <Domain Key="StructureParameterFile__Dic" Caption="参数文件" RefControlType="Dict" DataType="Long" ItemKey="StructureParameterFile__Dic"/>
+            <Domain Key="Classification" Caption="分类" RefControlType="Dict" DataType="Long" ItemKey="Classification"/>
+            <Domain Key="Classification_Multi" Caption="分类" RefControlType="Dict" DataType="Varchar" ItemKey="Classification" AllowMultiSelection="true"/>
+            <Domain Key="MM_CCIdentity" Caption="CC标识" RefControlType="Dict" DataType="Long" ItemKey="MM_CCIdentity"/>
+            <Domain Key="MM_CategoryType" Caption="类类型" RefControlType="Dict" DataType="Long" ItemKey="MM_CategoryType"/>
+            <Domain Key="MM_Characteristic" Caption="特性" RefControlType="Dict" DataType="Long" ItemKey="MM_Characteristic"/>
+            <Domain Key="MM_CheckingRule" Caption="检查规则" RefControlType="Dict" DataType="Long" ItemKey="MM_CheckingRule"/>
+            <Domain Key="MM_Contract__Dic" Caption="采购协议单据字典" RefControlType="Dict" DataType="Long" ItemKey="MM_Contract__Dic"/>
+            <Domain Key="MM_DangerousMaterial" Caption="危险物料" RefControlType="Dict" DataType="Long" ItemKey="MM_DangerousMaterial"/>
+            <Domain Key="MM_DocumentType" Caption="MM单据类型" RefControlType="Dict" DataType="Long" ItemKey="MM_DocumentType"/>
+            <Domain Key="MM_ExternalConfirmCategory" Caption="外部确认类别" RefControlType="Dict" DataType="Long" ItemKey="MM_ExternalConfirmCategory"/>
+            <Domain Key="MM_FCode4MovementType" Caption="F代码-移动类型" RefControlType="Dict" DataType="Long" ItemKey="MM_FCode4MovementType"/>
+            <Domain Key="MM_GlobalCategory" Caption="评估类别" RefControlType="Dict" DataType="Long" ItemKey="MM_GlobalCategory"/>
+            <Domain Key="MM_GlobalValuationType" Caption="评估类型" RefControlType="Dict" DataType="Long" ItemKey="MM_GlobalValuationType"/>
+            <Domain Key="MM_InboundDelivery__Dic" Caption="内向交货单单据字典" RefControlType="Dict" DataType="Long" ItemKey="MM_InboundDelivery__Dic"/>
+            <Domain Key="MM_IncomingInvoice__Dic" Caption="采购发票单据字典" RefControlType="Dict" DataType="Long" ItemKey="MM_IncomingInvoice__Dic"/>
+            <Domain Key="MM_ItemCategory" Caption="项目类别" RefControlType="Dict" DataType="Long" ItemKey="MM_ItemCategory"/>
+            <Domain Key="MM_ItemCategory_Multi" Caption="项目类别" RefControlType="Dict" DataType="Varchar" ItemKey="MM_ItemCategory"/>
+            <Domain Key="MM_MSEG__Dic" Caption="物料凭证字典" RefControlType="Dict" DataType="Long" ItemKey="MM_MSEG__Dic"/>
+            <Domain Key="MM_MaterialProfile" Caption="物料参数文件" RefControlType="Dict" DataType="Long" ItemKey="MM_MaterialProfile"/>
+            <Domain Key="MM_MoveTypeMenuItem" Caption="移动类型" RefControlType="Dict" DataType="Long" ItemKey="MM_MoveTypeMenuItem"/>
+            <Domain Key="MM_PIToleranceGroup" Caption="库存盘点容差组" RefControlType="Dict" DataType="Long" ItemKey="MM_PIToleranceGroup"/>
+            <Domain Key="MM_PartnerFunction" Caption="业务伙伴角色" RefControlType="Dict" DataType="Long" ItemKey="MM_PartnerFunction"/>
+            <Domain Key="MM_PartnerSchema" Caption="伙伴方案" RefControlType="Dict" DataType="Long" ItemKey="MM_PartnerSchema"/>
+            <Domain Key="MM_PaymentBlocked" Caption="付款冻结" RefControlType="Dict" DataType="Long" ItemKey="MM_PaymentBlocked"/>
+            <Domain Key="MM_PurchaseInfoRecord" Caption="采购信息记录" RefControlType="Dict" DataType="Long" ItemKey="MM_PurchaseInfoRecord"/>
+            <Domain Key="MM_PurchaseOrderDtl__Dic" Caption="采购凭证行项目" RefControlType="Dict" DataType="Long" ItemKey="MM_PurchaseOrderDtl__Dic"/>
+            <Domain Key="MM_PurchaseOrder__Dic" Caption="采购订单单据字典" RefControlType="Dict" DataType="Long" ItemKey="MM_PurchaseOrder__Dic"/>
+            <Domain Key="MM_PurchaseOrgPricingKey" Caption="采购组织定价关键字" RefControlType="Dict" DataType="Long" ItemKey="MM_PurchaseOrgPricingKey"/>
+            <Domain Key="MM_PurchaseRequisition__Dic" Caption="采购申请单据字典" RefControlType="Dict" DataType="Long" ItemKey="MM_PurchaseRequisition__Dic"/>
+            <Domain Key="MM_PurchasingValueKey" Caption="采购值关键字" RefControlType="Dict" DataType="Long" ItemKey="MM_PurchasingValueKey"/>
+            <Domain Key="MM_QualityReason" Caption="质量不合格原因" RefControlType="Dict" DataType="Long" ItemKey="MM_QualityReason"/>
+            <Domain Key="MM_QuotaArrangementRule" Caption="配额安排规则" RefControlType="Dict" DataType="Long" ItemKey="MM_QuotaArrangementRule"/>
+            <Domain Key="MM_Reason4Movement" Caption="移动原因" RefControlType="Dict" DataType="Long" ItemKey="MM_Reason4Movement"/>
+            <Domain Key="MM_Reservation__Dic" Caption="预留单据字典" RefControlType="Dict" DataType="Long" ItemKey="MM_Reservation__Dic"/>
+            <Domain Key="MM_SLEDPeriodIndicator" Caption="SLED期间标识符" RefControlType="Dict" DataType="Long" ItemKey="MM_SLEDPeriodIndicator"/>
+            <Domain Key="MM_SNProfile" Caption="序列号参数文件" RefControlType="Dict" DataType="Long" ItemKey="MM_SNProfile"/>
+            <Domain Key="MM_Service" Caption="服务" RefControlType="Dict" DataType="Long" ItemKey="MM_Service"/>
+            <Domain Key="MM_ServiceCategory" Caption="服务类别" RefControlType="Dict" DataType="Long" ItemKey="MM_ServiceCategory"/>
+            <Domain Key="MM_SetConfirmationControl" Caption="确认控制" RefControlType="Dict" DataType="Long" ItemKey="MM_SetConfirmationControl"/>
+            <Domain Key="MM_Settle_K__Dic" Caption="寄售结算单字典" RefControlType="Dict" DataType="Long" ItemKey="MM_Settle_K__Dic"/>
+            <Domain Key="MM_SortSequence" Caption="特性排序规则" RefControlType="Dict" DataType="Long" ItemKey="MM_SortSequence"/>
+            <Domain Key="MM_StandardServiceCatalog" Caption="标准服务目录" RefControlType="Dict" DataType="Long" ItemKey="MM_StandardServiceCatalog"/>
+            <Domain Key="MM_StockDetermineGroup" Caption="库存确定组" RefControlType="Dict" DataType="Long" ItemKey="MM_StockDetermineGroup"/>
+            <Domain Key="MM_StockDetermineRule" Caption="库存确定规则" RefControlType="Dict" DataType="Long" ItemKey="MM_StockDetermineRule"/>
+            <Domain Key="MM_StorageCondition" Caption="存储条件" RefControlType="Dict" DataType="Long" ItemKey="MM_StorageCondition"/>
+            <Domain Key="MM_TemperatureCondition" Caption="温度条件" RefControlType="Dict" DataType="Long" ItemKey="MM_TemperatureCondition"/>
+            <Domain Key="MM_VendorPricingKey" Caption="供应商价格过程决定关键字" RefControlType="Dict" DataType="Long" ItemKey="MM_VendorPricingKey"/>
+            <Domain Key="MM_VendorSpecificTolerance" Caption="指定供应商的容差" RefControlType="Dict" DataType="Long" ItemKey="MM_VendorSpecificTolerance"/>
+            <Domain Key="MoveType" Caption="移动类型" RefControlType="Dict" DataType="Long" ItemKey="MoveType"/>
+            <Domain Key="SD_BillTypePricingKey" Caption="单据类型定价关键字" RefControlType="Dict" DataType="Long" ItemKey="SD_BillTypePricingKey"/>
+            <Domain Key="SD_BillingDocumentType" Caption="发票单据类型" RefControlType="Dict" DataType="Long" ItemKey="SD_BillingDocumentType"/>
+            <Domain Key="SD_BillingDocumentType_Multi" Caption="红字发票类型" RefControlType="Dict" DataType="Varchar" ItemKey="SD_BillingDocumentType" AllowMultiSelection="true"/>
+            <Domain Key="SD_BillingPlanType" Caption="出具发票计划类型" RefControlType="Dict" DataType="Long" ItemKey="SD_BillingPlanType"/>
+            <Domain Key="SD_CheckProfile4PackStatus" Caption="定义包装状态的检查参数文件" RefControlType="Dict" DataType="Long" ItemKey="SD_CheckProfile4PackStatus"/>
+            <Domain Key="SD_CheckingGroup" Caption="检查组" RefControlType="Dict" DataType="Long" ItemKey="SD_CheckingGroup"/>
+            <Domain Key="SD_ClientCustomerGroup" Caption="集团客户组" RefControlType="Dict" DataType="Long" ItemKey="SD_ClientCustomerGroup"/>
+            <Domain Key="SD_CreditGroup" Caption="信贷组" RefControlType="Dict" DataType="Long" ItemKey="SD_CreditGroup"/>
+            <Domain Key="SD_CreditManagementGroup" Caption="信贷管理组" RefControlType="Dict" DataType="Long" ItemKey="SD_CreditManagementGroup"/>
+            <Domain Key="SD_CustomGroup" Caption="自定义分组" RefControlType="Dict" DataType="Long" ItemKey="SD_CustomGroup"/>
+            <Domain Key="SD_CustomerAccountAssignGroup" Caption="客户科目分配组" RefControlType="Dict" DataType="Long" ItemKey="SD_CustomerAccountAssignGroup"/>
+            <Domain Key="SD_CustomerClassification" Caption="客户分类" RefControlType="Dict" DataType="Long" ItemKey="SD_CustomerClassification"/>
+            <Domain Key="SD_CustomerGroup" Caption="客户组" RefControlType="Dict" DataType="Long" ItemKey="SD_CustomerGroup"/>
+            <Domain Key="SD_CustomerGroupFour" Caption="客户组4" RefControlType="Dict" DataType="Long" ItemKey="SD_CustomerGroupFour"/>
+            <Domain Key="SD_CustomerGroupThree" Caption="客户组3" RefControlType="Dict" DataType="Long" ItemKey="SD_CustomerGroupThree"/>
+            <Domain Key="SD_CustomerGroupTwo" Caption="客户组2" RefControlType="Dict" DataType="Long" ItemKey="SD_CustomerGroupTwo"/>
+            <Domain Key="SD_CustomerHierarchy" Caption="客户层次结构" RefControlType="Dict" DataType="Long" ItemKey="SD_CustomerHierarchy"/>
+            <Domain Key="SD_CustomerHierarchyType" Caption="客户层次类型" RefControlType="Dict" DataType="Long" ItemKey="SD_CustomerHierarchyType"/>
+            <Domain Key="SD_CustomerLevel" Caption="客户等级" RefControlType="Dict" DataType="Long" ItemKey="SD_CustomerLevel"/>
+            <Domain Key="SD_CustomerPricingGroup" Caption="定义客户定价组" RefControlType="Dict" DataType="Long" ItemKey="SD_CustomerPricingGroup"/>
+            <Domain Key="SD_CustomerPricingKey" Caption="客户价格决定关键字" RefControlType="Dict" DataType="Long" ItemKey="SD_CustomerPricingKey"/>
+            <Domain Key="SD_DateCategory" Caption="日期类别" RefControlType="Dict" DataType="Long" ItemKey="SD_DateCategory"/>
+            <Domain Key="SD_DateDescription" Caption="日期描述" RefControlType="Dict" DataType="Long" ItemKey="SD_DateDescription"/>
+            <Domain Key="SD_DeliveryDocumentType" Caption="交货类型" RefControlType="Dict" DataType="Long" ItemKey="SD_DeliveryDocumentType"/>
+            <Domain Key="SD_DeliveryPriority" Caption="交货优先权" RefControlType="Dict" DataType="Long" ItemKey="SD_DeliveryPriority"/>
+            <Domain Key="SD_DocumentCreditGroup" Caption="凭证信贷组" RefControlType="Dict" DataType="Long" ItemKey="SD_DocumentCreditGroup"/>
+            <Domain Key="SD_GoldTaxDevice" Caption="税控设备" RefControlType="Dict" DataType="Long" ItemKey="SD_GoldTaxDevice"/>
+            <Domain Key="SD_IncompleteProcedure" Caption="不完整性过程" RefControlType="Dict" DataType="Long" ItemKey="SD_IncompleteProcedure"/>
+            <Domain Key="SD_IncompleteStatus__Dic" Caption="状态组单据字典" RefControlType="Dict" DataType="Long" ItemKey="SD_IncompleteStatus__Dic"/>
+            <Domain Key="SD_Incoterms" Caption="定义贸易术语" RefControlType="Dict" DataType="Long" ItemKey="SD_Incoterms"/>
+            <Domain Key="SD_ItemCategory" Caption="项目类别" RefControlType="Dict" DataType="Long" ItemKey="SD_ItemCategory"/>
+            <Domain Key="SD_ItemCategoryGroup" Caption="项目类别组" RefControlType="Dict" DataType="Long" ItemKey="SD_ItemCategoryGroup"/>
+            <Domain Key="SD_ItemCategoryUsage" Caption="定义项目类别用途" RefControlType="Dict" DataType="Long" ItemKey="SD_ItemCategoryUsage"/>
+            <Domain Key="SD_LoadingGroup" Caption="装载组" RefControlType="Dict" DataType="Long" ItemKey="SD_LoadingGroup"/>
+            <Domain Key="SD_MaterialAccAssGroup" Caption="物料科目分配组" RefControlType="Dict" DataType="Long" ItemKey="SD_MaterialAccAssGroup"/>
+            <Domain Key="SD_MaterialAnalysisGroup" Caption="物料分析组" RefControlType="Dict" DataType="Long" ItemKey="SD_MaterialAnalysisGroup"/>
+            <Domain Key="SD_MaterialPricingGroup" Caption="定义物料定价组" RefControlType="Dict" DataType="Long" ItemKey="SD_MaterialPricingGroup"/>
+            <Domain Key="SD_MaterialRebateGroup" Caption="定义物料返利组" RefControlType="Dict" DataType="Long" ItemKey="SD_MaterialRebateGroup"/>
+            <Domain Key="SD_OutboundDeliveryDtl__Dic" Caption="外向交货单行项目字典" RefControlType="Dict" DataType="Long" ItemKey="SD_OutboundDeliveryDtl__Dic"/>
+            <Domain Key="SD_OutboundDelivery__Dic" Caption="外向交货单单据字典" RefControlType="Dict" DataType="Long" ItemKey="SD_OutboundDelivery__Dic"/>
+            <Domain Key="SD_PODDifferenceReason" Caption="POD数量差异原因" RefControlType="Dict" DataType="Long" ItemKey="SD_PODDifferenceReason"/>
+            <Domain Key="SD_PackInstruction" Caption="包装指令" RefControlType="Dict" DataType="Long" ItemKey="SD_PackInstruction"/>
+            <Domain Key="SD_PackMaterialGroup" Caption="定义包装物料的物料组" RefControlType="Dict" DataType="Long" ItemKey="SD_PackMaterialGroup"/>
+            <Domain Key="SD_PackMaterialType" Caption="定义包装物料类型" RefControlType="Dict" DataType="Long" ItemKey="SD_PackMaterialType"/>
+            <Domain Key="SD_Reason4BlockBilling" Caption="定义开票的冻结原因" RefControlType="Dict" DataType="Long" ItemKey="SD_Reason4BlockBilling"/>
+            <Domain Key="SD_Reason4BlockDelivery" Caption="定义装运中的冻结原因" RefControlType="Dict" DataType="Long" ItemKey="SD_Reason4BlockDelivery"/>
+            <Domain Key="SD_Reason4BlockOrder" Caption="定义订单的冻结原因" RefControlType="Dict" DataType="Long" ItemKey="SD_Reason4BlockOrder"/>
+            <Domain Key="SD_Reason4Rejection" Caption="定义拒绝原因" RefControlType="Dict" DataType="Long" ItemKey="SD_Reason4Rejection"/>
+            <Domain Key="SD_RebateAgreementType" Caption="定义返利协议类型" RefControlType="Dict" DataType="Long" ItemKey="SD_RebateAgreementType"/>
+            <Domain Key="SD_RebateAgreement__Dic" Caption="返利协议字典" RefControlType="Dict" DataType="Long" ItemKey="SD_RebateAgreement__Dic"/>
+            <Domain Key="SD_RebateConditionTypeGroup" Caption="定义返利条件类型组" RefControlType="Dict" DataType="Long" ItemKey="SD_RebateConditionTypeGroup"/>
+            <Domain Key="SD_RiskCategory" Caption="信用风险类别" RefControlType="Dict" DataType="Long" ItemKey="SD_RiskCategory"/>
+            <Domain Key="SD_SaleBillingDtl__Dic" Caption="销售发票行项目字典" RefControlType="Dict" DataType="Long" ItemKey="SD_SaleBillingDtl__Dic"/>
+            <Domain Key="SD_SaleBilling__Dic" Caption="销售发票单据字典" RefControlType="Dict" DataType="Long" ItemKey="SD_SaleBilling__Dic"/>
+            <Domain Key="SD_SaleContract__Dic" Caption="销售合同单据字典" RefControlType="Dict" DataType="Long" ItemKey="SD_SaleContract__Dic"/>
+            <Domain Key="SD_SaleDocumentType" Caption="销售凭证类型" RefControlType="Dict" DataType="Long" ItemKey="SD_SaleDocumentType"/>
+            <Domain Key="SD_SaleGroup" Caption="销售组" RefControlType="Dict" DataType="Long" ItemKey="SD_SaleGroup"/>
+            <Domain Key="SD_SaleOffice" Caption="销售办公室" RefControlType="Dict" DataType="Long" ItemKey="SD_SaleOffice"/>
+            <Domain Key="SD_SaleOrderDtl__Dic" Caption="销售订单行项目字典" RefControlType="Dict" DataType="Long" ItemKey="SD_SaleOrderDtl__Dic"/>
+            <Domain Key="SD_SaleOrderReason" Caption="定义订单原因" RefControlType="Dict" DataType="Long" ItemKey="SD_SaleOrderReason"/>
+            <Domain Key="SD_SaleOrder_ScheduleLineDtl__Dic" Caption="计划行号" RefControlType="Dict" DataType="Long" ItemKey="SD_SaleOrder_ScheduleLineDtl__Dic"/>
+            <Domain Key="SD_SaleOrder__Dic" Caption="销售订单单据字典" RefControlType="Dict" DataType="Long" ItemKey="SD_SaleOrder__Dic"/>
+            <Domain Key="SD_SalePlace" Caption="销售地区" RefControlType="Dict" DataType="Long" ItemKey="SD_SalePlace"/>
+            <Domain Key="SD_SaleStatus" Caption="定义销售状态" RefControlType="Dict" DataType="Long" ItemKey="SD_SaleStatus"/>
+            <Domain Key="SD_ScheduleLineCategory" Caption="定义计划行类别" RefControlType="Dict" DataType="Long" ItemKey="SD_ScheduleLineCategory"/>
+            <Domain Key="SD_ShippingCondition" Caption="发运条件" RefControlType="Dict" DataType="Long" ItemKey="SD_ShippingCondition"/>
+            <Domain Key="SD_ShippingPoint" Caption="装运点" RefControlType="Dict" DataType="Long" ItemKey="SD_ShippingPoint"/>
+            <Domain Key="SD_StatisticGroup4Customer" Caption="为客户维护统计组" RefControlType="Dict" DataType="Long" ItemKey="SD_StatisticGroup4Customer"/>
+            <Domain Key="SD_StatisticGroup4Material" Caption="物料统计组" RefControlType="Dict" DataType="Long" ItemKey="SD_StatisticGroup4Material"/>
+            <Domain Key="SD_SubstitutionReason" Caption="替代原因" RefControlType="Dict" DataType="Long" ItemKey="SD_SubstitutionReason"/>
+            <Domain Key="SD_TaxClassification" Caption="税分类" RefControlType="Dict" DataType="Long" ItemKey="SD_TaxClassification"/>
+            <Domain Key="TM_ConnectionPoint" Caption="运输连接点" RefControlType="Dict" DataType="Long" ItemKey="TM_ConnectionPoint"/>
+            <Domain Key="TM_DateRule" Caption="日期规则" RefControlType="Dict" DataType="Long" ItemKey="TM_DateRule"/>
+            <Domain Key="TM_Driver" Caption="司机" RefControlType="Dict" DataType="Long" ItemKey="TM_Driver"/>
+            <Domain Key="TM_ItemGroup" Caption="条目过程组" RefControlType="Dict" DataType="Long" ItemKey="TM_ItemGroup"/>
+            <Domain Key="TM_LogisticsType" Caption="发运类型" RefControlType="Dict" DataType="Long" ItemKey="TM_LogisticsType"/>
+            <Domain Key="TM_LogisticsTypeGroup" Caption="发运类型过程组" RefControlType="Dict" DataType="Long" ItemKey="TM_LogisticsTypeGroup"/>
+            <Domain Key="TM_ScaleIdentification" Caption="销售标识字典" RefControlType="Dict" DataType="Long" ItemKey="TM_ScaleIdentification"/>
+            <Domain Key="TM_ServiceAgentGroup" Caption="服务代理程序组" RefControlType="Dict" DataType="Long" ItemKey="TM_ServiceAgentGroup"/>
+            <Domain Key="TM_ShipmentCostType" Caption="装运成本类型" RefControlType="Dict" DataType="Long" ItemKey="TM_ShipmentCostType"/>
+            <Domain Key="TM_ShipmentItemCategory" Caption="装运项目类别" RefControlType="Dict" DataType="Long" ItemKey="TM_ShipmentItemCategory"/>
+            <Domain Key="TM_ShipmentRoute" Caption="装运路线" RefControlType="Dict" DataType="Long" ItemKey="TM_ShipmentRoute"/>
+            <Domain Key="TM_ShipmentType" Caption="装运类型" RefControlType="Dict" DataType="Long" ItemKey="TM_ShipmentType"/>
+            <Domain Key="TM_TransPlanPoint" Caption="运输计划点" RefControlType="Dict" DataType="Long" ItemKey="TM_TransPlanPoint"/>
+            <Domain Key="TM_TransportVehicle" Caption="运输车辆" RefControlType="Dict" DataType="Long" ItemKey="TM_TransportVehicle"/>
+            <Domain Key="TM_TransportVehicleType" Caption="运输车辆类型" RefControlType="Dict" DataType="Long" ItemKey="TM_TransportVehicleType"/>
+            <Domain Key="TM_TransportationGroup" Caption="运输组" RefControlType="Dict" DataType="Long" ItemKey="TM_TransportationGroup"/>
+            <Domain Key="TM_TransportationMode" Caption="运输方式" RefControlType="Dict" DataType="Long" ItemKey="TM_TransportationMode"/>
+            <Domain Key="TM_TransportationZone" Caption="运输区域" RefControlType="Dict" DataType="Long" ItemKey="TM_TransportationZone"/>
+            <Domain Key="PP_Application" Caption="应用程序" RefControlType="Dict" DataType="Long" ItemKey="PP_Application"/>
+            <Domain Key="PP_AssemblyBomItem" Caption="生产订单组件BOM项目" RefControlType="Dict" DataType="Long" ItemKey="PP_AssemblyBomItem"/>
+            <Domain Key="PP_AvailiableCapacityVersion" Caption="确定可用能力版本" RefControlType="Dict" DataType="Long" ItemKey="PP_AvailiableCapacityVersion"/>
+            <Domain Key="PP_BOMPriorityOrder" Caption="BOM用途的优先订单" RefControlType="Dict" DataType="Long" ItemKey="PP_BOMPriorityOrder"/>
+            <Domain Key="PP_BOMStatus" Caption="BOM状态" RefControlType="Dict" DataType="Long" ItemKey="PP_BOMStatus"/>
+            <Domain Key="PP_BOMUsage" Caption="BOM用途" RefControlType="Dict" DataType="Long" ItemKey="PP_BOMUsage"/>
+            <Domain Key="PP_BOMUsage_EditValue" Caption="BOM用途" RefControlType="Dict" DataType="Varchar" Length="30" ItemKey="PP_BOMUsage"/>
+            <Domain Key="Operator_EditValue" Caption="操作员" RefControlType="Dict" DataType="Varchar" Length="50" ItemKey="Operator"/>
+            <Domain Key="PP_BatchType" Caption="批量类型" RefControlType="Dict" DataType="Long" ItemKey="PP_BatchType"/>
+            <Domain Key="PP_Capacity" Caption="能力" RefControlType="Dict" DataType="Long" ItemKey="PP_Capacity"/>
+            <Domain Key="PP_CapacityCategory" Caption="能力类别" RefControlType="Dict" DataType="Long" ItemKey="PP_CapacityCategory"/>
+            <Domain Key="PP_CapacityPlanner" Caption="能力计划员" RefControlType="Dict" DataType="Long" ItemKey="PP_CapacityPlanner"/>
+            <Domain Key="PP_ControlCode" Caption="控制码" RefControlType="Dict" DataType="Long" ItemKey="PP_ControlCode"/>
+            <Domain Key="PP_ControlCycle" Caption="控制周期" RefControlType="Dict" DataType="Long" ItemKey="PP_ControlCycle"/>
+            <Domain Key="PP_ControlKeyForPRT" Caption="PRT控制码" RefControlType="Dict" DataType="Long" ItemKey="PP_ControlKeyForPRT"/>
+            <Domain Key="PP_ControlRecipeDestination" Caption="控制配方目的地" RefControlType="Dict" DataType="Long" ItemKey="PP_ControlRecipeDestination"/>
+            <Domain Key="PP_DefineStateSequence" Caption="定义状态序列" RefControlType="Dict" DataType="Long" ItemKey="PP_DefineStateSequence"/>
+            <Domain Key="PP_Dependency" Caption="相关性" RefControlType="Dict" DataType="Long" ItemKey="PP_Dependency"/>
+            <Domain Key="PP_DependencyGroup" Caption="相关性组" RefControlType="Dict" DataType="Long" ItemKey="PP_DependencyGroup"/>
+            <Domain Key="PP_DependencyStatus" Caption="相关性状态" RefControlType="Dict" DataType="Long" ItemKey="PP_DependencyStatus"/>
+            <Domain Key="PP_DifferenceReason" Caption="差异原因" RefControlType="Dict" DataType="Long" ItemKey="PP_DifferenceReason"/>
+            <Domain Key="PP_EngineeringChange" Caption="工程变更" RefControlType="Dict" DataType="Long" ItemKey="PP_EngineeringChange"/>
+            <Domain Key="PP_ExternalProcurement" Caption="外部采购策略" RefControlType="Dict" DataType="Long" ItemKey="PP_ExternalProcurement"/>
+            <Domain Key="PP_Formula" Caption="可变尺寸项目公式" RefControlType="Dict" DataType="Long" ItemKey="PP_Formula"/>
+            <Domain Key="PP_FormulaKey" Caption="公式码" RefControlType="Dict" DataType="Long" ItemKey="PP_FormulaKey"/>
+            <Domain Key="PP_InHouseProduction" Caption="自制生产策略" RefControlType="Dict" DataType="Long" ItemKey="PP_InHouseProduction"/>
+            <Domain Key="PP_ItemCategory" Caption="项目类别" RefControlType="Dict" DataType="Long" ItemKey="PP_ItemCategory"/>
+            <Domain Key="PP_MRPArea" Caption="MRP范围" RefControlType="Dict" DataType="Long" ItemKey="PP_MRPArea"/>
+            <Domain Key="PP_MRPController" Caption="MRP控制者" RefControlType="Dict" DataType="Long" ItemKey="PP_MRPController"/>
+            <Domain Key="PP_MRPController_Multi" Caption="MRP控制者" RefControlType="Dict" DataType="Varchar" ItemKey="PP_MRPController" AllowMultiSelection="true"/>
+            <Domain Key="PP_MRPElementText" Caption="MRP元素文本" RefControlType="Dict" DataType="Long" ItemKey="PP_MRPElementText"/>
+            <Domain Key="PP_MRPGroup" Caption="MRP组" RefControlType="Dict" DataType="Long" ItemKey="PP_MRPGroup"/>
+            <Domain Key="PP_MRPSchedulingProfile" Caption="MRP参数文件" RefControlType="Dict" DataType="Long" ItemKey="PP_MRPSchedulingProfile"/>
+            <Domain Key="PP_MRPScope" Caption="MRP范围" RefControlType="Dict" DataType="Long" ItemKey="PP_MRPScope"/>
+            <Domain Key="PP_MRPScope_Multi" Caption="MRP范围" RefControlType="Dict" DataType="Varchar" ItemKey="PP_MRPScope" AllowMultiSelection="true"/>
+            <Domain Key="PP_MRPScopeParameterFile" Caption="定义MRP范围参数文件" RefControlType="Dict" DataType="Long" ItemKey="PP_MRPScopeParameterFile"/>
+            <Domain Key="PP_MRPType" Caption="MRP类型" RefControlType="Dict" DataType="Long" ItemKey="PP_MRPType"/>
+            <Domain Key="PP_MasterModifyStatus" Caption="主记录修改状态" RefControlType="Dict" DataType="Long" ItemKey="PP_MasterModifyStatus"/>
+            <Domain Key="PP_MaterialBOM__Dic" Caption="物料BOM单据字典" RefControlType="Dict" DataType="Long" ItemKey="PP_MaterialBOM__Dic"/>
+            <Domain Key="PP_MaterialConfigProfile" Caption="物料的配置参数文件" RefControlType="Dict" DataType="Long" ItemKey="PP_MaterialConfigProfile"/>
+            <Domain Key="PP_OrderGroup" Caption="订单组" RefControlType="Dict" DataType="Long" ItemKey="PP_OrderGroup"/>
+            <Domain Key="PP_Parameter" Caption="参数" RefControlType="Dict" DataType="Long" ItemKey="PP_Parameter"/>
+            <Domain Key="PP_PlanOrderParameterSet" Caption="计划订单参数文件" RefControlType="Dict" DataType="Long" ItemKey="PP_PlanOrderParameterSet"/>
+            <Domain Key="PP_PlanOrderParameterSet_EditValue" Caption="计划订单参数文件" RefControlType="Dict" DataType="Varchar" Length="30" ItemKey="PP_PlanOrderParameterSet"/>
+            <Domain Key="PP_PlanOrder__Dic" Caption="计划订单单据字典" RefControlType="Dict" DataType="Long" ItemKey="PP_PlanOrder__Dic"/>
+            <Domain Key="PP_PlanScheme" Caption="计划方案" RefControlType="Dict" DataType="Long" ItemKey="PP_PlanScheme"/>
+            <Domain Key="PP_PlanStrategy" Caption="计划策略" RefControlType="Dict" DataType="Long" ItemKey="PP_PlanStrategy"/>
+			<Domain Key="PP_ProductResourceTool" Caption="生产资源/工具" RefControlType="Dict" DataType="Long" ItemKey="PP_ProductResourceTool"/>
+            <Domain Key="PP_PlanningArea" Caption="计划范围" RefControlType="Dict" DataType="Long" ItemKey="PP_PlanningArea"/>
+            <Domain Key="PP_Predict_WeightGroup" Caption="加权组" RefControlType="Dict" DataType="Long" ItemKey="PP_Predict_WeightGroup"/>
+            <Domain Key="PP_ProductCostCollector__Dic" Caption="产品成本收集器单据字典" RefControlType="Dict" DataType="Long" ItemKey="PP_ProductCostCollector__Dic"/>
+            <Domain Key="PP_ProductOrderType" Caption="生产订单类型" RefControlType="Dict" DataType="Long" ItemKey="PP_ProductOrderType"/>
+            <Domain Key="PP_ProductOrderType_Multi" Caption="生产订单类型" RefControlType="Dict" DataType="Varchar" ItemKey="PP_ProductOrderType" AllowMultiSelection="true"/>
+            <Domain Key="PP_ProductOrderType_EditValue" Caption="生产订单类型" RefControlType="Dict" DataType="Varchar" Length="30" ItemKey="PP_ProductOrderType"/>
+            <Domain Key="PP_ProductSchedulingProfile" Caption="生产计划参数文件" RefControlType="Dict" DataType="Long" ItemKey="PP_ProductSchedulingProfile"/>
+            <Domain Key="PP_ProductionOrderBom__Dic" Caption="订单行项目" RefControlType="Dict" DataType="Long" ItemKey="PP_ProductionOrderBom__Dic"/>
+            <Domain Key="PP_ProductionOrder__Dic" Caption="生产订单单据字典" RefControlType="Dict" DataType="Long" ItemKey="PP_ProductionOrder__Dic"/>
+            <Domain Key="PP_ProductionOrder__Dic_Multi" Caption="生产订单单据字典(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="PP_ProductionOrder__Dic" AllowMultiSelection="true"/>
+			<Domain Key="CO_ProductionOrder__Dic" Caption="成本控制生产订单单据字典" RefControlType="Dict" DataType="Long" ItemKey="CO_ProductionOrder__Dic"/>
+            <Domain Key="PP_ProductionScheduler_EditValue" Caption="生产调度员" RefControlType="Dict" DataType="Varchar" Length="30" ItemKey="PP_ProductionScheduler"/>
+            <Domain Key="PP_ProductionScheduler" Caption="生产调度员" RefControlType="Dict" DataType="Long" ItemKey="PP_ProductionScheduler"/>
+            <Domain Key="PP_ProductionVersion" Caption="生产版本" RefControlType="Dict" DataType="Long" ItemKey="PP_ProductionVersion"/>
+            <Domain Key="PP_RelevancyToCosting" Caption="成本相关" RefControlType="Dict" DataType="Long" ItemKey="PP_RelevancyToCosting"/>
+            <Domain Key="PP_RelevancyToSale" Caption="销售相关" RefControlType="Dict" DataType="Long" ItemKey="PP_RelevancyToSale"/>
+            <Domain Key="PP_RepeatManufactureProfile" Caption="重复制造参数文件" RefControlType="Dict" DataType="Long" ItemKey="PP_RepeatManufactureProfile"/>
+            <Domain Key="PP_RequireVersion" Caption="计划独立需求版本" RefControlType="Dict" DataType="Long" ItemKey="PP_RequireVersion"/>
+            <Domain Key="PP_RequirementClass" Caption="需求分类" RefControlType="Dict" DataType="Long" ItemKey="PP_RequirementClass"/>
+            <Domain Key="PP_RequirementType" Caption="需求类型" RefControlType="Dict" DataType="Long" ItemKey="PP_RequirementType"/>
+            <Domain Key="PP_RequirementType_Multi" Caption="需求类型" RefControlType="Dict" DataType="Varchar" ItemKey="PP_RequirementType" AllowMultiSelection="true"/>
+            <Domain Key="PP_ResponsiblePerson" Caption="工作中心负责人员" RefControlType="Dict" DataType="Long" ItemKey="PP_ResponsiblePerson"/>
+            <Domain Key="PP_Routing" Caption="工艺路线" RefControlType="Dict" DataType="Long" ItemKey="PP_Routing"/>
+            <Domain Key="PP_RoutingPrioritySet" Caption="工艺路线优先级设置" RefControlType="Dict" DataType="Long" ItemKey="PP_RoutingPrioritySet"/>
+            <Domain Key="PP_RoutingStatus" Caption="工艺路线状态" RefControlType="Dict" DataType="Long" ItemKey="PP_RoutingStatus"/>
+            <Domain Key="PP_RoutingUsage" Caption="工艺路线用途" RefControlType="Dict" DataType="Long" ItemKey="PP_RoutingUsage"/>
+            <Domain Key="PP_RoutingUsage_Multi" Caption="工艺路线用途(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="PP_RoutingUsage" AllowMultiSelection="true"/>
+            <Domain Key="PP_SchedulingMarginKey" Caption="计划边际码" RefControlType="Dict" DataType="Long" ItemKey="PP_SchedulingMarginKey"/>
+            <Domain Key="PP_SchedulingType" Caption="计划类型" RefControlType="Dict" DataType="Long" ItemKey="PP_SchedulingType"/>
+            <Domain Key="PP_SparePartIndicator" Caption="备件标识" RefControlType="Dict" DataType="Long" ItemKey="PP_SparePartIndicator"/>
+            <Domain Key="PP_SpecialPurType" Caption="特殊采购类型" RefControlType="Dict" DataType="Long" ItemKey="PP_SpecialPurType"/>
+            <Domain Key="PP_StandardTextKey" Caption="标准文本码" RefControlType="Dict" DataType="Long" ItemKey="PP_StandardTextKey"/>
+            <Domain Key="PP_StandardValueKey" Caption="标准值码" RefControlType="Dict" DataType="Long" ItemKey="PP_StandardValueKey"/>
+            <Domain Key="PP_StockTransfer" Caption="库存转移策略" RefControlType="Dict" DataType="Long" ItemKey="PP_StockTransfer"/>
+            <Domain Key="PP_StrategyGroup" Caption="策略组" RefControlType="Dict" DataType="Long" ItemKey="PP_StrategyGroup"/>
+            <Domain Key="PP_SupplyArea" Caption="供应区域" RefControlType="Dict" DataType="Long" ItemKey="PP_SupplyArea"/>
+            <Domain Key="PP_TextForPRTGroup" Caption="PRT组码文本" RefControlType="Dict" DataType="Long" ItemKey="PP_TextForPRTGroup"/>
+            <Domain Key="PP_TriggerPoint" Caption="触发点组" RefControlType="Dict" DataType="Long" ItemKey="PP_TriggerPoint"/>
+            <Domain Key="PP_TriggerPointGroup" Caption="触发点组" RefControlType="Dict" DataType="Long" ItemKey="PP_TriggerPointGroup"/>
+            <Domain Key="PP_TriggerPointUse" Caption="触发点用途" RefControlType="Dict" DataType="Long" ItemKey="PP_TriggerPointUse"/>
+            <Domain Key="PP_VariantTableGroup" Caption="变式表组" RefControlType="Dict" DataType="Long" ItemKey="PP_VariantTableGroup"/>
+            <Domain Key="PP_VariantTables" Caption="变式表" RefControlType="Dict" DataType="Long" ItemKey="PP_VariantTables"/>
+            <Domain Key="PP_VariantTablesStatus" Caption="变式表状态" RefControlType="Dict" DataType="Long" ItemKey="PP_VariantTablesStatus"/>
+            <Domain Key="PP_Version" Caption="版本" RefControlType="Dict" DataType="Long" ItemKey="PP_Version"/>
+            <Domain Key="PP_WorkCenterCategory" Caption="工作中心类别" RefControlType="Dict" DataType="Long" ItemKey="PP_WorkCenterCategory"/>
+            <Domain Key="PP_WorkCenterCategory_Multi" Caption="工作中心类别(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="PP_WorkCenterCategory" AllowMultiSelection="true"/>
+            <Domain Key="PP_WorkCenterUsage" Caption="工作中心用途" RefControlType="Dict" DataType="Long" ItemKey="PP_WorkCenterUsage"/>
+            <Domain Key="PP_WorkCenterUsage_Multi" Caption="工作中心用途(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="PP_WorkCenterUsage" AllowMultiSelection="true"/>
+            <Domain Key="PP_WorkShiftGroup" Caption="班次分组" RefControlType="Dict" DataType="Long" ItemKey="PP_WorkShiftGroup"/>
+            <Domain Key="PP_WorkShift_ShiftDefine" Caption="班次定义明细" RefControlType="Dict" DataType="Long" ItemKey="PP_WorkShift_ShiftDefine"/>
+            <Domain Key="PP_WorkShift_ShiftSequence" Caption="版次序列明细" RefControlType="Dict" DataType="Long" ItemKey="PP_WorkShift_ShiftSequence"/>
+            <Domain Key="AM_AccountAllocation" Caption="科目定位码" RefControlType="Dict" DataType="Long" ItemKey="AM_AccountAllocation"/>
+            <Domain Key="AM_AssetCard__Dic" Caption="资产卡片" RefControlType="Dict" DataType="Long" ItemKey="AM_AssetCard__Dic"/>
+            <Domain Key="AM_AssetCard__Dic_Multi" Caption="新增资产模板" RefControlType="Dict" DataType="Varchar" ItemKey="AM_AssetCard__Dic" AllowMultiSelection="true"/>
+            <Domain Key="AM_AssetCategory" Caption="资产类别" RefControlType="Dict" DataType="Long" ItemKey="AM_AssetCategory"/>
+            <Domain Key="AM_AssetClass" Caption="资产分类" RefControlType="Dict" DataType="Long" ItemKey="AM_AssetClass"/>
+            <Domain Key="AM_AssetStatisticFour" Caption="统计4" RefControlType="Dict" DataType="Long" ItemKey="AM_AssetStatisticFour"/>
+            <Domain Key="AM_AssetStatisticOne" Caption="统计1" RefControlType="Dict" DataType="Long" ItemKey="AM_AssetStatisticOne"/>
+            <Domain Key="AM_AssetStatisticThree" Caption="统计3" RefControlType="Dict" DataType="Long" ItemKey="AM_AssetStatisticThree"/>
+            <Domain Key="AM_AssetStatisticTwo" Caption="统计2" RefControlType="Dict" DataType="Long" ItemKey="AM_AssetStatisticTwo"/>
+            <Domain Key="AM_BasicMethod" Caption="基本方法" RefControlType="Dict" DataType="Long" ItemKey="AM_BasicMethod"/>
+            <Domain Key="AM_CutOffRate" Caption="残值率" RefControlType="Dict" DataType="Long" ItemKey="AM_CutOffRate"/>
+            <Domain Key="AM_DecliningBalanceMethod" Caption="余额递减法" RefControlType="Dict" DataType="Long" ItemKey="AM_DecliningBalanceMethod"/>
+            <Domain Key="AM_DefineTransportVariant" Caption="定义传输变式" RefControlType="Dict" DataType="Long" ItemKey="AM_DefineTransportVariant"/>
+            <Domain Key="AM_DepreciationArea" Caption="折旧范围" RefControlType="Dict" DataType="Long" ItemKey="AM_DepreciationArea"/>
+            <Domain Key="AM_DepreciationChart" Caption="折旧表" RefControlType="Dict" DataType="Long" ItemKey="AM_DepreciationChart"/>
+            <Domain Key="AM_DepreciationKey" Caption="折旧码" RefControlType="Dict" DataType="Long" ItemKey="AM_DepreciationKey"/>
+            <Domain Key="AM_EconomicUse" Caption="经济用途" RefControlType="Dict" DataType="Long" ItemKey="AM_EconomicUse"/>
+            <Domain Key="AM_EvaluationGroup" Caption="评估组1" RefControlType="Dict" DataType="Long" ItemKey="AM_EvaluationGroup"/>
+            <Domain Key="AM_InvestmentReason" Caption="投资原因" RefControlType="Dict" DataType="Long" ItemKey="AM_InvestmentReason"/>
+            <Domain Key="AM_LeaseContract__Dic" Caption="租赁合同" RefControlType="Dict" DataType="Long" ItemKey="AM_LeaseContract__Dic"/>
+            <Domain Key="AM_MultilevelMethod" Caption="多层次方法" RefControlType="Dict" DataType="Long" ItemKey="AM_MultilevelMethod"/>
+            <Domain Key="AM_PeriodControlMethod" Caption="期间控制方法" RefControlType="Dict" DataType="Long" ItemKey="AM_PeriodControlMethod"/>
+            <Domain Key="AM_TransactionType" Caption="业务类型" RefControlType="Dict" DataType="Long" ItemKey="AM_TransactionType"/>
+            <Domain Key="AM_TransactionTypeGroup" Caption="业务类型组" RefControlType="Dict" DataType="Long" ItemKey="AM_TransactionTypeGroup"/>
+            <Domain Key="AM_UseState" Caption="使用状态" RefControlType="Dict" DataType="Long" ItemKey="AM_UseState"/>
+            <Domain Key="BM_CommercialDraft__Dic" Caption="商业汇票单据字典" RefControlType="Dict" DataType="Long" ItemKey="BM_CommercialDraft__Dic"/>
+            <Domain Key="BM_DraftType" Caption="票据类型" RefControlType="Dict" DataType="Long" ItemKey="BM_DraftType"/>
+            <Domain Key="ECS_ExpenseBillLayout" Caption="费用项目单据布局" RefControlType="Dict" DataType="Long" ItemKey="ECS_ExpenseBillLayout"/>
+            <Domain Key="ECS_ExpenseCategory" Caption="报销费用类别" RefControlType="Dict" DataType="Long" ItemKey="ECS_ExpenseCategory"/>
+            <Domain Key="ECS_ExpenseControlScope" Caption="费用控制范围定义" RefControlType="Dict" DataType="Long" ItemKey="ECS_ExpenseControlScope"/>
+            <Domain Key="ECS_ExpenseReimbursement__Dic" Caption="费用报销单据字典" RefControlType="Dict" DataType="Long" ItemKey="ECS_ExpenseReimbursement__Dic"/>
+            <Domain Key="ECS_ExpenseRejection" Caption="驳回原因" RefControlType="Dict" DataType="Long" ItemKey="ECS_ExpenseRejection"/>
+            <Domain Key="ECS_ExpenseRequisition__Dic" Caption="费用申请单据字典" RefControlType="Dict" DataType="Long" ItemKey="ECS_ExpenseRequisition__Dic"/>
+            <Domain Key="ECS_ExpenseRequisition__Dic_Multi" Caption="来源申请单" RefControlType="Dict" DataType="Varchar" ItemKey="ECS_ExpenseRequisition__Dic" AllowMultiSelection="true"/>
+            <Domain Key="ECS_ExpenseSeatingClass" Caption="座位等级" RefControlType="Dict" DataType="Long" ItemKey="ECS_ExpenseSeatingClass"/>
+            <Domain Key="ECS_ExpenseStandardSubsidy" Caption="补贴标准定义" RefControlType="Dict" DataType="Long" ItemKey="ECS_ExpenseStandardSubsidy"/>
+            <Domain Key="ECS_ExpenseType" Caption="费用项目" RefControlType="Dict" DataType="Long" ItemKey="ECS_ExpenseType"/>
+            <Domain Key="ECS_ServiceBusinessType" Caption="服务业务类型" RefControlType="Dict" DataType="Long" ItemKey="ECS_ServiceBusinessType"/>
+            <Domain Key="ECS_ServiceCatalog" Caption="服务目录" RefControlType="Dict" DataType="Long" ItemKey="ECS_ServiceCatalog"/>
+            <Domain Key="ECS_SharingCenter" Caption="共享中心" RefControlType="Dict" DataType="Long" ItemKey="ECS_SharingCenter"/>
+            <Domain Key="ECS_SharingCenterGroup" Caption="共享中心小组" RefControlType="Dict" DataType="Long" ItemKey="ECS_SharingCenterGroup"/>
+            <Domain Key="FI_AccountGroup" Caption="科目组" RefControlType="Dict" DataType="Long" ItemKey="FI_AccountGroup"/>
+            <Domain Key="FI_AccountPrinciple" Caption="会计准则" RefControlType="Dict" DataType="Long" ItemKey="FI_AccountPrinciple"/>
+            <Domain Key="FI_AccountToleranceGroup" Caption="总账科目容差组" RefControlType="Dict" DataType="Long" ItemKey="FI_AccountToleranceGroup"/>
+            <Domain Key="FI_AccrualBadDebt__Dic" Caption="坏账计提单单据字典" RefControlType="Dict" DataType="Long" ItemKey="FI_AccrualBadDebt__Dic"/>
+            <Domain Key="FI_AnalysisRepository__Dic" Caption="凭证分析点字典" RefControlType="Dict" DataType="Long" ItemKey="FI_AnalysisRepository__Dic"/>
+            <Domain Key="FI_AssignmentRule" Caption="排序码" RefControlType="Dict" DataType="Long" ItemKey="FI_AssignmentRule"/>
+            <Domain Key="FI_AttachmentType_Multi" Caption="附件分类类型" RefControlType="Dict" DataType="Varchar" ItemKey="FI_AttachmentType" AllowMultiSelection="true"/>
+            <Domain Key="FI_AutoCheckRule" Caption="定义自动对账匹配规则" RefControlType="Dict" DataType="Long" ItemKey="FI_AutoCheckRule"/>
+            <Domain Key="FI_AutoPayParameter__Dic" Caption="付款参数单据字典" RefControlType="Dict" DataType="Long" ItemKey="FI_AutoPayParameter__Dic"/>
+            <Domain Key="FI_BankAccountPackage" Caption="设置账套" RefControlType="Dict" DataType="Long" ItemKey="FI_BankAccountPackage"/>
+            <Domain Key="FI_BankAccountPackage_Multi" Caption="银行账套" RefControlType="Dict" DataType="Varchar" ItemKey="FI_BankAccountPackage" AllowMultiSelection="true"/>
+            <Domain Key="FI_BankAccount__Dic" Caption="银行账户字典" RefControlType="Dict" DataType="Long" ItemKey="FI_BankAccount__Dic"/>
+            <Domain Key="FI_BankAccount__Dic_Multi" Caption="银行账户" RefControlType="Dict" DataType="Varchar" ItemKey="FI_BankAccount__Dic" AllowMultiSelection="true"/>
+            <Domain Key="FI_BankCode" Caption="银行代码" RefControlType="Dict" DataType="Long" ItemKey="FI_BankCode"/>
+            <Domain Key="FI_BankGroup" Caption="定义银行分类" RefControlType="Dict" DataType="Long" ItemKey="FI_BankGroup"/>
+            <Domain Key="FI_BusinessTransaction" Caption="业务交易" RefControlType="Dict" DataType="Long" ItemKey="FI_BusinessTransaction"/>
+            <Domain Key="FI_BusinessTransactionVariant" Caption="业务交易变式" RefControlType="Dict" DataType="Long" ItemKey="FI_BusinessTransactionVariant"/>
+            <Domain Key="FI_CashFlowItem" Caption="现金流量项目" RefControlType="Dict" DataType="Long" ItemKey="FI_CashFlowItem"/>
+            <Domain Key="FI_ClearRule" Caption="清账规则" RefControlType="Dict" DataType="Long" ItemKey="FI_ClearRule"/>
+            <Domain Key="FI_ConsolidationType" Caption="合并事务类型" RefControlType="Dict" DataType="Long" ItemKey="FI_ConsolidationType"/>
+            <Domain Key="FI_DocSplitConstant" Caption="未分配的常量" RefControlType="Dict" DataType="Long" ItemKey="FI_DocSplitConstant"/>
+            <Domain Key="FI_DocSplittingMethod" Caption="凭证拆分方法" RefControlType="Dict" DataType="Long" ItemKey="FI_DocSplittingMethod"/>
+            <Domain Key="FI_FieldStatusGroup" Caption="字段状态组" RefControlType="Dict" DataType="Long" ItemKey="FI_FieldStatusGroup"/>
+            <Domain Key="FI_FieldStatusVariant" Caption="字段状态变式" RefControlType="Dict" DataType="Long" ItemKey="FI_FieldStatusVariant"/>
+            <Domain Key="FI_GroupRule" Caption="付款规则" RefControlType="Dict" DataType="Long" ItemKey="FI_GroupRule"/>
+            <Domain Key="FI_HouseBank" Caption="开户银行" RefControlType="Dict" DataType="Long" ItemKey="FI_HouseBank"/>
+            <Domain Key="FI_HouseBank_Multi" Caption="开户银行" RefControlType="Dict" DataType="Varchar" ItemKey="FI_HouseBank" AllowMultiSelection="true"/>
+            <Domain Key="FI_InvoiceType" Caption="定义发票类型" RefControlType="Dict" DataType="Long" ItemKey="FI_InvoiceType"/>
+            <Domain Key="FI_ItemCategory" Caption="项目种类" RefControlType="Dict" DataType="Long" ItemKey="FI_ItemCategory"/>
+            <Domain Key="FI_Ledger" Caption="分类账" RefControlType="Dict" DataType="Long" ItemKey="FI_Ledger"/>
+            <Domain Key="FI_LedgerGroup" Caption="分类账组" RefControlType="Dict" DataType="Long" ItemKey="FI_LedgerGroup"/>
+            <Domain Key="FI_ManualInvoice__Dic" Caption="手工发票单据字典" RefControlType="Dict" DataType="Long" ItemKey="FI_ManualInvoice__Dic"/>
+            <Domain Key="FI_PaymentItem" Caption="支付款项" RefControlType="Dict" DataType="Long" ItemKey="FI_PaymentItem"/>
+            <Domain Key="FI_PaymentMethod" Caption="支付方式" RefControlType="Dict" DataType="Long" ItemKey="FI_PaymentMethod"/>
+            <Domain Key="FI_PaymentMethodSupplement" Caption="支付方法补充" RefControlType="Dict" DataType="Long" ItemKey="FI_PaymentMethodSupplement"/>
+            <Domain Key="FI_PaymentOrder__Dic" Caption="付款单单据字典" RefControlType="Dict" DataType="Long" ItemKey="FI_PaymentOrder__Dic"/>
+            <Domain Key="FI_PaymentTerm" Caption="支付条件" RefControlType="Dict" DataType="Long" ItemKey="FI_PaymentTerm"/>
+            <Domain Key="FI_PostPeriodType" Caption="记账期间" RefControlType="Dict" DataType="Long" ItemKey="FI_PostPeriodType"/>
+            <Domain Key="FI_PostingKey" Caption="过账码" RefControlType="Dict" DataType="Long" ItemKey="FI_PostingKey"/>
+            <Domain Key="FI_ReportDimension" Caption="报表维度" RefControlType="Dict" DataType="Long" ItemKey="FI_ReportDimension"/>
+            <Domain Key="FI_ReportModel__Dic" Caption="财务报表" RefControlType="Dict" DataType="Long" ItemKey="FI_ReportModel__Dic"/>
+            <Domain Key="FI_ReversalReason" Caption="冲销原因" RefControlType="Dict" DataType="Long" ItemKey="FI_ReversalReason"/>
+            <Domain Key="FI_Segment" Caption="段" RefControlType="Dict" DataType="Long" ItemKey="FI_Segment"/>
+            <Domain Key="FI_SpecialGL" Caption="特别总账标识" RefControlType="Dict" DataType="Long" ItemKey="FI_SpecialGL"/>
+            <Domain Key="FI_SpecialGL_Multi" Caption="特别总账标识" RefControlType="Dict" DataType="Varchar" ItemKey="FI_SpecialGL" AllowMultiSelection="true"/>
+            <Domain Key="FI_UserToleranceGroup" Caption="用户容差组" RefControlType="Dict" DataType="Long" ItemKey="FI_UserToleranceGroup"/>
+            <Domain Key="FI_VATInvoice__Dic" Caption="增值税发票" RefControlType="Dict" DataType="Long" ItemKey="FI_VATInvoice__Dic"/>
+            <Domain Key="FI_VCToleranceGroup" Caption="供应商/客户 容差组" RefControlType="Dict" DataType="Long" ItemKey="FI_VCToleranceGroup"/>
+            <Domain Key="FI_ValuationArea" Caption="评估范围" RefControlType="Dict" DataType="Long" ItemKey="FI_ValuationArea"/>
+            <Domain Key="FI_ValuationMethod" Caption="评估方法" RefControlType="Dict" DataType="Long" ItemKey="FI_ValuationMethod"/>
+            <Domain Key="FI_VoucherDtl_Entry__Dic" Caption="凭证行项目字典" RefControlType="Dict" DataType="Long" ItemKey="FI_VoucherDtl_Entry__Dic"/>
+            <Domain Key="FI_VoucherDtl__Dic" Caption="凭证实际行项目字典" RefControlType="Dict" DataType="Long" ItemKey="FI_VoucherDtl__Dic"/>
+            <Domain Key="FI_VoucherPrintScheme" Caption="凭证打印方案" RefControlType="Dict" DataType="Long" ItemKey="FI_VoucherPrintScheme"/>
+            <Domain Key="FI_Voucher__Dic" Caption="财务凭证单据字典" RefControlType="Dict" DataType="Long" ItemKey="FI_Voucher__Dic"/>
+            <Domain Key="FI_ZBIndex" Caption="指标" RefControlType="Dict" DataType="Long" ItemKey="FI_ZBIndex"/>
+            <Domain Key="FI_ZBIndexDataType" Caption="指标数据类型" RefControlType="Dict" DataType="Long" ItemKey="FI_ZBIndexDataType"/>
+            <Domain Key="FI_ZeroBalanceAccountKey" Caption="零余额清算科目确定" RefControlType="Dict" DataType="Long" ItemKey="FI_ZeroBalanceAccountKey"/>
+            <Domain Key="CO_ActivityType" Caption="作业类型" RefControlType="Dict" DataType="Long" ItemKey="CO_ActivityType"/>
+            <Domain Key="CO_ActivityType_Multi" Caption="作业类型" RefControlType="Dict" DataType="Varchar" ItemKey="CO_ActivityType" AllowMultiSelection="true"/>
+            <Domain Key="CO_ActivityTypeGroup" Caption="作业类型组" RefControlType="Dict" DataType="Long" ItemKey="CO_ActivityTypeGroup"/>
+            <Domain Key="CO_AllocationStrItem" Caption="分配结构项目" RefControlType="Dict" DataType="Long" ItemKey="CO_AllocationStrItem"/>
+            <Domain Key="CO_AllocationStructure" Caption="分配结构" RefControlType="Dict" DataType="Long" ItemKey="CO_AllocationStructure"/>
+            <Domain Key="CO_BudgetProfile" Caption="预算参数文件" RefControlType="Dict" DataType="Long" ItemKey="CO_BudgetProfile"/>
+            <Domain Key="CO_CalculationBase" Caption="成本核算单-计算基数" RefControlType="Dict" DataType="Long" ItemKey="CO_CalculationBase"/>
+            <Domain Key="CO_CostCenterCategory" Caption="成本中心类别" RefControlType="Dict" DataType="Long" ItemKey="CO_CostCenterCategory"/>
+            <Domain Key="CO_CostCenterCategory_Multi" Caption="成本中心类别" RefControlType="Dict" DataType="Varchar" ItemKey="CO_CostCenterCategory" AllowMultiSelection="true"/>
+            <Domain Key="CO_CostCenterCycle" Caption="成本中心循环定义" RefControlType="Dict" DataType="Long" ItemKey="CO_CostCenterCycle"/>
+            <Domain Key="CO_CostCenterCycleSeqment" Caption="成本中心循环段" RefControlType="Dict" DataType="Long" ItemKey="CO_CostCenterCycleSeqment"/>
+            <Domain Key="CO_CostCompGroup" Caption="成本部件组" RefControlType="Dict" DataType="Long" ItemKey="CO_CostCompGroup"/>
+            <Domain Key="CO_CostCompStructrue" Caption="成本部件结构" RefControlType="Dict" DataType="Long" ItemKey="CO_CostCompStructrue"/>
+            <Domain Key="CO_CostComponent" Caption="成本部件" RefControlType="Dict" DataType="Long" ItemKey="CO_CostComponent"/>
+            <Domain Key="CO_CostControlLevel" Caption="成本控制级别" RefControlType="Dict" DataType="Long" ItemKey="CO_CostControlLevel"/>
+            <Domain Key="CO_CostElement" Caption="成本要素" RefControlType="Dict" DataType="Long" ItemKey="CO_CostElement"/>
+            <Domain Key="CO_CostElement_Varchar" Caption="成本要素" RefControlType="Dict" DataType="Varchar" ItemKey="CO_CostElement"/>
+            <Domain Key="CO_CostElementGroup" Caption="成本要素组" RefControlType="Dict" DataType="Long" ItemKey="CO_CostElementGroup"/>
+            <Domain Key="CO_CostOrder" Caption="内部订单" RefControlType="Dict" DataType="Long" ItemKey="CO_CostOrder"/>
+            <Domain Key="CO_CostOrder_Multi" Caption="内部订单(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="CO_CostOrder" AllowMultiSelection="true"/>
+            <Domain Key="CO_CostingDateControl" Caption="成本估算变式-日期控制" RefControlType="Dict" DataType="Long" ItemKey="CO_CostingDateControl"/>
+            <Domain Key="CO_CostingRun" Caption="成本核算" RefControlType="Dict" DataType="Long" ItemKey="CO_CostingRun"/>
+            <Domain Key="CO_CostingSheet" Caption="成本核算单" RefControlType="Dict" DataType="Long" ItemKey="CO_CostingSheet"/>
+            <Domain Key="CO_CostingSheetCredit" Caption="成本核算单-贷方转出" RefControlType="Dict" DataType="Long" ItemKey="CO_CostingSheetCredit"/>
+            <Domain Key="CO_CostingType" Caption="成本估算变式-成本类型" RefControlType="Dict" DataType="Long" ItemKey="CO_CostingType"/>
+            <Domain Key="CO_CostingVariant" Caption="成本估算变式" RefControlType="Dict" DataType="Long" ItemKey="CO_CostingVariant"/>
+            <Domain Key="CO_IntegrationVariantToFI" Caption="COFI实时集成变式" RefControlType="Dict" DataType="Long" ItemKey="CO_IntegrationVariantToFI"/>
+            <Domain Key="CO_MaterialLedgerType" Caption="物料分类账类别" RefControlType="Dict" DataType="Long" ItemKey="CO_MaterialLedgerType"/>
+            <Domain Key="CO_MaterialUpdateStructure" Caption="定义物料更新结构" RefControlType="Dict" DataType="Long" ItemKey="CO_MaterialUpdateStructure"/>
+            <Domain Key="CO_ObjectClass" Caption="成本对象类" RefControlType="Dict" DataType="Long" ItemKey="CO_ObjectClass"/>
+            <Domain Key="CO_OrderType" Caption="内部订单类型" RefControlType="Dict" DataType="Long" ItemKey="CO_OrderType"/>
+            <Domain Key="CO_OriginGroup" Caption="物料成本源组" RefControlType="Dict" DataType="Long" ItemKey="CO_OriginGroup"/>
+            <Domain Key="CO_OverHeadKey" Caption="间接费用关键字" RefControlType="Dict" DataType="Long" ItemKey="CO_OverHeadKey"/>
+            <Domain Key="CO_OverheadRate" Caption="成本核算单-间接费用率" RefControlType="Dict" DataType="Long" ItemKey="CO_OverheadRate"/>
+            <Domain Key="CO_PCCType" Caption="生产成本收集器订单类型" RefControlType="Dict" DataType="Long" ItemKey="CO_PCCType"/>
+            <Domain Key="CO_ProductOrderType" Caption="成本控制生产订单类型" RefControlType="Dict" DataType="Long" ItemKey="CO_ProductOrderType"/>
+            <Domain Key="CO_ProfitCenterCycle" Caption="利润中心循环定义" RefControlType="Dict" DataType="Long" ItemKey="CO_ProfitCenterCycle"/>
+            <Domain Key="CO_ProfitCenterCycleSeqment" Caption="利润中心循环段" RefControlType="Dict" DataType="Long" ItemKey="CO_ProfitCenterCycleSeqment"/>
+            <Domain Key="CO_ProfitCenterGroup" Caption="利润中心组" RefControlType="Dict" DataType="Long" ItemKey="CO_ProfitCenterGroup"/>
+            <Domain Key="CO_QtyStructureType" Caption="数量结构类型" RefControlType="Dict" DataType="Long" ItemKey="CO_QtyStructureType"/>
+            <Domain Key="CO_QuantityStruControl" Caption="成本估算变式-数量结构" RefControlType="Dict" DataType="Long" ItemKey="CO_QuantityStruControl"/>
+            <Domain Key="CO_ResultAnalysisKey" Caption="结果分析码" RefControlType="Dict" DataType="Long" ItemKey="CO_ResultAnalysisKey"/>
+            <Domain Key="CO_ResultAnalysisVersion" Caption="结果分析版本" RefControlType="Dict" DataType="Long" ItemKey="CO_ResultAnalysisVersion"/>
+            <Domain Key="CO_SettlementProfile" Caption="结算参数文件" RefControlType="Dict" DataType="Long" ItemKey="CO_SettlementProfile"/>
+            <Domain Key="CO_SourceStrItem" Caption="源结构项目" RefControlType="Dict" DataType="Long" ItemKey="CO_SourceStrItem"/>
+            <Domain Key="CO_SourceStructure" Caption="源结构" RefControlType="Dict" DataType="Long" ItemKey="CO_SourceStructure"/>
+            <Domain Key="CO_SplitStructureRule" Caption="分割规则" RefControlType="Dict" DataType="Long" ItemKey="CO_SplitStructureRule"/>
+            <Domain Key="CO_StatisticalKey" Caption="统计指标" RefControlType="Dict" DataType="Long" ItemKey="CO_StatisticalKey"/>
+            <Domain Key="CO_StatisticalKeyGroup" Caption="统计指标组" RefControlType="Dict" DataType="Long" ItemKey="CO_StatisticalKeyGroup"/>
+            <Domain Key="CO_ValuationVariant" Caption="成本估算变式-评估变式" RefControlType="Dict" DataType="Long" ItemKey="CO_ValuationVariant"/>
+            <Domain Key="CO_ValueType" Caption="数值种类" RefControlType="Dict" DataType="Long" ItemKey="CO_ValueType"/>
+            <Domain Key="CO_WIPAndScrapEvaluMethod" Caption="在制品和废品的评估方法" RefControlType="Dict" DataType="Long" ItemKey="CO_WIPAndScrapEvaluMethod"/>
+            <Domain Key="CO_WIPRowMark" Caption="行标识" RefControlType="Dict" DataType="Long" ItemKey="CO_WIPRowMark"/>
+            <Domain Key="Version" Caption="版本" RefControlType="Dict" DataType="Long" ItemKey="Version"/>
+            <Domain Key="PS_Activity" Caption="作业" RefControlType="Dict" DataType="Long" ItemKey="PS_Activity"/>
+            <Domain Key="PS_Applicant" Caption="申请人" RefControlType="Dict" DataType="Long" ItemKey="PS_Applicant"/>
+            <Domain Key="PS_BOMTransferProfile" Caption="BOM传输参数文件" RefControlType="Dict" DataType="Long" ItemKey="PS_BOMTransferProfile"/>
+            <Domain Key="PS_BaselineType" Caption="基线类型" RefControlType="Dict" DataType="Long" ItemKey="PS_BaselineType"/>
+            <Domain Key="PS_BusinessProcess" Caption="业务处理" RefControlType="Dict" DataType="Long" ItemKey="PS_BusinessProcess"/>
+            <Domain Key="PS_CostCategory" Caption="费用类别" RefControlType="Dict" DataType="Long" ItemKey="PS_CostCategory"/>
+            <Domain Key="PS_CostObjectTree" Caption="成本对象树" RefControlType="Dict" DataType="Long" ItemKey="PS_CostObjectTree"/>
+            <Domain Key="PS_DistributionType" Caption="分配类型" RefControlType="Dict" DataType="Long" ItemKey="PS_DistributionType"/>
+            <Domain Key="PS_DocumentManage" Caption="PS文档管理" RefControlType="Dict" DataType="Long" ItemKey="PS_DocumentManage"/>
+            <Domain Key="PS_InterestProfile" Caption="利息参数文件" RefControlType="Dict" DataType="Long" ItemKey="PS_InterestProfile"/>
+            <Domain Key="PS_ListItem" Caption="清单项" RefControlType="Dict" DataType="Long" ItemKey="PS_ListItem"/>
+            <Domain Key="PS_ListItemType" Caption="清单项类型" RefControlType="Dict" DataType="Long" ItemKey="PS_ListItemType"/>
+            <Domain Key="PS_MaterialComponent" Caption="物料组件" RefControlType="Dict" DataType="Long" ItemKey="PS_MaterialComponent"/>
+            <Domain Key="PS_Milestone" Caption="里程碑" RefControlType="Dict" DataType="Long" ItemKey="PS_Milestone"/>
+            <Domain Key="PS_MilestoneUsage" Caption="里程碑用途" RefControlType="Dict" DataType="Long" ItemKey="PS_MilestoneUsage"/>
+            <Domain Key="PS_Network" Caption="网络" RefControlType="Dict" DataType="Long" ItemKey="PS_Network"/>
+            <Domain Key="PS_NetworkProfile" Caption="网络参数文件" RefControlType="Dict" DataType="Long" ItemKey="PS_NetworkProfile"/>
+            <Domain Key="PS_NetworkStrategy" Caption="网络结算规则策略" RefControlType="Dict" DataType="Long" ItemKey="PS_NetworkStrategy"/>
+            <Domain Key="PS_NetworkType" Caption="网络类型" RefControlType="Dict" DataType="Long" ItemKey="PS_NetworkType"/>
+            <Domain Key="PS_OBS" Caption="责任分解结构OBS" RefControlType="Dict" DataType="Long" ItemKey="PS_OBS"/>
+            <Domain Key="PS_PlanLevel" Caption="计划级别" RefControlType="Dict" DataType="Long" ItemKey="PS_PlanLevel"/>
+            <Domain Key="PS_PlanType" Caption="计划类型" RefControlType="Dict" DataType="Long" ItemKey="PS_PlanType"/>
+            <Domain Key="PS_PlanWBS" Caption="计划WBS" RefControlType="Dict" DataType="Long" ItemKey="PS_PlanWBS"/>
+            <Domain Key="PS_PlannerGroup" Caption="计划员组" RefControlType="Dict" DataType="Long" ItemKey="PS_PlannerGroup"/>
+            <Domain Key="PS_PlanningBoardProfile" Caption="项目计划板参数文件" RefControlType="Dict" DataType="Long" ItemKey="PS_PlanningBoardProfile"/>
+            <Domain Key="PS_PlanningProfile" Caption="计划参数文件" RefControlType="Dict" DataType="Long" ItemKey="PS_PlanningProfile"/>
+            <Domain Key="PS_ProcurementIndicator" Caption="采购标识" RefControlType="Dict" DataType="Long" ItemKey="PS_ProcurementIndicator"/>
+            <Domain Key="PS_Project" Caption="项目" RefControlType="Dict" DataType="Long" ItemKey="PS_Project"/>
+            <Domain Key="PS_ProjectConstruct" Caption="项目构造" RefControlType="Dict" DataType="Long" ItemKey="PS_ProjectConstruct"/>
+            <Domain Key="PS_ProjectPlan" Caption="项目计划" RefControlType="Dict" DataType="Long" ItemKey="PS_ProjectPlan"/>
+            <Domain Key="PS_ProjectProfile" Caption="项目参数文件" RefControlType="Dict" DataType="Long" ItemKey="PS_ProjectProfile"/>
+            <Domain Key="PS_ProjectType" Caption="项目类型" RefControlType="Dict" DataType="Long" ItemKey="PS_ProjectType"/>
+            <Domain Key="PS_ProjectType_Multi" Caption="项目类型_多选" RefControlType="Dict" DataType="Varchar" ItemKey="PS_ProjectType" AllowMultiSelection="true"/>
+            <Domain Key="PS_ReductionStrategy" Caption="缩减策略" RefControlType="Dict" DataType="Long" ItemKey="PS_ReductionStrategy"/>
+            <Domain Key="PS_ReferencePoint4BOMTransfer" Caption="物料BOM传输参考点" RefControlType="Dict" DataType="Long" ItemKey="PS_ReferencePoint4BOMTransfer"/>
+            <Domain Key="PS_ResponsiblePerson" Caption="负责人" RefControlType="Dict" DataType="Long" ItemKey="PS_ResponsiblePerson"/>
+            <Domain Key="PS_SettlementRuleStrategy" Caption="结算规则策略" RefControlType="Dict" DataType="Long" ItemKey="PS_SettlementRuleStrategy"/>
+            <Domain Key="PS_StandardActivity" Caption="标准作业" RefControlType="Dict" DataType="Long" ItemKey="PS_StandardActivity"/>
+            <Domain Key="PS_StandardMilestone" Caption="标准里程碑" RefControlType="Dict" DataType="Long" ItemKey="PS_StandardMilestone"/>
+            <Domain Key="PS_StandardNetwork" Caption="标准网络" RefControlType="Dict" DataType="Long" ItemKey="PS_StandardNetwork"/>
+            <Domain Key="PS_StandardNetworkProfile" Caption="标准网络参数文件" RefControlType="Dict" DataType="Long" ItemKey="PS_StandardNetworkProfile"/>
+            <Domain Key="PS_StandardProject" Caption="标准项目定义" RefControlType="Dict" DataType="Long" ItemKey="PS_StandardProject"/>
+            <Domain Key="PS_StandardWBSElement" Caption="标准WBS元素" RefControlType="Dict" DataType="Long" ItemKey="PS_StandardWBSElement"/>
+            <Domain Key="PS_Task" Caption="任务" RefControlType="Dict" DataType="Long" ItemKey="PS_Task"/>
+            <Domain Key="PS_UserField" Caption="用户字段" RefControlType="Dict" DataType="Long" ItemKey="PS_UserField"/>
+            <Domain Key="PS_WBSElement" Caption="WBS元素" RefControlType="Dict" DataType="Long" ItemKey="PS_WBSElement"/>
+            <Domain Key="PS_WBSElement_Multi" Caption="WBS元素" RefControlType="Dict" DataType="Varchar" ItemKey="PS_WBSElement" AllowMultiSelection="true"/>
+            <Domain Key="PS_WBSElementGroup" Caption="WBS元素组" RefControlType="Dict" DataType="Long" ItemKey="PS_WBSElementGroup"/>
+            <Domain Key="PS_WBSObject" Caption="WBS对象字典" RefControlType="Dict" DataType="Long" ItemKey="PS_WBSObject"/>
+            <Domain Key="PS_WBSSchedulingProfile" Caption="WBS计划概要" RefControlType="Dict" DataType="Long" ItemKey="PS_WBSSchedulingProfile"/>
+            <Domain Key="PS_WBSSettRuleStrategy" Caption="WBS结算规则策略" RefControlType="Dict" DataType="Long" ItemKey="PS_WBSSettRuleStrategy"/>
+            <Domain Key="PS_WorkBreakdownStructure" Caption="工作分解结构" RefControlType="Dict" DataType="Long" ItemKey="PS_WorkBreakdownStructure"/>
+            <Domain Key="PM_ABCIndicator" Caption="ABC标识" RefControlType="Dict" DataType="Long" ItemKey="PM_ABCIndicator"/>
+            <Domain Key="PM_DataDefaultParam" Caption="创建一般订单数据的缺省值参数文件" RefControlType="Dict" DataType="Long" ItemKey="PM_DataDefaultParam"/>
+            <Domain Key="PM_DefineUserField" Caption="定义用户字段" RefControlType="Dict" DataType="Long" ItemKey="PM_DefineUserField"/>
+            <Domain Key="PM_EquipmentCategory" Caption="设备种类" RefControlType="Dict" DataType="Long" ItemKey="PM_EquipmentCategory"/>
+            <Domain Key="PM_Equipment__Dic" Caption="设备单据字典" RefControlType="Dict" DataType="Long" ItemKey="PM_Equipment__Dic"/>
+            <Domain Key="PM_ExtPurchaseProfile" Caption="定义外部采购的缺省值参数文件" RefControlType="Dict" DataType="Long" ItemKey="PM_ExtPurchaseProfile"/>
+            <Domain Key="PM_FunctionalLocationCategory" Caption="功能位置种类" RefControlType="Dict" DataType="Long" ItemKey="PM_FunctionalLocationCategory"/>
+            <Domain Key="PM_FunctionalLocation__Dic" Caption="功能位置字典" RefControlType="Dict" DataType="Long" ItemKey="PM_FunctionalLocation__Dic"/>
+            <Domain Key="PM_MaintPlanSortField" Caption="维护计划排序字段" RefControlType="Dict" DataType="Long" ItemKey="PM_MaintPlanSortField"/>
+            <Domain Key="PM_MaintenanceActivityType" Caption="维护作业类型" RefControlType="Dict" DataType="Long" ItemKey="PM_MaintenanceActivityType"/>
+            <Domain Key="PM_MaintenanceItem__Dic" Caption="维护项目单据字典" RefControlType="Dict" DataType="Long" ItemKey="PM_MaintenanceItem__Dic"/>
+            <Domain Key="PM_MaintenanceOrder__Dic" Caption="维护订单单据字典" RefControlType="Dict" DataType="Long" ItemKey="PM_MaintenanceOrder__Dic"/>
+            <Domain Key="PM_MaintenancePlan__Dic" Caption="维护计划单据字典" RefControlType="Dict" DataType="Long" ItemKey="PM_MaintenancePlan__Dic"/>
+            <Domain Key="PM_MaintenancePlan__Dic_Multi" Caption="维护计划" RefControlType="Dict" DataType="Varchar" ItemKey="PM_MaintenancePlan__Dic" AllowMultiSelection="true"/>
+            <Domain Key="PM_MeasReadingEntryList__Dic" Caption="条目清单" RefControlType="Dict" DataType="Long" ItemKey="PM_MeasReadingEntryList__Dic"/>
+            <Domain Key="PM_MeasurementDocument__Dic" Caption="计量凭证单据字典" RefControlType="Dict" DataType="Long" ItemKey="PM_MeasurementDocument__Dic"/>
+            <Domain Key="PM_MeasuringPointCategory" Caption="计量点种类" RefControlType="Dict" DataType="Long" ItemKey="PM_MeasuringPointCategory"/>
+            <Domain Key="PM_MeasuringPoint__Dic" Caption="测量点单据字典" RefControlType="Dict" DataType="Long" ItemKey="PM_MeasuringPoint__Dic"/>
+            <Domain Key="PM_Notification__Dic" Caption="维护通知单据字典" RefControlType="Dict" DataType="Long" ItemKey="PM_Notification__Dic"/>
+            <Domain Key="PM_ObjectInfoParameter" Caption="对象信息参数" RefControlType="Dict" DataType="Long" ItemKey="PM_ObjectInfoParameter"/>
+            <Domain Key="PM_OperatingCondition" Caption="操作条件" RefControlType="Dict" DataType="Long" ItemKey="PM_OperatingCondition"/>
+            <Domain Key="PM_OrderType" Caption="维护订单类型" RefControlType="Dict" DataType="Long" ItemKey="PM_OrderType"/>
+            <Domain Key="PM_OrderType_EditValue" Caption="维护订单类型" RefControlType="Dict" DataType="Varchar" Length="30" ItemKey="PM_OrderType"/>
+            <Domain Key="PM_OrderType_Multi" Caption="订单类型" RefControlType="Dict" DataType="Varchar" ItemKey="PM_OrderType" AllowMultiSelection="true"/>
+            <Domain Key="PM_PlanCategory" Caption="维护计划类别" RefControlType="Dict" DataType="Long" ItemKey="PM_PlanCategory"/>
+            <Domain Key="PM_PlannerGroup" Caption="定义计划员组" RefControlType="Dict" DataType="Long" ItemKey="PM_PlannerGroup"/>
+            <Domain Key="PM_PlantSection" Caption="定义工厂区域" RefControlType="Dict" DataType="Long" ItemKey="PM_PlantSection"/>
+            <Domain Key="PM_ReferenceLocation__Dic" Caption="参考位置字典" RefControlType="Dict" DataType="Long" ItemKey="PM_ReferenceLocation__Dic"/>
+            <Domain Key="PM_Revision" Caption="定义修正" RefControlType="Dict" DataType="Long" ItemKey="PM_Revision"/>
+            <Domain Key="PM_Strategy" Caption="维护策略" RefControlType="Dict" DataType="Long" ItemKey="PM_Strategy"/>
+            <Domain Key="PM_StructureIdentification" Caption="功能位置结构标识" RefControlType="Dict" DataType="Long" ItemKey="PM_StructureIdentification"/>
+            <Domain Key="PM_TechnicalObject" Caption="技术对象类型" RefControlType="Dict" DataType="Long" ItemKey="PM_TechnicalObject"/>
+            <Domain Key="QM_CatalogProfile" Caption="类别参数文件" RefControlType="Dict" DataType="Long" ItemKey="QM_CatalogProfile"/>
+            <Domain Key="QM_CatalogType" Caption="目录类型" RefControlType="Dict" DataType="Long" ItemKey="QM_CatalogType"/>
+            <Domain Key="QM_CharacteristicWeighting" Caption="特性权重" RefControlType="Dict" DataType="Long" ItemKey="QM_CharacteristicWeighting"/>
+            <Domain Key="QM_ConfirmationProfile" Caption="确认参数文件" RefControlType="Dict" DataType="Long" ItemKey="QM_ConfirmationProfile"/>
+            <Domain Key="QM_DefectClass" Caption="缺陷分类" RefControlType="Dict" DataType="Long" ItemKey="QM_DefectClass"/>
+            <Domain Key="QM_DefectReportType" Caption="缺陷报告类型" RefControlType="Dict" DataType="Long" ItemKey="QM_DefectReportType"/>
+            <Domain Key="QM_DefectReportType_Multi" Caption="缺陷报告类型(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="QM_DefectReportType" AllowMultiSelection="true"/>
+            <Domain Key="QM_DefineControlKey" Caption="控制关键字" RefControlType="Dict" DataType="Long" ItemKey="QM_DefineControlKey"/>
+            <Domain Key="QM_DefinitionFieldName" Caption="字段名" RefControlType="Dict" DataType="Long" ItemKey="QM_DefinitionFieldName"/>
+            <Domain Key="QM_DeliveryBlock" Caption="交货冻结" RefControlType="Dict" DataType="Long" ItemKey="QM_DeliveryBlock"/>
+            <Domain Key="QM_DynamicModificationRule" Caption="动态修改规则" RefControlType="Dict" DataType="Long" ItemKey="QM_DynamicModificationRule"/>
+            <Domain Key="QM_InspectionCharacteristic" Caption="检验特性" RefControlType="Dict" DataType="Long" ItemKey="QM_InspectionCharacteristic"/>
+            <Domain Key="QM_InspectionLotOrigin" Caption="维护检验批来源并分配检验类型" RefControlType="Dict" DataType="Long" ItemKey="QM_InspectionLotOrigin"/>
+            <Domain Key="QM_InspectionLotOrigin_Multi" Caption="检验批来源(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="QM_InspectionLotOrigin" AllowMultiSelection="true"/>
+            <Domain Key="QM_InspectionLot__Dic" Caption="检验批单据字典" RefControlType="Dict" DataType="Long" ItemKey="QM_InspectionLot__Dic"/>
+            <Domain Key="QM_InspectionMethod" Caption="检验方法" RefControlType="Dict" DataType="Long" ItemKey="QM_InspectionMethod"/>
+            <Domain Key="QM_InspectionPoint" Caption="检验点标识符" RefControlType="Dict" DataType="Long" ItemKey="QM_InspectionPoint"/>
+            <Domain Key="QM_InspectionSeverity" Caption="检验严格性" RefControlType="Dict" DataType="Long" ItemKey="QM_InspectionSeverity"/>
+            <Domain Key="QM_InspectionType" Caption="检验类型" RefControlType="Dict" DataType="Long" ItemKey="QM_InspectionType"/>
+            <Domain Key="QM_InspectionType_Multi" Caption="检验类型(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="QM_InspectionType" AllowMultiSelection="true"/>
+            <Domain Key="QM_InspectorQualification" Caption="检验员资格" RefControlType="Dict" DataType="Long" ItemKey="QM_InspectorQualification"/>
+            <Domain Key="QM_NotificationType" Caption="通知类型" RefControlType="Dict" DataType="Long" ItemKey="QM_NotificationType" VisibleLength="10"/>
+            <Domain Key="QM_OrderType" Caption="质量管理订单类型" RefControlType="Dict" DataType="Long" ItemKey="QM_OrderType"/>
+            <Domain Key="QM_PhysicalSampleContainer" Caption="物理采样容器" RefControlType="Dict" DataType="Long" ItemKey="QM_PhysicalSampleContainer"/>
+            <Domain Key="QM_PhysicalSampleType" Caption="物理采样类型" RefControlType="Dict" DataType="Long" ItemKey="QM_PhysicalSampleType"/>
+            <Domain Key="QM_PhysicalSampleType_Multi" Caption="物理采样类型(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="QM_PhysicalSampleType" AllowMultiSelection="true"/>
+            <Domain Key="QM_PhysicalSample__Dic" Caption="物理采样单据字典" RefControlType="Dict" DataType="Long" ItemKey="QM_PhysicalSample__Dic"/>
+            <Domain Key="QM_PriorityType" Caption="优先级类型" RefControlType="Dict" DataType="Long" ItemKey="QM_PriorityType"/>
+            <Domain Key="QM_Priority__Dic" Caption="优先级" RefControlType="Dict" DataType="Long" ItemKey="QM_Priority__Dic"/>
+            <Domain Key="QM_QualityManagementOrder" Caption="质量管理订单" RefControlType="Dict" DataType="Long" ItemKey="QM_QualityManagementOrder"/>
+            <Domain Key="QM_QualityNotification__Dic" Caption="通知单单据字典" RefControlType="Dict" DataType="Long" ItemKey="QM_QualityNotification__Dic"/>
+            <Domain Key="QM_SampleDrawingProcedure" Caption="采样程序" RefControlType="Dict" DataType="Long" ItemKey="QM_SampleDrawingProcedure"/>
+            <Domain Key="QM_SampleType" Caption="采样类型" RefControlType="Dict" DataType="Long" ItemKey="QM_SampleType"/>
+            <Domain Key="QM_SamplingProcedure" Caption="采样过程" RefControlType="Dict" DataType="Long" ItemKey="QM_SamplingProcedure"/>
+            <Domain Key="QM_SamplingScheme" Caption="采样方案" RefControlType="Dict" DataType="Long" ItemKey="QM_SamplingScheme"/>
+            <Domain Key="QM_SelectedSet__Dic" Caption="选择集单据字典" RefControlType="Dict" DataType="Long" ItemKey="QM_SelectedSet__Dic"/>
+            <Domain Key="QM_ToleranceKey" Caption="容差码" RefControlType="Dict" DataType="Long" ItemKey="QM_ToleranceKey"/>
+            <Domain Key="QM_ValuationMode" Caption="评估模式" RefControlType="Dict" DataType="Long" ItemKey="QM_ValuationMode"/>
+            <Domain Key="QM_ControlIndicator" Caption="控制标识的缺省值" RefControlType="Dict" DataType="Long" ItemKey="QM_ControlIndicator"/>
+            <Domain Key="HR_AbroadPurpose" Caption="出国目的" RefControlType="Dict" DataType="Long" ItemKey="HR_AbroadPurpose"/>
+            <Domain Key="HR_AccountAsignGroup" Caption="员工分组科目确定" RefControlType="Dict" DataType="Long" ItemKey="HR_AccountAsignGroup"/>
+            <Domain Key="HR_AllocChangeReason" Caption="分摊更改原因" RefControlType="Dict" DataType="Long" ItemKey="HR_AllocChangeReason"/>
+            <Domain Key="HR_AppointmentReason" Caption="任职原因" RefControlType="Dict" DataType="Long" ItemKey="HR_AppointmentReason"/>
+            <Domain Key="HR_AppraisalLevel" Caption="考评等级" RefControlType="Dict" DataType="Long" ItemKey="HR_AppraisalLevel"/>
+            <Domain Key="HR_AssessmentScale__Dic" Caption="考核量表" RefControlType="Dict" DataType="Long" ItemKey="HR_AssessmentScale__Dic"/>
+            <Domain Key="HR_AssessorType" Caption="考核人类别" RefControlType="Dict" DataType="Long" ItemKey="HR_AssessorType"/>
+            <Domain Key="HR_AttendanceLocation" Caption="考勤地点" RefControlType="Dict" DataType="Long" ItemKey="HR_AttendanceLocation"/>
+            <Domain Key="HR_BusinessCategory" Caption="出差类别" RefControlType="Dict" DataType="Long" ItemKey="HR_BusinessCategory"/>
+            <Domain Key="HR_CAPEmpSubgroupGrouping" Caption="相应于协议条款的雇员子组分组" RefControlType="Dict" DataType="Long" ItemKey="HR_CAPEmpSubgroupGrouping"/>
+            <Domain Key="HR_CalcFunction" Caption="核算函数" RefControlType="Dict" DataType="Long" ItemKey="HR_CalcFunction"/>
+            <Domain Key="HR_CalcType" Caption="工资核算类型" RefControlType="Dict" DataType="Long" ItemKey="HR_CalcType"/>
+            <Domain Key="HR_CardReason" Caption="签卡原因" RefControlType="Dict" DataType="Long" ItemKey="HR_CardReason"/>
+            <Domain Key="HR_ChallengeGroup" Caption="伤残组" RefControlType="Dict" DataType="Long" ItemKey="HR_ChallengeGroup"/>
+            <Domain Key="HR_ChallengeType" Caption="伤残类型" RefControlType="Dict" DataType="Long" ItemKey="HR_ChallengeType"/>
+            <Domain Key="HR_CommonTable" Caption="公共量表" RefControlType="Dict" DataType="Long" ItemKey="HR_CommonTable"/>
+            <Domain Key="HR_ContractType" Caption="合同类型" RefControlType="Dict" DataType="Long" ItemKey="HR_ContractType"/>
+            <Domain Key="HR_ContributionArea" Caption="分摊范围" RefControlType="Dict" DataType="Long" ItemKey="HR_ContributionArea"/>
+            <Domain Key="HR_ContributionGroup" Caption="分摊组" RefControlType="Dict" DataType="Long" ItemKey="HR_ContributionGroup"/>
+            <Domain Key="HR_ContributionLevel" Caption="分摊级别" RefControlType="Dict" DataType="Long" ItemKey="HR_ContributionLevel"/>
+            <Domain Key="HR_ContributionType" Caption="分摊类型" RefControlType="Dict" DataType="Long" ItemKey="HR_ContributionType"/>
+            <Domain Key="HR_CountryGroup" Caption="国家分组" RefControlType="Dict" DataType="Long" ItemKey="HR_CountryGroup"/>
+            <Domain Key="HR_CountryGroup_Multi" Caption="国家分组" RefControlType="Dict" DataType="Varchar" ItemKey="HR_CountryGroup" AllowMultiSelection="true"/>
+            <Domain Key="HR_Credential" Caption="证书" RefControlType="Dict" DataType="Long" ItemKey="HR_Credential"/>
+            <Domain Key="HR_CreditRange" Caption="员工信用范围" RefControlType="Dict" DataType="Long" ItemKey="HR_CreditRange"/>
+            <Domain Key="HR_CreditRating" Caption="信用级别" RefControlType="Dict" DataType="Long" ItemKey="HR_CreditRating"/>
+            <Domain Key="HR_CreditUpdateRule" Caption="信用更新规则" RefControlType="Dict" DataType="Long" ItemKey="HR_CreditUpdateRule"/>
+            <Domain Key="HR_CumulativeClass" Caption="累计类" RefControlType="Dict" DataType="Long" ItemKey="HR_CumulativeClass"/>
+            <Domain Key="HR_CumulativeType" Caption="累计类型" RefControlType="Dict" DataType="Long" ItemKey="HR_CumulativeType"/>
+            <Domain Key="HR_CusSpecialStatus" Caption="客户特定状态" RefControlType="Dict" DataType="Long" ItemKey="HR_CusSpecialStatus"/>
+            <Domain Key="HR_DateModifier" Caption="日期修正标志" RefControlType="Dict" DataType="Long" ItemKey="HR_DateModifier"/>
+            <Domain Key="HR_DefinePropService" Caption="定义属性服务" RefControlType="Dict" DataType="Long" ItemKey="HR_DefinePropService"/>
+            <Domain Key="HR_DefineScheme" Caption="方案定义（层次框架）" RefControlType="Dict" DataType="Long" ItemKey="HR_DefineScheme"/>
+            <Domain Key="HR_DefineSchemeView" Caption="定义方案视图" RefControlType="Dict" DataType="Long" ItemKey="HR_DefineSchemeView"/>
+            <Domain Key="HR_DegreeLevel" Caption="学位" RefControlType="Dict" DataType="Long" ItemKey="HR_DegreeLevel"/>
+            <Domain Key="HR_ERTaxGroup" Caption="定义雇主税收组" RefControlType="Dict" DataType="Long" ItemKey="HR_ERTaxGroup"/>
+            <Domain Key="HR_EduOrTrainingType" Caption="教育培训种类" RefControlType="Dict" DataType="Long" ItemKey="HR_EduOrTrainingType"/>
+            <Domain Key="HR_EducationLevel" Caption="学历" RefControlType="Dict" DataType="Long" ItemKey="HR_EducationLevel"/>
+            <Domain Key="HR_EducationTrain" Caption="教育培训" RefControlType="Dict" DataType="Long" ItemKey="HR_EducationTrain"/>
+            <Domain Key="HR_EducationType" Caption="教育组织类型" RefControlType="Dict" DataType="Long" ItemKey="HR_EducationType"/>
+            <Domain Key="HR_Employee" Caption="人员字典" RefControlType="Dict" DataType="Long" ItemKey="HR_Employee"/>
+            <Domain Key="HR_Employee_Multi" Caption="人员编号" RefControlType="Dict" DataType="Varchar" ItemKey="HR_Employee" AllowMultiSelection="true"/>
+            <Domain Key="HR_EmployeeGroup" Caption="员工组" RefControlType="Dict" DataType="Long" ItemKey="HR_EmployeeGroup"/>
+            <Domain Key="HR_EmployeeSubAreaGroup" Caption="定义员工子范围分组" RefControlType="Dict" DataType="Long" ItemKey="HR_EmployeeSubAreaGroup"/>
+            <Domain Key="HR_EmployeeSubgroup" Caption="员工子组" RefControlType="Dict" DataType="Long" ItemKey="HR_EmployeeSubgroup"/>
+            <Domain Key="HR_EmployerIndustry" Caption="雇主的行业部门" RefControlType="Dict" DataType="Long" ItemKey="HR_EmployerIndustry"/>
+            <Domain Key="HR_EvaluationPath" Caption="评估路径" RefControlType="Dict" DataType="Long" ItemKey="HR_EvaluationPath"/>
+            <Domain Key="HR_ExpenseProvider" Caption="费用供应商" RefControlType="Dict" DataType="Long" ItemKey="HR_ExpenseProvider"/>
+            <Domain Key="HR_FeatureStructure" Caption="决策树的结构" RefControlType="Dict" DataType="Long" ItemKey="HR_FeatureStructure"/>
+            <Domain Key="HR_FeeToLocation" Caption="档案管理处的服务费" RefControlType="Dict" DataType="Long" ItemKey="HR_FeeToLocation"/>
+            <Domain Key="HR_GradingRule" Caption="评分规则" RefControlType="Dict" DataType="Long" ItemKey="HR_GradingRule"/>
+            <Domain Key="HR_HandleClass" Caption="处理类" RefControlType="Dict" DataType="Long" ItemKey="HR_HandleClass"/>
+            <Domain Key="HR_IndicatorName" Caption="绩效指标" RefControlType="Dict" DataType="Long" ItemKey="HR_IndicatorName"/>
+            <Domain Key="HR_InfoTypeMenuGroup" Caption="信息类型菜单分组" RefControlType="Dict" DataType="Long" ItemKey="HR_InfoTypeMenuGroup"/>
+            <Domain Key="HR_InspectionLevel" Caption="考核等级" RefControlType="Dict" DataType="Long" ItemKey="HR_InspectionLevel"/>
+            <Domain Key="HR_Job" Caption="职务" RefControlType="Dict" DataType="Long" ItemKey="HR_Job"/>
+            <Domain Key="HR_LeaveType" Caption="请假类别" RefControlType="Dict" DataType="Long" ItemKey="HR_LeaveType"/>
+            <Domain Key="HR_MonthlyPointLimit" Caption="信用积分每月上下限" RefControlType="Dict" DataType="Long" ItemKey="HR_MonthlyPointLimit"/>
+            <Domain Key="HR_Nation" Caption="民族" RefControlType="Dict" DataType="Long" ItemKey="HR_Nation"/>
+            <Domain Key="HR_NonPeriodicType" Caption="非周期原因的种类" RefControlType="Dict" DataType="Long" ItemKey="HR_NonPeriodicType"/>
+            <Domain Key="HR_NotificationTime" Caption="通知时间" RefControlType="Dict" DataType="Long" ItemKey="HR_NotificationTime"/>
+            <Domain Key="HR_NumberGroup" Caption="分组" RefControlType="Dict" DataType="Long" ItemKey="HR_NumberGroup"/>
+            <Domain Key="HR_OMInfoSubType" Caption="信息子类型" RefControlType="Dict" DataType="Long" ItemKey="HR_OMInfoSubType"/>
+            <Domain Key="HR_OMInfoType" Caption="信息类型" RefControlType="Dict" DataType="Long" ItemKey="HR_OMInfoType"/>
+            <Domain Key="HR_Object" Caption="对象" RefControlType="Dict" DataType="Long" ItemKey="HR_Object"/>
+            <Domain Key="HR_ObjectType" Caption="对象类型" RefControlType="Dict" DataType="Long" ItemKey="HR_ObjectType"/>
+            <Domain Key="HR_OffCycPayReason" Caption="非周期工资发放运行原因" RefControlType="Dict" DataType="Long" ItemKey="HR_OffCycPayReason"/>
+            <Domain Key="HR_OptionClass" Caption="选项类" RefControlType="Dict" DataType="Long" ItemKey="HR_OptionClass"/>
+            <Domain Key="HR_Organization" Caption="组织字典" RefControlType="Dict" DataType="Long" ItemKey="HR_Organization"/>
+            <Domain Key="HR_OtherWorkContract" Caption="其他雇主的工作合同" RefControlType="Dict" DataType="Long" ItemKey="HR_OtherWorkContract"/>
+            <Domain Key="HR_PAInfoSubType" Caption="信息子类型" RefControlType="Dict" DataType="Long" ItemKey="HR_PAInfoSubType"/>
+            <Domain Key="HR_PAInfoType" Caption="信息类型" RefControlType="Dict" DataType="Long" ItemKey="HR_PAInfoType"/>
+            <Domain Key="HR_PAPersonnelCategory" Caption="人员类别" RefControlType="Dict" DataType="Long" ItemKey="HR_PAPersonnelCategory"/>
+            <Domain Key="HR_PCREmpSubgroupGrouping" Caption="对于人员计算规则的雇员子组分组" RefControlType="Dict" DataType="Long" ItemKey="HR_PCREmpSubgroupGrouping"/>
+            <Domain Key="HR_PayType" Caption="定义支付类型" RefControlType="Dict" DataType="Long" ItemKey="HR_PayType"/>
+            <Domain Key="HR_PayrollArea" Caption="工资范围" RefControlType="Dict" DataType="Long" ItemKey="HR_PayrollArea"/>
+            <Domain Key="HR_PerformancePeriod" Caption="绩效期间" RefControlType="Dict" DataType="Long" ItemKey="HR_PerformancePeriod"/>
+            <Domain Key="HR_PerformancePeriodDtl" Caption="绩效期间详情" RefControlType="Dict" DataType="Long" ItemKey="HR_PerformancePeriodDtl"/>
+            <Domain Key="HR_PerformancePeriodType" Caption="绩效期间类型" RefControlType="Dict" DataType="Long" ItemKey="HR_PerformancePeriodType"/>
+            <Domain Key="HR_PerformanceScheme" Caption="绩效方案" RefControlType="Dict" DataType="Long" ItemKey="HR_PerformanceScheme"/>
+            <Domain Key="HR_PeriodParameter" Caption="期间参数" RefControlType="Dict" DataType="Long" ItemKey="HR_PeriodParameter"/>
+            <Domain Key="HR_PersonSet" Caption="人员设置" RefControlType="Dict" DataType="Long" ItemKey="HR_PersonSet"/>
+            <Domain Key="HR_PersonalFileCategory" Caption="人事档案类别" RefControlType="Dict" DataType="Long" ItemKey="HR_PersonalFileCategory"/>
+            <Domain Key="HR_PersonalFilePlace" Caption="人事档案管理处" RefControlType="Dict" DataType="Long" ItemKey="HR_PersonalFilePlace"/>
+            <Domain Key="HR_PersonalIdentity" Caption="个人身份" RefControlType="Dict" DataType="Long" ItemKey="HR_PersonalIdentity"/>
+            <Domain Key="HR_PersonnelActionType" Caption="人员行动类型" RefControlType="Dict" DataType="Long" ItemKey="HR_PersonnelActionType"/>
+            <Domain Key="HR_PersonnelActionType_Multi" Caption="禁止的后续行动类型" RefControlType="Dict" DataType="Varchar" ItemKey="HR_PersonnelActionType" AllowMultiSelection="true"/>
+            <Domain Key="HR_PersonnelArea" Caption="人事范围" RefControlType="Dict" DataType="Long" ItemKey="HR_PersonnelArea"/>
+            <Domain Key="HR_PersonnelSubArea" Caption="人事子范围" RefControlType="Dict" DataType="Long" ItemKey="HR_PersonnelSubArea"/>
+            <Domain Key="HR_PlanVersion" Caption="计划版本" RefControlType="Dict" DataType="Long" ItemKey="HR_PlanVersion"/>
+            <Domain Key="HR_PointerType" Caption="指标类型" RefControlType="Dict" DataType="Long" ItemKey="HR_PointerType"/>
+            <Domain Key="HR_PoliticalException" Caption="政治面貌例外类型" RefControlType="Dict" DataType="Long" ItemKey="HR_PoliticalException"/>
+            <Domain Key="HR_PoliticalStatus" Caption="政治面貌" RefControlType="Dict" DataType="Long" ItemKey="HR_PoliticalStatus"/>
+            <Domain Key="HR_Position" Caption="职位字典" RefControlType="Dict" DataType="Long" ItemKey="HR_Position"/>
+            <Domain Key="HR_PositionLevel" Caption="职位等级" RefControlType="Dict" DataType="Long" ItemKey="HR_PositionLevel"/>
+            <Domain Key="HR_PositionType" Caption="职位类型" RefControlType="Dict" DataType="Long" ItemKey="HR_PositionType"/>
+            <Domain Key="HR_Project" Caption="项目" RefControlType="Dict" DataType="Long" ItemKey="HR_Project"/>
+            <Domain Key="HR_ProjectType" Caption="项目类型" RefControlType="Dict" DataType="Long" ItemKey="HR_ProjectType"/>
+            <Domain Key="HR_QuotaType" Caption="缺勤定额类型" RefControlType="Dict" DataType="Long" ItemKey="HR_QuotaType"/>
+            <Domain Key="HR_ReasonForAction" Caption="操作原因" RefControlType="Dict" DataType="Long" ItemKey="HR_ReasonForAction"/>
+            <Domain Key="HR_RecruitPlanDtl__Dic" Caption="招聘计划单据字典" RefControlType="Dict" DataType="Long" ItemKey="HR_RecruitPlanDtl__Dic"/>
+            <Domain Key="HR_RecruitPlan__Dic" Caption="招聘计划头表单据字典" RefControlType="Dict" DataType="Long" ItemKey="HR_RecruitPlan__Dic"/>
+            <Domain Key="HR_RecruitmentProcess" Caption="招聘过程" RefControlType="Dict" DataType="Long" ItemKey="HR_RecruitmentProcess"/>
+            <Domain Key="HR_RecruitmentType" Caption="招聘类型" RefControlType="Dict" DataType="Long" ItemKey="HR_RecruitmentType"/>
+            <Domain Key="HR_RejectionReason" Caption="拒绝原因" RefControlType="Dict" DataType="Long" ItemKey="HR_RejectionReason"/>
+            <Domain Key="HR_Relationship" Caption="关系" RefControlType="Dict" DataType="Long" ItemKey="HR_Relationship"/>
+            <Domain Key="HR_SalaryScaleGrade" Caption="工资等级档次" RefControlType="Dict" DataType="Long" ItemKey="HR_SalaryScaleGrade"/>
+            <Domain Key="HR_SalaryScaleLevel" Caption="工资等级级别" RefControlType="Dict" DataType="Long" ItemKey="HR_SalaryScaleLevel"/>
+            <Domain Key="HR_Shift" Caption="班次定义" RefControlType="Dict" DataType="Long" ItemKey="HR_Shift"/>
+            <Domain Key="HR_ShiftType" Caption="班次类别" RefControlType="Dict" DataType="Long" ItemKey="HR_ShiftType"/>
+            <Domain Key="HR_SocialSecurityApportion" Caption="社保分摊配置" RefControlType="Dict" DataType="Long" ItemKey="HR_SocialSecurityApportion"/>
+            <Domain Key="HR_SpecialDate" Caption="特殊日期信息类型字典" RefControlType="Dict" DataType="Long" ItemKey="HR_SpecialDate"/>
+            <Domain Key="HR_SpecialRuleType" Caption="特殊规则类型" RefControlType="Dict" DataType="Long" ItemKey="HR_SpecialRuleType"/>
+            <Domain Key="HR_Subject" Caption="学科" RefControlType="Dict" DataType="Long" ItemKey="HR_Subject"/>
+            <Domain Key="HR_SymbolicAccount" Caption="符号账户" RefControlType="Dict" DataType="Long" ItemKey="HR_SymbolicAccount"/>
+            <Domain Key="HR_TaskType" Caption="任务类型" RefControlType="Dict" DataType="Long" ItemKey="HR_TaskType"/>
+            <Domain Key="HR_TaxArea" Caption="税收范围" RefControlType="Dict" DataType="Long" ItemKey="HR_TaxArea"/>
+            <Domain Key="HR_TaxGroup" Caption="税组" RefControlType="Dict" DataType="Long" ItemKey="HR_TaxGroup"/>
+            <Domain Key="HR_TeamGroup" Caption="班组字典" RefControlType="Dict" DataType="Long" ItemKey="HR_TeamGroup"/>
+            <Domain Key="HR_UpdatePolicy" Caption="定义信用更新策略" RefControlType="Dict" DataType="Long" ItemKey="HR_UpdatePolicy"/>
+            <Domain Key="HR_WageAccountUnit" Caption="工资核算单位" RefControlType="Dict" DataType="Long" ItemKey="HR_WageAccountUnit"/>
+            <Domain Key="HR_WageCalcMode" Caption="工资核算模式" RefControlType="Dict" DataType="Long" ItemKey="HR_WageCalcMode"/>
+            <Domain Key="HR_WageChangeReason" Caption="更改原因" RefControlType="Dict" DataType="Long" ItemKey="HR_WageChangeReason"/>
+            <Domain Key="HR_WageItem" Caption="工资项" RefControlType="Dict" DataType="Long" ItemKey="HR_WageItem"/>
+            <Domain Key="HR_WageItem4Report" Caption="报表显示定义工资项" RefControlType="Dict" DataType="Long" ItemKey="HR_WageItem4Report"/>
+            <Domain Key="HR_WageItemGroup" Caption="工资项组" RefControlType="Dict" DataType="Long" ItemKey="HR_WageItemGroup"/>
+            <Domain Key="HR_WageLevelScope" Caption="工资等级范围" RefControlType="Dict" DataType="Long" ItemKey="HR_WageLevelScope"/>
+            <Domain Key="HR_WageLevelType" Caption="工资等级类型" RefControlType="Dict" DataType="Long" ItemKey="HR_WageLevelType"/>
+            <Domain Key="HR_WageTypeEmployeeGroup" Caption="对于主要工资类型的雇员子组分组" RefControlType="Dict" DataType="Long" ItemKey="HR_WageTypeEmployeeGroup"/>
+            <Domain Key="HR_WorkFlowType" Caption="流程类型" RefControlType="Dict" DataType="Long" ItemKey="HR_WorkFlowType"/>
+            <Domain Key="HR_WorkOverTimeType" Caption="加班类别" RefControlType="Dict" DataType="Long" ItemKey="HR_WorkOverTimeType"/>
+            <Domain Key="FM_ActivityGroup" Caption="作业组" RefControlType="Dict" DataType="Long" ItemKey="FM_ActivityGroup"/>
+            <Domain Key="FM_BudgetStatus" Caption="预算状态" RefControlType="Dict" DataType="Long" ItemKey="FM_BudgetStatus"/>
+            <Domain Key="FM_BudgetStructure" Caption="预算结构" RefControlType="Dict" DataType="Long" ItemKey="FM_BudgetStructure"/>
+            <Domain Key="FM_BudgetType" Caption="预算类型" RefControlType="Dict" DataType="Long" ItemKey="FM_BudgetType"/>
+            <Domain Key="FM_CarryForward" Caption="定义结转项目类别" RefControlType="Dict" DataType="Long" ItemKey="FM_CarryForward"/>
+            <Domain Key="FM_CommitmentItem" Caption="承诺项目" RefControlType="Dict" DataType="Long" ItemKey="FM_CommitmentItem"/>
+            <Domain Key="FM_CommitmentItemConstruct" Caption="承诺项目构造" RefControlType="Dict" DataType="Long" ItemKey="FM_CommitmentItemConstruct"/>
+            <Domain Key="FM_CommitmentItemGroup" Caption="承诺项目组" RefControlType="Dict" DataType="Long" ItemKey="FM_CommitmentItemGroup"/>
+            <Domain Key="FM_CommitmentItemVariant" Caption="承诺项目变式" RefControlType="Dict" DataType="Long" ItemKey="FM_CommitmentItemVariant"/>
+            <Domain Key="FM_DocumentType" Caption="凭证类型" RefControlType="Dict" DataType="Long" ItemKey="FM_DocumentType"/>
+            <Domain Key="FM_EarmarkedFundVoucherDtl__Dic" Caption="专项基金凭证明细单据字典" RefControlType="Dict" DataType="Long" ItemKey="FM_EarmarkedFundVoucherDtl__Dic"/>
+            <Domain Key="FM_EarmarkedFundVoucherType" Caption="专项基金凭证类型" RefControlType="Dict" DataType="Long" ItemKey="FM_EarmarkedFundVoucherType"/>
+            <Domain Key="FM_EarmarkedFundVoucher__Dic" Caption="专项基金凭证单据字典" RefControlType="Dict" DataType="Long" ItemKey="FM_EarmarkedFundVoucher__Dic"/>
+            <Domain Key="FM_FinancialManagementArea" Caption="财务管理范围" RefControlType="Dict" DataType="Long" ItemKey="FM_FinancialManagementArea"/>
+            <Domain Key="FM_Fund" Caption="基金" RefControlType="Dict" DataType="Long" ItemKey="FM_Fund"/>
+            <Domain Key="FM_FundApplication" Caption="基金运用程序" RefControlType="Dict" DataType="Long" ItemKey="FM_FundApplication"/>
+            <Domain Key="FM_FundCenter" Caption="基金中心" RefControlType="Dict" DataType="Long" ItemKey="FM_FundCenter"/>
+            <Domain Key="FM_FundCenterGroup" Caption="基金中心组" RefControlType="Dict" DataType="Long" ItemKey="FM_FundCenterGroup"/>
+            <Domain Key="FM_FundCenterVariant" Caption="基金中心变式" RefControlType="Dict" DataType="Long" ItemKey="FM_FundCenterVariant"/>
+            <Domain Key="FM_FundGroup" Caption="基金组" RefControlType="Dict" DataType="Long" ItemKey="FM_FundGroup"/>
+            <Domain Key="FM_FundProgram" Caption="基金计划" RefControlType="Dict" DataType="Long" ItemKey="FM_FundProgram"/>
+            <Domain Key="FM_FundProgramGroup" Caption="基金计划组" RefControlType="Dict" DataType="Long" ItemKey="FM_FundProgramGroup"/>
+            <Domain Key="FM_FundProgramType" Caption="基金计划类型" RefControlType="Dict" DataType="Long" ItemKey="FM_FundProgramType"/>
+            <Domain Key="FM_FundType" Caption="基金类型" RefControlType="Dict" DataType="Long" ItemKey="FM_FundType"/>
+            <Domain Key="FM_Ledger" Caption="基金分类账" RefControlType="Dict" DataType="Long" ItemKey="FM_Ledger"/>
+            <Domain Key="FM_LedgerDataSources" Caption="可用性分类账数据源" RefControlType="Dict" DataType="Long" ItemKey="FM_LedgerDataSources"/>
+            <Domain Key="FM_ReassignDerive" Caption="重分配派生规则" RefControlType="Dict" DataType="Long" ItemKey="FM_ReassignDerive"/>
+            <Domain Key="FM_ToleranceControl" Caption="容差控制" RefControlType="Dict" DataType="Long" ItemKey="FM_ToleranceControl"/>
+            <Domain Key="FM_ToleranceParaFile" Caption="容差参数文件" RefControlType="Dict" DataType="Long" ItemKey="FM_ToleranceParaFile"/>
+            <Domain Key="FM_UpdateProfile" Caption="更新参数文件" RefControlType="Dict" DataType="Long" ItemKey="FM_UpdateProfile"/>
+            <Domain Key="WM_Location" Caption="子库" RefControlType="Dict" DataType="Long" ItemKey="WM_Location"/>
+            <Domain Key="WM_StoreArea" Caption="库区" RefControlType="Dict" DataType="Long" ItemKey="WM_StoreArea"/>
+            <Domain Key="WM_Storeroom" Caption="仓间" RefControlType="Dict" DataType="Long" ItemKey="WM_Storeroom"/>
+            <Domain Key="WM_TransferNoticeOrder__Dic" Caption="调拨通知单字典" RefControlType="Dict" DataType="Long" ItemKey="WM_TransferNoticeOrder__Dic"/>
+            <Domain Key="WM_WMSBill__Dic" Caption="库存事务单字典" RefControlType="Dict" DataType="Long" ItemKey="WM_WMSBill__Dic"/>
+            <Domain Key="WM_WarehouseCenter" Caption="仓储中心" RefControlType="Dict" DataType="Long" ItemKey="WM_WarehouseCenter"/>
+            <Domain Key="SRM_AddressType" Caption="地址类型" RefControlType="Dict" DataType="Long" ItemKey="SRM_AddressType"/>
+            <Domain Key="SRM_CertificateType" Caption="认证类型" RefControlType="Dict" DataType="Long" ItemKey="SRM_CertificateType"/>
+            <Domain Key="SRM_ContactFunction" Caption="联系人职能" RefControlType="Dict" DataType="Long" ItemKey="SRM_ContactFunction"/>
+            <Domain Key="SRM_CostQuotationItem" Caption="成本项目" RefControlType="Dict" DataType="Long" ItemKey="SRM_CostQuotationItem"/>
+            <Domain Key="SRM_CostQuotationItemGroup" Caption="成本项目组" RefControlType="Dict" DataType="Long" ItemKey="SRM_CostQuotationItemGroup"/>
+            <Domain Key="SRM_DeductionReason" Caption="扣款原因" RefControlType="Dict" DataType="Long" ItemKey="SRM_DeductionReason"/>
+            <Domain Key="SRM_DefectType" Caption="缺陷类型" RefControlType="Dict" DataType="Long" ItemKey="SRM_DefectType"/>
+            <Domain Key="SRM_DutyReason" Caption="责任原因" RefControlType="Dict" DataType="Long" ItemKey="SRM_DutyReason"/>
+            <Domain Key="SRM_EnterpriseNature" Caption="企业性质" RefControlType="Dict" DataType="Long" ItemKey="SRM_EnterpriseNature"/>
+            <Domain Key="SRM_EnterpriseType" Caption="企业分类" RefControlType="Dict" DataType="Long" ItemKey="SRM_EnterpriseType"/>
+            <Domain Key="SRM_ExpertCategory" Caption="专家类别" RefControlType="Dict" DataType="Long" ItemKey="SRM_ExpertCategory"/>
+            <Domain Key="SRM_ExpertLevel" Caption="专家级别" RefControlType="Dict" DataType="Long" ItemKey="SRM_ExpertLevel"/>
+            <Domain Key="SRM_ExpertType" Caption="专家类型" RefControlType="Dict" DataType="Long" ItemKey="SRM_ExpertType"/>
+            <Domain Key="SRM_FileType" Caption="文件类型" RefControlType="Dict" DataType="Long" ItemKey="SRM_FileType"/>
+            <Domain Key="SRM_InspectionConclusion" Caption="考察结论" RefControlType="Dict" DataType="Long" ItemKey="SRM_InspectionConclusion"/>
+            <Domain Key="SRM_InspectionItemType" Caption="考察项目分类" RefControlType="Dict" DataType="Long" ItemKey="SRM_InspectionItemType"/>
+            <Domain Key="SRM_InspectionScoreLevel" Caption="得分等级" RefControlType="Dict" DataType="Long" ItemKey="SRM_InspectionScoreLevel"/>
+            <Domain Key="SRM_InspectionStandardType" Caption="考察标准分类" RefControlType="Dict" DataType="Long" ItemKey="SRM_InspectionStandardType"/>
+            <Domain Key="SRM_PerformanceGrade" Caption="绩效等级" RefControlType="Dict" DataType="Long" ItemKey="SRM_PerformanceGrade"/>
+            <Domain Key="SRM_ProductType" Caption="产品/服务类型" RefControlType="Dict" DataType="Long" ItemKey="SRM_ProductType"/>
+            <Domain Key="SRM_QuotaPara" Caption="指标参数" RefControlType="Dict" DataType="Long" ItemKey="SRM_QuotaPara"/>
+            <Domain Key="SRM_RFQType" Caption="询价类型" RefControlType="Dict" DataType="Long" ItemKey="SRM_RFQType"/>
+            <Domain Key="SRM_RegulationType" Caption="评标条例类型" RefControlType="Dict" DataType="Long" ItemKey="SRM_RegulationType"/>
+            <Domain Key="SRM_Supplier" Caption="供应商" RefControlType="Dict" DataType="Long" ItemKey="SRM_Supplier"/>
+            <Domain Key="SRM_Supplier_Multi" Caption="供应商" RefControlType="Dict" DataType="Varchar" ItemKey="SRM_Supplier" AllowMultiSelection="true"/>
+            <Domain Key="SRM_SurchargeCostType" Caption="费用类型" RefControlType="Dict" DataType="Long" ItemKey="SRM_SurchargeCostType"/>
+            <Domain Key="DM_BillingType" Caption="开票方式" RefControlType="Dict" DataType="Long" ItemKey="DM_BillingType"/>
+            <Domain Key="DM_Brand" Caption="品牌" RefControlType="Dict" DataType="Long" ItemKey="DM_Brand"/>
+            <Domain Key="DM_Category" Caption="类别" RefControlType="Dict" DataType="Long" ItemKey="DM_Category"/>
+            <Domain Key="DM_ChannelCategory" Caption="渠道分类" RefControlType="Dict" DataType="Long" ItemKey="DM_ChannelCategory"/>
+            <Domain Key="DM_ChannelPriceCategory" Caption="渠道价类别" RefControlType="Dict" DataType="Long" ItemKey="DM_ChannelPriceCategory"/>
+            <Domain Key="DM_CheckDifferReason" Caption="对账差异原因" RefControlType="Dict" DataType="Long" ItemKey="DM_CheckDifferReason"/>
+            <Domain Key="DM_CommodityClass" Caption="大类" RefControlType="Dict" DataType="Long" ItemKey="DM_CommodityClass"/>
+            <Domain Key="DM_CostType" Caption="费用类型" RefControlType="Dict" DataType="Long" ItemKey="DM_CostType"/>
+            <Domain Key="DM_IndexHierarchy" Caption="指标层次" RefControlType="Dict" DataType="Long" ItemKey="DM_IndexHierarchy"/>
+            <Domain Key="DM_Month" Caption="月份" RefControlType="Dict" DataType="Long" ItemKey="DM_Month"/>
+            <Domain Key="DM_Origin" Caption="产地" RefControlType="Dict" DataType="Long" ItemKey="DM_Origin"/>
+            <Domain Key="DM_PickingCostType" Caption="领货费用类型" RefControlType="Dict" DataType="Long" ItemKey="DM_PickingCostType"/>
+            <Domain Key="DM_PrintParameter" Caption="打印参数" RefControlType="Dict" DataType="Long" ItemKey="DM_PrintParameter"/>
+            <Domain Key="DM_PromotionType" Caption="活动类型" RefControlType="Dict" DataType="Long" ItemKey="DM_PromotionType"/>
+            <Domain Key="DM_Quarter" Caption="季度" RefControlType="Dict" DataType="Long" ItemKey="DM_Quarter"/>
+            <Domain Key="DM_Series" Caption="系列" RefControlType="Dict" DataType="Long" ItemKey="DM_Series"/>
+            <Domain Key="DM_SignForDifferReason" Caption="签收差异原因" RefControlType="Dict" DataType="Long" ItemKey="DM_SignForDifferReason"/>
+            <Domain Key="DM_Specification" Caption="规格" RefControlType="Dict" DataType="Long" ItemKey="DM_Specification"/>
+            <Domain Key="DM_Store" Caption="门店" RefControlType="Dict" DataType="Long" ItemKey="DM_Store"/>
+            <Domain Key="DM_VisitCycle" Caption="拜访周期" RefControlType="Dict" DataType="Long" ItemKey="DM_VisitCycle"/>
+            <Domain Key="DM_VisitRequest" Caption="拜访要求" RefControlType="Dict" DataType="Long" ItemKey="DM_VisitRequest"/>
+            <Domain Key="DM_Year" Caption="年度" RefControlType="Dict" DataType="Long" ItemKey="DM_Year"/>
+            <Domain Key="COPA_ActualCostKey" Caption="定义定期评估的核算码" RefControlType="Dict" DataType="Long" ItemKey="COPA_ActualCostKey"/>
+            <Domain Key="COPA_AllocationCycleDefine" Caption="COPA分摊循环定义" RefControlType="Dict" DataType="Long" ItemKey="COPA_AllocationCycleDefine"/>
+            <Domain Key="COPA_CharacterValueField" Caption="COPA特性值字段定义" RefControlType="Dict" DataType="Long" ItemKey="COPA_CharacterValueField"/>
+            <Domain Key="COPA_CostCycleSegment" Caption="COPA分摊循环段" RefControlType="Dict" DataType="Long" ItemKey="COPA_CostCycleSegment"/>
+            <Domain Key="COPA_OperatingConcern" Caption="经营范围" RefControlType="Dict" DataType="Long" ItemKey="COPA_OperatingConcern"/>
+            <Domain Key="COPA_ProfitSegmentVoucher__Dic" Caption="COPA凭证单据字典" RefControlType="Dict" DataType="Long" ItemKey="COPA_ProfitSegmentVoucher__Dic"/>
+            <Domain Key="COPA_ProfitSegment__Dic" Caption="获利能力段字典" RefControlType="Dict" DataType="Long" ItemKey="COPA_ProfitSegment__Dic"/>
+            <Domain Key="COPA_RecordType" Caption="记录类型" RefControlType="Dict" DataType="Long" ItemKey="COPA_RecordType"/>
+            <Domain Key="COPA_StandardCostAssess" Caption="定义标准成本评估的访问" RefControlType="Dict" DataType="Long" ItemKey="COPA_StandardCostAssess"/>
+            <Domain Key="COPA_Top2DownDistriVariant" Caption="自上而下分配变式" RefControlType="Dict" DataType="Long" ItemKey="COPA_Top2DownDistriVariant"/>
+            <Domain Key="COPA_TransferStructure" Caption="COPA传输结构" RefControlType="Dict" DataType="Long" ItemKey="COPA_TransferStructure"/>
+            <Domain Key="COPA_ValuationStrategy" Caption="评估策略" RefControlType="Dict" DataType="Long" ItemKey="COPA_ValuationStrategy"/>
+            <Domain Key="COPA_ValuationVariant" Caption="定期评估变式" RefControlType="Dict" DataType="Long" ItemKey="COPA_ValuationVariant"/>
+            <Domain Key="TCM_BankCommunicateType" Caption="定义银行通信类型" RefControlType="Dict" DataType="Long" ItemKey="TCM_BankCommunicateType"/>
+            <Domain Key="TCM_CashAccoutGroup" Caption="资金账户组" RefControlType="Dict" DataType="Long" ItemKey="TCM_CashAccoutGroup"/>
+            <Domain Key="TCM_CashAccoutType" Caption="定义资金账户类型" RefControlType="Dict" DataType="Long" ItemKey="TCM_CashAccoutType"/>
+            <Domain Key="TCM_CategoryOfPayment" Caption="款项类别" RefControlType="Dict" DataType="Long" ItemKey="TCM_CategoryOfPayment"/>
+            <Domain Key="TCM_CollectionOrder__Dic" Caption="收款单单据字典" RefControlType="Dict" DataType="Long" ItemKey="TCM_CollectionOrder__Dic"/>
+            <Domain Key="TCM_OrganizationalUnit" Caption="定义资金组织" RefControlType="Dict" DataType="Long" ItemKey="TCM_OrganizationalUnit"/>
+            <Domain Key="TCM_PlanControlRule" Caption="预算付款控制规则" RefControlType="Dict" DataType="Long" ItemKey="TCM_PlanControlRule"/>
+            <Domain Key="TCM_PlanControlStrategy" Caption="预算付款控制策略" RefControlType="Dict" DataType="Long" ItemKey="TCM_PlanControlStrategy"/>
+            <Domain Key="TCM_PlanFlowItem" Caption="流动性项目字典" RefControlType="Dict" DataType="Long" ItemKey="TCM_PlanFlowItem"/>
+            <Domain Key="TCM_PlanFlowItem_Multi" Caption="流动性项目标识" RefControlType="Dict" DataType="Varchar" ItemKey="TCM_PlanFlowItem" AllowMultiSelection="true"/>
+            <Domain Key="TCM_PlanPeriod" Caption="资金计划周期" RefControlType="Dict" DataType="Long" ItemKey="TCM_PlanPeriod"/>
+            <Domain Key="TCM_ReceiptPostingRule" Caption="资金过账规则" RefControlType="Dict" DataType="Long" ItemKey="TCM_ReceiptPostingRule"/>
+            <Domain Key="TCM_TansactionCode" Caption="交易代码" RefControlType="Dict" DataType="Long" ItemKey="TCM_TansactionCode"/>
+            <Domain Key="BC_AccountChart" Caption="合并科目表" RefControlType="Dict" DataType="Long" ItemKey="BC_AccountChart"/>
+            <Domain Key="BC_BreakdownCategory" Caption="细分类型" RefControlType="Dict" DataType="Long" ItemKey="BC_BreakdownCategory"/>
+            <Domain Key="BC_CIActivity" Caption="投资活动" RefControlType="Dict" DataType="Long" ItemKey="BC_CIActivity"/>
+            <Domain Key="BC_Characteristic" Caption="特征" RefControlType="Dict" DataType="Long" ItemKey="BC_Characteristic"/>
+            <Domain Key="BC_ConsFrequency" Caption="合并频次" RefControlType="Dict" DataType="Long" ItemKey="BC_ConsFrequency"/>
+            <Domain Key="BC_ConsGroup" Caption="合并组" RefControlType="Dict" DataType="Long" ItemKey="BC_ConsGroup"/>
+            <Domain Key="BC_ConsHierarchy" Caption="合并层次" RefControlType="Dict" DataType="Long" ItemKey="BC_ConsHierarchy"/>
+            <Domain Key="BC_ConsTransactionType" Caption="合并事务类型" RefControlType="Dict" DataType="Long" ItemKey="BC_ConsTransactionType"/>
+            <Domain Key="BC_ConsUnit" Caption="合并单元" RefControlType="Dict" DataType="Long" ItemKey="BC_ConsUnit"/>
+            <Domain Key="BC_CurrencyTransMethod" Caption="货币换算方法" RefControlType="Dict" DataType="Long" ItemKey="BC_CurrencyTransMethod"/>
+            <Domain Key="BC_Dimension" Caption="维" RefControlType="Dict" DataType="Long" ItemKey="BC_Dimension"/>
+            <Domain Key="BC_ExchRateIndictor" Caption="汇率标识" RefControlType="Dict" DataType="Long" ItemKey="BC_ExchRateIndictor"/>
+            <Domain Key="BC_FSConstruct" Caption="报表项目构造" RefControlType="Dict" DataType="Long" ItemKey="BC_FSConstruct"/>
+            <Domain Key="BC_FSItem" Caption="报表合并项目" RefControlType="Dict" DataType="Long" ItemKey="BC_FSItem"/>
+            <Domain Key="BC_FSItemCategory" Caption="项目类别" RefControlType="Dict" DataType="Long" ItemKey="BC_FSItemCategory"/>
+            <Domain Key="BC_FinDataType" Caption="财务数据类型" RefControlType="Dict" DataType="Long" ItemKey="BC_FinDataType"/>
+            <Domain Key="BC_InclusionReasion" Caption="列入原因" RefControlType="Dict" DataType="Long" ItemKey="BC_InclusionReasion"/>
+            <Domain Key="BC_InvestConsMethod" Caption="投资合并方法" RefControlType="Dict" DataType="Long" ItemKey="BC_InvestConsMethod"/>
+            <Domain Key="BC_ItemHierarchy" Caption="报表层次" RefControlType="Dict" DataType="Long" ItemKey="BC_ItemHierarchy"/>
+            <Domain Key="BC_Ledger" Caption="合并分类账" RefControlType="Dict" DataType="Long" ItemKey="BC_Ledger"/>
+            <Domain Key="BC_OUMethodSetting" Caption="FS项目设置" RefControlType="Dict" DataType="Long" ItemKey="BC_OUMethodSetting"/>
+            <Domain Key="BC_OffsetUnitsMethod" Caption="单位间抵消方法" RefControlType="Dict" DataType="Long" ItemKey="BC_OffsetUnitsMethod"/>
+            <Domain Key="BC_PeriodCategory" Caption="期间类型" RefControlType="Dict" DataType="Long" ItemKey="BC_PeriodCategory"/>
+            <Domain Key="BC_ProductGroup" Caption="产品组" RefControlType="Dict" DataType="Long" ItemKey="BC_ProductGroup"/>
+            <Domain Key="BC_ReclassifyMethod" Caption="重分类方法" RefControlType="Dict" DataType="Long" ItemKey="BC_ReclassifyMethod"/>
+            <Domain Key="BC_ReclassifyMethodRule" Caption="方法规则" RefControlType="Dict" DataType="Long" ItemKey="BC_ReclassifyMethodRule"/>
+            <Domain Key="BC_Set" Caption="集合" RefControlType="Dict" DataType="Long" ItemKey="BC_Set"/>
+            <Domain Key="BC_SubItem" Caption="子项" RefControlType="Dict" DataType="Long" ItemKey="BC_SubItem"/>
+            <Domain Key="BC_SubItemCategory" Caption="子项类别" RefControlType="Dict" DataType="Long" ItemKey="BC_SubItemCategory"/>
+            <Domain Key="BC_Task" Caption="任务" RefControlType="Dict" DataType="Long" ItemKey="BC_Task"/>
+            <Domain Key="BC_TaskGroup" Caption="任务组" RefControlType="Dict" DataType="Long" ItemKey="BC_TaskGroup"/>
+            <Domain Key="BC_TaskType" Caption="任务类型" RefControlType="Dict" DataType="Long" ItemKey="BC_TaskType"/>
+            <Domain Key="BC_Version" Caption="合并版本" RefControlType="Dict" DataType="Long" ItemKey="BC_Version"/>
+            <Domain Key="BC_VoucherType" Caption="合并凭证类型" RefControlType="Dict" DataType="Long" ItemKey="BC_VoucherType"/>
+            <Domain Key="CM_ContractChangeType" Caption="合同变更类型" RefControlType="Dict" DataType="Long" ItemKey="CM_ContractChangeType"/>
+            <Domain Key="CM_ContractProfile" Caption="合同参数文件" RefControlType="Dict" DataType="Long" ItemKey="CM_ContractProfile"/>
+            <Domain Key="CM_ContractType" Caption="合同类型" RefControlType="Dict" DataType="Long" ItemKey="CM_ContractType"/>
+            <Domain Key="CM_DebitNote__Dic" Caption="扣款单单据字典" RefControlType="Dict" DataType="Long" ItemKey="CM_DebitNote__Dic"/>
+            <Domain Key="CM_PurchaseContractModify__Dic" Caption="采购合同变更单据字典" RefControlType="Dict" DataType="Long" ItemKey="CM_PurchaseContractModify__Dic"/>
+            <Domain Key="CM_PurchaseContract__Dic" Caption="采购合同单据字典" RefControlType="Dict" DataType="Long" ItemKey="CM_PurchaseContract__Dic"/>
+            <Domain Key="ArchiveObject" Caption="归档对象" RefControlType="Dict" DataType="Long" ItemKey="ArchiveObject"/>
+            <Domain Key="ArchiveRecord__Dic" Caption="归档信息记录" RefControlType="Dict" DataType="Long" ItemKey="ArchiveRecord__Dic"/>
+            <Domain Key="SDS_DataElement" Caption="SAP数据元素" RefControlType="Dict" DataType="Long" ItemKey="SDS_DataElement"/>
+            <Domain Key="SDS_Domain" Caption="SAP域" RefControlType="Dict" DataType="Long" ItemKey="SDS_Domain"/>
+            <Domain Key="SDS_SAPTable" Caption="SAP表" RefControlType="Dict" DataType="Long" ItemKey="SDS_SAPTable"/>
+            <Domain Key="SDS_SAPVersion" Caption="SAP版本" RefControlType="Dict" DataType="Long" ItemKey="SDS_SAPVersion"/>
+            <Domain Key="SP00_ApplicationSystem" Caption="应用系统" RefControlType="Dict" DataType="Long" ItemKey="SP00_ApplicationSystem"/>
+            <Domain Key="SP00_JobRole" Caption="岗位角色" RefControlType="Dict" DataType="Long" ItemKey="SP00_JobRole"/>
+            <Domain Key="FI_Product" Caption="产品(财务专用)" RefControlType="Dict" DataType="Long" ItemKey="FI_Product"/>
+            <Domain Key="SD_ForeignTradeByCountry" Caption="按国家定义商品/进口代码编号" RefControlType="Dict" DataType="Long" ItemKey="SD_ForeignTradeByCountry"/>
+            <Domain Key="MM_VendorLevel" Caption="供应商等级" RefControlType="Dict" DataType="Long" ItemKey="MM_VendorLevel"/>
+            <Domain Key="MM_ClientCustomerGroup" Caption="业务伙伴集团组" RefControlType="Dict" DataType="Long" ItemKey="MM_ClientCustomerGroup"/>
+            <Domain Key="MM_CustomGroup" Caption="自定义分组" RefControlType="Dict" DataType="Long" ItemKey="MM_CustomGroup"/>
+            <Domain Key="FI_VariationDimension" Caption="变动维度" RefControlType="Dict" DataType="Long" ItemKey="FI_VariationDimension"/>
+            <Domain Key="FI_TimeDimension" Caption="时间维度" RefControlType="Dict" DataType="Long" ItemKey="FI_TimeDimension"/>
+            <Domain Key="FI_ProjectType" Caption="项目类型" RefControlType="Dict" DataType="Long" ItemKey="FI_ProjectType"/>
+            <Domain Key="FI_CostType" Caption="费用类型" RefControlType="Dict" DataType="Long" ItemKey="FI_CostType"/>
+            <Domain Key="FI_TransactionProperties" Caption="往来款性质" RefControlType="Dict" DataType="Long" ItemKey="FI_TransactionProperties"/>
+            <Domain Key="FI_SettlementMethod" Caption="结算方式" RefControlType="Dict" DataType="Long" ItemKey="FI_SettlementMethod"/>
+            <Domain Key="DataInterface" Caption="接口代码" RefControlType="Dict" DataType="Long" ItemKey="DataInterface"/>
+            <Domain Key="GS_QuickBrowser" Caption="数据源" RefControlType="Dict" DataType="Long" ItemKey="GS_QuickBrowser"/>
+            <Domain Key="FI_IntervalAging" Caption="区间字典选择" RefControlType="Dict" DataType="Long" ItemKey="FI_IntervalAging"/>
+            <Domain Key="Account_Multi" Caption="科目(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="Account" AllowMultiSelection="true"/>
+            <Domain Key="CostCenterGroup_Multi" Caption="成本中心组(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="CostCenterGroup" AllowMultiSelection="true"/>
+            <Domain Key="FI_InterfaceType" Caption="接口类型" RefControlType="Dict" DataType="Long" ItemKey="FI_InterfaceType"/>
+            <Domain Key="AssetClass_Multi" Caption="资产分类(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="AM_AssetClass" AllowMultiSelection="true"/>
+            <Domain Key="DepreciationKey_Multi" Caption="折旧码(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="AM_DepreciationKey" AllowMultiSelection="true"/>
+            <Domain Key="DepreciationArea_Multi" Caption="折旧范围(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="AM_DepreciationArea" AllowMultiSelection="true"/>
+            <Domain Key="TransactionType_Multi" Caption="业务类型(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="AM_TransactionType" AllowMultiSelection="true"/>
+            <Domain Key="ValuationArea_Multi" Caption="评估范围(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="FI_ValuationArea" AllowMultiSelection="true"/>
+            <Domain Key="BusinessTransaction_Multi" Caption="业务交易(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="FI_BusinessTransaction" AllowMultiSelection="true"/>
+            <Domain Key="DocSplittingMethod_Multi" Caption="拆分方法(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="FI_DocSplittingMethod" AllowMultiSelection="true"/>
+            <Domain Key="AutoPayParameter_Multi" Caption="参数单据号(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="FI_AutoPayParameter__Dic" AllowMultiSelection="true"/>
+            <Domain Key="PaymentMethod_Multi" Caption="付款方式(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="FI_PaymentMethod" AllowMultiSelection="true"/>
+            <Domain Key="SD_SaleBilling__Dic__Multi" Caption="销售发票单据字典" RefControlType="Dict" DataType="Varchar" ItemKey="SD_SaleBilling__Dic" AllowMultiSelection="true"/>
+            <Domain Key="Customer_Multi" Caption="客户(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="Customer" AllowMultiSelection="true"/>
+            <Domain Key="SD_SaleDocumentType_Multi" Caption="销售凭证类型(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="SD_SaleDocumentType" AllowMultiSelection="true"/>
+            <Domain Key="SD_DeliveryDocumentType_Multi" Caption="交货类型(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="SD_DeliveryDocumentType" AllowMultiSelection="true"/>
+            <Domain Key="SD_AutomaticCreditControl" Caption="自动信贷控制" RefControlType="Dict" DataType="Long" ItemKey="SD_AutomaticCreditControl"/>
+            <Domain Key="SD_ShippingPoint_Multi" Caption="装运点(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="SD_ShippingPoint" AllowMultiSelection="true"/>
+            <Domain Key="SD_ItemCategory_Multi" Caption="项目类别(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="SD_ItemCategory" AllowMultiSelection="true"/>
+            <Domain Key="SD_RiskCategory_Multi" Caption="风险类别(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="SD_RiskCategory" AllowMultiSelection="true"/>
+            <Domain Key="CreditControlArea_Multi" Caption="信贷控制范围(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="CreditControlArea" AllowMultiSelection="true"/>
+            <Domain Key="SD_CreditGroup_Multi" Caption="信用代表组(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="SD_CreditGroup" AllowMultiSelection="true"/>
+            <Domain Key="SD_CustomerGroup_Multi" Caption="客户组(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="SD_CustomerGroup" AllowMultiSelection="true"/>
+            <Domain Key="CustomerAccountGroup_Multi" Caption="账户组(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="CustomerAccountGroup" AllowMultiSelection="true"/>
+            <Domain Key="SD_CustomerClassification_Multi" Caption="客户分类(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="SD_CustomerClassification" AllowMultiSelection="true"/>
+            <Domain Key="ValuationClassID_Multi" Caption="评估分类(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="ValuationClass" AllowMultiSelection="true"/>
+            <Domain Key="SaleOrderSOID_Multi" Caption="销售订单单据字典(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="SD_SaleOrder__Dic" AllowMultiSelection="true"/>
+            <Domain Key="SaleOrderDtlOID_Multi" Caption="销售订单行项目字典(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="SD_SaleOrderDtl__Dic" AllowMultiSelection="true"/>
+            <Domain Key="GlobalValuationType_Multi" Caption="评估类型(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="MM_GlobalValuationType" AllowMultiSelection="true"/>
+            <Domain Key="PP_SelectRule" Caption="选择规则" RefControlType="Dict" DataType="Long" ItemKey="PP_SelectRule"/>
+            <Domain Key="InspectionConclusionID_Multi" Caption="考察结论(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="SRM_InspectionConclusion" AllowMultiSelection="true"/>
+            <Domain Key="SurchargeCostTypeID_Multi" Caption="费用类型(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="SRM_SurchargeCostType" AllowMultiSelection="true"/>
+            <Domain Key="VendorAccountGroupID_Multi" Caption="供应商账户组(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="VendorAccountGroup" AllowMultiSelection="true"/>
+            <Domain Key="MoveType_Multi" Caption="移动类型(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="MoveType" AllowMultiSelection="true"/>
+            <Domain Key="COPA_RecordType_Multi" Caption="记录类型(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="COPA_RecordType" AllowMultiSelection="true"/>
+            <Domain Key="SRM_RegulationTypeID_Multi" Caption="条例类型(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="SRM_RegulationType" AllowMultiSelection="true"/>
+            <Domain Key="InspectionStandardTypeID_Multi" Caption="考察标准分类(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="SRM_InspectionStandardType" AllowMultiSelection="true"/>
+            <Domain Key="StatisticalKeyID_Multi" Caption="统计指标(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="CO_StatisticalKey" AllowMultiSelection="true"/>
+            <Domain Key="COPA_ProfitSegment_Dic_Multi" Caption="获利能力段(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="COPA_ProfitSegment__Dic" AllowMultiSelection="true"/>
+            <Domain Key="TRRequest__Dic" Caption="到" RefControlType="Dict" DataType="Long" ItemKey="TRRequest__Dic"/>
+            <Domain Key="TCode_Multi" Caption="事务码" RefControlType="Dict" DataType="Varchar" ItemKey="TCode" AllowMultiSelection="true"/>
+            <Domain Key="CostElementID_Multi" Caption="成本要素(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="CO_CostElement" AllowMultiSelection="true"/>
+            <Domain Key="ProgressID_Multi" Caption="业务事务(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="BusinessTransaction" AllowMultiSelection="true"/>
+            <Domain Key="CO_SettlementVariant" Caption="结算变式" RefControlType="Dict" DataType="Long" ItemKey="CO_SettlementVariant"/>
+            <Domain Key="PP_ProductionVersion_Multi" Caption="生产版本(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="PP_ProductionVersion" AllowMultiSelection="true"/>
+            <Domain Key="ChannelPriceCategoryID_Multi" Caption="渠道价类别(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="DM_ChannelPriceCategory" AllowMultiSelection="true"/>
+            <Domain Key="PP_MasterRecipeDefaultValue" Caption="主配方缺省值" RefControlType="Dict" DataType="Long" ItemKey="PP_MasterRecipeDefaultValue"/>
+            <Domain Key="PP_RoutingDefaultValue" Caption="参数文件" RefControlType="Dict" DataType="Long" ItemKey="PP_RoutingDefaultValue"/>
+            <Domain Key="MM_PaymentRequest__Dic" Caption="付款申请单" RefControlType="Dict" DataType="Long" ItemKey="MM_PaymentRequest__Dic"/>
+            <Domain Key="PI_ProcessOrder__Dic" Caption="流程订单单据字典" RefControlType="Dict" DataType="Long" ItemKey="PI_ProcessOrder__Dic"/>
+            <Domain Key="PP_PlanOrder__Dic_Multi" Caption="计划订单单据字典(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="PP_PlanOrder__Dic" AllowMultiSelection="true"/>
+            <Domain Key="PP_SchedulingType_Multi" Caption="计划类型" RefControlType="Dict" DataType="Varchar" ItemKey="PP_SchedulingType" AllowMultiSelection="true"/>
+            <Domain Key="SD_SalesNetworkPointType" Caption="销售网点类型" RefControlType="Dict" DataType="Long" ItemKey="SD_SalesNetworkPointType"/>
+            <Domain Key="SD_BusinessPartner" Caption="业务伙伴" RefControlType="Dict" DataType="Long" ItemKey="SD_BusinessPartner"/>
+            <Domain Key="GS_Chat_Server" Caption="模型服务" RefControlType="Dict" DataType="Long" ItemKey="GS_Chat_Server"/>
+            <Domain Key="GS_Chat_Agent" Caption="智能体标识" RefControlType="Dict" DataType="Long" ItemKey="GS_Chat_Agent"/>
+            <Domain Key="GS_Chat_MCP" Caption="MCP服务" RefControlType="Dict" DataType="Long" ItemKey="GS_Chat_MCP"/>
+            <Domain Key="FI_OCRPlaneTicket__Dic" Caption="航空运输电子客票行程单" RefControlType="Dict" DataType="Long" ItemKey="FI_OCRPlaneTicket__Dic"/>
+            <Domain Key="FI_OCRTrainTicket__Dic" Caption="火车票" RefControlType="Dict" DataType="Long" ItemKey="FI_OCRTrainTicket__Dic"/>
+            <Domain Key="FI_OCRSteamerTicket__Dic" Caption="船票" RefControlType="Dict" DataType="Long" ItemKey="FI_OCRSteamerTicket__Dic"/>
+            <Domain Key="FI_OCRBusTicket__Dic" Caption="汽车票" RefControlType="Dict" DataType="Long" ItemKey="FI_OCRBusTicket__Dic"/>
+            <Domain Key="FI_OCRTaxiTicket__Dic" Caption="出租车票" RefControlType="Dict" DataType="Long" ItemKey="FI_OCRTaxiTicket__Dic"/>
+            <Domain Key="FI_OCRTollInvoice__Dic" Caption="增值税发票" RefControlType="Dict" DataType="Long" ItemKey="FI_OCRTollInvoice__Dic"/>
+            <Domain Key="FI_OCRSmallTicket__Dic" Caption="小票" RefControlType="Dict" DataType="Long" ItemKey="FI_OCRSmallTicket__Dic"/>
+            <Domain Key="FI_OCRElectInvoice__Dic" Caption="电子发票" RefControlType="Dict" DataType="Long" ItemKey="FI_OCRElectInvoice__Dic"/>
+            <Domain Key="FI_OCRQuotaInvoice__Dic" Caption="定额发票" RefControlType="Dict" DataType="Long" ItemKey="FI_OCRQuotaInvoice__Dic"/>
+            <Domain Key="FI_EmptyDic" Caption="空字典" RefControlType="Dict" DataType="Long" ItemKey="FI_EmptyDic"/>
+            <Domain Key="ECS_ExpenseStandardTrain" Caption="火车标准" RefControlType="Dict" DataType="Long" ItemKey="ECS_ExpenseStandardTrain"/>
+            <Domain Key="ECS_ExpenseStandardAirplane" Caption="机票标准" RefControlType="Dict" DataType="Long" ItemKey="ECS_ExpenseStandardAirplane"/>
+            <Domain Key="ECS_ExpenseStandardSteamer" Caption="轮船标准" RefControlType="Dict" DataType="Long" ItemKey="ECS_ExpenseStandardSteamer"/>
+            <Domain Key="ECS_ExpenseStandardHotel" Caption="住宿标准" RefControlType="Dict" DataType="Long" ItemKey="ECS_ExpenseStandardHotel"/>
+            <Domain Key="ECS_ExpenseStandardTelecom" Caption="通讯费标准" RefControlType="Dict" DataType="Long" ItemKey="ECS_ExpenseStandardTelecom"/>
+            <Domain Key="SD_BusinessPartnerAccGroup" Caption="业务伙伴账户组" RefControlType="Dict" DataType="Long" ItemKey="SD_BusinessPartnerAccGroup"/>
+            <Domain Key="FM_StatisticalIndex" Caption="统计指标" RefControlType="Dict" DataType="Long" ItemKey="FM_StatisticalIndex"/>
+            <Domain Key="FM_Ledger_Multi" Caption="预算类别(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="FM_Ledger" AllowMultiSelection="true"/>
+            <Domain Key="FM_ValueAdjustment__Dic" Caption="价值调整单据字典" RefControlType="Dict" DataType="Long" ItemKey="FM_ValueAdjustment__Dic"/>
+            <Domain Key="FM_DerivationKey" Caption="派生字段" RefControlType="Dict" DataType="Long" ItemKey="FM_DerivationKey"/>
+            <Domain Key="FM_DerivativeStrategyDtl__Dic" Caption="派生策略明细单据字典" RefControlType="Dict" DataType="Long" ItemKey="FM_DerivativeStrategyDtl__Dic"/>
+            <Domain Key="FM_DerivativeStrategy" Caption="派生策略" RefControlType="Dict" DataType="Long" ItemKey="FM_DerivativeStrategy"/>
+            <Domain Key="ConsUnitID_Multi" Caption="合并单元(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="BC_ConsUnit"/>
+            <Domain Key="ConsTransactionTypeID_Multi" Caption="合并事务类型(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="BC_ConsTransactionType"/>
+            <Domain Key="ProductGroupID_Multi" Caption="产品组(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="BC_ProductGroup"/>
+            <Domain Key="SubItemCategoryID_Multi" Caption="子项类别(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="BC_SubItemCategory"/>
+            <Domain Key="BaseUnitID_Multi" Caption="基本单位(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="Unit"/>
+            <Domain Key="CashFlowItemID_Multi" Caption="现金流量项目(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="FI_CashFlowItem"/>
+            <Domain Key="FSItemID_Multi" Caption="报表项目(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="BC_FSItem"/>
+            <Domain Key="SubItemID_Multi" Caption="子项(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="BC_SubItem"/>
+            <Domain Key="DEE_InterfaceProfile" Caption="接口权限参数文件" RefControlType="Dict" DataType="Long" ItemKey="DEE_InterfaceProfile"/>
+            <Domain Key="AuthorityUserGroup" Caption="权限用户组" RefControlType="Dict" DataType="Long" ItemKey="AuthorityUserGroup"/>
+        </DomainCollection>
+</DomainDef>

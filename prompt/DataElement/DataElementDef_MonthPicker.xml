@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DataElementDef>
+        <DataElementCollection>
+            <DataElement Key="CalcPeriod" Caption="计算期间" DomainKey="MonthPicker" DataDiffLog="true"/>
+            <DataElement Key="CheckMonth" Caption="对账月份" DomainKey="MonthPicker" DataDiffLog="true"/>
+            <DataElement Key="EduEndTime" Caption="毕业时间" DomainKey="MonthPicker" DataDiffLog="true"/>
+            <DataElement Key="EduStartTime" Caption="开始时间" DomainKey="MonthPicker" DataDiffLog="true"/>
+            <DataElement Key="HR_EndTime" Caption="结束时间" DomainKey="MonthPicker" DataDiffLog="true"/>
+            <DataElement Key="HR_Month" Caption="月份" DomainKey="MonthPicker"/>
+            <DataElement Key="HR_StartTime" Caption="开始时间" DomainKey="MonthPicker" DataDiffLog="true"/>
+            <DataElement Key="LockMonth" Caption="锁定月份" DomainKey="MonthPicker"/>
+            <DataElement Key="MaintenanceMonth" Caption="维护期间" DomainKey="MonthPicker"/>
+            <DataElement Key="MonthTimeRange" Caption="考核时间范围" DomainKey="MonthPicker"/>
+            <DataElement Key="MonthYear" Caption="工作开始时间" DomainKey="MonthPicker" DataDiffLog="true"/>
+            <DataElement Key="PlannedMonth" Caption="计划月份" DomainKey="MonthPicker" DataDiffLog="true"/>
+            <DataElement Key="ProjectEndTime" Caption="项目介绍时间" DomainKey="MonthPicker" DataDiffLog="true"/>
+            <DataElement Key="ProjectStartTime" Caption="项目开始时间" DomainKey="MonthPicker" DataDiffLog="true"/>
+            <DataElement Key="SelectIndicateSinceYearMonth" Caption="选择标识从" DomainKey="MonthPicker"/>
+            <DataElement Key="StartMonth" Caption="启用月份" DomainKey="MonthPicker" DataDiffLog="true"/>
+            <DataElement Key="YearMonth" Caption="截止年月" DomainKey="MonthPicker" DataDiffLog="true"/>
+        </DataElementCollection>
+</DataElementDef>

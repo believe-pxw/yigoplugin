@@ -1,0 +1,896 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DataElementDef>
+    <DataElementCollection>
+        <DataElement Key="CheckListBox_Data" Caption="CheckListBox_Data" DomainKey="CheckListBox_Data"/>
+        <DataElement Key="CheckListBox_Text" Caption="CheckListBox_Text" DomainKey="CheckListBox_Text"/>
+        <DataElement Key="CheckField" Caption="对账字段" DomainKey="CheckListBox_CheckField" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="对账字段" TextEn="Reconciliation Field"/>
+                <FieldLabel Key="Medium" Text="对账字段" TextEn="Reconciliation Field"/>
+                <FieldLabel Key="Long" Text="对账字段" TextEn="Reconciliation Field"/>
+                <FieldLabel Key="Header" Text="对账字段" TextEn="Reconciliation Field"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Component" Caption="组件分配" DomainKey="CheckListBox_Component" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="组件分配" TextEn="Component Assignment"/>
+                <FieldLabel Key="Medium" Text="组件分配" TextEn="Component Assignment"/>
+                <FieldLabel Key="Long" Text="组件分配" TextEn="Component Assignment"/>
+                <FieldLabel Key="Header" Text="组件分配" TextEn="Component Assignment"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_ConfirmType" Caption="确认方式" DomainKey="CheckListBox_ConfirmType">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="确认方式" TextEn="Confirmation Method"/>
+                <FieldLabel Key="Medium" Text="确认方式" TextEn="Confirmation Method"/>
+                <FieldLabel Key="Long" Text="确认方式" TextEn="Confirmation Method"/>
+                <FieldLabel Key="Header" Text="确认方式" TextEn="Confirmation Method"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DateType" Caption="时间类型(多选)" DomainKey="CheckListBox_DateType" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="时间类型" TextEn="Time Type"/>
+                <FieldLabel Key="Medium" Text="时间类型" TextEn="Time Type"/>
+                <FieldLabel Key="Long" Text="时间类型" TextEn="Time Type"/>
+                <FieldLabel Key="Header" Text="时间类型" TextEn="Time Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DeductionNotes" Caption="扣款数据" DomainKey="CheckListBox_DeductionNotes" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="扣款数据" TextEn="Deduction Data"/>
+                <FieldLabel Key="Medium" Text="扣款数据" TextEn="Deduction Data"/>
+                <FieldLabel Key="Long" Text="扣款数据" TextEn="Deduction Data"/>
+                <FieldLabel Key="Header" Text="扣款数据" TextEn="Deduction Data"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DependencyBill" Caption="依赖信息类型" DomainKey="CheckListBox_DependencyBill" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="依赖信息类型" TextEn="Dependency Information Type"/>
+                <FieldLabel Key="Medium" Text="依赖信息类型" TextEn="Dependency Information Type"/>
+                <FieldLabel Key="Long" Text="依赖信息类型" TextEn="Dependency Information Type"/>
+                <FieldLabel Key="Header" Text="依赖信息类型" TextEn="Dependency Information Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="HR_DependencyField" Caption="依赖字段" DomainKey="CheckListBox_DependencyField" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="依赖字段" TextEn="Dependent Field"/>
+                <FieldLabel Key="Medium" Text="依赖字段" TextEn="Dependent Field"/>
+                <FieldLabel Key="Long" Text="依赖字段" TextEn="Dependent Field"/>
+                <FieldLabel Key="Header" Text="依赖字段" TextEn="Dependent Field"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="FunctionButton" Caption="操作功能" DomainKey="CheckListBox_FunctionButton" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="操作功能" TextEn="Operation Function"/>
+                <FieldLabel Key="Medium" Text="操作功能" TextEn="Operation Function"/>
+                <FieldLabel Key="Long" Text="操作功能" TextEn="Operation Function"/>
+                <FieldLabel Key="Header" Text="操作功能" TextEn="Operation Function"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="IndexGroup" Caption="指标分组" DomainKey="CheckListBox_IndexGroup" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="指标分组" TextEn="Indicator Grouping"/>
+                <FieldLabel Key="Medium" Text="指标分组" TextEn="Indicator Grouping"/>
+                <FieldLabel Key="Long" Text="指标分组" TextEn="Indicator Grouping"/>
+                <FieldLabel Key="Header" Text="指标分组" TextEn="Indicator Grouping"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="IndexType" Caption="指标类型(多选)" DomainKey="CheckListBox_IndexType" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="指标类型" TextEn="Indicator Type"/>
+                <FieldLabel Key="Medium" Text="指标类型" TextEn="Indicator Type"/>
+                <FieldLabel Key="Long" Text="指标类型" TextEn="Indicator Type"/>
+                <FieldLabel Key="Header" Text="指标类型" TextEn="Indicator Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="NecessaryAccessProcessList" Caption="必须准入环节" DomainKey="CheckListBox_NecessaryAccessProcessList" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="必须准入环节" TextEn="Required Approval Step"/>
+                <FieldLabel Key="Medium" Text="必须准入环节" TextEn="Required Approval Step"/>
+                <FieldLabel Key="Long" Text="必须准入环节" TextEn="Required Approval Step"/>
+                <FieldLabel Key="Header" Text="必须准入环节" TextEn="Required Approval Step"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PeakMonth" Caption="旺季月份" DomainKey="CheckListBox_PeakMonth" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="旺季月份" TextEn="Peak Season Months"/>
+                <FieldLabel Key="Medium" Text="旺季月份" TextEn="Peak Season Months"/>
+                <FieldLabel Key="Long" Text="旺季月份" TextEn="Peak Season Months"/>
+                <FieldLabel Key="Header" Text="旺季月份" TextEn="Peak Season Months"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PrimaryFieldKey" Caption="主键字段" DomainKey="CheckListBox_PrimaryFieldKey" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="主键字段" TextEn="Primary Key Field"/>
+                <FieldLabel Key="Medium" Text="主键字段" TextEn="Primary Key Field"/>
+                <FieldLabel Key="Long" Text="主键字段" TextEn="Primary Key Field"/>
+                <FieldLabel Key="Header" Text="主键字段" TextEn="Primary Key Field"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ReportInitiator" Caption="报文发起方" DomainKey="CheckListBox_ReportInitiator" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="报文发起方" TextEn="Message Initiator"/>
+                <FieldLabel Key="Medium" Text="报文发起方" TextEn="Message Initiator"/>
+                <FieldLabel Key="Long" Text="报文发起方" TextEn="Message Initiator"/>
+                <FieldLabel Key="Header" Text="报文发起方" TextEn="Message Initiator"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="RowConfig" Caption="列配置" DomainKey="CheckListBox_RowConfig" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="列配置" TextEn="Column Configuration"/>
+                <FieldLabel Key="Medium" Text="列配置" TextEn="Column Configuration"/>
+                <FieldLabel Key="Long" Text="列配置" TextEn="Column Configuration"/>
+                <FieldLabel Key="Header" Text="列配置" TextEn="Column Configuration"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="SurchargeNotes" Caption="附加费用数据" DomainKey="CheckListBox_SurchargeNotes" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="附加费用数据" TextEn="Additional Expense Data"/>
+                <FieldLabel Key="Medium" Text="附加费用数据" TextEn="Additional Expense Data"/>
+                <FieldLabel Key="Long" Text="附加费用数据" TextEn="Additional Expense Data"/>
+                <FieldLabel Key="Header" Text="附加费用数据" TextEn="Additional Expense Data"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_VoucherStatus" Caption="凭证状态" DomainKey="CheckListBox_VoucherStatus" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="凭证状态" TextEn="Document Status"/>
+                <FieldLabel Key="Medium" Text="凭证状态" TextEn="Document Status"/>
+                <FieldLabel Key="Long" Text="凭证状态" TextEn="Document Status"/>
+                <FieldLabel Key="Header" Text="凭证状态" TextEn="Document Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Anadic" Caption="分析点" DomainKey="CheckListBox_Anadic" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="分析点" TextEn="Analysis Point"/>
+                <FieldLabel Key="Medium" Text="分析点" TextEn="Analysis Point"/>
+                <FieldLabel Key="Long" Text="分析点" TextEn="Analysis Point"/>
+                <FieldLabel Key="Header" Text="分析点" TextEn="Analysis Point"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_IsBlock" Caption="冻结" DomainKey="CheckListBox_IsBlock" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="冻结" TextEn="Block"/>
+                <FieldLabel Key="Medium" Text="冻结" TextEn="Block"/>
+                <FieldLabel Key="Long" Text="冻结" TextEn="Block"/>
+                <FieldLabel Key="Header" Text="冻结" TextEn="Block"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_AssetCardStatus" Caption="资产卡片系统状态" DomainKey="CheckListBox_AssetCardStatus" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="状态" TextEn="Status"/>
+                <FieldLabel Key="Medium" Text="状态" TextEn="Status"/>
+                <FieldLabel Key="Long" Text="状态" TextEn="Status"/>
+                <FieldLabel Key="Header" Text="状态" TextEn="Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_BusinessStatus" Caption="单据状态" DomainKey="CheckListBox_BusinessStatus" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="单据状态" TextEn="Document Status"/>
+                <FieldLabel Key="Medium" Text="单据状态" TextEn="Document Status"/>
+                <FieldLabel Key="Long" Text="单据状态" TextEn="Document Status"/>
+                <FieldLabel Key="Header" Text="单据状态" TextEn="Document Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_ParameterStatus" Caption="参数状态" DomainKey="CheckListBox_ParameterStatus" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="参数状态" TextEn="Parameter Status"/>
+                <FieldLabel Key="Medium" Text="参数状态" TextEn="Parameter Status"/>
+                <FieldLabel Key="Long" Text="参数状态" TextEn="Parameter Status"/>
+                <FieldLabel Key="Header" Text="参数状态" TextEn="Parameter Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="UDSituation" Caption="使用决策情况" DomainKey="CheckListBox_UDSituation" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="使用决策情况" TextEn="Usage Decision Situation"/>
+                <FieldLabel Key="Medium" Text="使用决策情况" TextEn="Usage Decision Situation"/>
+                <FieldLabel Key="Long" Text="使用决策情况" TextEn="Usage Decision Situation"/>
+                <FieldLabel Key="Header" Text="使用决策情况" TextEn="Usage Decision Situation"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="QM_TaskStatus" Caption="任务状态" DomainKey="CheckListBox_TaskStatus" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="任务状态" TextEn="Task Status"/>
+                <FieldLabel Key="Medium" Text="任务状态" TextEn="Task Status"/>
+                <FieldLabel Key="Long" Text="任务状态" TextEn="Task Status"/>
+                <FieldLabel Key="Header" Text="任务状态" TextEn="Task Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PostingSituation" Caption="过账情况" DomainKey="CheckListBox_PostingSituation" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="过账情况" TextEn="Posting Status"/>
+                <FieldLabel Key="Medium" Text="过账情况" TextEn="Posting Status"/>
+                <FieldLabel Key="Long" Text="过账情况" TextEn="Posting Status"/>
+                <FieldLabel Key="Header" Text="过账情况" TextEn="Posting Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="QM_Status" Caption="状态" DomainKey="CheckListBox_Status" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="状态" TextEn="Status"/>
+                <FieldLabel Key="Medium" Text="状态" TextEn="Status"/>
+                <FieldLabel Key="Long" Text="状态" TextEn="Status"/>
+                <FieldLabel Key="Header" Text="状态" TextEn="Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_UDValuationCode" Caption="评估代码" DomainKey="CheckListBox_UDValuationCode" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="评估代码" TextEn="Valuation Code"/>
+                <FieldLabel Key="Medium" Text="评估代码" TextEn="Valuation Code"/>
+                <FieldLabel Key="Long" Text="评估代码" TextEn="Valuation Code"/>
+                <FieldLabel Key="Header" Text="评估代码" TextEn="Valuation Code"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Show" Caption="显示" DomainKey="CheckListBox_Show" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="显示" TextEn="Display"/>
+                <FieldLabel Key="Medium" Text="显示" TextEn="Display"/>
+                <FieldLabel Key="Long" Text="显示" TextEn="Display"/>
+                <FieldLabel Key="Header" Text="显示" TextEn="Display"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="InspectionTypeActive" Caption="活动的" DomainKey="CheckListBox_InspectionTypeActive" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="活动的" TextEn="Activity"/>
+                <FieldLabel Key="Medium" Text="活动的" TextEn="Activity"/>
+                <FieldLabel Key="Long" Text="活动的" TextEn="Activity"/>
+                <FieldLabel Key="Header" Text="活动的" TextEn="Activity"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_InspectionPoint" Caption="检验点" DomainKey="CheckListBox_InspectionPoint" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="检验点" TextEn="Inspection Point"/>
+                <FieldLabel Key="Medium" Text="检验点" TextEn="Inspection Point"/>
+                <FieldLabel Key="Long" Text="检验点" TextEn="Inspection Point"/>
+                <FieldLabel Key="Header" Text="检验点" TextEn="Inspection Point"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_ResultRecordType" Caption="记录结果类型" DomainKey="CheckListBox_ResultRecordType" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="记录结果类型" TextEn="Record Result Type"/>
+                <FieldLabel Key="Medium" Text="记录结果类型" TextEn="Record Result Type"/>
+                <FieldLabel Key="Long" Text="记录结果类型" TextEn="Record Result Type"/>
+                <FieldLabel Key="Header" Text="记录结果类型" TextEn="Record Result Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DefectsRecordType" Caption="缺陷记录类型" DomainKey="CheckListBox_DefectsRecordType" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="缺陷记录类型" TextEn="Defect Record Type"/>
+                <FieldLabel Key="Medium" Text="缺陷记录类型" TextEn="Defect Record Type"/>
+                <FieldLabel Key="Long" Text="缺陷记录类型" TextEn="Defect Record Type"/>
+                <FieldLabel Key="Header" Text="缺陷记录类型" TextEn="Defect Record Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_SampleCategory" Caption="样本类别" DomainKey="CheckListBox_SampleCategory" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="实际采样种类" TextEn="Actual Sampling Type"/>
+                <FieldLabel Key="Medium" Text="实际采样种类" TextEn="Actual Sampling Type"/>
+                <FieldLabel Key="Long" Text="实际采样种类" TextEn="Actual Sampling Type"/>
+                <FieldLabel Key="Header" Text="实际采样种类" TextEn="Actual Sampling Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="QM_BusinessStatus" Caption="状态" DomainKey="CheckListBox_QMBusinessStatus" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="状态" TextEn="Status"/>
+                <FieldLabel Key="Medium" Text="状态" TextEn="Status"/>
+                <FieldLabel Key="Long" Text="状态" TextEn="Status"/>
+                <FieldLabel Key="Header" Text="状态" TextEn="Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_PostStatus" Caption="发票状态" DomainKey="CheckListBox_PostStatus" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="发票状态" TextEn="Invoice Status"/>
+                <FieldLabel Key="Medium" Text="发票状态" TextEn="Invoice Status"/>
+                <FieldLabel Key="Long" Text="发票状态" TextEn="Invoice Status"/>
+                <FieldLabel Key="Header" Text="发票状态" TextEn="Invoice Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_IsResetSuggestion" Caption="复位建议" DomainKey="CheckListBox_CheckBox">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="复位建议" TextEn="Reset Suggestion"/>
+                <FieldLabel Key="Medium" Text="复位建议" TextEn="Reset Suggestion"/>
+                <FieldLabel Key="Long" Text="复位建议" TextEn="Reset Suggestion"/>
+                <FieldLabel Key="Header" Text="复位建议" TextEn="Reset Suggestion"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_IsMPSIdentification" Caption="MPS标识" DomainKey="CheckListBox_CheckBox">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="MPS标识" TextEn="MPS Identifier"/>
+                <FieldLabel Key="Medium" Text="MPS标识" TextEn="MPS Identifier"/>
+                <FieldLabel Key="Long" Text="MPS标识" TextEn="MPS Identifier"/>
+                <FieldLabel Key="Header" Text="MPS标识" TextEn="MPS Identifier"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_IsFullChangePlan" Caption="净更改计划" DomainKey="CheckListBox_CheckBox">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="净更改计划" TextEn="Net Change Plan"/>
+                <FieldLabel Key="Medium" Text="净更改计划" TextEn="Net Change Plan"/>
+                <FieldLabel Key="Long" Text="净更改计划" TextEn="Net Change Plan"/>
+                <FieldLabel Key="Header" Text="净更改计划" TextEn="Net Change Plan"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_IsNetChangePlan" Caption="期间内的净改变计划" DomainKey="CheckListBox_CheckBox">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="期间内的净改变计划" TextEn="Net Change Plan in Period"/>
+                <FieldLabel Key="Medium" Text="期间内的净改变计划" TextEn="Net Change Plan in Period"/>
+                <FieldLabel Key="Long" Text="期间内的净改变计划" TextEn="Net Change Plan in Period"/>
+                <FieldLabel Key="Header" Text="期间内的净改变计划" TextEn="Net Change Plan in Period"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DataElementProcessPhase_CheckListBox" Caption="数据元素处理情况" DomainKey="CheckListBox_DataElementProcessPhase">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="数据元素处理情况" TextEn="Data Element Processing Status"/>
+                <FieldLabel Key="Medium" Text="数据元素处理情况" TextEn="Data Element Processing Status"/>
+                <FieldLabel Key="Long" Text="数据元素处理情况" TextEn="Data Element Processing Status"/>
+                <FieldLabel Key="Header" Text="数据元素处理情况" TextEn="Data Element Processing Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DataElementMatchSituation_CheckListBox" Caption="匹配情况" DomainKey="CheckListBox_DataElementMatchSituation">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="匹配情况" TextEn="Matching Status"/>
+                <FieldLabel Key="Medium" Text="匹配情况" TextEn="Matching Status"/>
+                <FieldLabel Key="Long" Text="匹配情况" TextEn="Matching Status"/>
+                <FieldLabel Key="Header" Text="匹配情况" TextEn="Matching Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_InspectionStep" Caption="考察步骤" DomainKey="CheckListBox_InspectionStep" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="考察步骤" TextEn="Inspection Step"/>
+                <FieldLabel Key="Medium" Text="考察步骤" TextEn="Inspection Step"/>
+                <FieldLabel Key="Long" Text="考察步骤" TextEn="Inspection Step"/>
+                <FieldLabel Key="Header" Text="考察步骤" TextEn="Inspection Step"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_InspectionReason" Caption="考察原因" DomainKey="CheckListBox_InspectionReason" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="考察原因" TextEn="Inspection Reason"/>
+                <FieldLabel Key="Medium" Text="考察原因" TextEn="Inspection Reason"/>
+                <FieldLabel Key="Long" Text="考察原因" TextEn="Inspection Reason"/>
+                <FieldLabel Key="Header" Text="考察原因" TextEn="Inspection Reason"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_InspectionReason2" Caption="考察原因2" DomainKey="CheckListBox_InspectionReason2" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="考察原因" TextEn="Inspection Reason"/>
+                <FieldLabel Key="Medium" Text="考察原因" TextEn="Inspection Reason"/>
+                <FieldLabel Key="Long" Text="考察原因" TextEn="Inspection Reason"/>
+                <FieldLabel Key="Header" Text="考察原因" TextEn="Inspection Reason"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_IsInvoicing" Caption="对账/开票" DomainKey="CheckListBox_IsInvoicing" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="对账/开票" TextEn="Reconciliation/Billing"/>
+                <FieldLabel Key="Medium" Text="对账/开票" TextEn="Reconciliation/Billing"/>
+                <FieldLabel Key="Long" Text="对账/开票" TextEn="Reconciliation/Billing"/>
+                <FieldLabel Key="Header" Text="对账/开票" TextEn="Reconciliation/Billing"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_ReplenishStatus" Caption="补料状态" DomainKey="CheckListBox_ReplenishStatus" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="补料状态" TextEn="Replenishment Status"/>
+                <FieldLabel Key="Medium" Text="补料状态" TextEn="Replenishment Status"/>
+                <FieldLabel Key="Long" Text="补料状态" TextEn="Replenishment Status"/>
+                <FieldLabel Key="Header" Text="补料状态" TextEn="Replenishment Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_ResultSendStatus" Caption="评估结果发送状态" DomainKey="CheckListBox_ResultSendStatus" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="评估结果发送状态" TextEn="Valuation Result Send Status"/>
+                <FieldLabel Key="Medium" Text="评估结果发送状态" TextEn="Valuation Result Send Status"/>
+                <FieldLabel Key="Long" Text="评估结果发送状态" TextEn="Valuation Result Send Status"/>
+                <FieldLabel Key="Header" Text="评估结果发送状态" TextEn="Valuation Result Send Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_DocumentStatus" Caption="绩效评估状态" DomainKey="CheckListBox_DocumentStatus" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="绩效评估状态" TextEn="Performance Evaluation Status"/>
+                <FieldLabel Key="Medium" Text="绩效评估状态" TextEn="Performance Evaluation Status"/>
+                <FieldLabel Key="Long" Text="绩效评估状态" TextEn="Performance Evaluation Status"/>
+                <FieldLabel Key="Header" Text="绩效评估状态" TextEn="Performance Evaluation Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_ApprovalStatus" Caption="审批状态" DomainKey="CheckListBox_ApprovalStatus" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="审批状态" TextEn="Approval Status"/>
+                <FieldLabel Key="Medium" Text="审批状态" TextEn="Approval Status"/>
+                <FieldLabel Key="Long" Text="审批状态" TextEn="Approval Status"/>
+                <FieldLabel Key="Header" Text="审批状态" TextEn="Approval Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_DutyPerson" Caption="责任方" DomainKey="CheckListBox_DutyPerson" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="责任方" TextEn="Responsible Party"/>
+                <FieldLabel Key="Medium" Text="责任方" TextEn="Responsible Party"/>
+                <FieldLabel Key="Long" Text="责任方" TextEn="Responsible Party"/>
+                <FieldLabel Key="Header" Text="责任方" TextEn="Responsible Party"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_SupplyDtlStatus" Caption="订单行状态" DomainKey="CheckListBox_SupplyDtlStatus" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="订单行状态" TextEn="Order Line Status"/>
+                <FieldLabel Key="Medium" Text="订单行状态" TextEn="Order Line Status"/>
+                <FieldLabel Key="Long" Text="订单行状态" TextEn="Order Line Status"/>
+                <FieldLabel Key="Header" Text="订单行状态" TextEn="Order Line Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_AccessStrategyStatus" Caption="准入策略状态" DomainKey="CheckListBox_AccessStrategyStatus" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="准入策略状态" TextEn="Approval Policy Status"/>
+                <FieldLabel Key="Medium" Text="准入策略状态" TextEn="Approval Policy Status"/>
+                <FieldLabel Key="Long" Text="准入策略状态" TextEn="Approval Policy Status"/>
+                <FieldLabel Key="Header" Text="准入策略状态" TextEn="Approval Policy Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_DistributionMode" Caption="配送方式" DomainKey="CheckListBox_DistributionMode" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="配送方式" TextEn="Delivery Method"/>
+                <FieldLabel Key="Medium" Text="配送方式" TextEn="Delivery Method"/>
+                <FieldLabel Key="Long" Text="配送方式" TextEn="Delivery Method"/>
+                <FieldLabel Key="Header" Text="配送方式" TextEn="Delivery Method"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_DispatchStatus" Caption="发货单据状态" DomainKey="CheckListBox_DispatchStatus" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="单据状态" TextEn="Document Status"/>
+                <FieldLabel Key="Medium" Text="单据状态" TextEn="Document Status"/>
+                <FieldLabel Key="Long" Text="单据状态" TextEn="Document Status"/>
+                <FieldLabel Key="Header" Text="单据状态" TextEn="Document Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_MaterialView" Caption="维护视图" DomainKey="CheckListBox_MaterialView">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="维护视图" TextEn="Maintain View"/>
+                <FieldLabel Key="Medium" Text="维护视图" TextEn="Maintain View"/>
+                <FieldLabel Key="Long" Text="维护视图" TextEn="Maintain View"/>
+                <FieldLabel Key="Header" Text="维护视图" TextEn="Maintain View"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="MessageType_CheckListBox" Caption="信息类型" DomainKey="MessageType_CheckListBox">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="信息类别" TextEn="Information Category"/>
+                <FieldLabel Key="Medium" Text="信息类别" TextEn="Information Category"/>
+                <FieldLabel Key="Long" Text="信息类别" TextEn="Information Category"/>
+                <FieldLabel Key="Header" Text="信息类别" TextEn="Information Category"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_InspectionStatus" Caption="现场考察单据状态" DomainKey="CheckListBox_InspectionStatus" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="单据状态" TextEn="Document Status"/>
+                <FieldLabel Key="Medium" Text="单据状态" TextEn="Document Status"/>
+                <FieldLabel Key="Long" Text="单据状态" TextEn="Document Status"/>
+                <FieldLabel Key="Header" Text="单据状态" TextEn="Document Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_QuotaStatus" Caption="指标状态" DomainKey="CheckListBox_QuotaStatus" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="指标状态" TextEn="Indicator Status"/>
+                <FieldLabel Key="Medium" Text="指标状态" TextEn="Indicator Status"/>
+                <FieldLabel Key="Long" Text="指标状态" TextEn="Indicator Status"/>
+                <FieldLabel Key="Header" Text="指标状态" TextEn="Indicator Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_QuotaType" Caption="指标类型" DomainKey="CheckListBox_QuotaType" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="指标类型" TextEn="Indicator Type"/>
+                <FieldLabel Key="Medium" Text="指标类型" TextEn="Indicator Type"/>
+                <FieldLabel Key="Long" Text="指标类型" TextEn="Indicator Type"/>
+                <FieldLabel Key="Header" Text="指标类型" TextEn="Indicator Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_ScoringMode" Caption="打分方式" DomainKey="CheckListBox_ScoringMode" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="打分方式" TextEn="Scoring Method"/>
+                <FieldLabel Key="Medium" Text="打分方式" TextEn="Scoring Method"/>
+                <FieldLabel Key="Long" Text="打分方式" TextEn="Scoring Method"/>
+                <FieldLabel Key="Header" Text="打分方式" TextEn="Scoring Method"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_SupplyStatus" Caption="打分方式" DomainKey="CheckListBox_SupplyStatus" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="订单状态" TextEn="Order Status"/>
+                <FieldLabel Key="Medium" Text="订单状态" TextEn="Order Status"/>
+                <FieldLabel Key="Long" Text="订单状态" TextEn="Order Status"/>
+                <FieldLabel Key="Header" Text="订单状态" TextEn="Order Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_SRMDocumentStatus" Caption="单据状态" DomainKey="CheckListBox_SRMDocumentStatus" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="单据状态" TextEn="Document Status"/>
+                <FieldLabel Key="Medium" Text="单据状态" TextEn="Document Status"/>
+                <FieldLabel Key="Long" Text="单据状态" TextEn="Document Status"/>
+                <FieldLabel Key="Header" Text="单据状态" TextEn="Document Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_CreateMethod" Caption="创建方式" DomainKey="CheckListBox_CreateMethod" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="创建方式" TextEn="Creation Method"/>
+                <FieldLabel Key="Medium" Text="创建方式" TextEn="Creation Method"/>
+                <FieldLabel Key="Long" Text="创建方式" TextEn="Creation Method"/>
+                <FieldLabel Key="Header" Text="创建方式" TextEn="Creation Method"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_InspectionPlanStatus" Caption="考察计划状态" DomainKey="CheckListBox_InspectionPlanStatus" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="单据状态" TextEn="Document Status"/>
+                <FieldLabel Key="Medium" Text="单据状态" TextEn="Document Status"/>
+                <FieldLabel Key="Long" Text="单据状态" TextEn="Document Status"/>
+                <FieldLabel Key="Header" Text="单据状态" TextEn="Document Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_InspectionPlanCycle" Caption="考察计划周期" DomainKey="CheckListBox_InspectionPlanCycle" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="考察计划周期" TextEn="Inspection Plan Cycle"/>
+                <FieldLabel Key="Medium" Text="考察计划周期" TextEn="Inspection Plan Cycle"/>
+                <FieldLabel Key="Long" Text="考察计划周期" TextEn="Inspection Plan Cycle"/>
+                <FieldLabel Key="Header" Text="考察计划周期" TextEn="Inspection Plan Cycle"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_QuotaStatusPara" Caption="指标状态参数组" DomainKey="CheckListBox_QuotaStatusPara" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="指标状态" TextEn="Indicator Status"/>
+                <FieldLabel Key="Medium" Text="指标状态" TextEn="Indicator Status"/>
+                <FieldLabel Key="Long" Text="指标状态" TextEn="Indicator Status"/>
+                <FieldLabel Key="Header" Text="指标状态" TextEn="Indicator Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ProcessKeyMulti" Caption="流程对象" DomainKey="CheckListBox_ProcessKeyMulti">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="流程对象" TextEn="Process Object"/>
+                <FieldLabel Key="Medium" Text="流程对象" TextEn="Process Object"/>
+                <FieldLabel Key="Long" Text="流程对象" TextEn="Process Object"/>
+                <FieldLabel Key="Header" Text="流程对象" TextEn="Process Object"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_ReturnItem" Caption="退货行项目" DomainKey="CheckListBox_ReturnItem" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="退货行项目" TextEn="Returned Item"/>
+                <FieldLabel Key="Medium" Text="退货行项目" TextEn="Returned Item"/>
+                <FieldLabel Key="Long" Text="退货行项目" TextEn="Returned Item"/>
+                <FieldLabel Key="Header" Text="退货行项目" TextEn="Returned Item"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_MaterialView2" Caption="更新视图" DomainKey="CheckListBox_MaterialView2" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="更新视图" TextEn="Update View"/>
+                <FieldLabel Key="Medium" Text="更新视图" TextEn="Update View"/>
+                <FieldLabel Key="Long" Text="更新视图" TextEn="Update View"/>
+                <FieldLabel Key="Header" Text="更新视图" TextEn="Update View"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_POBillStatus" Caption="处理情况" DomainKey="CheckListBox_POBillStatus" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="处理情况" TextEn="Processing Status"/>
+                <FieldLabel Key="Medium" Text="处理情况" TextEn="Processing Status"/>
+                <FieldLabel Key="Long" Text="处理情况" TextEn="Processing Status"/>
+                <FieldLabel Key="Header" Text="处理情况" TextEn="Processing Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ExistPurchaseRequisition" Caption="存在采购申请" DomainKey="ExistPurchaseRequisition" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="存在采购申请" TextEn="Existing Purchase Request"/>
+                <FieldLabel Key="Medium" Text="存在采购申请" TextEn="Existing Purchase Request"/>
+                <FieldLabel Key="Long" Text="存在采购申请" TextEn="Existing Purchase Request"/>
+                <FieldLabel Key="Header" Text="存在采购申请" TextEn="Existing Purchase Request"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_Overdue" Caption="逾期情况" DomainKey="CheckListBox_Overdue" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="逾期情况" TextEn="Overdue Status"/>
+                <FieldLabel Key="Medium" Text="逾期情况" TextEn="Overdue Status"/>
+                <FieldLabel Key="Long" Text="逾期情况" TextEn="Overdue Status"/>
+                <FieldLabel Key="Header" Text="逾期情况" TextEn="Overdue Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="StatisticalDimension" Caption="统计维度" DomainKey="StatisticalDimension" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="统计维度" TextEn="Statistical Dimension"/>
+                <FieldLabel Key="Medium" Text="统计维度" TextEn="Statistical Dimension"/>
+                <FieldLabel Key="Long" Text="统计维度" TextEn="Statistical Dimension"/>
+                <FieldLabel Key="Header" Text="统计维度" TextEn="Statistical Dimension"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_ShowCol" Caption="显示列" DomainKey="CheckListBox_ShowCol" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="显示列" TextEn="Display Column"/>
+                <FieldLabel Key="Medium" Text="显示列" TextEn="Display Column"/>
+                <FieldLabel Key="Long" Text="显示列" TextEn="Display Column"/>
+                <FieldLabel Key="Header" Text="显示列" TextEn="Display Column"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_ShowView" Caption="显示视图" DomainKey="CheckListBox_ShowView" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="显示视图" TextEn="Display View"/>
+                <FieldLabel Key="Medium" Text="显示视图" TextEn="Display View"/>
+                <FieldLabel Key="Long" Text="显示视图" TextEn="Display View"/>
+                <FieldLabel Key="Header" Text="显示视图" TextEn="Display View"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_BatchManagement" Caption="批次管理" DomainKey="CheckListBox_BatchManagement" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="批次管理" TextEn="Batch Management"/>
+                <FieldLabel Key="Medium" Text="批次管理" TextEn="Batch Management"/>
+                <FieldLabel Key="Long" Text="批次管理" TextEn="Batch Management"/>
+                <FieldLabel Key="Header" Text="批次管理" TextEn="Batch Management"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_ShowView2" Caption="显示视图" DomainKey="CheckListBox_ShowView2" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="显示视图" TextEn="Display View"/>
+                <FieldLabel Key="Medium" Text="显示视图" TextEn="Display View"/>
+                <FieldLabel Key="Long" Text="显示视图" TextEn="Display View"/>
+                <FieldLabel Key="Header" Text="显示视图" TextEn="Display View"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_StatusPara" Caption="状态" DomainKey="CheckListBox_StatusPara" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="状态" TextEn="Status"/>
+                <FieldLabel Key="Medium" Text="状态" TextEn="Status"/>
+                <FieldLabel Key="Long" Text="状态" TextEn="Status"/>
+                <FieldLabel Key="Header" Text="状态" TextEn="Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_InfoTypeGroup" Caption="信息类别" DomainKey="CheckListBox_InfoTypeGroup" DataDiffLog="true">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="信息类别" TextEn="Information Category"/>
+                <FieldLabel Key="Medium" Text="信息类别" TextEn="Information Category"/>
+                <FieldLabel Key="Long" Text="信息类别" TextEn="Information Category"/>
+                <FieldLabel Key="Header" Text="信息类别" TextEn="Information Category"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_PhysDocument" Caption="库存盘点单状态" DomainKey="CheckListBox_PhysDocument">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="库存盘点单状态" TextEn="Stock Count Slip Status"/>
+                <FieldLabel Key="Medium" Text="库存盘点单状态" TextEn="Stock Count Slip Status"/>
+                <FieldLabel Key="Long" Text="库存盘点单状态" TextEn="Stock Count Slip Status"/>
+                <FieldLabel Key="Header" Text="库存盘点单状态" TextEn="Stock Count Slip Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_PhysItems" Caption="库存盘点项状态" DomainKey="CheckListBox_PhysItems">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="库存盘点项状态" TextEn="Stock Count Item Status"/>
+                <FieldLabel Key="Medium" Text="库存盘点项状态" TextEn="Stock Count Item Status"/>
+                <FieldLabel Key="Long" Text="库存盘点项状态" TextEn="Stock Count Item Status"/>
+                <FieldLabel Key="Header" Text="库存盘点项状态" TextEn="Stock Count Item Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_PlantCondition" Caption="工厂层条件" DomainKey="CheckListBox_PlantCondition">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="工厂层条件" TextEn="Plant Level Condition"/>
+                <FieldLabel Key="Medium" Text="工厂层条件" TextEn="Plant Level Condition"/>
+                <FieldLabel Key="Long" Text="工厂层条件" TextEn="Plant Level Condition"/>
+                <FieldLabel Key="Header" Text="工厂层条件" TextEn="Plant Level Condition"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Complete" Caption="完工" DomainKey="CheckListBox_Head_Complete">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="完工" TextEn="Finish"/>
+                <FieldLabel Key="Medium" Text="完工" TextEn="Finish"/>
+                <FieldLabel Key="Long" Text="完工" TextEn="Finish"/>
+                <FieldLabel Key="Header" Text="完工" TextEn="Finish"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_BusinessType" Caption="业务类型" DomainKey="CheckListBox_BusinessType">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="业务类型" TextEn="Business Type"/>
+                <FieldLabel Key="Medium" Text="业务类型" TextEn="Business Type"/>
+                <FieldLabel Key="Long" Text="业务类型" TextEn="Business Type"/>
+                <FieldLabel Key="Header" Text="业务类型" TextEn="Business Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_CheckDataDefault" Caption="对账数据默认" DomainKey="CheckListBox_CheckDataDefault">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="对账数据默认" TextEn="Reconciliation Data Default"/>
+                <FieldLabel Key="Medium" Text="对账数据默认" TextEn="Reconciliation Data Default"/>
+                <FieldLabel Key="Long" Text="对账数据默认" TextEn="Reconciliation Data Default"/>
+                <FieldLabel Key="Header" Text="对账数据默认" TextEn="Reconciliation Data Default"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_ContractType" Caption="合同类型" DomainKey="CheckListBox_ContractType">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="合同类型" TextEn="Contract Type"/>
+                <FieldLabel Key="Medium" Text="合同类型" TextEn="Contract Type"/>
+                <FieldLabel Key="Long" Text="合同类型" TextEn="Contract Type"/>
+                <FieldLabel Key="Header" Text="合同类型" TextEn="Contract Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_StatisticalDimension" Caption="统计维度" DomainKey="CheckListBox_StatisticalDimension">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="统计维度" TextEn="Statistical Dimension"/>
+                <FieldLabel Key="Medium" Text="统计维度" TextEn="Statistical Dimension"/>
+                <FieldLabel Key="Long" Text="统计维度" TextEn="Statistical Dimension"/>
+                <FieldLabel Key="Header" Text="统计维度" TextEn="Statistical Dimension"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_Head_ShowCol" Caption="显示列" DomainKey="CheckListBox_Head_ShowCol">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="显示列" TextEn="Display Column"/>
+                <FieldLabel Key="Medium" Text="显示列" TextEn="Display Column"/>
+                <FieldLabel Key="Long" Text="显示列" TextEn="Display Column"/>
+                <FieldLabel Key="Header" Text="显示列" TextEn="Display Column"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_SignForDataDefault" Caption="签收数据默认" DomainKey="CheckListBox_SignForDataDefault">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="签收数据默认" TextEn="Received Data Default"/>
+                <FieldLabel Key="Medium" Text="签收数据默认" TextEn="Received Data Default"/>
+                <FieldLabel Key="Long" Text="签收数据默认" TextEn="Received Data Default"/>
+                <FieldLabel Key="Header" Text="签收数据默认" TextEn="Received Data Default"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_Head_StatisticalDimension" Caption="统计维度" DomainKey="CheckListBox_Head_StatisticalDimension">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="统计维度" TextEn="Statistical Dimension"/>
+                <FieldLabel Key="Medium" Text="统计维度" TextEn="Statistical Dimension"/>
+                <FieldLabel Key="Long" Text="统计维度" TextEn="Statistical Dimension"/>
+                <FieldLabel Key="Header" Text="统计维度" TextEn="Statistical Dimension"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_VisitNature" Caption="拜访性质(可多选)" DomainKey="CheckListBox_VisitNature">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="拜访性质(可多选)" TextEn="Visit Property (Multiple)"/>
+                <FieldLabel Key="Medium" Text="拜访性质(可多选)" TextEn="Visit Property (Multiple)"/>
+                <FieldLabel Key="Long" Text="拜访性质(可多选)" TextEn="Visit Property (Multiple)"/>
+                <FieldLabel Key="Header" Text="拜访性质(可多选)" TextEn="Visit Property (Multiple)"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_PurType" Caption="采购类型" DomainKey="CheckListBox_PurType">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="采购类型" TextEn="Purchase Type"/>
+                <FieldLabel Key="Medium" Text="采购类型" TextEn="Purchase Type"/>
+                <FieldLabel Key="Long" Text="采购类型" TextEn="Purchase Type"/>
+                <FieldLabel Key="Header" Text="采购类型" TextEn="Purchase Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="ConfirmFlag" Caption="固定" DomainKey="CheckListBox_ConfirmFlag">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="固定" TextEn="Fixed"/>
+                <FieldLabel Key="Medium" Text="固定" TextEn="Fixed"/>
+                <FieldLabel Key="Long" Text="固定" TextEn="Fixed"/>
+                <FieldLabel Key="Header" Text="固定" TextEn="Fixed"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_SpecialGain" Caption="特殊获取" DomainKey="CheckListBox_SpecialGainType">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="特殊获取" TextEn="Special Acquisition"/>
+                <FieldLabel Key="Medium" Text="特殊获取" TextEn="Special Acquisition"/>
+                <FieldLabel Key="Long" Text="特殊获取" TextEn="Special Acquisition"/>
+                <FieldLabel Key="Header" Text="特殊获取" TextEn="Special Acquisition"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="DifferenceDisplay" Caption="差异" DomainKey="CheckListBox_DifferenceDisplay">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="差异" TextEn="Difference"/>
+                <FieldLabel Key="Medium" Text="差异" TextEn="Difference"/>
+                <FieldLabel Key="Long" Text="差异" TextEn="Difference"/>
+                <FieldLabel Key="Header" Text="差异" TextEn="Difference"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_Difference" Caption="差异" DomainKey="CheckListBox_Difference">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="差异" TextEn="Difference"/>
+                <FieldLabel Key="Medium" Text="差异" TextEn="Difference"/>
+                <FieldLabel Key="Long" Text="差异" TextEn="Difference"/>
+                <FieldLabel Key="Header" Text="差异" TextEn="Difference"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_TransactionHandle" Caption="业务处理" DomainKey="CheckListBox_TransactionHandle">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="业务处理" TextEn="Business Process"/>
+                <FieldLabel Key="Medium" Text="业务处理" TextEn="Business Process"/>
+                <FieldLabel Key="Long" Text="业务处理" TextEn="Business Process"/>
+                <FieldLabel Key="Header" Text="业务处理" TextEn="Business Process"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_RT_ConfirmType" Caption="确认类型" DomainKey="CheckListBox_RT_ConfirmType">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="确认方式" TextEn="Confirmation Method"/>
+                <FieldLabel Key="Medium" Text="确认方式" TextEn="Confirmation Method"/>
+                <FieldLabel Key="Long" Text="确认方式" TextEn="Confirmation Method"/>
+                <FieldLabel Key="Header" Text="确认方式" TextEn="Confirmation Method"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_ProcessStatus" Caption="工序状态" DomainKey="CheckListBox_ProcessStatus">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="工序状态" TextEn="Operation Status"/>
+                <FieldLabel Key="Medium" Text="工序状态" TextEn="Operation Status"/>
+                <FieldLabel Key="Long" Text="工序状态" TextEn="Operation Status"/>
+                <FieldLabel Key="Header" Text="工序状态" TextEn="Operation Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="PlanMode" Caption="计划" DomainKey="CheckListBox_PlanMode">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="计划" TextEn="Plan"/>
+                <FieldLabel Key="Medium" Text="计划" TextEn="Plan"/>
+                <FieldLabel Key="Long" Text="计划" TextEn="Plan"/>
+                <FieldLabel Key="Header" Text="计划" TextEn="Plan"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="Requisite" Caption="领料情况" DomainKey="CheckListBox_Requisite">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="领料情况" TextEn="Material Issue Status"/>
+                <FieldLabel Key="Medium" Text="领料情况" TextEn="Material Issue Status"/>
+                <FieldLabel Key="Long" Text="领料情况" TextEn="Material Issue Status"/>
+                <FieldLabel Key="Header" Text="领料情况" TextEn="Material Issue Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_StockType" Caption="库存状态" DomainKey="CheckListBox_StockType">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="库存类型" TextEn="Stock Type"/>
+                <FieldLabel Key="Medium" Text="库存类型" TextEn="Stock Type"/>
+                <FieldLabel Key="Long" Text="库存类型" TextEn="Stock Type"/>
+                <FieldLabel Key="Header" Text="库存类型" TextEn="Stock Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_SpecialIdentity" Caption="特殊库存" DomainKey="CheckListBox_SpecialIdentity">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="特殊库存标识" TextEn="Special Stock Identifier"/>
+                <FieldLabel Key="Medium" Text="特殊库存标识" TextEn="Special Stock Identifier"/>
+                <FieldLabel Key="Long" Text="特殊库存标识" TextEn="Special Stock Identifier"/>
+                <FieldLabel Key="Header" Text="特殊库存标识" TextEn="Special Stock Identifier"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_SpecialIdentity_Formula" Caption="特殊库存" DomainKey="CheckListBox_SpecialIdentity_Formula">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="特殊库存" TextEn="Special Stock"/>
+                <FieldLabel Key="Medium" Text="特殊库存" TextEn="Special Stock"/>
+                <FieldLabel Key="Long" Text="特殊库存" TextEn="Special Stock"/>
+                <FieldLabel Key="Header" Text="特殊库存" TextEn="Special Stock"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_RoutingListType" Caption="任务清单类型" DomainKey="CheckListBox_RoutingListType">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="任务清单类型" TextEn="Task List Type"/>
+                <FieldLabel Key="Medium" Text="任务清单类型" TextEn="Task List Type"/>
+                <FieldLabel Key="Long" Text="任务清单类型" TextEn="Task List Type"/>
+                <FieldLabel Key="Header" Text="任务清单类型" TextEn="Task List Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_DocumentType" Caption="单据类型" DomainKey="CheckListBox_DocumentType">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="单据类型" TextEn="Document Type"/>
+                <FieldLabel Key="Medium" Text="单据类型" TextEn="Document Type"/>
+                <FieldLabel Key="Long" Text="单据类型" TextEn="Document Type"/>
+                <FieldLabel Key="Header" Text="单据类型" TextEn="Document Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_ReceiptStatus" Caption="回单状态" DomainKey="CheckListBox_ReceiptStatus">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="回单状态" TextEn="Slip Status"/>
+                <FieldLabel Key="Medium" Text="回单状态" TextEn="Slip Status"/>
+                <FieldLabel Key="Long" Text="回单状态" TextEn="Slip Status"/>
+                <FieldLabel Key="Header" Text="回单状态" TextEn="Slip Status"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_PP_StatisticalDimension" Caption="统计维度_PP" DomainKey="CheckListBox_PP_StatisticalDimension">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="统计维度" TextEn="Statistical Dimension"/>
+                <FieldLabel Key="Medium" Text="统计维度" TextEn="Statistical Dimension"/>
+                <FieldLabel Key="Long" Text="统计维度" TextEn="Statistical Dimension"/>
+                <FieldLabel Key="Header" Text="统计维度" TextEn="Statistical Dimension"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_PP_ShowCol" Caption="显示列_PP" DomainKey="CheckListBox_PP_ShowCol">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="显示列" TextEn="Display Column"/>
+                <FieldLabel Key="Medium" Text="显示列" TextEn="Display Column"/>
+                <FieldLabel Key="Long" Text="显示列" TextEn="Display Column"/>
+                <FieldLabel Key="Header" Text="显示列" TextEn="Display Column"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_MessageType" Caption="信息类型" DomainKey="CheckListBox_MessageType">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="信息类型" TextEn="Information Type"/>
+                <FieldLabel Key="Medium" Text="信息类型" TextEn="Information Type"/>
+                <FieldLabel Key="Long" Text="信息类型" TextEn="Information Type"/>
+                <FieldLabel Key="Header" Text="信息类型" TextEn="Information Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_RecordType" Caption="记录类型" DomainKey="CheckListBox_RecordType">
+            <FieldLabelCollection>
+                <FieldLabel Key="Short" Text="值类型" TextEn="Value Type"/>
+                <FieldLabel Key="Medium" Text="值类型" TextEn="Value Type"/>
+                <FieldLabel Key="Long" Text="值类型" TextEn="Value Type"/>
+                <FieldLabel Key="Header" Text="值类型" TextEn="Value Type"/>
+            </FieldLabelCollection>
+        </DataElement>
+        <DataElement Key="CheckListBox_DerivationStrategyType" Caption="派生策略类型" DomainKey="CheckListBox_DerivationStrategyType" DataDiffLog="true"/>
+    </DataElementCollection>
+</DataElementDef>

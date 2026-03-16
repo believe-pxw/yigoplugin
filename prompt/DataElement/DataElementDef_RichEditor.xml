@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DataElementDef>
+        <DataElementCollection>
+            <DataElement Key="RichEditor_Text" Caption="RichEditor_Text" DomainKey="RichEditor_Text" DataDiffLog="true"/>
+            <DataElement Key="MsgLongText" Caption="消息长文本" DomainKey="RichEditor_Text"/>
+        </DataElementCollection>
+</DataElementDef>

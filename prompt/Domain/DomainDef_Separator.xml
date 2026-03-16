@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DomainDef>
+        <DomainCollection>
+            <Domain Key="Separator_Text" Caption="分隔线_文本" RefControlType="Separator" DataType="Text"/>
+            <Domain Key="Separator_Varchar" Caption="分隔线_Varchar" RefControlType="Separator" DataType="Varchar"/>
+        </DomainCollection>
+</DomainDef>

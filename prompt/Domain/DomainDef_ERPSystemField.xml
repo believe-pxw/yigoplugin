@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DomainDef>
+        <DomainCollection>
+            <Domain Key="Client" Caption="集团" RefControlType="Dict" DataType="Long" ItemKey="Client"/>
+            <Domain Key="Client_Multi" Caption="集团(多选)" RefControlType="Dict" DataType="Varchar" ItemKey="Client" AllowMultiSelection="true"/>
+            <Domain Key="Notes_1000" Caption="备注(长度1000)" RefControlType="TextEditor" DataType="Varchar" Length="1000"/>
+            <Domain Key="Notes_2000" Caption="备注(长度2000)" RefControlType="TextEditor" DataType="Varchar" Length="2000"/>
+            <Domain Key="Notes_255" Caption="备注(长度255)" RefControlType="TextEditor" DataType="Varchar"/>
+            <Domain Key="SystemVestKey_50" Caption="单据Key" RefControlType="TextEditor" DataType="Varchar" Length="50"/>
+            <Domain Key="DocumentNumber_50" Caption="单据编号" RefControlType="TextEditor" DataType="Varchar" Length="50"/>
+            <Domain Key="DocumentNumber_100" Caption="单据编号(长度100)" RefControlType="TextEditor" DataType="Varchar" Length="100"/>
+            <Domain Key="ItemNumber" Caption="行项目号" RefControlType="NumberEditor" DataType="Integer"/>
+            <Domain Key="DocumentDate" Caption="凭证日期" RefControlType="UTCDatePicker" DataType="Long"/>
+            <Domain Key="PostingDate" Caption="过账日期" RefControlType="UTCDatePicker" DataType="Long"/>
+            <Domain Key="FiscalYear" Caption="会计期年度" RefControlType="NumberEditor" DataType="Integer"/>
+            <Domain Key="FiscalPeriod" Caption="会计期月份" RefControlType="NumberEditor" DataType="Integer"/>
+            <Domain Key="FiscalYearPeriod" Caption="会计期年月" RefControlType="NumberEditor" DataType="Integer"/>
+            <Domain Key="SequenceValue" Caption="流水号" RefControlType="NumberEditor" DataType="Integer"/>
+            <Domain Key="ResetPattern_50" Caption="流水号模式" RefControlType="TextEditor" DataType="Varchar" Length="50"/>
+            <Domain Key="SrcFormKey_50" Caption="来源单据" RefControlType="TextEditor" DataType="Varchar" Length="50"/>
+            <Domain Key="UseCode_30" Caption="UseCode(长度30)" RefControlType="TextEditor" DataType="Varchar" Length="30"/>
+            <Domain Key="UseCode_50" Caption="UseCode(长度50)" RefControlType="TextEditor" DataType="Varchar" Length="50"/>
+            <Domain Key="UseCode_100" Caption="UseCode(长度100)" RefControlType="TextEditor" DataType="Varchar" Length="100"/>
+
+            <Domain Key="FormKey_50" Caption="单据Key" RefControlType="TextEditor" DataType="Varchar" Length="50"/>
+			<Domain Key="FieldKey_50" Caption="字段Key" RefControlType="TextEditor" DataType="Varchar" Length="50"/>
+			<Domain Key="DataObjectKey_50" Caption="数据对象Key" RefControlType="TextEditor" DataType="Varchar" Length="50"/>
+			<Domain Key="ItemKey_50" Caption="字典Key" RefControlType="TextEditor" DataType="Varchar" Length="50"/>
+			<Domain Key="TableKey_50" Caption="TableKey(非持久化)" RefControlType="TextEditor" DataType="Varchar" Length="50"/>
+			<Domain Key="TableKey_30" Caption="TableKey(持久化)" RefControlType="TextEditor" DataType="Varchar" Length="30"/>
+			<Domain Key="ColumnKey_30" Caption="数据列Key" RefControlType="TextEditor" DataType="Varchar" Length="30"/>
+			<Domain Key="GridKey_100" Caption="表格Key" RefControlType="TextEditor" DataType="Varchar" Length="100"/>
+			<Domain Key="TabKey_100" Caption="组件Tab的Key" RefControlType="TextEditor" DataType="Varchar" Length="100"/>
+			<Domain Key="PanelKey_100" Caption="组件(Grid、Tab之外)的Key" RefControlType="TextEditor" DataType="Varchar" Length="100"/>
+
+            <Domain Key="FormKey" Caption="单据Key(下拉框)" RefControlType="ComboBox" DataType="Varchar" Length="50" SourceType="Formula"/>
+            <Domain Key="FormKey_100_Combox" Caption="单据Key(下拉框)" RefControlType="ComboBox" DataType="Varchar" Length="100" SourceType="Formula"/>
+            <Domain Key="FieldKey" Caption="字段Key(下拉框)" RefControlType="ComboBox" DataType="Varchar" Length="50" SourceType="Formula"/>
+            <Domain Key="DataObjectKey" Caption="数据对象Key(下拉框)" RefControlType="ComboBox" DataType="Varchar" Length="50" SourceType="Formula"/>
+            <Domain Key="ItemKey" Caption="字典Key(下拉框)" RefControlType="ComboBox" DataType="Varchar" Length="50" SourceType="Formula"/>
+            <Domain Key="TableKey" Caption="TableKey(下拉框)(持久化)" RefControlType="ComboBox" DataType="Varchar" Length="30" SourceType="Formula"/>
+            <Domain Key="TableKey_50_ComboBox" Caption="TableKey_50(下拉框)(非持久化)" RefControlType="ComboBox" DataType="Varchar" Length="50" SourceType="Formula"/>
+            <Domain Key="ColumnKey" Caption="数据列Key(下拉框)" RefControlType="ComboBox" DataType="Varchar" Length="30" SourceType="Formula"/>
+            <Domain Key="GridKey" Caption="表格Key(下拉框)" RefControlType="ComboBox" DataType="Varchar" Length="100" SourceType="Formula"/>
+            <Domain Key="TabKey" Caption="组件Tab的Key(下拉框)" RefControlType="ComboBox" DataType="Varchar" Length="100" SourceType="Formula"/>
+            <Domain Key="PanelKey" Caption="组件(Grid、Tab之外)的Key(下拉框)" RefControlType="ComboBox" DataType="Varchar" Length="100" SourceType="Formula"/>
+            <Domain Key="Formula" Caption="公式(下拉框)" RefControlType="ComboBox" DataType="Varchar" Length="50" SourceType="Formula"/>
+
+			<Domain Key="Formula_50" Caption="公式" RefControlType="TextEditor" DataType="Varchar" Length="50"/>
+			<Domain Key="Formula_255" Caption="公式_长度255" RefControlType="TextEditor" DataType="Varchar" Length="255"/>
+			<Domain Key="Formula_500" Caption="公式_长度500" RefControlType="TextEditor" DataType="Varchar" Length="500"/>
+			<Domain Key="Formula_2000" Caption="公式_长度2000" RefControlType="TextEditor" DataType="Varchar" Length="2000"/>
+            <Domain Key="ExternalSystem" Caption="外部系统标识" RefControlType="Dict" DataType="Long" ItemKey="ExternalSystem"/>
+            <Domain Key="ExternalSystemPrimaryKey" Caption="外部系统关键字" RefControlType="TextEditor" DataType="Varchar" Length="100"/>
+        </DomainCollection>
+</DomainDef>

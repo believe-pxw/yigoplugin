@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DomainDef>
+        <DomainCollection>
+            <Domain Key="Button_Varchar_255" Caption="Button_字符串_长度255" RefControlType="Button" DataType="Varchar"/>
+        </DomainCollection>
+</DomainDef>

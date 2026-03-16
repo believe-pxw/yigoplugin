@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<DomainDef>
+        <DomainCollection>
+            <Domain Key="TextButton_Varchar_4" Caption="TextButton_字符串_长度4" RefControlType="TextButton" DataType="Varchar" Length="4"/>
+            <Domain Key="TextButton_Varchar_18" Caption="TextButton_字符串_长度18" RefControlType="TextButton" DataType="Varchar" Length="18"/>
+            <Domain Key="TextButton_Varchar_50" Caption="TextButton_字符串_长度50" RefControlType="TextButton" DataType="Varchar" Length="50"/>
+            <Domain Key="TextButton_Varchar_100" Caption="TextButton_字符串_长度100" RefControlType="TextButton" DataType="Varchar" Length="100"/>
+            <Domain Key="TextButton_Varchar_255" Caption="TextButton_字符串_长度255" RefControlType="TextButton" DataType="Varchar"/>
+            <Domain Key="TextButton_Varchar_500" Caption="TextButton_字符串_长度500" RefControlType="TextButton" DataType="Varchar" Length="500"/>
+            <Domain Key="TextButton_Varchar_999" Caption="TextButton_字符串_长度999" RefControlType="TextButton" DataType="Varchar" Length="999"/>
+            <Domain Key="TextButton_Varchar_2000" Caption="TextButton_字符串_长度2000" RefControlType="TextButton" DataType="Varchar" Length="2000"/>
+        </DomainCollection>
+</DomainDef>
