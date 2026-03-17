@@ -39,6 +39,63 @@ object YigoUtils {
         return null
     }
 
+    fun getTables(startElement: XmlElement): List<XmlTag>? {
+        val result = mutableListOf<XmlTag>()
+        val rootTag = getRootFormTag(startElement) ?: return null
+        val dataSourceTag = findChildTagByName(rootTag, "DataSource") ?: return null
+
+        var dataObjectTag: XmlTag? = null
+        val refKey = dataSourceTag.getAttributeValue("RefObjectKey")
+        if (refKey != null) {
+            val dataObjectDefinition = DataObjectIndex.findDataObjectDefinition(startElement.project, refKey)
+            if (dataObjectDefinition != null) {
+                dataObjectTag = dataObjectDefinition.parent.parent as? XmlTag
+            }
+        } else {
+            dataObjectTag = findChildTagByName(dataSourceTag, "DataObject")
+        }
+
+        if (dataObjectTag == null) return null
+
+        val tableCollectionTag = findChildTagByName(dataObjectTag, "TableCollection") ?: return null
+
+        val tables = tableCollectionTag.findSubTags("Table")
+        for (table in tables) {
+            val keyAttr = table.getAttribute("Key")
+            if (keyAttr != null) {
+                result.add(table)
+            }
+        }
+
+        val embedTableCollection = findChildTagByName(dataObjectTag, "EmbedTableCollection")
+        if (embedTableCollection != null) {
+            val subTags = embedTableCollection.findSubTags("EmbedTable")
+            for (subTag in subTags) {
+                var tableKey = subTag.getAttributeValue("TableKeys")
+                val objectKey = subTag.getAttributeValue("ObjectKey")
+                if (objectKey != null) {
+                    val dataObjectDefinition = DataObjectIndex.findDataObjectDefinition(startElement.project, objectKey)
+                    if (dataObjectDefinition != null) {
+                        val linkedDataObjectTag = dataObjectDefinition.parent.parent as? XmlTag
+                        if (linkedDataObjectTag != null) {
+                            val linkedTableCollection = linkedDataObjectTag.findSubTags("TableCollection").firstOrNull()
+                            if (linkedTableCollection != null) {
+                                val linkedTables = linkedTableCollection.findSubTags("Table")
+                                for (tag in linkedTables) {
+                                    if (tag.getAttributeValue("Key") == tableKey) {
+                                        result.add(tag)
+                                        break
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return result
+    }
+
     fun findTable(startElement: XmlElement, tableKey: String): XmlTag? {
         val rootTag = getRootFormTag(startElement) ?: return null
         val dataSourceTag = findChildTagByName(rootTag, "DataSource") ?: return null

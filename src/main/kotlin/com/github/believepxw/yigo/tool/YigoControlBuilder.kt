@@ -4,6 +4,7 @@ import com.github.believepxw.yigo.util.YigoUtils
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.ComboBox
 import com.intellij.psi.xml.XmlTag
 import com.intellij.ui.ScrollPaneFactory
 import com.intellij.ui.SearchTextField
@@ -86,17 +87,50 @@ class YigoControlBuilder(private val project: Project) {
         }
     }
 
-    val ignoreList = listOf(
-        "VERID",
-        "DVERID",
-        "TLeft",
-        "TRight",
-        "Enable",
-        "ClientID",
-        "Creator",
-        "CreateTime",
-        "Modifier",
-        "ModifyTime"
+    val ignoreList = setOf(
+        "OID"
+        ,"SOID"
+        ,"POID"
+        ,"VERID"
+        ,"DVERID"
+        ,"Status"
+        ,"InstanceID"
+        ,"ClusterID"
+        ,"BillDate"
+        ,"CreateTime"
+        ,"ModifyTime"
+        ,"TransactTime"
+        ,"Creator"
+        ,"Modifier"
+        ,"Checker"
+        ,"CheckerTime"
+        ,"NO"
+        ,"MapKey"
+        ,"SrcOID"
+        ,"SrcSOID"
+        ,"MapCount"
+        ,"Layer"
+        ,"Hidden"
+        ,"Slock"
+        ,"Sequence"
+        ,"Code"
+        ,"Name"
+        ,"ParentID"
+        ,"TLeft"
+        ,"TRight"
+        ,"Enable"
+        ,"NodeType"
+        ,"HVER"
+        ,"HVERM"
+        ,"SVERID"
+        ,"Submitter"
+        ,"Name"
+        ,"UploadOperator"
+        ,"Path"
+        ,"UploadTime"
+        ,"LastModified"
+        ,"CreateDate",
+        "SystemVestKey","SequenceValue","ResetPattern","ExternalSystemID","ExternalSystemPrimaryKey"
     )
 
     private val variableDefinitionTagNames: Set<String> = setOf(
@@ -187,7 +221,7 @@ class YigoControlBuilder(private val project: Project) {
         val panel = JPanel(GridBagLayout())
         panel.border = JBUI.Borders.empty(10)
 
-        val tableKeyField = JTextField(20)
+        val tableKeyCombo = ComboBox<String>()
         val columnKeyField = SearchTextField()
         val errorLabel = JLabel(" ").apply { foreground = Color.RED }
         
@@ -227,12 +261,19 @@ class YigoControlBuilder(private val project: Project) {
         val usedColumns = rootTag?.let { getUsedColumns(it) } ?: emptySet()
         val existingKeys = rootTag?.let { getExistingKeys(it) } ?: emptySet()
 
+        val tables = ApplicationManager.getApplication().runReadAction<List<String>> {
+            YigoUtils.getTables(gridTag)?.mapNotNull { it.getAttributeValue("Key") } ?: emptyList()
+        }
+        tables.forEach { tableKeyCombo.addItem(it) }
+
         val suggestedTableKey = ApplicationManager.getApplication().runReadAction<String?> {
             if (!gridTag.isValid) return@runReadAction null
             if (gridTag.name == "Grid") {
+                tableKeyCombo.isEnabled = false // Disable for Grid
                 val rowCollection = gridTag.findFirstSubTag("GridRowCollection")
                 rowCollection?.findSubTags("GridRow")?.firstOrNull()?.getAttributeValue("TableKey")
             } else {
+                tableKeyCombo.isEnabled = true // Enable for others (like GridLayoutPanel)
                 for (control in gridTag.subTags) {
                     for (subTag in control.subTags) {
                         if (subTag.name == "DataBinding") {
@@ -244,7 +285,7 @@ class YigoControlBuilder(private val project: Project) {
                 null
             }
         }
-        if (suggestedTableKey != null) tableKeyField.text = suggestedTableKey
+        if (suggestedTableKey != null) tableKeyCombo.selectedItem = suggestedTableKey
 
         val c = GridBagConstraints()
         c.fill = GridBagConstraints.HORIZONTAL
@@ -253,7 +294,7 @@ class YigoControlBuilder(private val project: Project) {
         c.gridx = 0; c.gridy = 0; c.weightx = 0.0
         panel.add(JLabel("TableKey:"), c)
         c.gridx = 1; c.weightx = 1.0
-        panel.add(tableKeyField, c)
+        panel.add(tableKeyCombo, c)
 
         c.gridx = 0; c.gridy = 1; c.weightx = 0.0
         panel.add(JLabel("Search:"), c)
@@ -274,7 +315,7 @@ class YigoControlBuilder(private val project: Project) {
 
         val updateList = {
             val filter = columnKeyField.text.lowercase()
-            val currentTableKey = tableKeyField.text.trim()
+            val currentTableKey = tableKeyCombo.selectedItem as? String ?: ""
             
             // Check duplicates in real-time
             val localSelections = allColumns.filter { it.selected }.map { it.customKey }.toSet()
@@ -300,7 +341,7 @@ class YigoControlBuilder(private val project: Project) {
         }
 
         val loadColumns = {
-            val tableKey = tableKeyField.text.trim()
+            val tableKey = tableKeyCombo.selectedItem as? String ?: ""
             if (tableKey.isNotEmpty()) {
                 ApplicationManager.getApplication().runReadAction {
                     val table = YigoUtils.findTable(gridTag, tableKey)
@@ -325,7 +366,7 @@ class YigoControlBuilder(private val project: Project) {
             updateList()
         }
 
-        tableKeyField.addActionListener { loadColumns() }
+        tableKeyCombo.addActionListener { loadColumns() }
 
         columnKeyField.addKeyboardListener(object : KeyAdapter() {
             override fun keyReleased(e: KeyEvent) {
@@ -338,7 +379,7 @@ class YigoControlBuilder(private val project: Project) {
         val btnPanel = JPanel(FlowLayout(FlowLayout.RIGHT))
         val okBtn = JButton("OK")
         okBtn.addActionListener {
-            val tableKey = tableKeyField.text.trim()
+            val tableKey = tableKeyCombo.selectedItem as? String ?: ""
             val selected = allColumns.filter { it.selected }
             val selectedWithDuplicates = selected.filter { it.isDuplicate }
             
