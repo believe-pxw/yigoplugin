@@ -5,6 +5,7 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
+import com.intellij.psi.xml.XmlFile
 import com.intellij.psi.xml.XmlTag
 import com.intellij.ui.ScrollPaneFactory
 import com.intellij.ui.SearchTextField
@@ -12,6 +13,7 @@ import com.intellij.ui.table.JBTable
 import com.intellij.util.ui.JBUI
 import example.index.DataElementIndex
 import example.index.DomainIndex
+import example.index.FormIndex
 import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.KeyAdapter
@@ -130,7 +132,7 @@ class YigoControlBuilder(private val project: Project) {
         ,"UploadTime"
         ,"LastModified"
         ,"CreateDate",
-        "SystemVestKey","SequenceValue","ResetPattern","ExternalSystemID","ExternalSystemPrimaryKey"
+        "SystemVestKey","SequenceValue","ResetPattern","ExternalSystemID","ExternalSystemPrimaryKey","ClientID"
     )
 
     private val variableDefinitionTagNames: Set<String> = setOf(
@@ -144,45 +146,55 @@ class YigoControlBuilder(private val project: Project) {
 
     private fun getUsedColumns(rootTag: XmlTag): Set<Pair<String, String>> {
         val used = mutableSetOf<Pair<String, String>>()
-        fun scan(tag: XmlTag) {
-            if (tag.name in variableDefinitionTagNames) {
-                if (tag.name == "GridCell") {
-                    val columnKey = tag.findFirstSubTag("DataBinding")?.getAttributeValue("ColumnKey") ?: tag.getAttributeValue("Key")
-                    var gridRow = tag.parentTag
-                    while (gridRow != null && gridRow.name != "GridRow") {
-                        gridRow = gridRow.parentTag
-                    }
-                    val tableKey = gridRow?.getAttributeValue("TableKey")
-                    if (columnKey != null && tableKey != null) {
-                        used.add(tableKey to columnKey)
-                    }
-                } else {
-                    val dataBinding = tag.findFirstSubTag("DataBinding")
-                    val tableKey = dataBinding?.getAttributeValue("TableKey")
-                    val columnKey = dataBinding?.getAttributeValue("ColumnKey")
-                    if (tableKey != null && columnKey != null) {
-                        used.add(tableKey to columnKey)
-                    }
+        iterAllFields(rootTag, { tag ->
+            if (tag.name == "GridCell") {
+                val columnKey =
+                    tag.findFirstSubTag("DataBinding")?.getAttributeValue("ColumnKey") ?: tag.getAttributeValue("Key")
+                var gridRow = tag.parentTag
+                while (gridRow != null && gridRow.name != "GridRow") {
+                    gridRow = gridRow.parentTag
+                }
+                val tableKey = gridRow?.getAttributeValue("TableKey")
+                if (columnKey != null && tableKey != null) {
+                    used.add(tableKey to columnKey)
+                }
+            } else {
+                val dataBinding = tag.findFirstSubTag("DataBinding")
+                val tableKey = dataBinding?.getAttributeValue("TableKey")
+                val columnKey = dataBinding?.getAttributeValue("ColumnKey")
+                if (tableKey != null && columnKey != null) {
+                    used.add(tableKey to columnKey)
                 }
             }
+        })
+        return used
+    }
+
+    fun iterAllFields(rootTag: XmlTag, callback: (XmlTag) -> Unit) {
+        fun iter(tag: XmlTag) {
+            if (tag.name in variableDefinitionTagNames) {
+                callback(tag)
+            }
             for (subTag in tag.subTags) {
-                scan(subTag)
+                iter(subTag)
+            }
+            if (tag.name == "Embed") {
+                val formKey = tag.getAttributeValue("FormKey")
+                val defAttr = FormIndex.findFormDefinition(project, formKey)
+                if (defAttr != null) {
+                    (defAttr.containingFile as XmlFile).rootTag?.let { iter(it) }
+                }
             }
         }
-        scan(rootTag)
-        return used
+        iter(rootTag)
     }
 
     private fun getExistingKeys(rootTag: XmlTag): Set<String> {
         val keys = mutableSetOf<String>()
-        fun scan(tag: XmlTag) {
-            if (tag.name in variableDefinitionTagNames) {
-                val key = tag.getAttributeValue("Key")
-                if (key != null) keys.add(key)
-            }
-            for (subTag in tag.subTags) scan(subTag)
-        }
-        scan(rootTag)
+        iterAllFields(rootTag,{ tag ->
+            val key = tag.getAttributeValue("Key")
+            if (key != null) keys.add(key)
+        })
         return keys
     }
 
