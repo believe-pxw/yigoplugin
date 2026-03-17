@@ -1278,6 +1278,12 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
                 YigoControlBuilder(project).showAddControlDialog(addControlItem, tag, x, y, component)
             }
             menu.add(addControlItem)
+
+            val addByDEItem = JMenuItem("Add by DataElementKey...")
+            addByDEItem.addActionListener {
+                YigoControlBuilder(project).showAddByDEDialog(addByDEItem, tag, x, y, component)
+            }
+            menu.add(addByDEItem)
             menu.addSeparator()
 
             val itemRow = JMenuItem("Go to RowDefCollection")
@@ -1299,6 +1305,12 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
                 YigoControlBuilder(project).showAddGridColumnDialog(addColumnItem, tag, afterColumnKey)
             }
             menu.add(addColumnItem)
+
+            val addByDEItem = JMenuItem("Add by DataElementKey...")
+            addByDEItem.addActionListener {
+                YigoControlBuilder(project).showAddByDEDialog(addByDEItem, tag, afterColumnKey = afterColumnKey)
+            }
+            menu.add(addByDEItem)
             menu.addSeparator()
         }
 

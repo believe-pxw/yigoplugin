@@ -16,6 +16,7 @@ import example.index.DomainIndex
 import example.index.FormIndex
 import java.awt.*
 import java.awt.event.ActionEvent
+import java.awt.datatransfer.DataFlavor
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
 import javax.swing.*
@@ -24,6 +25,7 @@ import javax.swing.table.AbstractTableModel
 class YigoControlBuilder(private val project: Project) {
 
     data class ColumnSelection(val key: String, val caption: String, var customKey: String, var selected: Boolean = false, var isDuplicate: Boolean = false)
+    data class DEColumnSelection(var deKey: String = "", var columnKey: String = "", var fieldKey: String = "", var deExists: Boolean = true, var columnDuplicate: Boolean = false, var fieldDuplicate: Boolean = false)
 
     private class ColumnTableModel(var data: List<ColumnSelection>) : AbstractTableModel() {
         private val columnNames = arrayOf("Selected", "Key", "Caption", "Custom Key")
@@ -63,6 +65,45 @@ class YigoControlBuilder(private val project: Project) {
         }
     }
 
+    private class DEColumnTableModel(var data: MutableList<DEColumnSelection>) : AbstractTableModel() {
+        private val columnNames = arrayOf("DataElementKey", "ColumnKey", "FieldKey")
+
+        override fun getRowCount(): Int = data.size
+        override fun getColumnCount(): Int = columnNames.size
+        override fun getColumnName(column: Int): String = columnNames[column]
+        override fun isCellEditable(rowIndex: Int, columnIndex: Int): Boolean = true
+
+        override fun getValueAt(rowIndex: Int, columnIndex: Int): Any? {
+            val item = data[rowIndex]
+            return when (columnIndex) {
+                0 -> item.deKey
+                1 -> item.columnKey
+                2 -> item.fieldKey
+                else -> null
+            }
+        }
+
+        override fun setValueAt(aValue: Any?, rowIndex: Int, columnIndex: Int) {
+            val item = data[rowIndex]
+            val value = (aValue as? String ?: "").trim()
+            when (columnIndex) {
+                0 -> {
+                    item.deKey = value
+                    if (item.columnKey.isEmpty()) item.columnKey = value
+                    if (item.fieldKey.isEmpty()) item.fieldKey = value
+                }
+                1 -> item.columnKey = value
+                2 -> item.fieldKey = value
+            }
+            fireTableRowsUpdated(rowIndex, rowIndex)
+            // Add a new row if we just edited the last one
+            if (rowIndex == data.size - 1 && item.deKey.isNotEmpty()) {
+                data.add(DEColumnSelection())
+                fireTableRowsInserted(data.size - 1, data.size - 1)
+            }
+        }
+    }
+
     fun showAddControlDialog(
         parent: Component,
         gridTag: XmlTag,
@@ -88,6 +129,213 @@ class YigoControlBuilder(private val project: Project) {
                     currentAfter = col.customKey
                 }
             }
+        }
+    }
+
+    fun showAddByDEDialog(
+        parent: Component,
+        gridTag: XmlTag,
+        clickX: Int = 0,
+        clickY: Int = 0,
+        containerComponent: JComponent? = null,
+        afterColumnKey: String? = null
+    ) {
+        val dialog = JDialog(SwingUtilities.getWindowAncestor(parent), "Add by DataElementKey", Dialog.ModalityType.APPLICATION_MODAL)
+        dialog.layout = BorderLayout()
+        dialog.setSize(600, 400)
+
+        val panel = JPanel(GridBagLayout())
+        panel.border = JBUI.Borders.empty(10)
+
+        val tableKeyCombo = ComboBox<String>()
+        val errorLabel = JLabel(" ").apply { foreground = Color.RED }
+
+        val data = MutableList(1) { DEColumnSelection() }
+        val tableModel = DEColumnTableModel(data)
+        val table = JBTable(tableModel)
+        table.preferredScrollableViewportSize = JBUI.size(600, 400)
+        table.rowHeight = 25
+        table.columnModel.getColumn(0).preferredWidth = 250
+        table.columnModel.getColumn(1).preferredWidth = 200
+        table.columnModel.getColumn(2).preferredWidth = 200
+
+        var existingKeys = emptySet<String>()
+
+        // Validation logic
+        val validate = {
+            val tableKey = tableKeyCombo.selectedItem as? String ?: ""
+            ApplicationManager.getApplication().executeOnPooledThread {
+                val results = ApplicationManager.getApplication().runReadAction<Set<String>> {
+                    val root = YigoUtils.getRootFormTag(gridTag)
+                    val keys = root?.let { getExistingKeys(it) } ?: emptySet()
+                    val targetTable = YigoUtils.findTable(gridTag, tableKey)
+                    val tableColumns = targetTable?.findSubTags("Column")?.mapNotNull { it.getAttributeValue("Key") }?.toSet() ?: emptySet()
+
+                    data.filter { it.deKey.isNotEmpty() }.forEach { item ->
+                        item.deExists = DataElementIndex.findDEDefinition(project, item.deKey) != null
+                        item.columnDuplicate = tableColumns.contains(item.columnKey)
+                        item.fieldDuplicate = keys.contains(item.fieldKey)
+                    }
+                    keys
+                }
+                SwingUtilities.invokeLater {
+                    existingKeys = results
+                    table.repaint()
+                    val invalidItems = data.filter { it.deKey.isNotEmpty() }
+                    val errorMsg = StringBuilder()
+                    invalidItems.forEachIndexed { index, item ->
+                        val rowNum = index + 1
+                        if (!item.deExists) errorMsg.append("Row $rowNum: DE '${item.deKey}' not found. ")
+                        if (item.columnDuplicate) errorMsg.append("Row $rowNum: Column '${item.columnKey}' exists in table. ")
+                        if (item.fieldDuplicate) errorMsg.append("Row $rowNum: Field '${item.fieldKey}' exists in form. ")
+                    }
+                    
+                    if (errorMsg.isNotEmpty()) {
+                        errorLabel.text = errorMsg.toString()
+                        errorLabel.toolTipText = errorMsg.toString()
+                    } else {
+                        errorLabel.text = " "
+                    }
+                }
+            }
+        }
+
+        tableModel.addTableModelListener { validate() }
+        tableKeyCombo.addActionListener { validate() }
+
+        // Paste support
+        table.addKeyListener(object : KeyAdapter() {
+            override fun keyPressed(e: KeyEvent) {
+                if (e.isControlDown && e.keyCode == KeyEvent.VK_V) {
+                    val clipboard = Toolkit.getDefaultToolkit().systemClipboard
+                    val content = clipboard.getContents(null)
+                    if (content != null && content.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                        val text = content.getTransferData(DataFlavor.stringFlavor) as String
+                        val lines = text.split("\n", "\r\n")
+                        val startRow = table.selectedRow.coerceAtLeast(0)
+                        val startCol = table.selectedColumn.coerceAtLeast(0)
+
+                        lines.filter { it.isNotBlank() }.forEachIndexed { rIdx, line ->
+                            val targetRow = startRow + rIdx
+                            // Ensure data list is large enough
+                            while (data.size <= targetRow) {
+                                data.add(DEColumnSelection())
+                            }
+                            
+                            val cells = line.split("\t")
+                            cells.forEachIndexed { cIdx, cell ->
+                                val targetCol = startCol + cIdx
+                                if (targetCol < tableModel.columnCount) {
+                                    tableModel.setValueAt(cell.trim(), targetRow, targetCol)
+                                }
+                            }
+                        }
+                        tableModel.fireTableDataChanged()
+                        validate()
+                    }
+                }
+            }
+        })
+
+        // Renderer for highlighting errors
+        table.setDefaultRenderer(java.lang.Object::class.java, object : javax.swing.table.DefaultTableCellRenderer() {
+            override fun getTableCellRendererComponent(t: JTable, value: Any?, isSelected: Boolean, hasFocus: Boolean, row: Int, column: Int): Component {
+                val c = super.getTableCellRendererComponent(t, value, isSelected, hasFocus, row, column)
+                val item = (t.model as DEColumnTableModel).data[row]
+                if (item.deKey.isNotEmpty()) {
+                    val hasError = when (column) {
+                        0 -> !item.deExists
+                        1 -> item.columnDuplicate
+                        2 -> item.fieldDuplicate
+                        else -> false
+                    }
+                    if (hasError) {
+                        c.background = if (isSelected) Color(255, 100, 100) else Color(255, 200, 200)
+                        c.foreground = Color.BLACK
+                    } else {
+                        c.background = if (isSelected) t.selectionBackground else t.background
+                        c.foreground = if (isSelected) t.selectionForeground else t.foreground
+                    }
+                }
+                return c
+            }
+        })
+
+        // Initial table load
+        ApplicationManager.getApplication().executeOnPooledThread {
+            val tables = ApplicationManager.getApplication().runReadAction<List<String>> {
+                YigoUtils.getTables(gridTag)?.mapNotNull { it.getAttributeValue("Key") } ?: emptyList<String>()
+            }
+            SwingUtilities.invokeLater {
+                tables.forEach { tableKeyCombo.addItem(it) }
+                // Use suggesting logic if possible (similar to showCommonAddDialog)
+                // For brevity, skipping for now or let user select.
+            }
+        }
+
+        val c = GridBagConstraints()
+        c.fill = GridBagConstraints.HORIZONTAL; c.insets = JBUI.insets(5)
+        c.gridx = 0; c.gridy = 0; c.weightx = 0.0; panel.add(JLabel("TableKey:"), c)
+        c.gridx = 1; c.weightx = 1.0; panel.add(tableKeyCombo, c)
+        c.gridx = 0; c.gridy = 1; c.gridwidth = 2; c.weighty = 1.0; c.fill = GridBagConstraints.BOTH
+        panel.add(ScrollPaneFactory.createScrollPane(table), c)
+        c.gridy = 2; c.weighty = 0.0; c.fill = GridBagConstraints.HORIZONTAL
+        panel.add(errorLabel, c)
+
+        val btnPanel = JPanel(FlowLayout(FlowLayout.RIGHT))
+        val okBtn = JButton("OK")
+        okBtn.addActionListener {
+            val tableKey = tableKeyCombo.selectedItem as? String ?: ""
+            val items = data.filter { it.deKey.isNotEmpty() }
+            if (tableKey.isEmpty() || items.isEmpty()) {
+                JOptionPane.showMessageDialog(dialog, "Please select a Table and input at least one DataElementKey.")
+                return@addActionListener
+            }
+            if (items.any { !it.deExists || it.fieldDuplicate || it.columnDuplicate }) {
+                JOptionPane.showMessageDialog(dialog, "Please fix errors before proceeding.")
+                return@addActionListener
+            }
+
+            dialog.dispose()
+            WriteCommandAction.runWriteCommandAction(project) {
+                var currentAfter = afterColumnKey
+                items.forEach { item ->
+                    ensureColumnExists(gridTag, tableKey, item.columnKey, item.deKey)
+                    if (gridTag.name == "Grid") {
+                        createGridColumnFromDomain(gridTag, tableKey, item.columnKey, item.fieldKey, currentAfter)
+                        currentAfter = item.fieldKey
+                    } else {
+                        createControlFromDomain(gridTag, tableKey, item.columnKey, item.fieldKey, clickX, clickY, containerComponent)
+                    }
+                }
+            }
+        }
+        // Close on ESC
+        val escapeStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0)
+        val dispatchAction = object : AbstractAction() {
+            override fun actionPerformed(e: ActionEvent?) {
+                dialog.dispose()
+            }
+        }
+        dialog.rootPane.registerKeyboardAction(dispatchAction, escapeStroke, JComponent.WHEN_IN_FOCUSED_WINDOW)
+        btnPanel.add(okBtn)
+        val cancelBtn = JButton("Cancel"); cancelBtn.addActionListener { dialog.dispose() }; btnPanel.add(cancelBtn)
+        
+        dialog.add(panel, BorderLayout.CENTER)
+        dialog.add(btnPanel, BorderLayout.SOUTH)
+        dialog.setLocationRelativeTo(parent); dialog.isVisible = true
+    }
+
+    private fun ensureColumnExists(gridTag: XmlTag, tableKey: String, columnKey: String, deKey: String) {
+        val table = YigoUtils.findTable(gridTag, tableKey) ?: return
+        val existing = table.findSubTags("Column").find { it.getAttributeValue("Key") == columnKey }
+        if (existing == null) {
+            val newCol = table.createChildTag("Column", null, null, false)
+            newCol.setAttribute("Key", columnKey)
+            val deTag = DataElementIndex.findDEDefinition(project, deKey) ?: return@ensureColumnExists
+            newCol.setAttribute("Caption", deTag.getAttributeValue("Caption") ?: deKey)
+            newCol.setAttribute("DataElementKey", deKey)
+            table.addSubTag(newCol, false)
         }
     }
 
