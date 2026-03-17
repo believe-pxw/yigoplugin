@@ -1315,8 +1315,8 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         }
         menu.add(batchDeleteItem)
 
-        if (targetTag != null && targetTag.name != "GridColumn") {
-            val deleteTagItem = JMenuItem("Delete Current Control")
+        if (targetTag != null) {
+            val deleteTagItem = JMenuItem(if (targetTag.name != "GridColumn") "Delete Current Control" else "Delete Current Column")
             deleteTagItem.icon = AllIcons.Actions.GC
             deleteTagItem.addActionListener {
                 deleteHandler.deleteTagsWithCascade(listOf(targetTag))
