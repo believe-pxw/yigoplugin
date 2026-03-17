@@ -1316,19 +1316,34 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         menu.add(batchDeleteItem)
 
         if (targetTag != null) {
-            val deleteTagItem = JMenuItem(if (targetTag.name != "GridColumn") "Delete Current Control" else "Delete Current Column")
+            val label = if (targetTag.name != "GridColumn") "Control" else "Column"
+            val deleteTagItem = JMenuItem("Delete Current $label")
             deleteTagItem.icon = AllIcons.Actions.GC
             deleteTagItem.addActionListener {
-                deleteHandler.deleteTagsWithCascade(listOf(targetTag))
+                deleteHandler.deleteTagsWithCascade(listOf(targetTag), cascade = false)
             }
             menu.add(deleteTagItem)
-        } else if (targetTag == null) {
+            
+            val deleteCascadeItem = JMenuItem("Delete Current $label with Cascade")
+            deleteCascadeItem.icon = AllIcons.Actions.GC
+            deleteCascadeItem.addActionListener {
+                deleteHandler.deleteTagsWithCascade(listOf(targetTag), cascade = true)
+            }
+            menu.add(deleteCascadeItem)
+        } else {
             val deleteItem = JMenuItem("Delete Container")
             deleteItem.icon = AllIcons.Actions.GC
             deleteItem.addActionListener {
-                deleteHandler.deleteTagsWithCascade(listOf(tag))
+                deleteHandler.deleteTagsWithCascade(listOf(tag), cascade = false)
             }
             menu.add(deleteItem)
+            
+            val deleteCascadeItem = JMenuItem("Delete Container with Cascade")
+            deleteCascadeItem.icon = AllIcons.Actions.GC
+            deleteCascadeItem.addActionListener {
+                deleteHandler.deleteTagsWithCascade(listOf(tag), cascade = true)
+            }
+            menu.add(deleteCascadeItem)
         }
 
         menu.show(component, x, y)

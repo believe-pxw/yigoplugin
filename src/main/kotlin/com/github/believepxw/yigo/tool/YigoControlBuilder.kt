@@ -174,6 +174,7 @@ class YigoControlBuilder(private val project: Project) {
         fun iter(tag: XmlTag) {
             if (tag.name in variableDefinitionTagNames) {
                 callback(tag)
+                return
             }
             for (subTag in tag.subTags) {
                 iter(subTag)
@@ -266,71 +267,14 @@ class YigoControlBuilder(private val project: Project) {
 
         var allColumns = listOf<ColumnSelection>()
         var showAll = false
+        var usedColumns = emptySet<Pair<String, String>>()
+        var existingKeys = emptySet<String>()
 
-        val rootTag = ApplicationManager.getApplication().runReadAction<XmlTag?> {
-            YigoUtils.getRootFormTag(gridTag)
-        }
-        val usedColumns = rootTag?.let { getUsedColumns(it) } ?: emptySet()
-        val existingKeys = rootTag?.let { getExistingKeys(it) } ?: emptySet()
-
-        val tables = ApplicationManager.getApplication().runReadAction<List<String>> {
-            YigoUtils.getTables(gridTag)?.mapNotNull { it.getAttributeValue("Key") } ?: emptyList()
-        }
-        tables.forEach { tableKeyCombo.addItem(it) }
-
-        val suggestedTableKey = ApplicationManager.getApplication().runReadAction<String?> {
-            if (!gridTag.isValid) return@runReadAction null
-            if (gridTag.name == "Grid") {
-                tableKeyCombo.isEnabled = false // Disable for Grid
-                val rowCollection = gridTag.findFirstSubTag("GridRowCollection")
-                rowCollection?.findSubTags("GridRow")?.firstOrNull()?.getAttributeValue("TableKey")
-            } else {
-                tableKeyCombo.isEnabled = true // Enable for others (like GridLayoutPanel)
-                for (control in gridTag.subTags) {
-                    for (subTag in control.subTags) {
-                        if (subTag.name == "DataBinding") {
-                            val tableKey = subTag.getAttributeValue("TableKey")
-                            if (tableKey != null) return@runReadAction tableKey
-                        }
-                    }
-                }
-                null
-            }
-        }
-        if (suggestedTableKey != null) tableKeyCombo.selectedItem = suggestedTableKey
-
-        val c = GridBagConstraints()
-        c.fill = GridBagConstraints.HORIZONTAL
-        c.insets = JBUI.insets(5)
-
-        c.gridx = 0; c.gridy = 0; c.weightx = 0.0
-        panel.add(JLabel("TableKey:"), c)
-        c.gridx = 1; c.weightx = 1.0
-        panel.add(tableKeyCombo, c)
-
-        c.gridx = 0; c.gridy = 1; c.weightx = 0.0
-        panel.add(JLabel("Search:"), c)
-        c.gridx = 1; c.weightx = 1.0
-        panel.add(columnKeyField, c)
-
-        val toggleBtn = JCheckBox("Show All Columns", showAll)
-        c.gridx = 1; c.gridy = 2; c.weightx = 1.0
-        panel.add(toggleBtn, c)
-
-        c.gridx = 0; c.gridy = 3; c.gridwidth = 2; c.weighty = 1.0; c.fill = GridBagConstraints.BOTH
-        val scrollPane = ScrollPaneFactory.createScrollPane(columnTable)
-        scrollPane.preferredSize = Dimension(500, 300)
-        panel.add(scrollPane, c)
-
-        c.gridx = 0; c.gridy = 4; c.gridwidth = 2; c.weighty = 0.0; c.fill = GridBagConstraints.HORIZONTAL
-        panel.add(errorLabel, c)
-
-        val updateList = {
+        val updateList: () -> Unit = {
             val filter = columnKeyField.text.lowercase()
             val currentTableKey = tableKeyCombo.selectedItem as? String ?: ""
             
             // Check duplicates in real-time
-            val localSelections = allColumns.filter { it.selected }.map { it.customKey }.toSet()
             allColumns.forEach { col ->
                 col.isDuplicate = existingKeys.contains(col.customKey)
             }
@@ -352,19 +296,121 @@ class YigoControlBuilder(private val project: Project) {
             tableModel.fireTableDataChanged()
         }
 
-        val loadColumns = {
+        val loadColumns: () -> Unit = {
             val tableKey = tableKeyCombo.selectedItem as? String ?: ""
             if (tableKey.isNotEmpty()) {
-                ApplicationManager.getApplication().runReadAction {
-                    val table = YigoUtils.findTable(gridTag, tableKey)
-                    if (table != null) {
-                        allColumns = getAllColumn(table, tableKey, emptySet()).map { 
-                            ColumnSelection(it.first, it.second, it.first) 
+                ApplicationManager.getApplication().executeOnPooledThread {
+                    val result = ApplicationManager.getApplication().runReadAction<List<ColumnSelection>?> {
+                        val table = YigoUtils.findTable(gridTag, tableKey)
+                        table?.let {
+                            getAllColumn(it, tableKey, emptySet()).map {
+                                ColumnSelection(it.first, it.second, it.first)
+                            }
                         }
-                        updateList()
+                    }
+                    SwingUtilities.invokeLater {
+                        if (result != null) {
+                            allColumns = result
+                            updateList()
+                        }
                     }
                 }
             }
+        }
+
+        // Fetch initial data in background
+        ApplicationManager.getApplication().executeOnPooledThread {
+            val initData = ApplicationManager.getApplication().runReadAction<Triple<Set<Pair<String, String>>, Set<String>, Triple<List<String>, String?, Boolean>>> {
+                val root = YigoUtils.getRootFormTag(gridTag)
+                val used = root?.let { getUsedColumns(it) } ?: emptySet()
+                val keys = root?.let { getExistingKeys(it) } ?: emptySet()
+                val availableTables = YigoUtils.getTables(gridTag)?.mapNotNull { it.getAttributeValue("Key") } ?: emptyList()
+                
+                var suggestedKey: String? = null
+                if (gridTag.isValid) {
+                    if (gridTag.name == "Grid") {
+                        val rowCollection = gridTag.findFirstSubTag("GridRowCollection")
+                        suggestedKey = rowCollection?.findSubTags("GridRow")?.firstOrNull()?.getAttributeValue("TableKey")
+                    } else {
+                        for (control in gridTag.subTags) {
+                            for (subTag in control.subTags) {
+                                if (subTag.name == "DataBinding") {
+                                    val tk = subTag.getAttributeValue("TableKey")
+                                    if (tk != null) {
+                                        suggestedKey = tk
+                                        break
+                                    }
+                                }
+                            }
+                            if (suggestedKey != null) break
+                        }
+                    }
+                }
+                
+                Triple(used, keys, Triple(availableTables, suggestedKey, gridTag.name == "Grid"))
+            }
+
+            SwingUtilities.invokeLater {
+                usedColumns = initData.first
+                existingKeys = initData.second
+                val (tableList, suggested, isGrid) = initData.third
+                
+                tableList.forEach { tableKeyCombo.addItem(it) }
+                if (isGrid) {
+                    tableKeyCombo.isEnabled = false
+                }
+                if (suggested != null) {
+                    tableKeyCombo.selectedItem = suggested
+                }
+                
+                loadColumns()
+            }
+        }
+
+        val c = GridBagConstraints()
+        c.fill = GridBagConstraints.HORIZONTAL
+        c.insets = JBUI.insets(5)
+
+        c.gridx = 0; c.gridy = 0; c.weightx = 0.0
+        panel.add(JLabel("TableKey:"), c)
+        c.gridx = 1; c.weightx = 1.0
+        panel.add(tableKeyCombo, c)
+
+        c.gridx = 0; c.gridy = 1; c.weightx = 0.0
+        panel.add(JLabel("Search:"), c)
+        c.gridx = 1; c.weightx = 1.0
+        panel.add(columnKeyField, c)
+
+        val toggleBtn = JCheckBox("Show All", showAll)
+        val selectAllBtn = JButton("Select All").apply {  }
+        val deselectAllBtn = JButton("Deselect All").apply {  }
+        
+        val filterPanel = JPanel(FlowLayout(FlowLayout.LEFT, 5, 0))
+        filterPanel.add(toggleBtn)
+        filterPanel.add(selectAllBtn)
+        filterPanel.add(deselectAllBtn)
+        
+        c.gridx = 1; c.gridy = 2; c.weightx = 1.0
+        panel.add(filterPanel, c)
+
+
+        c.gridx = 0; c.gridy = 3; c.gridwidth = 2; c.weighty = 1.0; c.fill = GridBagConstraints.BOTH
+        val scrollPane = ScrollPaneFactory.createScrollPane(columnTable)
+        scrollPane.preferredSize = Dimension(500, 300)
+        panel.add(scrollPane, c)
+
+        c.gridx = 0; c.gridy = 4; c.gridwidth = 2; c.weighty = 0.0; c.fill = GridBagConstraints.HORIZONTAL
+        panel.add(errorLabel, c)
+
+
+
+        selectAllBtn.addActionListener {
+            tableModel.data.forEach { it.selected = true }
+            updateList()
+        }
+        deselectAllBtn.addActionListener {
+            tableModel.data.forEach { it.selected = false }
+            updateList()
         }
 
         tableModel.addTableModelListener { e ->
@@ -424,7 +470,7 @@ class YigoControlBuilder(private val project: Project) {
 
         dialog.pack()
         dialog.setLocationRelativeTo(parent)
-        loadColumns()
+        // loadColumns() // Called in background finish
 
         SwingUtilities.invokeLater {
             columnKeyField.requestFocusInWindow()
@@ -452,7 +498,7 @@ class YigoControlBuilder(private val project: Project) {
                 val domainTag = DomainIndex.findDomainDefinition(project, domainKey) ?: return@runWriteCommandAction
 
                 val controlType = domainTag.getAttributeValue("RefControlType") ?: "TextEditor"
-                val caption = deTag.getAttributeValue("Caption") ?: columnKey
+                val caption = column.getAttributeValue("Caption") ?: deTag.getAttributeValue("Caption")
 
                 val layout = containerComponent?.layout as? GridBagLayout
                 val targetX = layout?.let {
@@ -490,6 +536,18 @@ class YigoControlBuilder(private val project: Project) {
                 newControl.setAttribute("Caption", caption)
                 newControl.setAttribute("X", targetX.toString())
                 newControl.setAttribute("Y", targetY.toString())
+                val fieldLabelCollection = deTag.findFirstSubTag("FieldLabelCollection")
+                if (fieldLabelCollection != null) {
+                    newControl.setAttribute("LabelType", "M")
+                    for (tag in fieldLabelCollection.subTags) {
+                        // 处理每个 FieldLabel 标签//
+                        val labelType = tag.getAttributeValue("Key")
+                        if (labelType == "Medium") {
+                            newControl.setAttribute("Caption", tag.getAttributeValue("Text"))
+                            break
+                        }
+                    }
+                }
 
                 applyDomainAttributes(newControl, domainTag, controlType)
 
@@ -520,7 +578,7 @@ class YigoControlBuilder(private val project: Project) {
                 val domainTag = DomainIndex.findDomainDefinition(project, domainKey) ?: return@runWriteCommandAction
 
                 val controlType = domainTag.getAttributeValue("RefControlType") ?: "TextEditor"
-                val caption = deTag.getAttributeValue("Caption") ?: columnKey
+                val caption = columnDef.getAttributeValue("Caption") ?: deTag.getAttributeValue("Caption")
 
                 val colCollection = gridTag.findFirstSubTag("GridColumnCollection") ?: gridTag.createChildTag(
                     "GridColumnCollection",
@@ -531,6 +589,20 @@ class YigoControlBuilder(private val project: Project) {
                 val newColumn = colCollection.createChildTag("GridColumn", null, null, false)
                 newColumn.setAttribute("Key", customKey)
                 newColumn.setAttribute("Caption", caption)
+                newColumn.setAttribute("Width", "80px")
+                val fieldLabelCollection = deTag.findFirstSubTag("FieldLabelCollection")
+                if (fieldLabelCollection != null) {
+                    newColumn.setAttribute("LabelType", "M")
+                    for (tag in fieldLabelCollection.subTags) {
+                        // 处理每个 FieldLabel 标签//
+                        val labelType = tag.getAttributeValue("Key")
+                        if (labelType == "Medium") {
+                            newColumn.setAttribute("Caption", tag.getAttributeValue("Text"))
+                            break
+                        }
+                    }
+                }
+
 
                 if (afterColumnKey != null) {
                     val targetCol =
@@ -573,7 +645,7 @@ class YigoControlBuilder(private val project: Project) {
     }
 
     private fun applyDomainAttributes(controlTag: XmlTag, domainTag: XmlTag, controlType: String) {
-        val attrList = listOf("Key", "DataType", "Caption", "RefControlType")
+        val attrList = listOf("Key", "DataType", "Length", "Caption", "RefControlType")
         for (attribute in domainTag.attributes) {
             var name1 = attribute.name
             if (controlType == "TextEditor" && name1 == "Length") {

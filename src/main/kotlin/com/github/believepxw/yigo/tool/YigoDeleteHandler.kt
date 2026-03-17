@@ -15,12 +15,20 @@ class YigoDeleteHandler(private val panel: YigoLayoutPanel) {
 
     fun showLeafDeleteMenu(e: MouseEvent, tag: XmlTag) {
         val menu = JPopupMenu()
-        val deleteItem = JMenuItem("Delete")
-        deleteItem.icon = com.intellij.icons.AllIcons.Actions.GC
-        deleteItem.addActionListener {
-            deleteTagsWithCascade(listOf(tag))
+        val deleteNormal = JMenuItem("Delete")
+        deleteNormal.icon = com.intellij.icons.AllIcons.Actions.GC
+        deleteNormal.addActionListener {
+            deleteTagsWithCascade(listOf(tag), cascade = false)
         }
-        menu.add(deleteItem)
+        
+        val deleteCascade = JMenuItem("Delete with Cascade")
+        deleteCascade.icon = com.intellij.icons.AllIcons.Actions.GC
+        deleteCascade.addActionListener {
+            deleteTagsWithCascade(listOf(tag), cascade = true)
+        }
+        
+        menu.add(deleteNormal)
+        menu.add(deleteCascade)
         menu.show(e.component, e.x, e.y)
     }
 
@@ -90,6 +98,7 @@ class YigoDeleteHandler(private val panel: YigoLayoutPanel) {
         deselectAllBtn.addActionListener {
             for (i in 0 until tableModel.rowCount) tableModel.setValueAt(false, i, 0)
         }
+        val cascadeCheckbox = JCheckBox("Cascade Delete", true)
         val deleteBtn = JButton("Delete Selected")
         deleteBtn.addActionListener {
             val selectedTags = mutableListOf<XmlTag>()
@@ -103,11 +112,12 @@ class YigoDeleteHandler(private val panel: YigoLayoutPanel) {
                 return@addActionListener
             }
             dialog.dispose()
-            deleteTagsWithCascade(selectedTags)
+            deleteTagsWithCascade(selectedTags, cascade = cascadeCheckbox.isSelected)
         }
         val cancelBtn = JButton("Cancel")
         cancelBtn.addActionListener { dialog.dispose() }
 
+        buttonsPanel.add(cascadeCheckbox)
         buttonsPanel.add(selectAllBtn)
         buttonsPanel.add(deselectAllBtn)
         buttonsPanel.add(deleteBtn)
@@ -120,9 +130,9 @@ class YigoDeleteHandler(private val panel: YigoLayoutPanel) {
     }
 
     /**
-     * Cascade-delete the given tags.
+     * Delete the given tags, optionally with cascade.
      */
-    fun deleteTagsWithCascade(tags: List<XmlTag>) {
+    fun deleteTagsWithCascade(tags: List<XmlTag>, cascade: Boolean = true) {
         val allTagsToDelete = mutableListOf<XmlTag>()
         val warningMessages = mutableListOf<String>()
 
@@ -130,7 +140,9 @@ class YigoDeleteHandler(private val panel: YigoLayoutPanel) {
             for (tag in tags) {
                 if (!tag.isValid) continue
                 allTagsToDelete.add(tag)
-                collectCascadeTargets(tag, allTagsToDelete, warningMessages)
+                if (cascade) {
+                    collectCascadeTargets(tag, allTagsToDelete, warningMessages)
+                }
             }
         }
 
