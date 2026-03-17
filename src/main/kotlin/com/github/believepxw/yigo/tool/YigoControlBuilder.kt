@@ -71,20 +71,22 @@ class YigoControlBuilder(private val project: Project) {
         containerComponent: JComponent? = null
     ) {
         showCommonAddDialog(parent, gridTag, "Add Control") { tableKey, selectedColumns ->
-            selectedColumns.forEachIndexed { index, col ->
-                // Offset Y slightly if adding multiple at same position?
-                // Or just stack them. Yigo XML supports overlapping.
-                createControlFromDomain(gridTag, tableKey, col.key, col.customKey, clickX, clickY, containerComponent)
+            WriteCommandAction.runWriteCommandAction(project) {
+                selectedColumns.forEachIndexed { index, col ->
+                    createControlFromDomain(gridTag, tableKey, col.key, col.customKey, clickX, clickY, containerComponent)
+                }
             }
         }
     }
 
     fun showAddGridColumnDialog(parent: Component, gridTag: XmlTag, afterColumnKey: String? = null) {
         showCommonAddDialog(parent, gridTag, "Add Grid Column") { tableKey, selectedColumns ->
-            var currentAfter = afterColumnKey
-            selectedColumns.forEach { col ->
-                createGridColumnFromDomain(gridTag, tableKey, col.key, col.customKey, currentAfter)
-                currentAfter = col.customKey
+            WriteCommandAction.runWriteCommandAction(project) {
+                var currentAfter = afterColumnKey
+                selectedColumns.forEach { col ->
+                    createGridColumnFromDomain(gridTag, tableKey, col.key, col.customKey, currentAfter)
+                    currentAfter = col.customKey
+                }
             }
         }
     }
@@ -489,16 +491,14 @@ class YigoControlBuilder(private val project: Project) {
         clickY: Int,
         containerComponent: JComponent?
     ) {
-        ApplicationManager.getApplication().invokeLater {
-            WriteCommandAction.runWriteCommandAction(project) {
-                val column = YigoUtils.findColumnInTable(gridTag, tableKey, columnKey) ?: return@runWriteCommandAction
-                val deKey = column.getAttributeValue("DataElementKey") ?: return@runWriteCommandAction
-                val deTag = DataElementIndex.findDEDefinition(project, deKey) ?: return@runWriteCommandAction
-                val domainKey = deTag.getAttributeValue("DomainKey") ?: return@runWriteCommandAction
-                val domainTag = DomainIndex.findDomainDefinition(project, domainKey) ?: return@runWriteCommandAction
+        val column = YigoUtils.findColumnInTable(gridTag, tableKey, columnKey) ?: return
+        val deKey = column.getAttributeValue("DataElementKey") ?: return
+        val deTag = DataElementIndex.findDEDefinition(project, deKey) ?: return
+        val domainKey = deTag.getAttributeValue("DomainKey") ?: return
+        val domainTag = DomainIndex.findDomainDefinition(project, domainKey) ?: return
 
-                val controlType = domainTag.getAttributeValue("RefControlType") ?: "TextEditor"
-                val caption = column.getAttributeValue("Caption") ?: deTag.getAttributeValue("Caption")
+        val controlType = domainTag.getAttributeValue("RefControlType") ?: "TextEditor"
+        val caption = column.getAttributeValue("Caption") ?: deTag.getAttributeValue("Caption")
 
                 val layout = containerComponent?.layout as? GridBagLayout
                 val targetX = layout?.let {
@@ -531,34 +531,32 @@ class YigoControlBuilder(private val project: Project) {
                     y
                 } ?: 0
 
-                val newControl = gridTag.createChildTag(controlType, null, null, false)
-                newControl.setAttribute("Key", customKey)
-                newControl.setAttribute("Caption", caption)
-                newControl.setAttribute("X", targetX.toString())
-                newControl.setAttribute("Y", targetY.toString())
-                val fieldLabelCollection = deTag.findFirstSubTag("FieldLabelCollection")
-                if (fieldLabelCollection != null) {
-                    newControl.setAttribute("LabelType", "M")
-                    for (tag in fieldLabelCollection.subTags) {
-                        // 处理每个 FieldLabel 标签//
-                        val labelType = tag.getAttributeValue("Key")
-                        if (labelType == "Medium") {
-                            newControl.setAttribute("Caption", tag.getAttributeValue("Text"))
-                            break
-                        }
-                    }
+        val newControl = gridTag.createChildTag(controlType, null, null, false)
+        newControl.setAttribute("Key", customKey)
+        newControl.setAttribute("Caption", caption)
+        newControl.setAttribute("X", targetX.toString())
+        newControl.setAttribute("Y", targetY.toString())
+        val fieldLabelCollection = deTag.findFirstSubTag("FieldLabelCollection")
+        if (fieldLabelCollection != null) {
+            newControl.setAttribute("LabelType", "M")
+            for (tag in fieldLabelCollection.subTags) {
+                // 处理每个 FieldLabel 标签//
+                val labelType = tag.getAttributeValue("Key")
+                if (labelType == "Medium") {
+                    newControl.setAttribute("Caption", tag.getAttributeValue("Text"))
+                    break
                 }
-
-                applyDomainAttributes(newControl, domainTag, controlType)
-
-                val dataBinding = newControl.createChildTag("DataBinding", null, null, false)
-                dataBinding.setAttribute("TableKey", tableKey)
-                dataBinding.setAttribute("ColumnKey", columnKey)
-                newControl.addSubTag(dataBinding, false)
-
-                gridTag.addSubTag(newControl, false)
             }
         }
+
+        applyDomainAttributes(newControl, domainTag, controlType)
+
+        val dataBinding = newControl.createChildTag("DataBinding", null, null, false)
+        dataBinding.setAttribute("TableKey", tableKey)
+        dataBinding.setAttribute("ColumnKey", columnKey)
+        newControl.addSubTag(dataBinding, false)
+
+        gridTag.addSubTag(newControl, false)
     }
 
     private fun createGridColumnFromDomain(
@@ -568,78 +566,74 @@ class YigoControlBuilder(private val project: Project) {
         customKey: String,
         afterColumnKey: String? = null
     ) {
-        ApplicationManager.getApplication().invokeLater {
-            WriteCommandAction.runWriteCommandAction(project) {
-                val columnDef =
-                    YigoUtils.findColumnInTable(gridTag, tableKey, columnKey) ?: return@runWriteCommandAction
-                val deKey = columnDef.getAttributeValue("DataElementKey") ?: return@runWriteCommandAction
-                val deTag = DataElementIndex.findDEDefinition(project, deKey) ?: return@runWriteCommandAction
-                val domainKey = deTag.getAttributeValue("DomainKey") ?: return@runWriteCommandAction
-                val domainTag = DomainIndex.findDomainDefinition(project, domainKey) ?: return@runWriteCommandAction
+        val columnDef =
+            YigoUtils.findColumnInTable(gridTag, tableKey, columnKey) ?: return
+        val deKey = columnDef.getAttributeValue("DataElementKey") ?: return
+        val deTag = DataElementIndex.findDEDefinition(project, deKey) ?: return
+        val domainKey = deTag.getAttributeValue("DomainKey") ?: return
+        val domainTag = DomainIndex.findDomainDefinition(project, domainKey) ?: return
 
-                val controlType = domainTag.getAttributeValue("RefControlType") ?: "TextEditor"
-                val caption = columnDef.getAttributeValue("Caption") ?: deTag.getAttributeValue("Caption")
+        val controlType = domainTag.getAttributeValue("RefControlType") ?: "TextEditor"
+        val caption = columnDef.getAttributeValue("Caption") ?: deTag.getAttributeValue("Caption")
 
-                val colCollection = gridTag.findFirstSubTag("GridColumnCollection") ?: gridTag.createChildTag(
-                    "GridColumnCollection",
-                    null,
-                    null,
-                    false
-                ).also { gridTag.addSubTag(it, false) }
-                val newColumn = colCollection.createChildTag("GridColumn", null, null, false)
-                newColumn.setAttribute("Key", customKey)
-                newColumn.setAttribute("Caption", caption)
-                newColumn.setAttribute("Width", "80px")
-                val fieldLabelCollection = deTag.findFirstSubTag("FieldLabelCollection")
-                if (fieldLabelCollection != null) {
-                    newColumn.setAttribute("LabelType", "M")
-                    for (tag in fieldLabelCollection.subTags) {
-                        // 处理每个 FieldLabel 标签//
-                        val labelType = tag.getAttributeValue("Key")
-                        if (labelType == "Medium") {
-                            newColumn.setAttribute("Caption", tag.getAttributeValue("Text"))
-                            break
-                        }
-                    }
+        val colCollection = gridTag.findFirstSubTag("GridColumnCollection") ?: gridTag.createChildTag(
+            "GridColumnCollection",
+            null,
+            null,
+            false
+        ).also { gridTag.addSubTag(it, false) }
+        val newColumn = colCollection.createChildTag("GridColumn", null, null, false)
+        newColumn.setAttribute("Key", customKey)
+        newColumn.setAttribute("Caption", caption)
+        newColumn.setAttribute("Width", "80px")
+        val fieldLabelCollection = deTag.findFirstSubTag("FieldLabelCollection")
+        if (fieldLabelCollection != null) {
+            newColumn.setAttribute("LabelType", "M")
+            for (tag in fieldLabelCollection.subTags) {
+                // 处理每个 FieldLabel 标签//
+                val labelType = tag.getAttributeValue("Key")
+                if (labelType == "Medium") {
+                    newColumn.setAttribute("Caption", tag.getAttributeValue("Text"))
+                    break
                 }
+            }
+        }
 
 
-                if (afterColumnKey != null) {
-                    val targetCol =
-                        colCollection.findSubTags("GridColumn").find { it.getAttributeValue("Key") == afterColumnKey }
-                    if (targetCol != null) {
-                        colCollection.addAfter(newColumn, targetCol)
-                    } else {
-                        colCollection.addSubTag(newColumn, false)
-                    }
+        if (afterColumnKey != null) {
+            val targetCol =
+                colCollection.findSubTags("GridColumn").find { it.getAttributeValue("Key") == afterColumnKey }
+            if (targetCol != null) {
+                colCollection.addAfter(newColumn, targetCol)
+            } else {
+                colCollection.addSubTag(newColumn, false)
+            }
+        } else {
+            colCollection.addSubTag(newColumn, false)
+        }
+
+        val rowCollection = gridTag.findFirstSubTag("GridRowCollection")
+        rowCollection?.findSubTags("GridRow")?.forEach { row ->
+            val newCell = row.createChildTag("GridCell", null, null, false)
+            newCell.setAttribute("Key", customKey)
+            newCell.setAttribute("Caption", caption)
+            newCell.setAttribute("CellType", controlType)
+
+            applyDomainAttributes(newCell, domainTag, controlType)
+            
+            val dataBinding = newCell.createChildTag("DataBinding", null, null, false)
+            dataBinding.setAttribute("ColumnKey", columnKey)
+            newCell.addSubTag(dataBinding, false)
+
+            if (afterColumnKey != null) {
+                val targetCell = row.findSubTags("GridCell").find { it.getAttributeValue("Key") == afterColumnKey }
+                if (targetCell != null) {
+                    row.addAfter(newCell, targetCell)
                 } else {
-                    colCollection.addSubTag(newColumn, false)
+                    row.addSubTag(newCell, false)
                 }
-
-                val rowCollection = gridTag.findFirstSubTag("GridRowCollection")
-                rowCollection?.findSubTags("GridRow")?.forEach { row ->
-                    val newCell = row.createChildTag("GridCell", null, null, false)
-                    newCell.setAttribute("Key", customKey)
-                    newCell.setAttribute("Caption", caption)
-                    newCell.setAttribute("CellType", controlType)
-
-                    applyDomainAttributes(newCell, domainTag, controlType)
-                    
-                    val dataBinding = newCell.createChildTag("DataBinding", null, null, false)
-                    dataBinding.setAttribute("ColumnKey", columnKey)
-                    newCell.addSubTag(dataBinding, false)
-
-                    if (afterColumnKey != null) {
-                        val targetCell = row.findSubTags("GridCell").find { it.getAttributeValue("Key") == afterColumnKey }
-                        if (targetCell != null) {
-                            row.addAfter(newCell, targetCell)
-                        } else {
-                            row.addSubTag(newCell, false)
-                        }
-                    } else {
-                        row.addSubTag(newCell, false)
-                    }
-                }
+            } else {
+                row.addSubTag(newCell, false)
             }
         }
     }
