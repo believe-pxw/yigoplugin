@@ -263,13 +263,21 @@ class YigoControlBuilder(private val project: Project) {
 
         // Initial table load
         ApplicationManager.getApplication().executeOnPooledThread {
-            val tables = ApplicationManager.getApplication().runReadAction<List<String>> {
-                YigoUtils.getTables(gridTag)?.mapNotNull { it.getAttributeValue("Key") } ?: emptyList<String>()
+            val initData = ApplicationManager.getApplication().runReadAction<Triple<List<String>, String?, Boolean>> {
+                val availableTables = YigoUtils.getTables(gridTag)?.mapNotNull { it.getAttributeValue("Key") } ?: emptyList()
+                val suggestedKey = getSuggestTableKey(gridTag)
+                Triple(availableTables, suggestedKey, gridTag.name == "Grid")
             }
             SwingUtilities.invokeLater {
-                tables.forEach { tableKeyCombo.addItem(it) }
-                // Use suggesting logic if possible (similar to showCommonAddDialog)
-                // For brevity, skipping for now or let user select.
+                val (tableList, suggested, isGrid) = initData
+                tableList.forEach { tableKeyCombo.addItem(it) }
+                if (isGrid) {
+                    tableKeyCombo.isEnabled = false
+                }
+                if (suggested != null) {
+                    tableKeyCombo.selectedItem = suggested
+                }
+                validate()
             }
         }
 
@@ -477,6 +485,30 @@ class YigoControlBuilder(private val project: Project) {
         return allColumns
     }
 
+    fun getSuggestTableKey(xmlTag: XmlTag): String?{
+        var suggestedKey: String? = null
+        if (xmlTag.isValid) {
+            if (xmlTag.name == "Grid") {
+                val rowCollection = xmlTag.findFirstSubTag("GridRowCollection")
+                suggestedKey = rowCollection?.findSubTags("GridRow")?.firstOrNull()?.getAttributeValue("TableKey")
+            } else {
+                for (control in xmlTag.subTags) {
+                    for (subTag in control.subTags) {
+                        if (subTag.name == "DataBinding") {
+                            val tk = subTag.getAttributeValue("TableKey")
+                            if (tk != null) {
+                                suggestedKey = tk
+                                break
+                            }
+                        }
+                    }
+                    if (suggestedKey != null) break
+                }
+            }
+        }
+        return suggestedKey
+    }
+
     private fun showCommonAddDialog(parent: Component, gridTag: XmlTag, title: String, onOk: (String, List<ColumnSelection>) -> Unit) {
         val dialog = JDialog(SwingUtilities.getWindowAncestor(parent), title, Dialog.ModalityType.APPLICATION_MODAL)
         dialog.layout = BorderLayout()
@@ -584,28 +616,7 @@ class YigoControlBuilder(private val project: Project) {
                 val used = root?.let { getUsedColumns(it) } ?: emptySet()
                 val keys = root?.let { getExistingKeys(it) } ?: emptySet()
                 val availableTables = YigoUtils.getTables(gridTag)?.mapNotNull { it.getAttributeValue("Key") } ?: emptyList()
-                
-                var suggestedKey: String? = null
-                if (gridTag.isValid) {
-                    if (gridTag.name == "Grid") {
-                        val rowCollection = gridTag.findFirstSubTag("GridRowCollection")
-                        suggestedKey = rowCollection?.findSubTags("GridRow")?.firstOrNull()?.getAttributeValue("TableKey")
-                    } else {
-                        for (control in gridTag.subTags) {
-                            for (subTag in control.subTags) {
-                                if (subTag.name == "DataBinding") {
-                                    val tk = subTag.getAttributeValue("TableKey")
-                                    if (tk != null) {
-                                        suggestedKey = tk
-                                        break
-                                    }
-                                }
-                            }
-                            if (suggestedKey != null) break
-                        }
-                    }
-                }
-                
+                val suggestedKey = getSuggestTableKey(gridTag)
                 Triple(used, keys, Triple(availableTables, suggestedKey, gridTag.name == "Grid"))
             }
 
