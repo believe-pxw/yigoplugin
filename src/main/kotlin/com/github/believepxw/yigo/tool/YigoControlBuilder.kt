@@ -5,9 +5,9 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
 import com.intellij.psi.xml.XmlTag
+import com.intellij.ui.ScrollPaneFactory
 import com.intellij.ui.SearchTextField
-import com.intellij.ui.components.JBList
-import com.intellij.ui.components.JBScrollPane
+import com.intellij.ui.table.JBTable
 import com.intellij.util.ui.JBUI
 import example.index.DataElementIndex
 import example.index.DomainIndex
@@ -15,11 +15,50 @@ import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
-import java.awt.event.MouseAdapter
-import java.awt.event.MouseEvent
 import javax.swing.*
+import javax.swing.table.AbstractTableModel
 
 class YigoControlBuilder(private val project: Project) {
+
+    data class ColumnSelection(val key: String, val caption: String, var customKey: String, var selected: Boolean = false, var isDuplicate: Boolean = false)
+
+    private class ColumnTableModel(var data: List<ColumnSelection>) : AbstractTableModel() {
+        private val columnNames = arrayOf("Selected", "Key", "Caption", "Custom Key")
+
+        override fun getRowCount(): Int = data.size
+        override fun getColumnCount(): Int = columnNames.size
+        override fun getColumnName(column: Int): String = columnNames[column]
+        override fun getColumnClass(columnIndex: Int): Class<*> {
+            return when (columnIndex) {
+                0 -> java.lang.Boolean::class.java
+                else -> String::class.java
+            }
+        }
+
+        override fun isCellEditable(rowIndex: Int, columnIndex: Int): Boolean {
+            return columnIndex == 0 || columnIndex == 3
+        }
+
+        override fun getValueAt(rowIndex: Int, columnIndex: Int): Any? {
+            val item = data[rowIndex]
+            return when (columnIndex) {
+                0 -> item.selected
+                1 -> item.key
+                2 -> item.caption
+                3 -> item.customKey
+                else -> null
+            }
+        }
+
+        override fun setValueAt(aValue: Any?, rowIndex: Int, columnIndex: Int) {
+            val item = data[rowIndex]
+            when (columnIndex) {
+                0 -> item.selected = aValue as? Boolean ?: false
+                3 -> item.customKey = aValue as? String ?: ""
+            }
+            fireTableCellUpdated(rowIndex, columnIndex)
+        }
+    }
 
     fun showAddControlDialog(
         parent: Component,
@@ -28,14 +67,22 @@ class YigoControlBuilder(private val project: Project) {
         clickY: Int,
         containerComponent: JComponent? = null
     ) {
-        showCommonAddDialog(parent, gridTag, "Add Control") { tableKey, columnKey ->
-            createControlFromDomain(gridTag, tableKey, columnKey, clickX, clickY, containerComponent)
+        showCommonAddDialog(parent, gridTag, "Add Control") { tableKey, selectedColumns ->
+            selectedColumns.forEachIndexed { index, col ->
+                // Offset Y slightly if adding multiple at same position?
+                // Or just stack them. Yigo XML supports overlapping.
+                createControlFromDomain(gridTag, tableKey, col.key, col.customKey, clickX, clickY, containerComponent)
+            }
         }
     }
 
     fun showAddGridColumnDialog(parent: Component, gridTag: XmlTag, afterColumnKey: String? = null) {
-        showCommonAddDialog(parent, gridTag, "Add Grid Column") { tableKey, columnKey ->
-            createGridColumnFromDomain(gridTag, tableKey, columnKey, afterColumnKey)
+        showCommonAddDialog(parent, gridTag, "Add Grid Column") { tableKey, selectedColumns ->
+            var currentAfter = afterColumnKey
+            selectedColumns.forEach { col ->
+                createGridColumnFromDomain(gridTag, tableKey, col.key, col.customKey, currentAfter)
+                currentAfter = col.customKey
+            }
         }
     }
 
@@ -52,7 +99,60 @@ class YigoControlBuilder(private val project: Project) {
         "ModifyTime"
     )
 
-    fun getAllColumn(table: XmlTag): List<Pair<String, String>> {
+    private val variableDefinitionTagNames: Set<String> = setOf(
+        "Dict", "DynamicDict", "TextEditor", "TextArea", "CheckBox", "ComboBox",
+        "CheckListBox", "DatePicker", "UTCDatePicker", "MonthPicker", "TimePicker",
+        "Button", "NumberEditor", "Label", "TextButton", "RadioButton", "PasswordEditor",
+        "Image", "WebBrowser", "RichEditor", "HyperLink", "Separator", "DropdownButton",
+        "Icon", "Custom", "BPMGraph", "Dynamic", "Carousel", "EditView", "Gantt",
+        "Variable", "VarDef", "GridCell"
+    )
+
+    private fun getUsedColumns(rootTag: XmlTag): Set<Pair<String, String>> {
+        val used = mutableSetOf<Pair<String, String>>()
+        fun scan(tag: XmlTag) {
+            if (tag.name in variableDefinitionTagNames) {
+                if (tag.name == "GridCell") {
+                    val columnKey = tag.findFirstSubTag("DataBinding")?.getAttributeValue("ColumnKey") ?: tag.getAttributeValue("Key")
+                    var gridRow = tag.parentTag
+                    while (gridRow != null && gridRow.name != "GridRow") {
+                        gridRow = gridRow.parentTag
+                    }
+                    val tableKey = gridRow?.getAttributeValue("TableKey")
+                    if (columnKey != null && tableKey != null) {
+                        used.add(tableKey to columnKey)
+                    }
+                } else {
+                    val dataBinding = tag.findFirstSubTag("DataBinding")
+                    val tableKey = dataBinding?.getAttributeValue("TableKey")
+                    val columnKey = dataBinding?.getAttributeValue("ColumnKey")
+                    if (tableKey != null && columnKey != null) {
+                        used.add(tableKey to columnKey)
+                    }
+                }
+            }
+            for (subTag in tag.subTags) {
+                scan(subTag)
+            }
+        }
+        scan(rootTag)
+        return used
+    }
+
+    private fun getExistingKeys(rootTag: XmlTag): Set<String> {
+        val keys = mutableSetOf<String>()
+        fun scan(tag: XmlTag) {
+            if (tag.name in variableDefinitionTagNames) {
+                val key = tag.getAttributeValue("Key")
+                if (key != null) keys.add(key)
+            }
+            for (subTag in tag.subTags) scan(subTag)
+        }
+        scan(rootTag)
+        return keys
+    }
+
+    fun getAllColumn(table: XmlTag, tableKey: String, usedColumns: Set<Pair<String, String>>): List<Pair<String, String>> {
         val codeColumnKey = mutableListOf<String>()
         table.findSubTags("Column")?.mapNotNull {
             if (it.getAttributeValue("CodeColumnKey")?.isNotEmpty() == true) {
@@ -62,22 +162,25 @@ class YigoControlBuilder(private val project: Project) {
         var allColumns: List<Pair<String, String>>
         allColumns = table.findSubTags("Column")?.mapNotNull {
             val key = it.getAttributeValue("Key")
-            if (ignoreList.contains(key)) {
+            if (key == null || ignoreList.contains(key) || codeColumnKey.contains(key)) {
                 return@mapNotNull null
             }
-            if (codeColumnKey.contains(key)) {
+
+            // Filter out columns already used in the form
+            if (usedColumns.contains(tableKey to key)) {
                 return@mapNotNull null
             }
+
             if (it.getAttributeValue("CodeColumnKey")?.isNotEmpty() == true) {
                 codeColumnKey.add(it.getAttributeValue("CodeColumnKey").orEmpty())
             }
             val caption = it.getAttributeValue("Caption") ?: ""
-            if (key != null) key to caption else null
+            key to caption
         } ?: emptyList()
         return allColumns
     }
 
-    private fun showCommonAddDialog(parent: Component, gridTag: XmlTag, title: String, onOk: (String, String) -> Unit) {
+    private fun showCommonAddDialog(parent: Component, gridTag: XmlTag, title: String, onOk: (String, List<ColumnSelection>) -> Unit) {
         val dialog = JDialog(SwingUtilities.getWindowAncestor(parent), title, Dialog.ModalityType.APPLICATION_MODAL)
         dialog.layout = BorderLayout()
 
@@ -86,11 +189,43 @@ class YigoControlBuilder(private val project: Project) {
 
         val tableKeyField = JTextField(20)
         val columnKeyField = SearchTextField()
-        val columnList = JBList<String>()
-        val listModel = DefaultListModel<String>()
-        columnList.model = listModel
+        val errorLabel = JLabel(" ").apply { foreground = Color.RED }
+        
+        val tableModel = ColumnTableModel(emptyList())
+        val columnTable = JBTable(tableModel)
+        columnTable.selectionModel.selectionMode = ListSelectionModel.MULTIPLE_INTERVAL_SELECTION
+        
+        // Custom renderer for highlighting duplicates
+        columnTable.setDefaultRenderer(java.lang.Object::class.java, object : javax.swing.table.DefaultTableCellRenderer() {
+            override fun getTableCellRendererComponent(table: JTable, value: Any?, isSelected: Boolean, hasFocus: Boolean, row: Int, column: Int): Component {
+                val c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column)
+                val item = (table.model as ColumnTableModel).data[row]
+                if (column == 3 && item.isDuplicate) {
+                    c.background = if (isSelected) Color(255, 100, 100) else Color(255, 200, 200)
+                    c.foreground = Color.BLACK
+                } else {
+                    c.background = if (isSelected) table.selectionBackground else table.background
+                    c.foreground = if (isSelected) table.selectionForeground else table.foreground
+                }
+                return c
+            }
+        })
 
-        var allColumns = listOf<Pair<String, String>>()
+        // Adjust column widths
+        columnTable.columnModel.getColumn(0).preferredWidth = 60
+        columnTable.columnModel.getColumn(0).maxWidth = 60
+        columnTable.columnModel.getColumn(1).preferredWidth = 120
+        columnTable.columnModel.getColumn(2).preferredWidth = 120
+        columnTable.columnModel.getColumn(3).preferredWidth = 120
+
+        var allColumns = listOf<ColumnSelection>()
+        var showAll = false
+
+        val rootTag = ApplicationManager.getApplication().runReadAction<XmlTag?> {
+            YigoUtils.getRootFormTag(gridTag)
+        }
+        val usedColumns = rootTag?.let { getUsedColumns(it) } ?: emptySet()
+        val existingKeys = rootTag?.let { getExistingKeys(it) } ?: emptySet()
 
         val suggestedTableKey = ApplicationManager.getApplication().runReadAction<String?> {
             if (!gridTag.isValid) return@runReadAction null
@@ -121,14 +256,48 @@ class YigoControlBuilder(private val project: Project) {
         panel.add(tableKeyField, c)
 
         c.gridx = 0; c.gridy = 1; c.weightx = 0.0
-        panel.add(JLabel("ColumnKey:"), c)
+        panel.add(JLabel("Search:"), c)
         c.gridx = 1; c.weightx = 1.0
         panel.add(columnKeyField, c)
 
-        c.gridx = 0; c.gridy = 2; c.gridwidth = 2; c.weighty = 1.0; c.fill = GridBagConstraints.BOTH
-        val scrollPane = JBScrollPane(columnList)
-        scrollPane.preferredSize = Dimension(400, 200)
+        val toggleBtn = JCheckBox("Show All Columns", showAll)
+        c.gridx = 1; c.gridy = 2; c.weightx = 1.0
+        panel.add(toggleBtn, c)
+
+        c.gridx = 0; c.gridy = 3; c.gridwidth = 2; c.weighty = 1.0; c.fill = GridBagConstraints.BOTH
+        val scrollPane = ScrollPaneFactory.createScrollPane(columnTable)
+        scrollPane.preferredSize = Dimension(500, 300)
         panel.add(scrollPane, c)
+
+        c.gridx = 0; c.gridy = 4; c.gridwidth = 2; c.weighty = 0.0; c.fill = GridBagConstraints.HORIZONTAL
+        panel.add(errorLabel, c)
+
+        val updateList = {
+            val filter = columnKeyField.text.lowercase()
+            val currentTableKey = tableKeyField.text.trim()
+            
+            // Check duplicates in real-time
+            val localSelections = allColumns.filter { it.selected }.map { it.customKey }.toSet()
+            allColumns.forEach { col ->
+                col.isDuplicate = existingKeys.contains(col.customKey)
+            }
+
+            val filtered = allColumns.filter { col ->
+                val matchesSearch = col.key.lowercase().contains(filter) || col.caption.lowercase().contains(filter)
+                val isVisible = showAll || !usedColumns.contains(currentTableKey to col.key)
+                matchesSearch && isVisible
+            }
+            
+            val selectedWithDuplicates = allColumns.filter { it.selected && it.isDuplicate }
+            if (selectedWithDuplicates.isNotEmpty()) {
+                errorLabel.text = "Duplicate Keys: " + selectedWithDuplicates.joinToString { it.customKey }
+            } else {
+                errorLabel.text = " "
+            }
+
+            tableModel.data = filtered
+            tableModel.fireTableDataChanged()
+        }
 
         val loadColumns = {
             val tableKey = tableKeyField.text.trim()
@@ -136,35 +305,31 @@ class YigoControlBuilder(private val project: Project) {
                 ApplicationManager.getApplication().runReadAction {
                     val table = YigoUtils.findTable(gridTag, tableKey)
                     if (table != null) {
-                        allColumns = getAllColumn(table)
-                        listModel.clear()
-                        allColumns.forEach { (key, caption) ->
-                            listModel.addElement("$key - $caption")
+                        allColumns = getAllColumn(table, tableKey, emptySet()).map { 
+                            ColumnSelection(it.first, it.second, it.first) 
                         }
+                        updateList()
                     }
                 }
             }
+        }
+
+        tableModel.addTableModelListener { e ->
+            if (e.column == 0 || e.column == 3) {
+                updateList()
+            }
+        }
+
+        toggleBtn.addActionListener {
+            showAll = toggleBtn.isSelected
+            updateList()
         }
 
         tableKeyField.addActionListener { loadColumns() }
 
         columnKeyField.addKeyboardListener(object : KeyAdapter() {
             override fun keyReleased(e: KeyEvent) {
-                val filter = columnKeyField.text.lowercase()
-                listModel.clear()
-                allColumns.filter { it.first.lowercase().contains(filter) || it.second.lowercase().contains(filter) }
-                    .forEach { (key, caption) -> listModel.addElement("$key - $caption") }
-            }
-        })
-
-        columnList.addMouseListener(object : MouseAdapter() {
-            override fun mouseClicked(e: MouseEvent) {
-                if (e.clickCount == 1) {
-                    val selected = columnList.selectedValue
-                    if (selected != null) {
-                        columnKeyField.text = selected.substringBefore(" - ")
-                    }
-                }
+                updateList()
             }
         })
 
@@ -174,10 +339,19 @@ class YigoControlBuilder(private val project: Project) {
         val okBtn = JButton("OK")
         okBtn.addActionListener {
             val tableKey = tableKeyField.text.trim()
-            val columnKey = columnKeyField.text.trim()
-            if (tableKey.isNotEmpty() && columnKey.isNotEmpty()) {
+            val selected = allColumns.filter { it.selected }
+            val selectedWithDuplicates = selected.filter { it.isDuplicate }
+            
+            if (selectedWithDuplicates.isNotEmpty()) {
+                JOptionPane.showMessageDialog(dialog, "Cannot proceed: Some selected keys already exist in the form.")
+                return@addActionListener
+            }
+
+            if (tableKey.isNotEmpty() && selected.isNotEmpty()) {
                 dialog.dispose()
-                onOk(tableKey, columnKey)
+                onOk(tableKey, selected)
+            } else if (selected.isEmpty()) {
+                JOptionPane.showMessageDialog(dialog, "Please select at least one column")
             }
         }
         val cancelBtn = JButton("Cancel")
@@ -199,7 +373,6 @@ class YigoControlBuilder(private val project: Project) {
         dialog.setLocationRelativeTo(parent)
         loadColumns()
 
-        // Initial focus on columnKeyField
         SwingUtilities.invokeLater {
             columnKeyField.requestFocusInWindow()
         }
@@ -212,6 +385,7 @@ class YigoControlBuilder(private val project: Project) {
         gridTag: XmlTag,
         tableKey: String,
         columnKey: String,
+        customKey: String,
         clickX: Int,
         clickY: Int,
         containerComponent: JComponent?
@@ -259,7 +433,7 @@ class YigoControlBuilder(private val project: Project) {
                 } ?: 0
 
                 val newControl = gridTag.createChildTag(controlType, null, null, false)
-                newControl.setAttribute("Key", columnKey)
+                newControl.setAttribute("Key", customKey)
                 newControl.setAttribute("Caption", caption)
                 newControl.setAttribute("X", targetX.toString())
                 newControl.setAttribute("Y", targetY.toString())
@@ -280,6 +454,7 @@ class YigoControlBuilder(private val project: Project) {
         gridTag: XmlTag,
         tableKey: String,
         columnKey: String,
+        customKey: String,
         afterColumnKey: String? = null
     ) {
         ApplicationManager.getApplication().invokeLater {
@@ -301,7 +476,7 @@ class YigoControlBuilder(private val project: Project) {
                     false
                 ).also { gridTag.addSubTag(it, false) }
                 val newColumn = colCollection.createChildTag("GridColumn", null, null, false)
-                newColumn.setAttribute("Key", columnKey)
+                newColumn.setAttribute("Key", customKey)
                 newColumn.setAttribute("Caption", caption)
 
                 if (afterColumnKey != null) {
@@ -319,14 +494,13 @@ class YigoControlBuilder(private val project: Project) {
                 val rowCollection = gridTag.findFirstSubTag("GridRowCollection")
                 rowCollection?.findSubTags("GridRow")?.forEach { row ->
                     val newCell = row.createChildTag("GridCell", null, null, false)
-                    newCell.setAttribute("Key", columnKey)
+                    newCell.setAttribute("Key", customKey)
                     newCell.setAttribute("Caption", caption)
                     newCell.setAttribute("CellType", controlType)
 
                     applyDomainAttributes(newCell, domainTag, controlType)
                     
                     val dataBinding = newCell.createChildTag("DataBinding", null, null, false)
-                    dataBinding.setAttribute("TableKey", tableKey)
                     dataBinding.setAttribute("ColumnKey", columnKey)
                     newCell.addSubTag(dataBinding, false)
 
@@ -346,7 +520,7 @@ class YigoControlBuilder(private val project: Project) {
     }
 
     private fun applyDomainAttributes(controlTag: XmlTag, domainTag: XmlTag, controlType: String) {
-        val attrList = listOf("DataType", "Caption", "RefControlType")
+        val attrList = listOf("Key", "DataType", "Caption", "RefControlType")
         for (attribute in domainTag.attributes) {
             var name1 = attribute.name
             if (controlType == "TextEditor" && name1 == "Length") {
@@ -357,6 +531,11 @@ class YigoControlBuilder(private val project: Project) {
             } else {
                 val value = domainTag.getAttributeValue(name1)
                 if (value != null) controlTag.setAttribute(name1, value)
+            }
+            if (name1 == "SourceType" && domainTag.getAttributeValue("SourceType") == "Items") {
+                for (tag in domainTag.subTags) {
+                    controlTag.addSubTag(tag.copy() as XmlTag, false)
+                }
             }
         }
     }
