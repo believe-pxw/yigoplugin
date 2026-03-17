@@ -301,6 +301,10 @@ class YigoControlBuilder(private val project: Project) {
         val loadColumns: () -> Unit = {
             val tableKey = tableKeyCombo.selectedItem as? String ?: ""
             if (tableKey.isNotEmpty()) {
+                // Show loading state without clearing the table to avoid flicker
+                errorLabel.text = "Loading columns for $tableKey..."
+                errorLabel.foreground = Color.GRAY
+                
                 ApplicationManager.getApplication().executeOnPooledThread {
                     val result = ApplicationManager.getApplication().runReadAction<List<ColumnSelection>?> {
                         val table = YigoUtils.findTable(gridTag, tableKey)
@@ -311,9 +315,14 @@ class YigoControlBuilder(private val project: Project) {
                         }
                     }
                     SwingUtilities.invokeLater {
-                        if (result != null) {
-                            allColumns = result
-                            updateList()
+                        // VERIFY current selection still matches the table we just loaded
+                        if (tableKeyCombo.selectedItem == tableKey) {
+                            if (result != null) {
+                                allColumns = result
+                                updateList()
+                                errorLabel.text = " "
+                                errorLabel.foreground = Color.RED
+                            }
                         }
                     }
                 }
