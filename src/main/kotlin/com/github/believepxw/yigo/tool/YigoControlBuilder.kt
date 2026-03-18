@@ -5,6 +5,7 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
+import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.psi.xml.XmlFile
 import com.intellij.psi.xml.XmlTag
 import com.intellij.ui.ScrollPaneFactory
@@ -96,12 +97,30 @@ class YigoControlBuilder(private val project: Project) {
                 2 -> item.fieldKey = value
             }
             fireTableRowsUpdated(rowIndex, rowIndex)
-            // Add a new row if we just edited the last one
             if (rowIndex == data.size - 1 && item.deKey.isNotEmpty()) {
                 data.add(DEColumnSelection())
                 fireTableRowsInserted(data.size - 1, data.size - 1)
             }
         }
+    }
+
+    private fun getLayoutPanel(anchor: Component?): YigoLayoutPanel? {
+        if (anchor != null) {
+            var curr: Component? = anchor
+            if (curr is JMenuItem) {
+                curr = JPopupMenu::class.java.cast(curr.parent)?.invoker
+            }
+            while (curr != null) {
+                if (curr is YigoLayoutPanel) return curr
+                curr = curr.parent
+            }
+        }
+        val toolWindow = ToolWindowManager.getInstance(project).getToolWindow("Yigo Setup") ?: 
+                         ToolWindowManager.getInstance(project).getToolWindow("Yigo Layout")
+        return toolWindow?.contentManager?.contents?.firstOrNull()?.component as? YigoLayoutPanel ?:
+               (toolWindow?.contentManager?.contents?.firstOrNull()?.component as? JComponent)?.let { 
+                   SwingUtilities.getAncestorOfClass(YigoLayoutPanel::class.java, it) as? YigoLayoutPanel
+               }
     }
 
     fun showAddControlDialog(
@@ -112,9 +131,31 @@ class YigoControlBuilder(private val project: Project) {
         containerComponent: JComponent? = null
     ) {
         showCommonAddDialog(parent, gridTag, "Add Control") { tableKey, selectedColumns ->
+            val panel = getLayoutPanel(containerComponent ?: parent)
+            panel?.isBatchUpdating = true
+            var lastTag: XmlTag? = null
+            
             WriteCommandAction.runWriteCommandAction(project) {
-                selectedColumns.forEachIndexed { index, col ->
-                    createControlFromDomain(gridTag, tableKey, col.key, col.customKey, clickX, clickY, containerComponent)
+                try {
+                    selectedColumns.forEachIndexed { index, col ->
+                        val newTag = createControlFromDomain(gridTag, tableKey, col.key, col.customKey, clickX, clickY, containerComponent)
+                        if (newTag != null) lastTag = newTag
+                    }
+                } catch (e: Exception) {
+                    panel?.isBatchUpdating = false
+                    throw e
+                }
+            }
+
+            // UI refresh should be outside write action to avoid potential EDT deadlocks or flicker
+            SwingUtilities.invokeLater {
+                try {
+                    if (lastTag != null && panel != null) {
+                        panel.refreshComponent(gridTag)
+                        panel.navigateToTag(lastTag!!)
+                    }
+                } finally {
+                    panel?.isBatchUpdating = false
                 }
             }
         }
@@ -122,11 +163,34 @@ class YigoControlBuilder(private val project: Project) {
 
     fun showAddGridColumnDialog(parent: Component, gridTag: XmlTag, afterColumnKey: String? = null) {
         showCommonAddDialog(parent, gridTag, "Add Grid Column") { tableKey, selectedColumns ->
+            val panel = getLayoutPanel(parent)
+            panel?.isBatchUpdating = true
+            var lastTag: XmlTag? = null
+            
             WriteCommandAction.runWriteCommandAction(project) {
-                var currentAfter = afterColumnKey
-                selectedColumns.forEach { col ->
-                    createGridColumnFromDomain(gridTag, tableKey, col.key, col.customKey, currentAfter)
-                    currentAfter = col.customKey
+                try {
+                    var currentAfter = afterColumnKey
+                    selectedColumns.forEach { col ->
+                        val newTag = createGridColumnFromDomain(gridTag, tableKey, col.key, col.customKey, currentAfter)
+                        if (newTag != null) {
+                            lastTag = newTag
+                            currentAfter = col.customKey
+                        }
+                    }
+                } catch (e: Exception) {
+                    panel?.isBatchUpdating = false
+                    throw e
+                }
+            }
+
+            SwingUtilities.invokeLater {
+                try {
+                    if (lastTag != null && panel != null) {
+                        panel.refreshComponent(gridTag)
+                        panel.navigateToTag(lastTag!!)
+                    }
+                } finally {
+                    panel?.isBatchUpdating = false
                 }
             }
         }
@@ -161,7 +225,6 @@ class YigoControlBuilder(private val project: Project) {
 
         var existingKeys = emptySet<String>()
 
-        // Validation logic
         val validate = {
             val tableKey = tableKeyCombo.selectedItem as? String ?: ""
             ApplicationManager.getApplication().executeOnPooledThread {
@@ -203,7 +266,6 @@ class YigoControlBuilder(private val project: Project) {
         tableModel.addTableModelListener { validate() }
         tableKeyCombo.addActionListener { validate() }
 
-        // Paste support
         table.addKeyListener(object : KeyAdapter() {
             override fun keyPressed(e: KeyEvent) {
                 if (e.isControlDown && e.keyCode == KeyEvent.VK_V) {
@@ -217,7 +279,6 @@ class YigoControlBuilder(private val project: Project) {
 
                         lines.filter { it.isNotBlank() }.forEachIndexed { rIdx, line ->
                             val targetRow = startRow + rIdx
-                            // Ensure data list is large enough
                             while (data.size <= targetRow) {
                                 data.add(DEColumnSelection())
                             }
@@ -237,7 +298,6 @@ class YigoControlBuilder(private val project: Project) {
             }
         })
 
-        // Renderer for highlighting errors
         table.setDefaultRenderer(java.lang.Object::class.java, object : javax.swing.table.DefaultTableCellRenderer() {
             override fun getTableCellRendererComponent(t: JTable, value: Any?, isSelected: Boolean, hasFocus: Boolean, row: Int, column: Int): Component {
                 val c = super.getTableCellRendererComponent(t, value, isSelected, hasFocus, row, column)
@@ -261,7 +321,6 @@ class YigoControlBuilder(private val project: Project) {
             }
         })
 
-        // Initial table load
         ApplicationManager.getApplication().executeOnPooledThread {
             val initData = ApplicationManager.getApplication().runReadAction<Triple<List<String>, String?, Boolean>> {
                 val availableTables = YigoUtils.getTables(gridTag)?.mapNotNull { it.getAttributeValue("Key") } ?: emptyList()
@@ -305,20 +364,43 @@ class YigoControlBuilder(private val project: Project) {
             }
 
             dialog.dispose()
+            val panel = getLayoutPanel(containerComponent ?: parent)
+            panel?.isBatchUpdating = true
+            var lastTag: XmlTag? = null
+
             WriteCommandAction.runWriteCommandAction(project) {
-                var currentAfter = afterColumnKey
-                items.forEach { item ->
-                    ensureColumnExists(gridTag, tableKey, item.columnKey, item.deKey)
-                    if (gridTag.name == "Grid") {
-                        createGridColumnFromDomain(gridTag, tableKey, item.columnKey, item.fieldKey, currentAfter)
-                        currentAfter = item.fieldKey
-                    } else {
-                        createControlFromDomain(gridTag, tableKey, item.columnKey, item.fieldKey, clickX, clickY, containerComponent)
+                try {
+                    var currentAfter = afterColumnKey
+                    items.forEach { item ->
+                        ensureColumnExists(gridTag, tableKey, item.columnKey, item.deKey)
+                        if (gridTag.name == "Grid") {
+                            val newTag = createGridColumnFromDomain(gridTag, tableKey, item.columnKey, item.fieldKey, currentAfter)
+                            if (newTag != null) {
+                                lastTag = newTag
+                                currentAfter = item.fieldKey
+                            }
+                        } else {
+                            val newTag = createControlFromDomain(gridTag, tableKey, item.columnKey, item.fieldKey, clickX, clickY, containerComponent)
+                            if (newTag != null) lastTag = newTag
+                        }
                     }
+                } catch (e: Exception) {
+                    panel?.isBatchUpdating = false
+                    throw e
+                }
+            }
+
+            SwingUtilities.invokeLater {
+                try {
+                    if (lastTag != null && panel != null) {
+                        panel.refreshComponent(gridTag)
+                        panel.navigateToTag(lastTag!!)
+                    }
+                } finally {
+                    panel?.isBatchUpdating = false
                 }
             }
         }
-        // Close on ESC
         val escapeStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0)
         val dispatchAction = object : AbstractAction() {
             override fun actionPerformed(e: ActionEvent?) {
@@ -471,7 +553,6 @@ class YigoControlBuilder(private val project: Project) {
                 return@mapNotNull null
             }
 
-            // Filter out columns already used in the form
             if (usedColumns.contains(tableKey to key)) {
                 return@mapNotNull null
             }
@@ -524,7 +605,6 @@ class YigoControlBuilder(private val project: Project) {
         val columnTable = JBTable(tableModel)
         columnTable.selectionModel.selectionMode = ListSelectionModel.MULTIPLE_INTERVAL_SELECTION
         
-        // Custom renderer for highlighting duplicates
         columnTable.setDefaultRenderer(java.lang.Object::class.java, object : javax.swing.table.DefaultTableCellRenderer() {
             override fun getTableCellRendererComponent(table: JTable, value: Any?, isSelected: Boolean, hasFocus: Boolean, row: Int, column: Int): Component {
                 val c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column)
@@ -540,7 +620,6 @@ class YigoControlBuilder(private val project: Project) {
             }
         })
 
-        // Adjust column widths
         columnTable.columnModel.getColumn(0).preferredWidth = 60
         columnTable.columnModel.getColumn(0).maxWidth = 60
         columnTable.columnModel.getColumn(1).preferredWidth = 120
@@ -556,7 +635,6 @@ class YigoControlBuilder(private val project: Project) {
             val filter = columnKeyField.text.lowercase()
             val currentTableKey = tableKeyCombo.selectedItem as? String ?: ""
             
-            // Check duplicates in real-time
             allColumns.forEach { col ->
                 col.isDuplicate = existingKeys.contains(col.customKey)
             }
@@ -581,7 +659,6 @@ class YigoControlBuilder(private val project: Project) {
         val loadColumns: () -> Unit = {
             val tableKey = tableKeyCombo.selectedItem as? String ?: ""
             if (tableKey.isNotEmpty()) {
-                // Show loading state without clearing the table to avoid flicker
                 errorLabel.text = "Loading columns for $tableKey..."
                 errorLabel.foreground = Color.GRAY
                 
@@ -595,7 +672,6 @@ class YigoControlBuilder(private val project: Project) {
                         }
                     }
                     SwingUtilities.invokeLater {
-                        // VERIFY current selection still matches the table we just loaded
                         if (tableKeyCombo.selectedItem == tableKey) {
                             if (result != null) {
                                 allColumns = result
@@ -609,7 +685,6 @@ class YigoControlBuilder(private val project: Project) {
             }
         }
 
-        // Fetch initial data in background
         ApplicationManager.getApplication().executeOnPooledThread {
             val initData = ApplicationManager.getApplication().runReadAction<Triple<Set<Pair<String, String>>, Set<String>, Triple<List<String>, String?, Boolean>>> {
                 val root = YigoUtils.getRootFormTag(gridTag)
@@ -652,8 +727,8 @@ class YigoControlBuilder(private val project: Project) {
         panel.add(columnKeyField, c)
 
         val toggleBtn = JCheckBox("Show All", showAll)
-        val selectAllBtn = JButton("Select All").apply {  }
-        val deselectAllBtn = JButton("Deselect All").apply {  }
+        val selectAllBtn = JButton("Select All")
+        val deselectAllBtn = JButton("Deselect All")
         
         val filterPanel = JPanel(FlowLayout(FlowLayout.LEFT, 5, 0))
         filterPanel.add(toggleBtn)
@@ -671,8 +746,6 @@ class YigoControlBuilder(private val project: Project) {
 
         c.gridx = 0; c.gridy = 4; c.gridwidth = 2; c.weighty = 0.0; c.fill = GridBagConstraints.HORIZONTAL
         panel.add(errorLabel, c)
-
-
 
         selectAllBtn.addActionListener {
             tableModel.data.forEach { it.selected = true }
@@ -729,7 +802,6 @@ class YigoControlBuilder(private val project: Project) {
         btnPanel.add(cancelBtn)
         dialog.add(btnPanel, BorderLayout.SOUTH)
 
-        // Close on ESC
         val escapeStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0)
         val dispatchAction = object : AbstractAction() {
             override fun actionPerformed(e: ActionEvent?) {
@@ -740,7 +812,6 @@ class YigoControlBuilder(private val project: Project) {
 
         dialog.pack()
         dialog.setLocationRelativeTo(parent)
-        // loadColumns() // Called in background finish
 
         SwingUtilities.invokeLater {
             columnKeyField.requestFocusInWindow()
@@ -758,46 +829,46 @@ class YigoControlBuilder(private val project: Project) {
         clickX: Int,
         clickY: Int,
         containerComponent: JComponent?
-    ) {
-        val column = YigoUtils.findColumnInTable(gridTag, tableKey, columnKey) ?: return
-        val deKey = column.getAttributeValue("DataElementKey") ?: return
-        val deTag = DataElementIndex.findDEDefinition(project, deKey) ?: return
-        val domainKey = deTag.getAttributeValue("DomainKey") ?: return
-        val domainTag = DomainIndex.findDomainDefinition(project, domainKey) ?: return
+    ): XmlTag? {
+        val column = YigoUtils.findColumnInTable(gridTag, tableKey, columnKey) ?: return null
+        val deKey = column.getAttributeValue("DataElementKey") ?: return null
+        val deTag = DataElementIndex.findDEDefinition(project, deKey) ?: return null
+        val domainKey = deTag.getAttributeValue("DomainKey") ?: return null
+        val domainTag = DomainIndex.findDomainDefinition(project, domainKey) ?: return null
 
         val controlType = domainTag.getAttributeValue("RefControlType") ?: "TextEditor"
         val caption = column.getAttributeValue("Caption") ?: deTag.getAttributeValue("Caption")
 
-                val layout = containerComponent?.layout as? GridBagLayout
-                val targetX = layout?.let {
-                    val dims = it.getLayoutDimensions()
-                    val origin = it.getLayoutOrigin()
-                    var x = 0
-                    var accum = origin.x
-                    for (i in dims[0].indices) {
-                        if (clickX >= accum && clickX < accum + dims[0][i]) {
-                            x = i
-                            break
-                        }
-                        accum += dims[0][i]
-                    }
-                    x
-                } ?: 0
+        val layout = containerComponent?.layout as? GridBagLayout
+        val targetX = layout?.let {
+            val dims = it.getLayoutDimensions()
+            val origin = it.getLayoutOrigin()
+            var x = 0
+            var accum = origin.x
+            for (i in dims[0].indices) {
+                if (clickX >= accum && clickX < accum + dims[0][i]) {
+                    x = i
+                    break
+                }
+                accum += dims[0][i]
+            }
+            x
+        } ?: 0
 
-                val targetY = layout?.let {
-                    val dims = it.getLayoutDimensions()
-                    val origin = it.getLayoutOrigin()
-                    var y = 0
-                    var accum = origin.y
-                    for (i in dims[1].indices) {
-                        if (clickY >= accum && clickY < accum + dims[1][i]) {
-                            y = i
-                            break
-                        }
-                        accum += dims[1][i]
-                    }
-                    y
-                } ?: 0
+        val targetY = layout?.let {
+            val dims = it.getLayoutDimensions()
+            val origin = it.getLayoutOrigin()
+            var y = 0
+            var accum = origin.y
+            for (i in dims[1].indices) {
+                if (clickY >= accum && clickY < accum + dims[1][i]) {
+                    y = i
+                    break
+                }
+                accum += dims[1][i]
+            }
+            y
+        } ?: 0
 
         val newControl = gridTag.createChildTag(controlType, null, null, false)
         newControl.setAttribute("Key", customKey)
@@ -808,7 +879,6 @@ class YigoControlBuilder(private val project: Project) {
         if (fieldLabelCollection != null) {
             newControl.setAttribute("LabelType", "M")
             for (tag in fieldLabelCollection.subTags) {
-                // 处理每个 FieldLabel 标签//
                 val labelType = tag.getAttributeValue("Key")
                 if (labelType == "Medium") {
                     newControl.setAttribute("Caption", tag.getAttributeValue("Text"))
@@ -824,7 +894,16 @@ class YigoControlBuilder(private val project: Project) {
         dataBinding.setAttribute("ColumnKey", columnKey)
         newControl.addSubTag(dataBinding, false)
 
-        gridTag.addSubTag(newControl, false)
+        // Insert logic: Before RowDefCollection or ColumnDefCollection or as first subtag
+        val anchor = gridTag.findFirstSubTag("RowDefCollection") 
+                  ?: gridTag.findFirstSubTag("ColumnDefCollection") 
+                  ?: gridTag.subTags.firstOrNull()
+                  
+        return if (anchor != null) {
+            gridTag.addBefore(newControl, anchor) as? XmlTag
+        } else {
+            gridTag.addSubTag(newControl, false) as? XmlTag
+        }
     }
 
     private fun createGridColumnFromDomain(
@@ -833,13 +912,13 @@ class YigoControlBuilder(private val project: Project) {
         columnKey: String,
         customKey: String,
         afterColumnKey: String? = null
-    ) {
+    ): XmlTag? {
         val columnDef =
-            YigoUtils.findColumnInTable(gridTag, tableKey, columnKey) ?: return
-        val deKey = columnDef.getAttributeValue("DataElementKey") ?: return
-        val deTag = DataElementIndex.findDEDefinition(project, deKey) ?: return
-        val domainKey = deTag.getAttributeValue("DomainKey") ?: return
-        val domainTag = DomainIndex.findDomainDefinition(project, domainKey) ?: return
+            YigoUtils.findColumnInTable(gridTag, tableKey, columnKey) ?: return null
+        val deKey = columnDef.getAttributeValue("DataElementKey") ?: return null
+        val deTag = DataElementIndex.findDEDefinition(project, deKey) ?: return null
+        val domainKey = deTag.getAttributeValue("DomainKey") ?: return null
+        val domainTag = DomainIndex.findDomainDefinition(project, domainKey) ?: return null
 
         val controlType = domainTag.getAttributeValue("RefControlType") ?: "TextEditor"
         val caption = columnDef.getAttributeValue("Caption") ?: deTag.getAttributeValue("Caption")
@@ -858,7 +937,6 @@ class YigoControlBuilder(private val project: Project) {
         if (fieldLabelCollection != null) {
             newColumn.setAttribute("LabelType", "M")
             for (tag in fieldLabelCollection.subTags) {
-                // 处理每个 FieldLabel 标签//
                 val labelType = tag.getAttributeValue("Key")
                 if (labelType == "Medium") {
                     newColumn.setAttribute("Caption", tag.getAttributeValue("Text"))
@@ -867,17 +945,17 @@ class YigoControlBuilder(private val project: Project) {
             }
         }
 
-
+        val addedColumn: XmlTag?
         if (afterColumnKey != null) {
             val targetCol =
                 colCollection.findSubTags("GridColumn").find { it.getAttributeValue("Key") == afterColumnKey }
-            if (targetCol != null) {
-                colCollection.addAfter(newColumn, targetCol)
+            addedColumn = if (targetCol != null) {
+                colCollection.addAfter(newColumn, targetCol) as? XmlTag
             } else {
-                colCollection.addSubTag(newColumn, false)
+                colCollection.addSubTag(newColumn, false) as? XmlTag
             }
         } else {
-            colCollection.addSubTag(newColumn, false)
+            addedColumn = colCollection.addSubTag(newColumn, false) as? XmlTag
         }
 
         val rowCollection = gridTag.findFirstSubTag("GridRowCollection")
@@ -904,12 +982,13 @@ class YigoControlBuilder(private val project: Project) {
                 row.addSubTag(newCell, false)
             }
         }
+        return addedColumn
     }
 
     private fun applyDomainAttributes(controlTag: XmlTag, domainTag: XmlTag, controlType: String) {
         val attrList = listOf("Key", "DataType", "Length", "Caption", "RefControlType")
         for (attribute in domainTag.attributes) {
-            var name1 = attribute.name
+            val name1 = attribute.name
             if (controlType == "TextEditor" && name1 == "Length") {
                 val length = domainTag.getAttributeValue("Length")
                 controlTag.setAttribute("MaxLength", length)

@@ -37,6 +37,7 @@ import java.awt.event.ActionEvent
 import java.awt.event.KeyEvent
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
+import java.awt.event.MouseListener
 import java.util.*
 import javax.swing.*
 import javax.swing.border.Border
@@ -71,8 +72,11 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
     private val deleteHandler = YigoDeleteHandler(this)
     
     // Constant for client property key
-    private val KEY_ORIGINAL_BORDER = "YigoOriginalBorder"
-    private val KEY_XML_TAG = "YigoXmlTag"
+    companion object {
+        private const val KEY_ORIGINAL_BORDER = "YigoOriginalBorder"
+        private const val KEY_XML_TAG = "YigoXmlTag"
+        private const val KEY_NAV_LISTENER = "YigoNavigationListener"
+    }
     
     // Embed Loading Queue
     private val embedLoadQueue = ArrayDeque<() -> Unit>()
@@ -83,6 +87,7 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
     private var isProgrammaticSwitch = false
     private var isNavigatingToXml = false
     internal var isDeletingControls = false
+    var isBatchUpdating = false
 
     init {
         rootPanel.layout = BoxLayout(rootPanel, BoxLayout.Y_AXIS)
@@ -137,17 +142,18 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
             override fun childMoved(event: PsiTreeChangeEvent) { processEvent(event) }
             
             fun processEvent(event: PsiTreeChangeEvent) {
-                 if (isDeletingControls) return
+                 if (isDeletingControls || isBatchUpdating) return
                  val element = event.parent ?: event.child ?: return
                  val tag = PsiTreeUtil.getParentOfType(element, XmlTag::class.java, false)
                  
                  if (tag != null) {
-                     val gridTag = findParentGridTag(tag)
-                     if (gridTag != null && tagToComponent.containsKey(gridTag)) {
+                     val mappableContainer = findMappableContainer(tag)
+                     if (mappableContainer != null) {
                          SwingUtilities.invokeLater {
                              if (project.isDisposed) return@invokeLater
                              ApplicationManager.getApplication().runReadAction {
-                                 refreshGridComponent(gridTag)
+                                 refreshComponent(mappableContainer)
+                                 highlightComponentAtCaret(FileEditorManager.getInstance(project).selectedTextEditor ?: return@runReadAction)
                              }
                          }
                          return
@@ -162,6 +168,87 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
                  }
             }
         }, toolWindow.contentManager)
+    }
+
+    private fun findMappableContainer(startTag: XmlTag): XmlTag? {
+        var current: XmlTag? = startTag
+        while (current != null) {
+            if (tagToComponent.containsKey(current) && isContainerTag(current.name)) return current
+            if (current.name == "Form" || current.name == "Body") return null 
+            current = current.parentTag
+        }
+        return null
+    }
+
+    private fun isContainerTag(name: String): Boolean {
+        return name == "GridLayoutPanel" || name == "FlexGridLayoutPanel" || 
+               name == "Grid" || name == "TabPanel" || 
+               name == "FlexFlowLayoutPanel" || name == "SubDetail" || 
+               name == "LinearLayoutPanel" || name == "FlowLayoutPanel" ||
+               name == "SplitPanel"
+    }
+
+    fun refreshComponent(tag: XmlTag) {
+        val comp = tagToComponent[tag] ?: return
+        when (tag.name) {
+            "Grid" -> {
+                if (comp is JPanel) {
+                    comp.removeAll()
+                    populateWrappedGridTable(tag, comp)
+                    comp.revalidate()
+                    comp.repaint()
+                    attachNavigationListener(comp, tag)
+                }
+            }
+            "GridLayoutPanel" -> {
+                if (comp is TransparentHighlightPanel) {
+                    comp.removeAll()
+                    populateCoordinateGridPanel(tag, comp, emptySet()) // Note: visitedForms simplified here
+                    comp.revalidate()
+                    comp.repaint()
+                    attachNavigationListener(comp, tag)
+                }
+            }
+            "FlexGridLayoutPanel" -> {
+                if (comp is JPanel) {
+                    comp.removeAll()
+                    populateFlexGridPanel(tag, comp, emptySet())
+                    comp.revalidate()
+                    comp.repaint()
+                    attachNavigationListener(comp, tag)
+                }
+            }
+            "TabPanel" -> {
+                if (comp is JBTabbedPane) {
+                    val selectedIndex = comp.selectedIndex
+                    comp.removeAll()
+                    populateTabPanel(tag, comp, emptySet())
+                    if (selectedIndex >= 0 && selectedIndex < comp.tabCount) {
+                        comp.selectedIndex = selectedIndex
+                    }
+                    comp.revalidate()
+                    comp.repaint()
+                }
+            }
+            "FlexFlowLayoutPanel", "SubDetail", "LinearLayoutPanel", "FlowLayoutPanel" -> {
+                if (comp is JPanel) {
+                    comp.removeAll()
+                    populateFlexFlowPanel(tag, comp, emptySet())
+                    comp.revalidate()
+                    comp.repaint()
+                    attachNavigationListener(comp, tag)
+                }
+            }
+            "SplitPanel" -> {
+                if (comp is JPanel) {
+                    comp.removeAll()
+                    populateSplitPanel(tag, comp, emptySet())
+                    comp.revalidate()
+                    comp.repaint()
+                    attachNavigationListener(comp, tag)
+                }
+            }
+        }
     }
 
 
@@ -231,26 +318,6 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
             current = current.parentTag
         }
         return null
-    }
-
-    fun refreshGridComponent(gridTag: XmlTag) {
-        val oldComp = tagToComponent[gridTag] as? JPanel ?: return
-        oldComp.removeAll()
-        populateWrappedGridTable(gridTag, oldComp)
-        oldComp.revalidate()
-        oldComp.repaint()
-        
-        // Re-attach listener and save border?
-        // Wait, populateWrappedGridTable doesn't set main border, createGridPanel does.
-        // But populate adds children. 
-        // We need to re-attach listener to the PARENT grid panel? No, createGridPanel does that.
-        // refreshGridComponent is called on the container.
-        
-        attachNavigationListener(oldComp, gridTag)
-        // Original border is on oldComp, stored in client property, so it persists?
-        // Yes, ClientProperties persist unless cleared.
-        // But if we change structure, we might need to restore it?
-        // No, we are just changing children.
     }
 
     private fun updateUIFromXml(preserveScroll: Boolean = false) {
@@ -387,6 +454,7 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         
         ApplicationManager.getApplication().invokeLater {
             if (project.isDisposed) return@invokeLater
+            rootPanel.validate() // Force layout to get valid bounds for new components
             
             // 1. Handle Grid Highlighting
             if (finalGridTag != null && (finalRow != -1 || finalCol != -1)) {
@@ -490,25 +558,26 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
             }
         } finally {
             isNavigatingToXml = false
+            highlightComponentAtCaret(fileEditorHelper.selectedTextEditor ?: return)
         }
     }
 
     private fun attachNavigationListener(component: JComponent, tag: XmlTag) {
-        component.addMouseListener(object : MouseAdapter() {
+        // Remove existing listener if any
+        val old = component.getClientProperty(KEY_NAV_LISTENER) as? MouseListener
+        if (old != null) component.removeMouseListener(old)
+
+        val listener = object : MouseAdapter() {
             override fun mouseClicked(e: MouseEvent) {
-                // Special handling for TabbedPane: 
-                // If user clicks a specific tab, let the ChangeListener handle navigation to the inner component.
-                // We only navigate to the TabPanel tag if clicking the empty background.
                 if (component is JTabbedPane) {
                      val tabIndex = component.indexAtLocation(e.x, e.y)
                      if (tabIndex != -1) return
                 }
-
-                // Do NOT consume. Let Swing handle it (e.g. Tab selection).
-                // e.consume() 
                 navigateToTag(tag)
             }
-        })
+        }
+        component.addMouseListener(listener)
+        component.putClientProperty(KEY_NAV_LISTENER, listener)
     }
 
     private fun renderTag(tag: XmlTag, parentPanel: JComponent, visitedForms: Set<String> = emptySet()) {
@@ -593,10 +662,14 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
          container.border = BorderFactory.createTitledBorder(getTitle(tag))
          addContainerContextMenu(container, tag)
          
-         for (subTag in tag.subTags) {
-             renderTag(subTag, container, visitedForms)
-         }
+         populateSplitPanel(tag, container, visitedForms)
          return container
+    }
+
+    private fun populateSplitPanel(tag: XmlTag, container: JPanel, visitedForms: Set<String>) {
+        for (subTag in tag.subTags) {
+            renderTag(subTag, container, visitedForms)
+        }
     }
 
     private fun createTabPanel(tag: XmlTag, visitedForms: Set<String>): JBTabbedPane {
@@ -627,25 +700,35 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
          saveOriginalBorder(tabbedPane)
          addContainerContextMenu(tabbedPane, tag)
 
-         val tabTags = mutableListOf<XmlTag>()
-         for (subTag in tag.subTags) {
-             if(subTag.name == "ItemChanged") continue
-             val tabContainer = JPanel()
-             tabContainer.layout = BoxLayout(tabContainer, BoxLayout.Y_AXIS)
-             renderTag(subTag, tabContainer, visitedForms)
-             val title = getTitle(subTag)
-             tabbedPane.addTab(title, tabContainer)
-             tabTags.add(subTag)
-         }
-
-         tabbedPane.addChangeListener {
-             if (isProgrammaticSwitch) return@addChangeListener
-             val index = tabbedPane.selectedIndex
-             if (index >= 0 && index < tabTags.size) {
-                 navigateToTag(tabTags[index])
-             }
-         }
+         populateTabPanel(tag, tabbedPane, visitedForms)
          return tabbedPane
+    }
+
+    private fun populateTabPanel(tag: XmlTag, tabbedPane: JBTabbedPane, visitedForms: Set<String>) {
+        val tabTags = mutableListOf<XmlTag>()
+        for (subTag in tag.subTags) {
+            if(subTag.name == "ItemChanged") continue
+            val tabContainer = JPanel()
+            tabContainer.layout = BoxLayout(tabContainer, BoxLayout.Y_AXIS)
+            renderTag(subTag, tabContainer, visitedForms)
+            val title = getTitle(subTag)
+            tabbedPane.addTab(title, tabContainer)
+            tabTags.add(subTag)
+        }
+
+        // Re-attach listener as it might refer to old tabTags
+        val existingListeners = tabbedPane.changeListeners
+        for (list in existingListeners) {
+            if (list !is Component) tabbedPane.removeChangeListener(list)
+        }
+
+        tabbedPane.addChangeListener {
+            if (isProgrammaticSwitch) return@addChangeListener
+            val index = tabbedPane.selectedIndex
+            if (index >= 0 && index < tabTags.size) {
+                navigateToTag(tabTags[index])
+            }
+        }
     }
 
     private fun createFlexFlowPanel(tag: XmlTag, visitedForms: Set<String>): JPanel {
@@ -654,10 +737,14 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
          container.border = BorderFactory.createTitledBorder(getTitle(tag))
          container.transferHandler = FlexDropHandler(this, tag, project)
          addContainerContextMenu(container, tag)
-         for (subTag in tag.subTags) {
-             renderTag(subTag, container, visitedForms)
-         }
+         populateFlexFlowPanel(tag, container, visitedForms)
          return container
+    }
+
+    private fun populateFlexFlowPanel(tag: XmlTag, container: JPanel, visitedForms: Set<String>) {
+        for (subTag in tag.subTags) {
+            renderTag(subTag, container, visitedForms)
+        }
     }
 
     private fun createEmbedPanel(tag: XmlTag, visitedForms: Set<String>): JPanel {
@@ -934,10 +1021,12 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         panel.transferHandler = FlexDropHandler(this, tag, project)
         addContainerContextMenu(panel, tag)
         
+        populateFlexGridPanel(tag, panel, visitedForms)
+        return panel
+    }
+
+    private fun populateFlexGridPanel(tag: XmlTag, panel: JPanel, visitedForms: Set<String>) {
         val columnCount = tag.getAttributeValue("ColumnCount")?.toIntOrNull() ?: 1
-        
-        // Collect valid child components in order
-        // Collect valid child components in order
         val children = tag.subTags.filter { isValidGridChild(it.name) }
         
         children.forEachIndexed { index, child ->
@@ -948,28 +1037,16 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
             c.gridx = x
             c.gridy = y
             c.weightx = 1.0
-            c.weighty = 0.0 // Don't stretch vertically by default in flex
+            c.weighty = 0.0
             c.fill = GridBagConstraints.HORIZONTAL
             c.insets = JBUI.insets(2)
             c.anchor = GridBagConstraints.NORTHWEST
-            
-            // XSpan/YSpan support in Flex? Usually FlexGrid is 1x1, but let's clear if supported.
-            // Requirement says "reduce whitespace", implying simple flow. LayoutPanel usually supports spans. 
-            // If user adds XSpan/YSpan, we should respect it? 
-            // "FlexGridLayoutPanel" typically implies just sequential.
-            // Let's check attributs... assuming 1x1 for now as per "only ColumnCount determines".
-            // Actually, if a component HAS XSpan, it might take multiple slots. 
-            // But simplifying: Sequential filling usually ignores Span's impact on *position*, but Span impacts *size*.
-            // Let's respect XSpan if present, but calculating next slot becomes complex (bin packing).
-            // Request said "just ColumnCount determines how many columns... put elements one by one".
-            // So we stick to simple index-based mapping.
             
             val compCode = createComponent(child, visitedForms) ?: createLeafComponent(child)
             registerComponent(child, compCode)
             panel.add(compCode, c)
         }
         
-        // Add spacer to push content up/left
         val spacer = JPanel()
         val spacerC = GridBagConstraints()
         spacerC.gridx = 0
@@ -977,8 +1054,6 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         spacerC.weighty = 1.0
         spacerC.fill = GridBagConstraints.VERTICAL
         panel.add(spacer, spacerC)
-        
-        return panel
     }
 
     // --- Flex Drag & Drop Extracted to YigoDragDropHandlers.kt ---
@@ -987,12 +1062,15 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         val layout = GridBagLayout()
         val panel = TransparentHighlightPanel(layout) // Use custom panel for highlighting
         panel.border = BorderFactory.createTitledBorder("Grid: ${getTitle(tag)}")
-        
-        // Add drop support
         panel.transferHandler = GridDropHandler(this, tag, project)
-        
-        // Add Context Menu
         addContainerContextMenu(panel, tag)
+        
+        populateCoordinateGridPanel(tag, panel, visitedForms)
+        return panel
+    }
+
+    private fun populateCoordinateGridPanel(tag: XmlTag, panel: TransparentHighlightPanel, visitedForms: Set<String>) {
+        val layout = panel.layout as GridBagLayout
         
         // 1. Analyze Grid Dimensions and Weights
         var rowCount = 0
@@ -1002,23 +1080,17 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         if (rowDefCollection != null) {
             val rows = rowDefCollection.findSubTags("RowDef")
             rowCount = rows.size
-            
-            // Parse Row Heights / Weights
             val heights = IntArray(rowCount)
             val weights = DoubleArray(rowCount)
-            
             rows.forEachIndexed { i, row ->
                 val hAttr = row.getAttributeValue("Height") ?: ""
                 if (hAttr.endsWith("%")) {
                     weights[i] = hAttr.removeSuffix("%").toDoubleOrNull()?.div(100.0) ?: 0.0
-                    heights[i] = 0 // Weight determines size
-                } else if (hAttr.endsWith("px")) {
-                    //走自动列宽，固定列宽显示效果太差，特别是小屏幕
-//                    heights[i] = hAttr.removeSuffix("px").toIntOrNull() ?: 0
                     heights[i] = 0
-                    weights[i] = 0.0 // Fixed size
+                } else if (hAttr.endsWith("px")) {
+                    heights[i] = 0
+                    weights[i] = 0.0
                 } else {
-                     // Default or explicit number without unit?
                      val v = hAttr.toIntOrNull()
                      if (v != null) heights[i] = v
                 }
@@ -1031,19 +1103,14 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         if (colDefCollection != null) {
             val cols = colDefCollection.findSubTags("ColumnDef")
             colCount = cols.size
-            
-            // Parse Column Widths / Weights
             val widths = IntArray(colCount)
             val weights = DoubleArray(colCount)
-            
             cols.forEachIndexed { i, col ->
                 val wAttr = col.getAttributeValue("Width") ?: ""
                 if (wAttr.endsWith("%")) {
                     weights[i] = wAttr.removeSuffix("%").toDoubleOrNull()?.div(100.0) ?: 0.0
                     widths[i] = 0
                 } else if (wAttr.endsWith("px")) {
-//                    widths[i] = wAttr.removeSuffix("px").toIntOrNull() ?: 0
-                    //走自动列宽，固定列宽显示效果太差，特别是小屏幕
                     widths[i] = 0
                     weights[i] = 0.0
                 } else {
@@ -1058,7 +1125,6 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         var maxX = 0
         var maxY = 0
         val componentChildren = mutableListOf<XmlTag>()
-        
         for (child in tag.subTags) {
              if (isValidGridChild(child.name)) {
                  componentChildren.add(child)
@@ -1076,7 +1142,6 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         if (maxX > colCount) colCount = maxX
         if (maxY > rowCount) rowCount = maxY
         
-        // Pass grid dimensions to panel for validation
         panel.setGridDimensions(rowCount, colCount)
 
         val occupied = Array(rowCount) { BooleanArray(colCount) }
@@ -1089,11 +1154,7 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         
         for (y in 0 until rowCount) {
             for (x in 0 until colCount) {
-                // FIX: Check if we have explicit components here.
                 val compTags = componentMap["$x,$y"]
-                
-                // If we have components here, we MUST render them, even if occupied says true from a previous span.
-                // Exception: If we are occupied AND no components here, then we skip.
                 if (occupied.getOrNull(y)?.getOrNull(x) == true && (compTags == null || compTags.isEmpty())) continue
                 
                 val c = GridBagConstraints()
@@ -1105,14 +1166,10 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
                 c.insets = JBUI.insets(1)
 
                 if (compTags != null && compTags.isNotEmpty()) {
-                    // Sort tags: Visible=true first. This ensures strict layout uses the visible component's span.
-                    // If multiple visible, use first.
                     compTags.sortByDescending { it.getAttributeValue("Visible") != "false" }
-                
                     val firstTag = compTags[0]
                     val xSpan = firstTag.getAttributeValue("XSpan")?.toIntOrNull() ?: 1
                     val ySpan = firstTag.getAttributeValue("YSpan")?.toIntOrNull() ?: 1
-                    
                     c.gridwidth = xSpan
                     c.gridheight = ySpan
                     
@@ -1133,7 +1190,6 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
                          cellContent = cellPanel
                     }
                     panel.add(cellContent, c)
-                    
                     for (dy in 0 until ySpan) {
                         for (dx in 0 until xSpan) {
                             if (y + dy < rowCount && x + dx < colCount) {
@@ -1148,17 +1204,6 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
                 }
             }
         }
-        
-        // Add a vertical spacer to push content to the top
-        /*val spacer = JPanel()
-        spacer.isOpaque = false
-        val spacerC = GridBagConstraints()
-        spacerC.gridx = 0
-        spacerC.gridy = rowCount
-        spacerC.weighty = 1.0 // Consume all vertical space
-        panel.add(spacer, spacerC)*/
-        
-        return panel
     }
     
     // Custom JPanel to support drawing highlights over/under children
@@ -1302,13 +1347,13 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
             val afterColumnKey = if (targetTag?.name == "GridColumn") targetTag.getAttributeValue("Key") else null
             val addColumnItem = JMenuItem(if (afterColumnKey != null) "Add Column After..." else "Add Column...")
             addColumnItem.addActionListener {
-                YigoControlBuilder(project).showAddGridColumnDialog(addColumnItem, tag, afterColumnKey)
+                YigoControlBuilder(project).showAddGridColumnDialog(component, tag, afterColumnKey)
             }
             menu.add(addColumnItem)
 
             val addByDEItem = JMenuItem("Add by DataElementKey...")
             addByDEItem.addActionListener {
-                YigoControlBuilder(project).showAddByDEDialog(addByDEItem, tag, afterColumnKey = afterColumnKey)
+                YigoControlBuilder(project).showAddByDEDialog(addByDEItem, tag, containerComponent = component, afterColumnKey = afterColumnKey)
             }
             menu.add(addByDEItem)
             menu.addSeparator()

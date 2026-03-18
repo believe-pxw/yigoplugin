@@ -142,6 +142,14 @@ class YigoDeleteHandler(private val panel: YigoLayoutPanel) {
                 allTagsToDelete.add(tag)
                 if (cascade) {
                     collectCascadeTargets(tag, allTagsToDelete, warningMessages)
+                } else {
+                    if (tag.name == "GridColumn") {
+                        val gridTag = tag.parentTag?.parentTag ?: continue
+                        val colKey = tag.getAttributeValue("Key") ?: continue
+                        val gridCell = findGridCellsForColumn(gridTag, colKey)
+                        allTagsToDelete.addAll(gridCell)
+                    }
+
                 }
             }
         }
@@ -191,7 +199,7 @@ class YigoDeleteHandler(private val panel: YigoLayoutPanel) {
                 ApplicationManager.getApplication().runReadAction {
                     for (gridTag in gridsToRefresh) {
                         if (gridTag.isValid) {
-                            panel.refreshGridComponent(gridTag)
+                            panel.refreshComponent(gridTag)
                         }
                     }
                 }
