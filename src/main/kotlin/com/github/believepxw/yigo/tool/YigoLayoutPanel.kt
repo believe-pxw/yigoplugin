@@ -220,11 +220,16 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
             }
             "TabPanel" -> {
                 if (comp is JBTabbedPane) {
-                    val selectedIndex = comp.selectedIndex
-                    comp.removeAll()
-                    populateTabPanel(tag, comp, emptySet())
-                    if (selectedIndex >= 0 && selectedIndex < comp.tabCount) {
-                        comp.selectedIndex = selectedIndex
+                    isProgrammaticSwitch = true
+                    try {
+                        val selectedIndex = comp.selectedIndex
+                        comp.removeAll()
+                        populateTabPanel(tag, comp, emptySet())
+                        if (selectedIndex >= 0 && selectedIndex < comp.tabCount) {
+                            comp.selectedIndex = selectedIndex
+                        }
+                    } finally {
+                        isProgrammaticSwitch = false
                     }
                     comp.revalidate()
                     comp.repaint()
@@ -705,21 +710,21 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
     }
 
     private fun populateTabPanel(tag: XmlTag, tabbedPane: JBTabbedPane, visitedForms: Set<String>) {
+        // Remove existing listener as we are going to rebuild tabs and it might refer to old tabTags
+        val existingListeners = tabbedPane.changeListeners
+        for (list in existingListeners) {
+            if (list !is Component) tabbedPane.removeChangeListener(list)
+        }
+
         val tabTags = mutableListOf<XmlTag>()
         for (subTag in tag.subTags) {
-            if(subTag.name == "ItemChanged") continue
+            if (subTag.name == "ItemChanged") continue
             val tabContainer = JPanel()
             tabContainer.layout = BoxLayout(tabContainer, BoxLayout.Y_AXIS)
             renderTag(subTag, tabContainer, visitedForms)
             val title = getTitle(subTag)
             tabbedPane.addTab(title, tabContainer)
             tabTags.add(subTag)
-        }
-
-        // Re-attach listener as it might refer to old tabTags
-        val existingListeners = tabbedPane.changeListeners
-        for (list in existingListeners) {
-            if (list !is Component) tabbedPane.removeChangeListener(list)
         }
 
         tabbedPane.addChangeListener {
