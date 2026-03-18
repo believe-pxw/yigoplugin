@@ -424,6 +424,17 @@ class YigoControlBuilder(private val project: Project) {
             newCol.setAttribute("Key", columnKey)
             val deTag = DataElementIndex.findDEDefinition(project, deKey) ?: return@ensureColumnExists
             newCol.setAttribute("Caption", deTag.getAttributeValue("Caption") ?: deKey)
+            val fieldLabelCollection = deTag.findFirstSubTag("FieldLabelCollection")
+            if (fieldLabelCollection != null) {
+                for (tag in fieldLabelCollection.subTags) {
+                    val labelType = tag.getAttributeValue("Key")
+                    if (labelType == "Medium") {
+                        newCol.setAttribute("Caption", tag.getAttributeValue("Text"))
+                        break
+                    }
+                }
+            }
+
             newCol.setAttribute("DataElementKey", deKey)
             table.addSubTag(newCol, false)
         }
@@ -921,7 +932,7 @@ class YigoControlBuilder(private val project: Project) {
         val domainTag = DomainIndex.findDomainDefinition(project, domainKey) ?: return null
 
         val controlType = domainTag.getAttributeValue("RefControlType") ?: "TextEditor"
-        val caption = columnDef.getAttributeValue("Caption") ?: deTag.getAttributeValue("Caption")
+        var caption = columnDef.getAttributeValue("Caption") ?: deTag.getAttributeValue("Caption")
 
         val colCollection = gridTag.findFirstSubTag("GridColumnCollection") ?: gridTag.createChildTag(
             "GridColumnCollection",
@@ -940,6 +951,7 @@ class YigoControlBuilder(private val project: Project) {
                 val labelType = tag.getAttributeValue("Key")
                 if (labelType == "Medium") {
                     newColumn.setAttribute("Caption", tag.getAttributeValue("Text"))
+                    caption = tag.getAttributeValue("Text")
                     break
                 }
             }
