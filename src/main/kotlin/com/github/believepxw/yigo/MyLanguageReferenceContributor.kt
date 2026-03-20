@@ -219,7 +219,12 @@ class MyLanguageReferenceContributor : PsiReferenceContributor() {
                 val injectedRange = injectedElement.textRange
                 val startOffsetInHost = injectedRange.startOffset - injectedPsiRoot.textRange.startOffset
                 val endOffsetInHost = injectedRange.endOffset - injectedPsiRoot.textRange.startOffset
-                val rangeInInjectedFragment = TextRange(startOffsetInHost, endOffsetInHost)
+                val rangeInInjectedFragment: TextRange = if (element is XmlAttributeValue) {
+                    //属性值有个"号，需要+1
+                    TextRange(startOffsetInHost + 1, endOffsetInHost + 1)
+                } else {
+                    TextRange(startOffsetInHost, endOffsetInHost)
+                }
                 
                 val rootTagOriginal = (element.containingFile as? XmlFile)?.document?.rootTag
                 

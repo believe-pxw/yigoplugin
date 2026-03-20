@@ -8,6 +8,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiField;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiLiteralExpression;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.search.GlobalSearchScope;
@@ -103,8 +104,56 @@ public class FieldFindUsagesHandler extends FindUsagesHandler {
     }
 
     @Override
+    @NotNull
+    public Collection<String> getStringsToSearch(@NotNull PsiElement element) {
+        if (element instanceof XmlAttributeValue) {
+            String value = ((XmlAttributeValue) element).getValue();
+            if (value != null && !value.isEmpty()) {
+                return java.util.Collections.singletonList(value);
+            }
+        }
+        return super.getStringsToSearch(element);
+    }
+
+    @Override
     public boolean processElementUsages(@NotNull PsiElement element, @NotNull Processor<? super UsageInfo> processor, @NotNull FindUsagesOptions options) {
         ExcludeModuleUtil.enhanceFindUsagesOptions(element, options);
-        return super.processElementUsages(element, processor, options);
+        boolean result = super.processElementUsages(element, processor, options);
+
+        // --- 手动触发全局文本搜索，绕过高版本 IDEA 对 SearchScope (比如 IN_STRINGS 过滤) 的拦截 ---
+        String searchString = null;
+        if (element instanceof XmlAttributeValue) {
+            searchString = ((XmlAttributeValue) element).getValue();
+        } else if (element instanceof com.intellij.psi.PsiNamedElement) {
+            searchString = ((com.intellij.psi.PsiNamedElement) element).getName();
+        }
+
+        if (searchString != null && !searchString.isEmpty()) {
+            short searchContext = (short) (com.intellij.psi.search.UsageSearchContext.IN_STRINGS |
+                    com.intellij.psi.search.UsageSearchContext.IN_PLAIN_TEXT |
+                    com.intellij.psi.search.UsageSearchContext.IN_CODE);
+
+            com.intellij.psi.search.PsiSearchHelper.getInstance(element.getProject())
+                    .processElementsWithWord((psiElement, offsetInElement) -> {
+                        com.intellij.psi.PsiElement current = psiElement;
+                        while (current != null) {
+                            for (com.intellij.psi.PsiReference ref : current.getReferences()) {
+                                if (ref.isReferenceTo(element)) {
+                                    processor.process(new UsageInfo(ref));
+                                } else {
+                                    com.intellij.psi.PsiElement resolved = ref.resolve();
+                                    if (resolved != null && element.getManager().areElementsEquivalent(resolved, element)) {
+                                        processor.process(new UsageInfo(ref));
+                                    }
+                                }
+                            }
+                            if (current instanceof PsiFile) break;
+                            current = current.getParent();
+                        }
+                        return true;
+                    }, options.searchScope, searchString, searchContext, true);
+        }
+
+        return result;
     }
 }
