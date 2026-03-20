@@ -149,11 +149,22 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
                  if (tag != null) {
                      val mappableContainer = findMappableContainer(tag)
                      if (mappableContainer != null) {
+                         val pointer = com.intellij.psi.SmartPointerManager.getInstance(project).createSmartPsiElementPointer(mappableContainer)
                          SwingUtilities.invokeLater {
                              if (project.isDisposed) return@invokeLater
                              ApplicationManager.getApplication().runReadAction {
-                                 refreshComponent(mappableContainer)
-                                 highlightComponentAtCaret(FileEditorManager.getInstance(project).selectedTextEditor ?: return@runReadAction)
+                                 val liveContainer = pointer.element
+                                 if (liveContainer != null && liveContainer.isValid) {
+                                     // If the PSI node was completely replaced by parser, rebuild UI to prevent stale references in Parent components/listeners
+                                     if (liveContainer !== mappableContainer && !tagToComponent.containsKey(liveContainer)) {
+                                         updateUIFromXml(preserveScroll = true)
+                                     } else {
+                                         refreshComponent(liveContainer)
+                                         highlightComponentAtCaret(FileEditorManager.getInstance(project).selectedTextEditor ?: return@runReadAction)
+                                     }
+                                 } else {
+                                     updateUIFromXml(preserveScroll = true)
+                                 }
                              }
                          }
                          return
@@ -388,8 +399,9 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
                 if (preserveScroll) {
                      scrollPane.verticalScrollBar.value = vScroll
                      scrollPane.horizontalScrollBar.value = hScroll
+                     highlightComponentAtCaret(editor, suppressScroll = true)
                 } else {
-                     highlightComponentAtCaret(editor)
+                     highlightComponentAtCaret(editor, suppressScroll = false)
                 }
                 
             }
@@ -399,7 +411,7 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
     // Track the currently highlighted grid to clear it later
     private var lastHighlightedGrid: TransparentHighlightPanel? = null
     
-    private fun highlightComponentAtCaret(editor: Editor) {
+    internal fun highlightComponentAtCaret(editor: Editor, suppressScroll: Boolean = false) {
         val offset = editor.caretModel.offset
         // 1. Read PSI to find tag (Must be in ReadAction)
         var targetTag: XmlTag? = null
@@ -455,7 +467,7 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         val finalGridTag = targetGridTag
         val finalRow = highlightRowToSet
         val finalCol = highlightColToSet
-        val shouldSuppressScroll = isNavigatingToXml
+        val shouldSuppressScroll = isNavigatingToXml || suppressScroll
         
         ApplicationManager.getApplication().invokeLater {
             if (project.isDisposed) return@invokeLater
@@ -471,9 +483,7 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
                      }
                      lastHighlightedGrid = gridComponent
                      
-                     if (!shouldSuppressScroll) {
-                        ensureComponentVisible(gridComponent)
-                     }
+                     ensureComponentVisible(gridComponent, shouldSuppressScroll)
                  }
             } else {
                 // Clear previous highlight if we moved away from Row/Col def
@@ -495,16 +505,14 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
                          setHighlightBorder(component, Color.BLUE, 2)
                     }
                     
-                    if (!shouldSuppressScroll) {
-                        ensureComponentVisible(component)
-                    }
+                    ensureComponentVisible(component, shouldSuppressScroll)
                     lastSelectedComponent = component
                 }
             }
         }
     }
     
-        internal fun ensureComponentVisible(component: JComponent) {
+        internal fun ensureComponentVisible(component: JComponent, suppressScroll: Boolean = false) {
         // 1. Walk up hierarchy to find JTabbedPane and switch tabs
         var current: Container? = component
         while (current != null) {
@@ -524,7 +532,9 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         }
         
         // 2. Scroll to visible
-        component.scrollRectToVisible(component.bounds)
+        if (!suppressScroll) {
+            component.scrollRectToVisible(component.bounds)
+        }
     }
 
     internal fun navigateToTag(tag: XmlTag, requestFocus: Boolean = true) {
