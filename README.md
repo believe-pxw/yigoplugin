@@ -38,3 +38,7 @@ Plugin based on the [IntelliJ Platform Plugin Template][template].
 
 [template]: https://github.com/JetBrains/intellij-platform-plugin-template
 [docs:plugin-description]: https://plugins.jetbrains.com/docs/intellij/plugin-user-experience.html#plugin-description-and-presentation
+
+---
+## For AI Assistants
+This repository provides an `llms.txt` file at `<root>/llms.txt` designed to help Large Language Models (LLMs) quickly understand the architectural structure, source code organization, and core plugin implementations. Please refer to it before attempting major refactors or adding complex new features.

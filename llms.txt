@@ -1,0 +1,55 @@
+# Yigo-ERP IntelliJ Plugin (yigoplugin) Source Code Overview
+
+This file serves as a map for Large Language Models (LLMs) to understand the structure, components, and architecture of the `yigoplugin` source code.
+
+## 1. Project Identity
+- **Type**: IntelliJ Platform Plugin
+- **Purpose**: Provides powerful IDE features (syntax highlighting, code completion, layout visualization, index search, etc.) for Yigo-ERP secondary development.
+- **Primary Languages**: Kotlin (UI Tool Windows & Helpers), Java 21 (Custom Language PSI, Parsing, Core Plugin APIs), XML, BNF/JFlex (Lexer/Parser rules).
+- **Build System**: Gradle (`build.gradle.kts`)
+
+## 2. Core Architecture & Extensions (`src/main/resources/META-INF/plugin.xml`)
+The `plugin.xml` defines all the capabilities injected into IntelliJ:
+- **Language Support**: A custom language defined as `MyLanguage`, complete with `MyLanguageFileType`, `MyLanguageParserDefinition`, and `MyLanguageSyntaxHighlighterFactory`.
+- **Code Assistance**: `completion.contributor`, `lang.braceMatcher`, `defaultLiveTemplates`, `lang.documentationProvider`, `lang.formatter`.
+- **Navigation & Search**: `fileBasedIndex` (Macro, Form, DataObject, Domain), `findUsagesHandlerFactory`, `renamePsiElementProcessor`.
+- **Editor Enhancements**: `codeInsight.inlayProvider`, `codeInsight.lineMarkerProvider`.
+- **Tool Windows**: `Yigo Layout` (anchored right) and `Trac` integrations.
+- **Platform Injections**: `multiHostInjector`, `psi.referenceContributor`, `httpRequestHandler`.
+
+## 3. Directory Structure and Responsibilities
+
+### `src/main/java/example/`
+Contains the core Java implementation for the custom language (`MyLanguage`) and IntelliJ Platform integrations.
+- **`/` (Root)**: Contains lexer/parser adapters, syntax highlighter, and parser definition.
+- **`/completion/`**: Code completion logic for `MyLanguage` and context-aware auto-complete.
+- **`/doc/`**: Documentation providers showing contextual help for Yigo macros/tables.
+- **`/editor/`**: Editor features like bracket matching.
+- **`/findusages/`**: Handlers that locate usages of data bindings, tables, and fields across the codebase.
+- **`/formatting/`**: Code formatting builders for `MyLanguage`.
+- **`/index/`**: File-based indexes (Forms, DataObjects, Macros) to rapidly query elements without loading PSI trees.
+- **`/parser/` & `/psi/`**: Generated and manual abstract syntax tree (AST) nodes and parsing constructs based on BNF rules.
+- **`/rename/`**: Custom PSI element rename processors ensuring refs in XML strings update correctly.
+- **`/schema/`**: XML Schema Validation (`YigoFormSchemaProvider`).
+- **`/templates/`**: Live templates specific to Yigo ERP syntaxes.
+
+### `src/main/kotlin/com/github/believepxw/yigo/`
+Contains Kotlin-based modernized components natively interacting with the IntelliJ UI.
+- **`/tool/`**: Houses the major UI Tool Windows.
+  - `YigoLayoutPanel.kt`: The main visual form composer and parser rendering Form XMLs into a Swing UI.
+  - `YigoControlBuilder.kt`: Rules for constructing visual mockups of controls (Fields, Grids, Buttons).
+  - `YigoDragDropHandlers.kt` / `YigoSearchHandler.kt` / `YigoDeleteHandler.kt`: Extracted logic for form layout manipulation features like drag-and-drop, quick search, and element deletion.
+  - **`/trac/`**: Tool window integrating with a Trac issue tracker or ticketing system.
+  - **`/rest/`**: Exposes REST endpoints (`OpenIdeaFileRestService`) allowing external tools to trigger IDE file openings.
+- **`/inlay/` & `/linemarker/`**: Providers adding in-line visual hints (e.g., DataBinding markers, Yigo/Label type inlays directly over XML code).
+- **`/ref/`**: Reference contributors allowing CTRL+Click navigation between XML properties and Java definitions or other XML tags.
+
+### `xsd/`
+Contains the core Schema Definitions for the Yigo XML language.
+- This directory is the absolute source of truth for the structure of Yigo's XML definitions, mapping out the architecture of `Form`, `DataObject`, `DomainDef`, `DataElementDef`, and core `Map`/`Entry` nodes.
+- When generating XML validation, auto-completion features, or providing schema-based IDE features (e.g., `example.schema.YigoFormSchemaProvider`), refer to the `.xsd` files here (like `Form.xsd`, `DataObject.xsd`) and their respective sub-components in the `element/` and `attribute/` directories.
+
+## 4. Workflows and Context for LLMs
+- **Modifying the UI Layout Tool**: Look into `YigoLayoutPanel.kt` and its isolated handlers (`YigoSearchHandler.kt`, `YigoControlBuilder.kt`). All UI interactions map back to Yigo-ERP's XML `Control` structures.
+- **Enhancing Parsing/Syntax**: Adjust BNF/JFlex rules and update the `psi/` and `parser/` directories in Java.
+- **Working on References/Find Usages**: Deep knowledge of `PsiReference` and custom `FindUsagesProvider` in `example.findusages` or `renamePsiElementProcessor` in `example.rename` is necessary because Yigo references fields inside XML Strings (`DataBinding="Key"`, `Formula="..."`).
