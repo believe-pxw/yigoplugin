@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Form Key="Operator" Caption="操作员" FormType="Dict" Version="47">
+    <DataSource RefObjectKey="Operator"/>
+    <OperationCollection>
+        <Operation Key="DicNew" Caption="新增" RefKey="DicNew" Activity="01"/>
+        <Operation Key="DicModify" Caption="修改" RefKey="DicModify" Activity="02"/>
+        <Operation Key="DicSave" Caption="保存" RefKey="DicSave"/>
+        <Operation Key="DicCancel" Caption="取消" RefKey="DicCancel"/>
+        <Operation Key="DicEnabled" Caption="启用" RefKey="DicEnabled" Activity="02"/>
+        <Operation Key="DicDisabled" Caption="停用" RefKey="DicDisabled" Activity="02"/>
+        <Operation Key="DicInvalid" Caption="作废" RefKey="DicInvalid" Activity="02"/>
+        <Operation Key="DicDelete" Caption="删除" RefKey="DicDelete" Activity="06"/>
+        <Operation Key="DicRefresh" Caption="刷新" RefKey="DicRefresh"/>
+        <Operation Key="SetPassWord" Caption="设置密码" Visible="false" Enable="ReadOnly()&amp;&amp;GetOID()&gt;0" Activity="02">
+            <Action>
+                <![CDATA[ERPShowModal({ERP_SetPassWord}, GetCallFormula('SetPassWord_ShowEvent', GetOID()));]]>
+            </Action>
+        </Operation>
+        <Operation Key="SetDefaultPassWord" Caption="设置默认密码" Visible="Macro_IsAdmin()" Enable="ReadOnly()&amp;&amp;GetOID()&gt;0" Activity="02">
+            <Action>
+                <![CDATA[Macro_SetOperatorDefaultPassWord_Exp();ConfirmMsg('OPERATOR001','默认密码设置成功')]]>
+            </Action>
+        </Operation>
+        <Operation Key="UnLockedOpt" Caption="解锁" Visible="Macro_IsAdmin()" Enable="ReadOnly()&amp;&amp;GetOID()&gt;0&amp;&amp;Macro_IsLocked()" Activity="02">
+            <Action>
+                <![CDATA[var Locked = Macro_UnLocked();
+        IIF(Locked==true,ConfirmMsg('OPERATOR002','解锁成功'),ConfirmMsg('OPERATOR003','解锁失败'));parent.RefreshOperation();]]>
+            </Action>
+        </Operation>
+        <Operation Key="LockedOpt" Caption="锁定" Visible="false" Enable="ReadOnly()&amp;&amp;GetOID()&gt;0" Activity="02">
+            <Action>
+                <![CDATA[var Locked = Macro_Locked();
+        IIF(Locked==true,ConfirmMsg('OPERATOR004','锁定成功'),ConfirmMsg('OPERATOR005','锁定失败'));parent.RefreshOperation();]]>
+            </Action>
+        </Operation>
+        <Operation Key="Lang" Caption="多语言" RefKey="Lang" Activity="Y10"/>
+        <Operation Key="ShowDataLog" Caption="查看数据日志" RefKey="ShowDataLog" Activity="Y08"/>
+        <Operation Key="DicExit" Caption="关闭" RefKey="DicExit"/>
+    </OperationCollection>
+    <Body>
+        <Block>
+            <TabPanel Key="root" Caption="TabPanel1" Height="100%">
+                <GridLayoutPanel Key="BasisInfoGridLayoutPanel" Caption="基本信息" Height="100%" Padding="8px" TopPadding="24px">
+                    <TextEditor Key="Code" Caption="代码" LabelType="M" X="0" Y="2" Visible="false" Case="Upper">
+                        <DataBinding TableKey="SYS_Operator" ColumnKey="Code" Required="true">
+                            <DefaultFormulaValue>
+                                <![CDATA[com.bokesoft.erp.basis.dictionary.DictionaryFunction.ComposeCode('ClientID',ClientID,'UseCode',UseCode)]]>
+                            </DefaultFormulaValue>
+                        </DataBinding>
+                    </TextEditor>
+                    <TextEditor Key="Name" Caption="名称" X="0" Y="1">
+                        <DataBinding DefaultFormulaValue="Macro_MultiLangText('SYS_Operator','Name')"/>
+                    </TextEditor>
+                    <TextEditor Key="UseCode" Caption="代码" LabelType="M" X="0" Y="0" Case="Upper">
+                        <DataBinding TableKey="SYS_Operator" ColumnKey="UseCode" Required="true"/>
+                    </TextEditor>
+                    <TextEditor Key="Password" Caption="密码" LabelType="M" X="0" Y="3" Visible="false">
+                        <DataBinding TableKey="SYS_Operator" ColumnKey="Password"/>
+                    </TextEditor>
+                    <NumberEditor Key="LoginTime" Caption="登陆次数" X="0" Y="4" Visible="false" Precision="9" Scale="0">
+                        <DataBinding TableKey="SYS_Operator" ColumnKey="LoginTime"/>
+                        <Format HAlign="Right"/>
+                    </NumberEditor>
+                    <TextEditor Key="Notes" Caption="备注" X="0" Y="2">
+                        <DataBinding TableKey="SYS_Operator" ColumnKey="Notes"/>
+                    </TextEditor>
+                    <Dict Key="AuthorityUserGroupID" Caption="用户组" LabelType="M" X="0" Y="3" ItemKey="AuthorityUserGroup">
+                        <DataBinding TableKey="SYS_Operator" ColumnKey="AuthorityUserGroupID"/>
+                    </Dict>
+                    <RowDefCollection RowHeight="30" RowGap="24">
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                    </RowDefCollection>
+                    <ColumnDefCollection ColumnGap="16">
+                        <ColumnDef Width="330px"/>
+                    </ColumnDefCollection>
+                </GridLayoutPanel>
+                <GridLayoutPanel Key="ErpInfoGridLayoutPanel" Caption="用户ERP信息" Padding="8px" TopPadding="24px">
+                    <Dict Key="LanguageID" Caption="语言" LabelType="M" X="0" Y="0" Visible="false" ItemKey="Language">
+                        <DataBinding TableKey="SYS_Operator" ColumnKey="LanguageID"/>
+                    </Dict>
+                    <ComboBox Key="DecimalFormat" Caption="十进制格式" LabelType="M" X="0" Y="1" Visible="false" SourceType="ParaGroup" GroupKey="DecimalFormat">
+                        <DataBinding TableKey="SYS_Operator" ColumnKey="DecimalFormat"/>
+                    </ComboBox>
+                    <ComboBox Key="DateFormat" Caption="日期显示格式" LabelType="M" X="0" Y="2" Visible="false" SourceType="ParaGroup" GroupKey="DateFormat">
+                        <DataBinding TableKey="SYS_Operator" ColumnKey="DateFormat"/>
+                    </ComboBox>
+                    <Dict Key="UserToleranceGroupID" Caption="用户容差" LabelType="M" X="0" Y="1" ItemKey="FI_UserToleranceGroup">
+                        <DataBinding TableKey="SYS_Operator" ColumnKey="UserToleranceGroupID"/>
+                    </Dict>
+                    <TextEditor Key="Email" Caption="电子邮箱地址" X="0" Y="2">
+                        <DataBinding TableKey="SYS_Operator" ColumnKey="Email"/>
+                    </TextEditor>
+                    <TextEditor Key="Mobile" Caption="手机号码" LabelType="M" X="0" Y="3">
+                        <DataBinding TableKey="SYS_Operator" ColumnKey="Mobile"/>
+                    </TextEditor>
+                    <Dict Key="EmployeeID" Caption="员工" X="0" Y="4" ItemKey="HR_Employee">
+                        <DataBinding TableKey="SYS_Operator" ColumnKey="EmployeeID"/>
+                    </Dict>
+                    <ComboBox Key="ComboBoxShowType" Caption="下拉显示方式" LabelType="M" X="0" Y="0" SourceType="ParaGroup" Cache="false" GroupKey="ComboBoxShowType">
+                        <DataBinding TableKey="SYS_Operator" ColumnKey="ComboBoxShowType" DefaultValue=" "/>
+                    </ComboBox>
+                    <RowDefCollection RowHeight="30" RowGap="24">
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                    </RowDefCollection>
+                    <ColumnDefCollection ColumnGap="16">
+                        <ColumnDef Width="330px"/>
+                    </ColumnDefCollection>
+                </GridLayoutPanel>
+                <Grid Key="OperatorRoleGrid" Caption="角色" DefaultFitWidth="true" DisabledOption="sum,groupSum" Padding="8px">
+                    <GridColumnCollection>
+                        <GridColumn Key="RoleID" Caption="角色" LabelType="H" Width="240px"/>
+                        <GridColumn Key="BeginDate" Caption="开始时间" LabelType="H" Visible="!GetSessionPara('checkAdminRights')" Width="240px"/>
+                        <GridColumn Key="EndDate" Caption="终止时间" Visible="!GetSessionPara('checkAdminRights')" Width="240px"/>
+                    </GridColumnCollection>
+                    <GridRowCollection>
+                        <GridRow Key="OperatorRoleDtlRow" TableKey="SYS_OperatorRole">
+                            <GridCell Key="RoleID" Caption="角色" CellType="Dict" ItemKey="Role">
+                                <DataBinding ColumnKey="Role" CheckRule="DistinctRow('RoleID')" Required="true"/>
+                            </GridCell>
+                            <GridCell Key="BeginDate" Caption="开始时间" CellType="UTCDatePicker">
+                                <DataBinding ColumnKey="BeginDate" DefaultFormulaValue="DateLong()"/>
+                            </GridCell>
+                            <GridCell Key="EndDate" Caption="终止时间" CellType="UTCDatePicker">
+                                <DataBinding ColumnKey="EndDate" DefaultValue="99991231"/>
+                            </GridCell>
+                        </GridRow>
+                    </GridRowCollection>
+                </Grid>
+                <FlexFlowLayoutPanel Key="BodySystem" Caption="系统信息" Padding="8px">
+                    <Embed Key="BodySystemEmbed" FormKey="BodySystemDictForm" RootKey="SystemInfoPanel">
+                        <Var Key="SystemInfoTableKey" Value="SYS_Operator"/>
+                    </Embed>
+                </FlexFlowLayoutPanel>
+                <FlexGridLayoutPanel Key="HiddenInformation" Caption="隐藏信息" ColumnCount="3" ColumnGap="16" OverflowY="Auto" RowGap="24" Visible="false"/>
+            </TabPanel>
+        </Block>
+    </Body>
+    <MacroCollection>
+        <Macro Key="Macro_SetOperatorDefaultPassWord_Exp">
+            <![CDATA[Macro_SetOperatorDefaultPassWord();Macro_DeletePasswordLogging();]]>
+        </Macro>
+        <Macro Key="Macro_SetOperatorDefaultPassWord">
+            <![CDATA[com.bokesoft.erp.safe.function.SafeFunction.SetOperatorDefaultPassWord(Macro_GetDefaultPassWord(),GetOperator(),GetOID())]]>
+        </Macro>
+        <Macro Key="Macro_DeletePasswordLogging">
+            <![CDATA[com.bokesoft.erp.safe.function.SafeFunction.DeletePasswordLogging(GetOID())]]>
+        </Macro>
+        <Macro Key="Macro_GetDefaultPassWord">
+            <![CDATA[com.bokesoft.erp.safe.function.SafeFunction.GetDefaultPassWord()]]>
+        </Macro>
+        <Macro Key="Macro_Locked">
+            <![CDATA[com.bokesoft.erp.safe.function.SafeFunction.Locked(GetOID())]]>
+        </Macro>
+        <Macro Key="Macro_UnLocked">
+            <![CDATA[com.bokesoft.erp.safe.function.SafeFunction.UnLocked(GetOID())]]>
+        </Macro>
+        <Macro Key="Macro_IsAdmin">
+            <![CDATA[com.bokesoft.erp.safe.function.SafeFunction.IsAdmin()]]>
+        </Macro>
+        <Macro Key="Macro_IsLocked">
+            <![CDATA[com.bokesoft.erp.safe.function.SafeFunction.IsLocked(GetOID())]]>
+        </Macro>
+        <Macro Key="Macro_MidSave_PreTriggers">
+            <![CDATA[com.bokesoft.erp.safe.function.SafeFunction.saveOperatorPreTriggers();
+                com.bokesoft.erp.authority.AuthorityReportFunction.setOperatorOwnRoleModify();]]>
+        </Macro>
+        <Macro Key="Macro_RefreshRightsCache">
+            <![CDATA[com.bokesoft.erp.authority.AuthorityCacheFunction.setClearCacheFlag()]]>
+        </Macro>
+    </MacroCollection>
+</Form>

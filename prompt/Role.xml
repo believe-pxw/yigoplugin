@@ -1,0 +1,929 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Form Key="Role" Caption="角色" FormType="Dict" Version="28" DeliveryClass="C">
+    <DataSource>
+        <DataObject Key="Role" Caption="角色" PrimaryTableKey="SYS_Role" SecondaryType="ChainDict" PrimaryType="Entity" DisplayFields="UseCode;Name" QueryFields="UseCode;Name" Version="1">
+            <TableCollection>
+                <Table Key="SYS_Role" Caption="基本信息">
+                    <Column Key="OID" Caption="对象标识" DataElementKey="OID"/>
+                    <Column Key="POID" Caption="父对象标识" DataElementKey="POID"/>
+                    <Column Key="SOID" Caption="主对象标识" DataElementKey="SOID"/>
+                    <Column Key="VERID" Caption="对象版本" DataElementKey="VERID"/>
+                    <Column Key="DVERID" Caption="对象明细版本" DataElementKey="DVERID"/>
+                    <Column Key="Enable" Caption="启用标记" DefaultValue="1" DataElementKey="Enable"/>
+                    <Column Key="NodeType" DefaultValue="0" DataElementKey="NodeType"/>
+                    <Column Key="ParentID" Caption="上级节点" DefaultValue="0" DataElementKey="ParentID"/>
+                    <Column Key="TLeft" Cache="true" DataElementKey="TLeft"/>
+                    <Column Key="TRight" Cache="true" DataElementKey="TRight"/>
+                    <Column Key="Code" Caption="代码" DataElementKey="Code_50" PrimaryKey="true"/>
+                    <Column Key="Name" Caption="名称" Persist="false" SupportI18n="true" DataElementKey="Name"/>
+                    <Column Key="ClientID" Caption="集团" DataElementKey="ClientID"/>
+                    <Column Key="CreateTime" Caption="创建时间" DataElementKey="CreateTime"/>
+                    <Column Key="Notes" Caption="备注" DataElementKey="Notes"/>
+                    <Column Key="IsAdmin" Caption="管理员标记" DataElementKey="IsAdmin"/>
+                    <Column Key="IsDefaultSupplier" Caption="默认供应商" DataElementKey="IsDefaultSupplier"/>
+                    <Column Key="IsCompositeRole" Caption="复合角色" DataElementKey="IsCompositeRole" Cache="true"/>
+                    <Column Key="UseCode" Caption="代码" Cache="true" SortType="Asc" DataElementKey="UseCode"/>
+                    <Column Key="Creator" Caption="创建人员" DataElementKey="Creator"/>
+                    <Column Key="Modifier" Caption="修改人员" DataElementKey="Modifier"/>
+                    <Column Key="ModifyTime" Caption="修改时间" DataElementKey="ModifyTime"/>
+                    <Column Key="SystemVestKey" Caption="单据Key" DataElementKey="SystemVestKey"/>
+                    <Column Key="ParentRoleID" Caption="来自角色" DataElementKey="ParentRoleID" Cache="true"/>
+                    <Column Key="FormTCode" Persist="false" IgnoreQuery="true" DataElementKey="FormTCode"/>
+                    <Column Key="AuthorityProfileID" Caption="权限参数文件" Persist="false" DataElementKey="AuthoritySingleProfileID" IgnoreQuery="true"/>
+                    <Column Key="FormRightEntryKey" Persist="false" IgnoreQuery="true" DataElementKey="FormRightEntryKey"/>
+                    <Column Key="AuthorityDataStatus" Caption="状态" Persist="false" IgnoreQuery="true" DataElementKey="AuthorityDataStatus"/>
+                </Table>
+                <Table Key="EAU_RoleEntryRights" Caption="菜单权限表" TableMode="Detail">
+                    <Column Key="OID" Caption="对象标识" DataElementKey="OID"/>
+                    <Column Key="SOID" Caption="主对象标识" DataElementKey="SOID" PrimaryKey="true"/>
+                    <Column Key="POID" Caption="父对象标识" DataElementKey="POID"/>
+                    <Column Key="VERID" Caption="对象版本" DataElementKey="VERID"/>
+                    <Column Key="DVERID" Caption="对象明细版本" DataElementKey="DVERID"/>
+                    <Column Key="Sequence" Caption="序号" DataElementKey="Sequence"/>
+                    <Column Key="ItemNumber" Caption="行项目" DataElementKey="ItemNumber" PrimaryKey="true"/>
+                    <Column Key="EntryKey" Caption="菜单标识" DataElementKey="EntryKey"/>
+                </Table>
+                <Table Key="SYS_Role_EntryRights_Query" Caption="菜单权限查询表" TableMode="Detail" SourceType="Custom" Persist="false" Formula="Macro_LoadEntryRights()">
+                    <Column Key="OID" Caption="对象标识" DataElementKey="OID"/>
+                    <Column Key="SOID" Caption="主对象标识" DataElementKey="SOID"/>
+                    <Column Key="POID" Caption="父对象标识" DataElementKey="POID"/>
+                    <Column Key="VERID" Caption="对象版本" DataElementKey="VERID"/>
+                    <Column Key="DVERID" Caption="对象明细版本" DataElementKey="DVERID"/>
+                    <Column Key="EntryKey" Caption="菜单标识" DataElementKey="EntryKey"/>
+                    <Column Key="EntryName" Caption="菜单名称" DataElementKey="EntryName"/>
+                    <Column Key="Parameters" Caption="参数" DataElementKey="Parameters"/>
+                    <Column Key="FormKey" Caption="表单标识" DataElementKey="FormKey"/>
+                    <Column Key="ParentKey" Caption="上级标识" DataElementKey="ParentKey"/>
+                    <Column Key="Type" Caption="类型" DataElementKey="TextEditor_255"/>
+                    <Column Key="TCode" Caption="事务码" DataElementKey="TCode"/>
+                    <Column Key="ChildrenCount" Caption="子节点数量" DataElementKey="ChildrenCount"/>
+                    <Column Key="DetailPreview" Caption="预览信息" Persist="false" IgnoreQuery="true" DataElementKey="TextArea_Text"/>
+                </Table>
+                <Table Key="EAU_RoleFormRights" Caption="表单权限表" TableMode="Detail">
+                    <Column Key="OID" Caption="对象标识" DataElementKey="OID"/>
+                    <Column Key="SOID" Caption="主对象标识" DataElementKey="SOID" PrimaryKey="true"/>
+                    <Column Key="POID" Caption="父对象标识" DataElementKey="POID"/>
+                    <Column Key="VERID" Caption="对象版本" DataElementKey="VERID"/>
+                    <Column Key="DVERID" Caption="对象明细版本" DataElementKey="DVERID"/>
+                    <Column Key="Sequence" Caption="序号" DataElementKey="Sequence"/>
+                    <Column Key="ItemNumber" Caption="行项目" DataElementKey="ItemNumber" PrimaryKey="true"/>
+                    <Column Key="FormKey" Caption="表单标识" DataElementKey="FormKey_ComboBox"/>
+                </Table>
+                <Table Key="EAU_RoleOptRights" Caption="表单操作权限表" TableMode="Detail" ParentKey="EAU_RoleFormRights">
+                    <Column Key="OID" Caption="对象标识" DataElementKey="OID"/>
+                    <Column Key="SOID" Caption="主对象标识" DataElementKey="SOID" PrimaryKey="true"/>
+                    <Column Key="POID" Caption="父对象标识" DataElementKey="POID" PrimaryKey="true"/>
+                    <Column Key="VERID" Caption="对象版本" DataElementKey="VERID"/>
+                    <Column Key="DVERID" Caption="对象明细版本" DataElementKey="DVERID"/>
+                    <Column Key="Sequence" Caption="序号" DataElementKey="Sequence"/>
+                    <Column Key="ItemNumber" Caption="行项目" DataElementKey="ItemNumber" PrimaryKey="true"/>
+                    <Column Key="FormKey" Caption="表单标识" DataElementKey="FormKey"/>
+                    <Column Key="OptKey" Caption="操作标识" DataElementKey="OptKey"/>
+                    <Column Key="IsHasRights" Caption="有权限" DataElementKey="IsHasRights"/>
+                </Table>
+                <Table Key="EAU_RoleFieldRights" Caption="表单字段权限表" TableMode="Detail" ParentKey="EAU_RoleFormRights">
+                    <Column Key="OID" Caption="对象标识" DataElementKey="OID"/>
+                    <Column Key="SOID" Caption="主对象标识" DataElementKey="SOID" PrimaryKey="true"/>
+                    <Column Key="POID" Caption="父对象标识" DataElementKey="POID" PrimaryKey="true"/>
+                    <Column Key="VERID" Caption="对象版本" DataElementKey="VERID"/>
+                    <Column Key="DVERID" Caption="对象明细版本" DataElementKey="DVERID"/>
+                    <Column Key="Sequence" Caption="序号" DataElementKey="Sequence"/>
+                    <Column Key="ItemNumber" Caption="行项目" DataElementKey="ItemNumber" PrimaryKey="true"/>
+                    <Column Key="FormKey" Caption="表单标识" DataElementKey="FormKey"/>
+                    <Column Key="FieldKey" Caption="字段标识" DataElementKey="PanelAndFieldKey" RefCol="FormKey"/>
+                    <Column Key="IsVisible" Caption="可见" DataElementKey="IsVisible"/>
+                    <Column Key="IsEnable" Caption="可编辑" DataElementKey="IsEnable"/>
+                </Table>
+                <Table Key="SYS_RoleOptRights_Tree" Caption="表单操作权限设置表" TableMode="Detail" SourceType="Custom" Persist="false" ParentKey="EAU_RoleFormRights" Formula="Macro_LoadFormOptRightTree()">
+                    <Column Key="OID" Caption="对象标识" DataElementKey="OID"/>
+                    <Column Key="SOID" Caption="主对象标识" DataElementKey="SOID"/>
+                    <Column Key="POID" Caption="父对象标识" DataElementKey="POID"/>
+                    <Column Key="VERID" Caption="对象版本" DataElementKey="VERID"/>
+                    <Column Key="DVERID" Caption="对象明细版本" DataElementKey="DVERID"/>
+                    <Column Key="Sequence" Caption="序号" DataElementKey="Sequence"/>
+                    <Column Key="FormKey" Caption="表单标识" DataElementKey="FormKey"/>
+                    <Column Key="OptKey" Caption="操作标识" DataElementKey="OptKey"/>
+                    <Column Key="Name" Caption="操作名称" DataElementKey="Name"/>
+                    <Column Key="IsHasRights" Caption="有权限" DataElementKey="IsHasRights"/>
+                    <Column Key="OptParentKey" Caption="上级标识" DataElementKey="OptParentKey"/>
+                    <Column Key="ChildrenCount" Caption="子节点数量" DataElementKey="ChildrenCount"/>
+                </Table>
+                <Table Key="SYS_RoleFieldRights_Tree" Caption="表单字段权限设置" TableMode="Detail" SourceType="Custom" Persist="false" ParentKey="EAU_RoleFormRights" Formula="Macro_LoadFormFieldRightTree()">
+                    <Column Key="OID" Caption="对象标识" DataElementKey="OID"/>
+                    <Column Key="SOID" Caption="主对象标识" DataElementKey="SOID"/>
+                    <Column Key="POID" Caption="父对象标识" DataElementKey="POID"/>
+                    <Column Key="VERID" Caption="对象版本" DataElementKey="VERID"/>
+                    <Column Key="DVERID" Caption="对象明细版本" DataElementKey="DVERID"/>
+                    <Column Key="FormKey" Caption="表单标识" DataElementKey="FormKey"/>
+                    <Column Key="FieldKey" Caption="字段标识" DataElementKey="FieldKey" RefCol="FormKey"/>
+                    <Column Key="Name" Caption="字段名称" DataElementKey="Name"/>
+                    <Column Key="IsVisible" Caption="可见" DataElementKey="IsVisible"/>
+                    <Column Key="IsEnable" Caption="可编辑" DataElementKey="IsEnable"/>
+                    <Column Key="FieldParentKey" Caption="上级标识" DataElementKey="FieldParentKey"/>
+                    <Column Key="ChildrenCount" Caption="子节点数量" DataElementKey="ChildrenCount"/>
+                </Table>
+                <Table Key="EAU_RoleOwnTCodeDtl" Caption="角色分配的TCode" TableMode="Detail" IndexPrefix="EAU_RoleOwnTCodeDtl">
+                    <Column Key="OID" Caption="对象标识" DataElementKey="OID"/>
+                    <Column Key="POID" Caption="父对象标识" DataElementKey="POID"/>
+                    <Column Key="SOID" Caption="主对象标识" DataElementKey="SOID" PrimaryKey="true"/>
+                    <Column Key="VERID" Caption="对象版本" DataElementKey="VERID"/>
+                    <Column Key="DVERID" Caption="对象明细版本" DataElementKey="DVERID"/>
+                    <Column Key="MapCount" DefaultValue="0" DataElementKey="MapCount"/>
+                    <Column Key="ItemNumber" Caption="行项目" DataElementKey="ItemNumber" PrimaryKey="true"/>
+                    <Column Key="RoleID" Caption="角色" DataElementKey="RoleID" CodeColumnKey="RoleCode" PrimaryKey="true"/>
+                    <Column Key="RoleCode" Caption="角色代码" DataElementKey="Code_50"/>
+                    <Column Key="TCodeID" Caption="事务码" CodeColumnKey="TCodeCode" DataElementKey="TCodeID" PrimaryKey="true"/>
+                    <Column Key="TCodeCode" Caption="事务码代码" DataElementKey="Code_100"/>
+                </Table>
+                <Table Key="EAU_RoleInCompositeRole" Caption="复合角色中的角色" TableMode="Detail" IndexPrefix="EAU_RoleInCompositeRole">
+                    <Column Key="OID" Caption="对象标识" DataElementKey="OID"/>
+                    <Column Key="POID" Caption="父对象标识" DataElementKey="POID"/>
+                    <Column Key="SOID" Caption="主对象标识" DataElementKey="SOID" PrimaryKey="true"/>
+                    <Column Key="VERID" Caption="对象版本" DataElementKey="VERID"/>
+                    <Column Key="DVERID" Caption="对象明细版本" DataElementKey="DVERID"/>
+                    <Column Key="Sequence" Caption="序号" DataElementKey="Sequence"/>
+                    <Column Key="RoleID" Caption="角色" DataElementKey="RoleID" CodeColumnKey="RoleCode" PrimaryKey="true"/>
+                    <Column Key="RoleCode" Caption="角色代码" DataElementKey="Code_50"/>
+                    <Column Key="IsActive" Caption="激活" DataElementKey="IsActive"/>
+                </Table>
+                <Table Key="EAU_RoleAuthorityProfile" Caption="角色和参数文件对应关系" TableMode="Detail" IndexPrefix="EAU_RoleAuthorityProfile">
+                    <Column Key="OID" Caption="对象标识" DataElementKey="OID"/>
+                    <Column Key="POID" Caption="父对象标识" DataElementKey="POID"/>
+                    <Column Key="SOID" Caption="主对象标识" DataElementKey="SOID"/>
+                    <Column Key="VERID" Caption="对象版本" DataElementKey="VERID"/>
+                    <Column Key="DVERID" Caption="对象明细版本" DataElementKey="DVERID"/>
+                    <Column Key="RoleID" Caption="角色" SortType="Asc" DataElementKey="RoleID" CodeColumnKey="RoleCode" PrimaryKey="true"/>
+                    <Column Key="RoleCode" Caption="角色代码" DataElementKey="Code_50"/>
+                    <Column Key="AuthorityProfileID" Caption="参数文件ID" DataElementKey="AuthorityProfileID" CodeColumnKey="AuthorityProfileCode"/>
+                    <Column Key="AuthorityProfileCode" Caption="参数文件代码" DataElementKey="Code"/>
+                </Table>
+                <Table Key="SYS_RoleOperator_Query" Caption="角色分配用户查询表" TableMode="Detail" SourceType="Custom" Persist="false" Formula="Macro_LoadRoleOperator()">
+                    <Column Key="OID" Caption="对象标识" DataElementKey="OID"/>
+                    <Column Key="POID" Caption="父对象标识" DataElementKey="POID"/>
+                    <Column Key="SOID" Caption="主对象标识" DataElementKey="SOID"/>
+                    <Column Key="VERID" Caption="对象版本" DataElementKey="VERID"/>
+                    <Column Key="DVERID" Caption="对象明细版本" DataElementKey="DVERID"/>
+                    <Column Key="Sequence" Caption="序号" DataElementKey="Sequence"/>
+                    <Column Key="OperatorID" Caption="操作员" DataElementKey="OperatorID"/>
+                    <Column Key="AuthorityUserGroupID" Caption="用户组" DataElementKey="AuthorityUserGroupID"/>
+                    <Column Key="BeginDate" Caption="开始时间" DataElementKey="BeginDate"/>
+                    <Column Key="EndDate" Caption="终止时间" DataElementKey="EndDate"/>
+                    <Column Key="FromCompositeRoleID" Caption="来自复合角色" DataElementKey="FromCompositeRoleID"/>
+                </Table>
+            </TableCollection>
+        </DataObject>
+    </DataSource>
+    <OperationCollection>
+        <Operation Key="DicNew" Caption="新增" RefKey="DicNew" Activity="01"/>
+        <Operation Key="DicNew4CompositeRole" Caption="新增复合角色" Enable="!IsNewOrEdit()" NeedAccessLog="true" Activity="01">
+            <Action>
+                <![CDATA[parent.UICheck();parent.PushPara('CreateCompositeRole',1);parent.NewDict(GetPara('FormKey'));parent.PushPara('CreateCompositeRole',0);]]>
+            </Action>
+        </Operation>
+        <Operation Key="CopyNewRole" Caption="复制新增" Visible="!GetSessionPara('checkAdminRights')" Enable="!IsNewOrEdit() &amp;&amp;  parent.GetSelectedValue('DictView','OID') &gt; 0" Activity="01">
+            <Action>
+                <![CDATA[if(Code==''){
+                    ConfirmMsg('当前代码为空，无法复制新增！', '当前代码为空，无法复制新增！');
+                }else{
+                    PushPara('SourceClientCode',ToUpper(GetDictValue('Client', ClientID, 'Code')));PushPara('SourceUseCode',UseCode);ERPShowModal('CopyNewRole','','',"Edit");
+                }]]>
+            </Action>
+        </Operation>
+        <Operation Key="DicModify" Caption="修改" RefKey="DicModify" Activity="02"/>
+        <Operation Key="DicSave" Caption="保存" RefKey="DicSave"/>
+        <Operation Key="DicCancel" Caption="取消" RefKey="DicCancel"/>
+        <Operation Key="DicEnabled" Caption="启用" RefKey="DicEnabled" Activity="02"/>
+        <Operation Key="DicDisabled" Caption="停用" RefKey="DicDisabled" Activity="02">
+            <Action>
+                <![CDATA[parent.UICheck();UICheck();Macro_CheckDict_HasChildren();Macro_CheckDict_Lock_Right();Macro_EnabledDict(0);Macro_SynSaveTR(GetOID(),0);
+                    parent.RefreshDictView('DictView',GetDataObjectKey(),GetOID(),GetInitOperationState());]]>
+            </Action>
+        </Operation>
+        <Operation Key="DicInvalid" Caption="作废" RefKey="DicInvalid" Activity="02"/>
+        <Operation Key="DicDelete" Caption="删除" RefKey="DicDelete" Activity="06"/>
+        <Operation Key="DicRefresh" Caption="刷新" RefKey="DicRefresh"/>
+        <Operation Key="ClearCache" Caption="清除权限缓存" Visible="!GetSessionPara('checkAdminRights')">
+            <Action>
+                <![CDATA[Macro_ClearCache();ConfirmMsg('AUTH101','权限缓存清除完成！')]]>
+            </Action>
+        </Operation>
+        <Operation Key="EntryRights" Caption="菜单权限查询" Visible="GetSessionPara('checkAdminRights')">
+            <Action>
+                <![CDATA[parent.ERPShowModal('RoleRightsEntry_Rpt','Macro_RoleRightsEntry_ShowEvent('&'"'&GetValue('UseCode')&'","'&GetValue('Name')&'"'&')','newtab')]]>
+            </Action>
+        </Operation>
+        <Operation Key="DictRights" Caption="数据权限查询" Visible="GetSessionPara('checkAdminRights')">
+            <Action>
+                <![CDATA[parent.ERPShowModal('RoleRightsDict_Rpt','Macro_RoleRightsDict_ShowEvent('&'"'&GetValue('UseCode')&'","'&GetValue('Name')&'"'&')','newtab')]]>
+            </Action>
+        </Operation>
+        <Operation Key="OptRights" Caption="表单工具栏权限查询" Visible="GetSessionPara('checkAdminRights')">
+            <Action>
+                <![CDATA[parent.ERPShowModal('RoleRightsFormOpt_Rpt','Macro_RoleRightsFormOpt_ShowEvent('&'"'&GetValue('UseCode')&'","'&GetValue('Name')&'"'&')','newtab')]]>
+            </Action>
+        </Operation>
+        <Operation Key="NoRightsFields" Caption="表单无权限字段查询" Visible="GetSessionPara('checkAdminRights')">
+            <Action>
+                <![CDATA[parent.ERPShowModal('RoleRightsFields_Rpt','Macro_RoleRightsFields_ShowEvent('&'"'&GetValue('UseCode')&'","'&GetValue('Name')&'"'&')','newtab')]]>
+            </Action>
+        </Operation>
+        <Operation Key="Lang" Caption="多语言" RefKey="Lang" Activity="Y10"/>
+        <Operation Key="ShowDataLog" Caption="查看数据日志" RefKey="ShowDataLog" Activity="Y08"/>
+        <Operation Key="DicExit" Caption="关闭" RefKey="DicExit"/>
+    </OperationCollection>
+    <Body>
+        <Block>
+            <FlexFlowLayoutPanel Key="root">
+                <TabPanel Key="main_container" Caption="TabPanel1" Height="100%">
+                    <GridLayoutPanel Key="BasisInfoGridLayoutPanel" Caption="基本信息" Height="100%" Padding="8px" TopPadding="24px">
+                        <TextEditor Key="Code" Caption="代码" LabelType="M" X="0" Y="3" Visible="false" Case="Upper">
+                            <DataBinding TableKey="SYS_Role" ColumnKey="Code">
+                                <DefaultFormulaValue>
+                                    <![CDATA[com.bokesoft.erp.basis.dictionary.DictionaryFunction.ComposeCode('ClientID',ClientID,'UseCode',UseCode)]]>
+                                </DefaultFormulaValue>
+                            </DataBinding>
+                        </TextEditor>
+                        <TextEditor Key="Name" Caption="名称" X="0" Y="1">
+                            <DataBinding DefaultFormulaValue="Macro_MultiLangText('SYS_Role','Name')"/>
+                        </TextEditor>
+                        <Dict Key="ParentRoleID" Caption="来自角色" LabelType="M" X="0" Y="2" Visible="false" ItemKey="Role">
+                            <DataBinding TableKey="SYS_Role" ColumnKey="ParentRoleID">
+                                <ValueChanged>
+                                    <![CDATA[if(ParentRoleID>0){        Macro_CopyFormRights();}]]>
+                                </ValueChanged>
+                            </DataBinding>
+                        </Dict>
+                        <TextButton Key="SelectParentRoleID" Caption="角色继承" X="0" Y="2" Visible="!GetSessionPara('checkAdminRights') &amp;&amp; !IsCompositeRole" UseFormulaModel="true">
+                            <DataBinding>
+                                <DefaultFormulaValue>
+                                    <![CDATA[IIF(ParentRoleID>0,'角色继承于：'+GetDictValue('Role',ParentRoleID,'Name'),'无角色继承');]]>
+                                </DefaultFormulaValue>
+                            </DataBinding>
+                            <OnClick>
+                                <![CDATA[var Msg = Macro_CanRoleInheritance();IIF(Length(Msg) <= 0,ERPShowModal('SelectParentRole'),ConfirmMsg(Msg, Msg));]]>
+                            </OnClick>
+                        </TextButton>
+                        <CheckBox Key="IsAdmin" Caption="是管理员" X="0" Y="2" Visible="GetSessionPara('checkAdminRights')">
+                            <DataBinding TableKey="SYS_Role" ColumnKey="IsAdmin"/>
+                        </CheckBox>
+                        <TextEditor Key="UseCode" Caption="代码" LabelType="M" X="0" Y="0" Case="Upper">
+                            <DataBinding TableKey="SYS_Role" ColumnKey="UseCode"/>
+                        </TextEditor>
+                        <CheckBox Key="IsDefaultSupplier" Caption="默认供应商" LabelType="M" X="0" Y="2" Visible="false">
+                            <DataBinding TableKey="SYS_Role" ColumnKey="IsDefaultSupplier"/>
+                        </CheckBox>
+                        <TextEditor Key="Notes" Caption="备注" X="0" Y="3">
+                            <DataBinding TableKey="SYS_Role" ColumnKey="Notes"/>
+                        </TextEditor>
+                        <RowDefCollection RowHeight="30" RowGap="24">
+                            <RowDef/>
+                            <RowDef/>
+                            <RowDef/>
+                            <RowDef/>
+                        </RowDefCollection>
+                        <ColumnDefCollection ColumnGap="16">
+                            <ColumnDef Width="330px"/>
+                        </ColumnDefCollection>
+                    </GridLayoutPanel>
+                    <Grid Key="RoleGrid" Caption="角色" Visible="IsCompositeRole">
+                        <GridColumnCollection>
+                            <GridColumn Key="RoleID" Caption="角色" Width="200px" LabelType="M"/>
+                            <GridColumn Key="IsActive" Caption="激活" Width="80px" LabelType="M"/>
+                        </GridColumnCollection>
+                        <GridRowCollection>
+                            <GridRow Key="RoleGridRow" TableKey="EAU_RoleInCompositeRole">
+                                <GridCell Key="RoleID" Caption="角色" CellType="Dict" ItemKey="Role">
+                                    <DataBinding ColumnKey="RoleID" CheckRule="DistinctRow('RoleID')" Required="true"/>
+                                    <ItemFilter ItemKey="Role">
+                                        <Filter Key="Filter" Type="FieldValue">
+                                            <FilterValue Index="1" FieldKey="IsCompositeRole" RefValue="0" Type="Const"/>
+                                        </Filter>
+                                    </ItemFilter>
+                                </GridCell>
+                                <GridCell Key="IsActive" Caption="激活" CellType="CheckBox">
+                                    <DataBinding ColumnKey="IsActive" DefaultValue="1"/>
+                                </GridCell>
+                            </GridRow>
+                        </GridRowCollection>
+                    </Grid>
+                    <SplitPanel Key="EntryRightsSplitPanel" Caption="菜单权限" Height="100%" OverflowY="Hidden" X="0" Y="0">
+                        <FlexFlowLayoutPanel Key="EntryRightsFlexFlowLayoutPanel" Caption="菜单权限" Visible="!GetSessionPara('checkAdminRights')">
+                            <GridLayoutPanel Key="EntryRightsButtonGridLayoutPanel" Caption="菜单权限按钮面板" Padding="8px">
+                                <Button Key="SetEntry" Caption="分配菜单" X="0" Y="0" Type="Normal" Visible="!IsCompositeRole">
+                                    <OnClick>
+                                        <![CDATA[IIF(ParentRoleID<=0,ERPShowModal('SetEntry'),ConfirmMsg('当前角色为子角色，无法分配菜单！', '当前角色为子角色，无法分配菜单！'));]]>
+                                    </OnClick>
+                                </Button>
+                                <Button Key="LoadEntry" Caption="查看菜单" X="0" Y="0" Type="Normal" Enable="true" Visible="IsCompositeRole">
+                                    <OnClick>
+                                        <![CDATA[Macro_LoadCompositeRoleEntryRights();]]>
+                                    </OnClick>
+                                </Button>
+                                <RowDefCollection RowHeight="30" RowGap="6">
+                                    <RowDef Height="32px"/>
+                                </RowDefCollection>
+                                <ColumnDefCollection ColumnGap="20">
+                                    <ColumnDef Width="230px"/>
+                                    <ColumnDef Width="180px"/>
+                                    <ColumnDef Width="100px"/>
+                                    <ColumnDef Width="100px"/>
+                                    <ColumnDef Width="100px"/>
+                                    <ColumnDef Width="100%"/>
+                                </ColumnDefCollection>
+                            </GridLayoutPanel>
+                            <GridLayoutPanel Key="EntryRightsGridLayoutPanel" Caption="菜单面板" Height="100%" TopPadding="24px">
+                                <Grid Key="EntryRightsGrid" Caption="EntryRightsGrid" NewEmptyRow="false" ShowRowHead="false" Enable="false" DisabledOption="insert,shift,delete" Padding="8px">
+                                    <GridColumnCollection>
+                                        <GridColumn Key="OID" Caption="对象标识" Visible="false" Width="80px"/>
+                                        <GridColumn Key="ParentKey" Caption="上级标识" Visible="false" Width="80px"/>
+                                        <GridColumn Key="EntryKey" Caption="菜单标识" LabelType="H" Visible="false" Width="80px"/>
+                                        <GridColumn Key="EntryName" Caption="菜单名称" LabelType="H" Width="240px"/>
+                                        <GridColumn Key="Parameters" Caption="参数列表" LabelType="H" Visible="false" Width="80px"/>
+                                        <GridColumn Key="FormKey" Caption="表单" Visible="false" Width="80px"/>
+                                        <GridColumn Key="Type" Caption="类型" Visible="false" Width="80px"/>
+                                        <GridColumn Key="TCode" Caption="事务码" LabelType="H" Visible="false" Width="80px"/>
+                                        <GridColumn Key="DetailPreview" Caption="预览信息" Visible="false" Width="80px"/>
+                                    </GridColumnCollection>
+                                    <GridRowCollection>
+                                        <GridRow Key="row1" TableKey="SYS_Role_EntryRights_Query" RowHeight="30">
+                                            <GridCell Key="OID" Caption="对象标识" CellType="TextEditor" MaxLength="-1">
+                                                <DataBinding ColumnKey="OID"/>
+                                            </GridCell>
+                                            <GridCell Key="ParentKey" Caption="上级标识" CellType="TextEditor" MaxLength="-1">
+                                                <DataBinding ColumnKey="ParentKey"/>
+                                            </GridCell>
+                                            <GridCell Key="EntryKey" Caption="菜单标识" CellType="TextEditor" MaxLength="-1">
+                                                <DataBinding ColumnKey="EntryKey"/>
+                                            </GridCell>
+                                            <GridCell Key="EntryName" Caption="菜单名称" CellType="TextEditor" MaxLength="-1">
+                                                <DataBinding ColumnKey="EntryName"/>
+                                            </GridCell>
+                                            <GridCell Key="Parameters" Caption="参数列表" CellType="TextEditor" MaxLength="-1">
+                                                <DataBinding ColumnKey="Parameters"/>
+                                            </GridCell>
+                                            <GridCell Key="FormKey" Caption="表单" CellType="TextEditor" MaxLength="-1">
+                                                <DataBinding ColumnKey="FormKey"/>
+                                            </GridCell>
+                                            <GridCell Key="Type" Caption="类型" CellType="TextEditor" MaxLength="-1">
+                                                <DataBinding ColumnKey="Type"/>
+                                            </GridCell>
+                                            <GridCell Key="TCode" Caption="事务码" CellType="TextEditor">
+                                                <DataBinding ColumnKey="TCode"/>
+                                            </GridCell>
+                                            <GridCell Key="DetailPreview" Caption="预览信息" CellType="TextArea" MaxLength="65535">
+                                                <DataBinding ColumnKey="DetailPreview"/>
+                                            </GridCell>
+                                            <RowTree Foreign="ParentKey" Parent="EntryKey" TreeType="Common" CellKey="EntryName" Type="JavaScript">
+                                                <![CDATA[]]>
+                                            </RowTree>
+                                        </GridRow>
+                                    </GridRowCollection>
+                                    <RowClick>
+                                        <![CDATA[IIF(Length(DetailPreview)==0&&Type=='EntryItem', SetValue('DetailPreview', Macro_Preview(Type, EntryKey)), true)]]>
+                                    </RowClick>
+                                </Grid>
+                                <RowDefCollection RowGap="5">
+                                    <RowDef Height="100%"/>
+                                </RowDefCollection>
+                                <ColumnDefCollection ColumnGap="5">
+                                    <ColumnDef Width="100%"/>
+                                    <ColumnDef/>
+                                </ColumnDefCollection>
+                            </GridLayoutPanel>
+                        </FlexFlowLayoutPanel>
+                        <FlexFlowLayoutPanel Key="EntryRightsSub">
+                            <SubDetail Key="EntryRightsSubDetail" Caption="SubDetail1" BindingGridKey="EntryRightsGrid" Height="pref">
+                                <GridLayoutPanel Key="second_head" Caption="表单权限" Height="pref" Padding="8px" TopPadding="24px" Visible="true">
+                                    <TextEditor Key="SubKey" Caption="标识" X="0" Y="0" Visible="false" Enable="false" BindingCellKey="EntryKey" MaxLength="-1"/>
+                                    <TextEditor Key="SubCaption" Caption="名称" X="0" Y="0" Visible="false" Enable="false" BindingCellKey="EntryName" MaxLength="-1">
+                                        <DataBinding/>
+                                    </TextEditor>
+                                    <TextEditor Key="SubParameters" Caption="参数列表" X="0" Y="0" Visible="false" BindingCellKey="Parameters" MaxLength="-1">
+                                        <DataBinding/>
+                                    </TextEditor>
+                                    <TextEditor Key="SubFormKey" Caption="表单" X="0" Y="0" Visible="false" BindingCellKey="FormKey">
+                                        <DataBinding/>
+                                    </TextEditor>
+                                    <TextEditor Key="SubTCode" Caption="TCode" X="0" Y="0" Visible="false" BindingCellKey="TCode">
+                                        <DataBinding/>
+                                    </TextEditor>
+                                    <RichEditor Key="DetailPreview__mirror" Caption="DetailPreview__mirror" X="0" Y="0" YSpan="2" BindingCellKey="DetailPreview" Visible="true" Enable="false"/>
+                                    <RowDefCollection RowHeight="30" RowGap="5">
+                                        <RowDef Height="32px"/>
+                                        <RowDef Height="100%"/>
+                                    </RowDefCollection>
+                                    <ColumnDefCollection ColumnGap="5">
+                                        <ColumnDef Width="100%"/>
+                                    </ColumnDefCollection>
+                                </GridLayoutPanel>
+                            </SubDetail>
+                        </FlexFlowLayoutPanel>
+                        <SplitSize Size="50%"/>
+                        <SplitSize Size="50%"/>
+                    </SplitPanel>
+                    <FlexFlowLayoutPanel Key="PersistEntryRightsFlexFlowLayoutPanel" Caption="持久化菜单权限数据" Visible="false">
+                        <SplitPanel Key="PersistEntryRightsPanel" Caption="持久化菜单权限" Orientation="Vertical">
+                            <Grid Key="PersistEntryRightsGrid" Caption="菜单权限" NewEmptyRow="false" Enable="false" DisabledOption="insert,shift,delete" Padding="8px">
+                                <GridColumnCollection>
+                                    <GridColumn Key="PersistEntryOID" Caption="对象标识" Width="80px"/>
+                                    <GridColumn Key="PersistEntryItemNumber" Caption="序号" Visible="false" Width="80px"/>
+                                    <GridColumn Key="PersistEntryKey" Caption="菜单标识" LabelType="H" Width="80px"/>
+                                </GridColumnCollection>
+                                <GridRowCollection>
+                                    <GridRow Key="row1" TableKey="EAU_RoleEntryRights" RowHeight="30">
+                                        <GridCell Key="PersistEntryOID" Caption="对象标识" CellType="NumberEditor">
+                                            <DataBinding ColumnKey="OID"/>
+                                        </GridCell>
+                                        <GridCell Key="PersistEntryItemNumber" Caption="行项目" CellType="NumberEditor" Enable="!ReadOnly() &amp;&amp; IsNewDtl(false)" Precision="9" Scale="0" IntegerValue="true">
+                                            <DataBinding ColumnKey="ItemNumber"/>
+                                        </GridCell>
+                                        <GridCell Key="PersistEntryKey" Caption="菜单标识" CellType="TextEditor" MaxLength="-1">
+                                            <DataBinding ColumnKey="EntryKey"/>
+                                        </GridCell>
+                                    </GridRow>
+                                </GridRowCollection>
+                            </Grid>
+                            <SplitSize Size="100%"/>
+                        </SplitPanel>
+                    </FlexFlowLayoutPanel>
+                    <FlexFlowLayoutPanel Key="DataRightsFlexFlowLayoutPanel" Caption="数据权限" Visible="!GetSessionPara('checkAdminRights') &amp;&amp; !IsCompositeRole">
+                        <GridLayoutPanel Key="DataRightsGridLayoutPanel" Caption="DataRightsGridLayoutPanel" Padding="8px" TopPadding="24px">
+                            <Dict Key="AuthorityProfileID" Caption="权限参数文件" LabelType="M" X="0" Y="0" Enable="false" XSpan="2" ItemKey="AuthoritySingleProfile">
+                                <DataBinding TableKey="SYS_Role" ColumnKey="AuthorityProfileID" DefaultFormulaValue="Macro_GetAuthorityProfileID()"/>
+                            </Dict>
+                            <ComboBox Key="AuthorityDataStatus" Caption="状态" LabelType="M" X="0" Y="1" Enable="false" XSpan="2" Cache="false">
+                                <DataBinding TableKey="SYS_Role" ColumnKey="AuthorityDataStatus" DefaultFormulaValue="Macro_GetAuthorityDataStatus()"/>
+                                <Item Key="A" Caption="已经生成权限参数文件" Value="A"/>
+                                <Item Key="None" Caption="不存在权限数据" Value="_"/>
+                            </ComboBox>
+                            <Button Key="ModifyAuthorityData" Caption="更改权限数据" X="0" Y="2" Visible="IsNewOrEdit()" Type="Normal">
+                                <OnClick>
+                                    <![CDATA[SetPara('AuthorityDataShowType', 'Modify');
+                                        if(IsNew()) {
+                                            ConfirmMsg('AUTH104','当前角色为初始创建，请先保存基础信息后再试！')
+                                        } else {
+                                            Macro_CheckEntryChanged(RoleOID);ERPShowModal('PermissionParameterFile','LoadData()','','Edit')
+                                        }]]>
+                                </OnClick>
+                            </Button>
+                            <Button Key="ShowAuthorityData" Caption="显示权限数据" X="0" Y="2" Visible="!IsNewOrEdit()" Enable="!IsNew()" Type="Normal">
+                                <OnClick>
+                                    <![CDATA[SetPara('AuthorityDataShowType', 'Show');ERPShowModal('PermissionParameterFile_Vest','LoadData()');]]>
+                                </OnClick>
+                            </Button>
+                            <RowDefCollection RowHeight="30" RowGap="24">
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                                <RowDef Height="32px"/>
+                            </RowDefCollection>
+                            <ColumnDefCollection ColumnGap="16">
+                                <ColumnDef Width="100px"/>
+                                <ColumnDef Width="33%"/>
+                                <ColumnDef Width="100px"/>
+                                <ColumnDef Width="33%"/>
+                                <ColumnDef Width="100px"/>
+                                <ColumnDef Width="33%"/>
+                            </ColumnDefCollection>
+                        </GridLayoutPanel>
+                    </FlexFlowLayoutPanel>
+                     <FlexFlowLayoutPanel Key="FormRightsFlexFlowLayoutPanel" Caption="表单权限" Visible="!GetSessionPara('checkAdminRights') &amp;&amp; !IsCompositeRole">
+                        <GridLayoutPanel Key="FormRightsButtonGridLayoutPanel" Caption="表单权限按钮面板" Padding="8px">
+                            <Button Key="DeriveFormRights" Caption="派生表单权限" X="0" Y="0" Enable="ReadOnly()" Type="Normal">
+                                <OnClick>
+                                    <![CDATA[Confirm('将会覆盖所有继承角色的表单权限，确定要派生吗？','YES_NO',{
+                                        YES:{
+                                            Macro_DeriveFormRightsFormula();
+                                        },
+                                        NO:{
+                                        }
+                                    })]]>
+                                </OnClick>
+                            </Button>
+                            <Button Key="AddFormKeys" Caption="根据菜单添加表单" X="1" Y="0" Enable="!ReadOnly()" Type="Normal">
+                                <OnClick>
+                                    <![CDATA[Macro_AddFormKeys();]]>
+                                </OnClick>
+                            </Button>
+                            <RowDefCollection RowHeight="30" RowGap="6">
+                                <RowDef Height="32px"/>
+                            </RowDefCollection>
+                            <ColumnDefCollection ColumnGap="20">
+                                <ColumnDef Width="230px"/>
+                                <ColumnDef Width="230px"/>
+                                <ColumnDef Width="100px"/>
+                                <ColumnDef Width="100px"/>
+                                <ColumnDef Width="100px"/>
+                                <ColumnDef Width="100%"/>
+                            </ColumnDefCollection>
+                        </GridLayoutPanel>
+                        <SplitPanel Key="FormRightsPanel" Caption="表单权限" Orientation="Vertical" Height="100%" Visible="!GetSessionPara('checkAdminRights')">
+                            <Grid Key="FormGrid" Caption="表单" SerialSeq="true" Padding="8px">
+                                <GridColumnCollection>
+                                    <GridColumn Key="IsSelect3" Width="32px"/>
+                                    <GridColumn Key="FormOID" Caption="OID" Visible="false" Width="80px"/>
+                                    <GridColumn Key="FormItemNumber" Caption="序号" Visible="false" Width="80px"/>
+                                    <GridColumn Key="FormKeyList" Caption="表单名称" Width="300px"/>
+                                </GridColumnCollection>
+                                <GridRowCollection>
+                                    <GridRow Key="row2" TableKey="EAU_RoleFormRights">
+                                        <GridCell Key="IsSelect3" Caption="选择" CellType="CheckBox" IsSelect="true">
+                                            <DataBinding/>
+                                        </GridCell>
+                                        <GridCell Key="FormOID" Caption="OID" CellType="NumberEditor">
+                                            <DataBinding ColumnKey="OID"/>
+                                        </GridCell>
+                                        <GridCell Key="FormItemNumber" Caption="行项目" CellType="NumberEditor" Enable="!ReadOnly() &amp;&amp; IsNewDtl(false)" Precision="9" Scale="0" IntegerValue="true">
+                                            <DataBinding ColumnKey="ItemNumber" DefaultFormulaValue="Macro_GenItemNumber('FormGrid');"/>
+                                        </GridCell>
+                                        <GridCell Key="FormKeyList" Caption="表单名称" CellType="ComboBox" Enable="FormKeyList == ''" SourceType="Formula" Cache="false">
+                                            <DataBinding ColumnKey="FormKey">
+                                                <ValueChanged>
+                                                    <![CDATA[if(GetPara('IOOPERATOR')!=1){            Macro_SetFormTree(FormOID,FormKeyList,GetOID());            }]]>
+                                                </ValueChanged>
+                                            </DataBinding>
+                                            <FormulaItems>
+                                                <![CDATA[Macro_GetAllForms();]]>
+                                            </FormulaItems>
+                                        </GridCell>
+                                    </GridRow>
+                                </GridRowCollection>
+                            </Grid>
+                            <SubDetail Key="subDetail" Caption="权限字段值" BindingGridKey="FormGrid" X="0" Y="1">
+                                <SplitPanel Key="FormRights" Caption="表单权限">
+                                    <Grid Key="FormFieldGrid" Caption="表单字段" SerialSeq="true" DisabledOption="insert,delete" Padding="8px">
+                                        <GridColumnCollection>
+                                            <GridColumn Key="FieldOID" Caption="对象标识" Visible="false" Width="80px"/>
+                                            <GridColumn Key="FieldRoleID" Caption="角色" Visible="false" Width="80px"/>
+                                            <GridColumn Key="FieldParentKey" Caption="上级标识" LabelType="H" Visible="false" Width="80px"/>
+                                            <GridColumn Key="FieldKey" Caption="字段标识" Visible="false" Width="80px"/>
+                                            <GridColumn Key="FieldName" Caption="字段名称" Width="240px"/>
+                                            <GridColumn Key="IsFieldVisible" Caption="可见" LabelType="H" Width="80px"/>
+                                            <GridColumn Key="IsFieldEnable" Caption="可编辑" LabelType="H" Width="80px"/>
+                                        </GridColumnCollection>
+                                        <GridRowCollection>
+                                            <GridRow Key="row1" TableKey="SYS_RoleFieldRights_Tree" RowHeight="30">
+                                                <GridCell Key="FieldOID" Caption="对象标识" CellType="NumberEditor">
+                                                    <DataBinding ColumnKey="OID"/>
+                                                </GridCell>
+                                                <GridCell Key="FieldRoleID" Caption="角色" CellType="Dict" ItemKey="Role">
+                                                    <DataBinding ColumnKey="SOID"/>
+                                                </GridCell>
+                                                <GridCell Key="FieldParentKey" Caption="上级标识" CellType="TextEditor" MaxLength="-1">
+                                                    <DataBinding ColumnKey="FieldParentKey"/>
+                                                </GridCell>
+                                                <GridCell Key="FieldKey" Caption="字段标识" CellType="TextEditor" MaxLength="-1">
+                                                    <DataBinding ColumnKey="FieldKey"/>
+                                                </GridCell>
+                                                <GridCell Key="FieldName" Caption="字段名称" CellType="TextEditor" Enable="false" MaxLength="-1">
+                                                    <DataBinding ColumnKey="Name"/>
+                                                </GridCell>
+                                                <GridCell Key="IsFieldVisible" Caption="可见" CellType="CheckBox" MaxLength="-1" CheckedType="PS" UnCheckedType="PS">
+                                                    <DataBinding ColumnKey="IsVisible">
+                                                        <ValueChanged>
+                                                            <![CDATA[IIF(IsFieldVisible,true,SetValue('IsFieldEnable',IsFieldVisible))]]>
+                                                        </ValueChanged>
+                                                    </DataBinding>
+                                                </GridCell>
+                                                <GridCell Key="IsFieldEnable" Caption="可编辑" CellType="CheckBox" MaxLength="-1" CheckedType="PS" UnCheckedType="PS">
+                                                    <DataBinding ColumnKey="IsEnable">
+                                                        <ValueChanged>
+                                                            <![CDATA[IIF(IsFieldEnable,SetValue('IsFieldVisible',IsFieldEnable),true)]]>
+                                                        </ValueChanged>
+                                                    </DataBinding>
+                                                </GridCell>
+                                                <RowTree Foreign="FieldParentKey" Parent="FieldKey" TreeType="Common" CellKey="FieldName" Type="JavaScript" Expand="true">
+                                                    <![CDATA[]]>
+                                                </RowTree>
+                                            </GridRow>
+                                        </GridRowCollection>
+                                    </Grid>
+                                    <Grid Key="FormOptGrid" Caption="表单权限" NewEmptyRow="false" SerialSeq="true" DisabledOption="insert,shift,delete" Padding="8px">
+                                        <GridColumnCollection>
+                                            <GridColumn Key="OptOID" Caption="对象标识" Visible="false" Width="80px"/>
+                                            <GridColumn Key="OptRoleID" Caption="角色" Visible="false" Width="80px"/>
+                                            <GridColumn Key="OptParentKey" Caption="上级标识" LabelType="H" Visible="false" Width="80px"/>
+                                            <GridColumn Key="OptKey" Caption="操作标识" Visible="false" Width="80px"/>
+                                            <GridColumn Key="OptName" Caption="操作名称" Width="240px"/>
+                                            <GridColumn Key="IsOptHasRights" Caption="有权限" LabelType="H" Width="80px"/>
+                                        </GridColumnCollection>
+                                        <GridRowCollection>
+                                            <GridRow Key="row1" TableKey="SYS_RoleOptRights_Tree" RowHeight="30">
+                                                <GridCell Key="OptOID" Caption="对象标识" CellType="NumberEditor" Scale="0">
+                                                    <DataBinding ColumnKey="OID"/>
+                                                </GridCell>
+                                                <GridCell Key="OptRoleID" Caption="角色" CellType="Dict" ItemKey="Role">
+                                                    <DataBinding ColumnKey="SOID"/>
+                                                </GridCell>
+                                                <GridCell Key="OptParentKey" Caption="上级标识" CellType="TextEditor" MaxLength="-1">
+                                                    <DataBinding ColumnKey="OptParentKey"/>
+                                                </GridCell>
+                                                <GridCell Key="OptKey" Caption="操作标识" CellType="TextEditor" MaxLength="-1">
+                                                    <DataBinding ColumnKey="OptKey"/>
+                                                </GridCell>
+                                                <GridCell Key="OptName" Caption="操作名称" CellType="TextEditor" Enable="false" MaxLength="-1">
+                                                    <DataBinding ColumnKey="Name"/>
+                                                </GridCell>
+                                                <GridCell Key="IsOptHasRights" Caption="有权限" CellType="CheckBox" MaxLength="-1" CheckedType="PS" UnCheckedType="PS">
+                                                    <DataBinding ColumnKey="IsHasRights"/>
+                                                </GridCell>
+                                                <RowTree Foreign="OptParentKey" Parent="OptKey" TreeType="Common" CellKey="OptName" Type="JavaScript">
+                                                    <![CDATA[]]>
+                                                </RowTree>
+                                            </GridRow>
+                                        </GridRowCollection>
+                                    </Grid>
+                                    <SplitSize Size="50%"/>
+                                    <SplitSize Size="50%"/>
+                                </SplitPanel>
+                            </SubDetail>
+                            <SplitSize Size="280px"/>
+                            <SplitSize Size="100%"/>
+                        </SplitPanel>
+                    </FlexFlowLayoutPanel>
+                    <FlexFlowLayoutPanel Key="PersistFormRightsFlexFlowLayoutPanel" Caption="持久化表单权限数据" Visible="false">
+                        <SplitPanel Key="PersistFormRightsPanel" Caption="持久化表单权限" Orientation="Vertical">
+                            <Grid Key="PersistFormFieldGrid" Caption="表单字段" SerialSeq="true" DisabledOption="insert,delete" Padding="8px">
+                                <GridColumnCollection>
+                                    <GridColumn Key="PersistFieldOID" Caption="对象标识" Visible="false" Width="80px"/>
+                                    <GridColumn Key="PersistFieldRoleID" Caption="角色" Width="80px"/>
+                                    <GridColumn Key="PersistFieldNumber" Caption="序号" Width="80px"/>
+                                    <GridColumn Key="PersistFieldKey" Caption="字段标识" LabelType="H" Width="80px"/>
+                                    <GridColumn Key="PersistFieldFormKey" Caption="表单标识" Width="80px"/>
+                                    <GridColumn Key="IsPersistFieldVisible" Caption="可见" LabelType="H" Width="80px"/>
+                                    <GridColumn Key="IsPersistFieldEnable" Caption="可编辑" LabelType="H" Width="80px"/>
+                                </GridColumnCollection>
+                                <GridRowCollection>
+                                    <GridRow Key="row1" TableKey="EAU_RoleFieldRights" RowHeight="30">
+                                        <GridCell Key="PersistFieldOID" Caption="对象标识" CellType="NumberEditor" Scale="0">
+                                            <DataBinding ColumnKey="OID"/>
+                                        </GridCell>
+                                        <GridCell Key="PersistFieldRoleID" Caption="角色" CellType="Dict" ItemKey="Role">
+                                            <DataBinding ColumnKey="SOID"/>
+                                        </GridCell>
+                                        <GridCell Key="PersistFieldNumber" Caption="行项目" CellType="NumberEditor" Enable="!ReadOnly() &amp;&amp; IsNewDtl(false)" Precision="9" Scale="0" IntegerValue="true">
+                                            <DataBinding ColumnKey="ItemNumber" DefaultFormulaValue="Macro_GenItemNumber('PersistFormFieldGrid');"/>
+                                        </GridCell>
+                                        <GridCell Key="PersistFieldFormKey" Caption="表单标识" CellType="TextEditor" MaxLength="-1">
+                                            <DataBinding ColumnKey="FormKey"/>
+                                        </GridCell>
+                                        <GridCell Key="PersistFieldKey" Caption="字段标识" CellType="TextEditor" MaxLength="-1">
+                                            <DataBinding ColumnKey="FieldKey"/>
+                                        </GridCell>
+                                        <GridCell Key="IsPersistFieldVisible" Caption="可见" CellType="CheckBox" MaxLength="-1" CheckedType="PS" UnCheckedType="PS">
+                                            <DataBinding ColumnKey="IsVisible"/>
+                                        </GridCell>
+                                        <GridCell Key="IsPersistFieldEnable" Caption="可编辑" CellType="CheckBox" MaxLength="-1" CheckedType="PS" UnCheckedType="PS">
+                                            <DataBinding ColumnKey="IsEnable"/>
+                                        </GridCell>
+                                    </GridRow>
+                                </GridRowCollection>
+                            </Grid>
+                            <Grid Key="PersistFormOptGrid" Caption="表单操作" NewEmptyRow="false" SerialSeq="true" DisabledOption="insert,shift,delete" Padding="8px">
+                                <GridColumnCollection>
+                                    <GridColumn Key="PersistOptOID" Caption="对象标识" Visible="false" Width="80px"/>
+                                    <GridColumn Key="PersistOptRoleID" Caption="角色" Width="80px"/>
+                                    <GridColumn Key="PersistOptNumber" Caption="序号" Visible="false" Width="80px"/>
+                                    <GridColumn Key="PersistOptFormKey" Caption="表单标识" Width="80px"/>
+                                    <GridColumn Key="PersistOptKey" Caption="操作标识" Width="80px"/>
+                                    <GridColumn Key="IsPersistOptHasRights" Caption="有权限" LabelType="H" Width="80px"/>
+                                </GridColumnCollection>
+                                <GridRowCollection>
+                                    <GridRow Key="row1" TableKey="EAU_RoleOptRights" RowHeight="30">
+                                        <GridCell Key="PersistOptOID" Caption="对象标识" CellType="NumberEditor" MaxLength="-1">
+                                            <DataBinding ColumnKey="OID"/>
+                                        </GridCell>
+                                        <GridCell Key="PersistOptRoleID" Caption="角色" CellType="Dict" ItemKey="Role">
+                                            <DataBinding ColumnKey="SOID"/>
+                                        </GridCell>
+                                        <GridCell Key="PersistOptNumber" Caption="行项目" CellType="NumberEditor" Enable="!ReadOnly() &amp;&amp; IsNewDtl(false)" Precision="9" Scale="0" IntegerValue="true">
+                                            <DataBinding ColumnKey="ItemNumber" DefaultFormulaValue="Macro_GenItemNumber('PersistFormOptGrid');"/>
+                                        </GridCell>
+                                        <GridCell Key="PersistOptFormKey" Caption="表单标识" CellType="TextEditor" MaxLength="-1">
+                                            <DataBinding ColumnKey="FormKey"/>
+                                        </GridCell>
+                                        <GridCell Key="PersistOptKey" Caption="操作标识" CellType="TextEditor" MaxLength="-1">
+                                            <DataBinding ColumnKey="OptKey"/>
+                                        </GridCell>
+                                        <GridCell Key="IsPersistOptHasRights" Caption="有权限" CellType="CheckBox" MaxLength="-1" CheckedType="PS" UnCheckedType="PS">
+                                            <DataBinding ColumnKey="IsHasRights"/>
+                                        </GridCell>
+                                    </GridRow>
+                                </GridRowCollection>
+                            </Grid>
+                            <SplitSize Size="30%"/>
+                            <SplitSize Size="30%"/>
+                            <SplitSize Size="40%"/>
+                        </SplitPanel>
+                    </FlexFlowLayoutPanel>
+                    <FlexFlowLayoutPanel Key="OperatorRoleFlexFlowLayoutPanel" Caption="用户" Height="100%" Visible="!GetSessionPara('checkAdminRights')">
+                        <GridLayoutPanel Key="OperatorRoleGridLayoutPanel" Caption="用户按钮面板" Padding="8px">
+                            <Button Key="SelectOperator" Caption="选择用户" X="0" Y="0" Type="Normal">
+                                <OnClick>
+                                    <![CDATA[PushPara('OperatorStr',Macro_GetOperatorStr());ERPShowModal('SelectOperator',"LoadData();",'',"Edit");]]>
+                                </OnClick>
+                            </Button>
+                            <RowDefCollection RowHeight="30" RowGap="6">
+                                <RowDef Height="30px"/>
+                            </RowDefCollection>
+                            <ColumnDefCollection ColumnGap="20">
+                                <ColumnDef Width="230px"/>
+                                <ColumnDef Width="180px"/>
+                                <ColumnDef Width="100px"/>
+                                <ColumnDef Width="100px"/>
+                                <ColumnDef Width="100px"/>
+                                <ColumnDef Width="100%"/>
+                            </ColumnDefCollection>
+                        </GridLayoutPanel>
+                        <Grid Key="RoleOperatorGrid" Caption="用户" Height="100%" DefaultFitWidth="true" DisabledOption="sum,groupSum">
+                            <GridColumnCollection>
+                                <GridColumn Key="OperatorID" Caption="用户" LabelType="H" Width="240px"/>
+                                <GridColumn Key="FromCompositeRoleID" Caption="来自复合角色" Width="80px" LabelType="M"/>
+                                <GridColumn Key="AuthorityUserGroupID" Caption="用户组" LabelType="H" Width="80px" Visible="false"/>
+                                <GridColumn Key="BeginDate" Caption="开始时间" LabelType="H" Visible="!GetSessionPara('checkAdminRights')" Width="240px"/>
+                                <GridColumn Key="EndDate" Caption="终止时间" Visible="!GetSessionPara('checkAdminRights')" Width="240px"/>
+                            </GridColumnCollection>
+                            <GridRowCollection>
+                                <GridRow Key="RoleOperatorDtlRow" TableKey="SYS_RoleOperator_Query">
+                                    <GridCell Key="OperatorID" Caption="用户" CellType="Dict" ItemKey="Operator" Enable="!ReadOnly() &amp;&amp; Length(FromCompositeRoleID)==0">
+                                        <DataBinding ColumnKey="OperatorID" Required="true" CheckRule="DistinctRow('OperatorID:BeginDate:EndDate')" CheckDependency="OperatorID,BeginDate,EndDate"/>
+                                        <ItemFilter ItemKey="Operator">
+                                            <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                                <FilterValue Index="1" ParaValue="Macro_UserAuthFilter()"/>
+                                            </Filter>
+                                        </ItemFilter>
+                                    </GridCell>
+                                    <GridCell Key="FromCompositeRoleID" Caption="来自复合角色" CellType="Dict" ItemKey="Role" AllowMultiSelection="true" Enable="false">
+                                        <DataBinding ColumnKey="FromCompositeRoleID"/>
+                                    </GridCell>
+                                    <GridCell Key="AuthorityUserGroupID" Caption="用户组" CellType="Dict" ItemKey="AuthorityUserGroup">
+                                        <DataBinding ColumnKey="AuthorityUserGroupID"/>
+                                    </GridCell>
+                                    <GridCell Key="BeginDate" Caption="开始时间" CellType="UTCDatePicker" Enable="!ReadOnly() &amp;&amp; Length(FromCompositeRoleID)==0">
+                                        <DataBinding ColumnKey="BeginDate" DefaultFormulaValue="DateLong()"/>
+                                    </GridCell>
+                                    <GridCell Key="EndDate" Caption="终止时间" CellType="UTCDatePicker" Enable="!ReadOnly() &amp;&amp; Length(FromCompositeRoleID)==0">
+                                        <DataBinding ColumnKey="EndDate" DefaultValue="99991231"/>
+                                    </GridCell>
+                                </GridRow>
+                            </GridRowCollection>
+                            <OnRowDelete>
+                            <![CDATA[IIFS(Length(FromCompositeRoleID)>0,true,true,DeleteRow())]]>
+                            </OnRowDelete>
+                        </Grid>
+                    </FlexFlowLayoutPanel>
+                    <FlexFlowLayoutPanel Key="BodySystem" Caption="系统信息" Padding="8px">
+                        <Embed Key="BodySystemEmbed" FormKey="BodySystemDictForm" RootKey="SystemInfoPanel">
+                            <Var Key="SystemInfoTableKey" Value="SYS_Role"/>
+                        </Embed>
+                    </FlexFlowLayoutPanel>
+                    <FlexGridLayoutPanel Key="HiddenInformation" Caption="隐藏信息" ColumnCount="3" ColumnGap="16" OverflowY="Auto" RowGap="24" Visible="false"/>
+                </TabPanel>
+                <NumberEditor Key="RoleOID" Caption="OID" X="3" Y="0" Visible="false">
+                    <DataBinding TableKey="SYS_Role" ColumnKey="OID"/>
+                </NumberEditor>
+                <CheckBox Key="IsCompositeRole" Caption="复合角色" X="0" Y="3" Visible="false">
+                    <DataBinding TableKey="SYS_Role" ColumnKey="IsCompositeRole">
+                        <DefaultFormulaValue>
+                            <![CDATA[IIF(GetPara('CreateCompositeRole'),1,0)]]>
+                        </DefaultFormulaValue>
+                    </DataBinding>
+                </CheckBox>
+                <TextEditor Key="FormRightEntryKey" Caption="FormRightEntryKey" X="3" Y="0" Visible="false">
+                    <DataBinding TableKey="SYS_Role" ColumnKey="FormRightEntryKey"/>
+                </TextEditor>
+                <TextEditor Key="FormTCode" Caption="FormTCode" X="3" Y="0" Visible="false">
+                    <DataBinding TableKey="SYS_Role" ColumnKey="FormTCode"/>
+                </TextEditor>
+            </FlexFlowLayoutPanel>
+        </Block>
+    </Body>
+    <OnPostShow>
+        <![CDATA[Macro_SetTitleIcon();]]>
+    </OnPostShow>
+    <MacroCollection>
+        <Macro Key="Macro_GetAllForms">
+            <![CDATA[com.bokesoft.erp.authority.AuthorityCacheFunction.getAllFormKeys()]]>
+        </Macro>
+        <Macro Key="Macro_LoadEntryRights">
+            <![CDATA[com.bokesoft.erp.function.RightsFunction.LoadEntryRights()]]>
+        </Macro>
+        <Macro Key="Macro_LoadFormOptRightTree">
+            <![CDATA[com.bokesoft.erp.function.RightsFunction.LoadFormOptRightTree()]]>
+        </Macro>
+        <Macro Key="Macro_LoadFormFieldRightTree">
+            <![CDATA[com.bokesoft.erp.function.RightsFunction.LoadFormFieldRightTree()]]>
+        </Macro>
+        <Macro Key="Macro_LoadParameterFileRights" Args="RoleOID">
+            <![CDATA[com.bokesoft.erp.function.RightsFunction.LoadParameterFileRights(RoleOID)]]>
+        </Macro>
+        <Macro Key="Macro_MidSave_PreTriggers">
+            <![CDATA[
+            DistinctRow('OperatorID:BeginDate:EndDate');
+            if (IsCompositeRole == 0) {
+                Macro_SaveRightsDataPreProcess();
+                Macro_SetRoleEntryModify();
+                Macro_SetRoleFormModify();
+                Macro_SetRoleOwnTCodeModify();
+                Macro_SetRoleAuthorityProfileModify();
+            }com.bokesoft.erp.function.RightsFunction.cloneUserAssign2Para();]]>
+        </Macro>
+        <Macro Key="Macro_MidSave_PostTriggers">
+            <![CDATA[Macro_SaveRoleOperator();]]>
+        </Macro>
+        <Macro Key="Macro_SaveRightsDataPreProcess">
+            <![CDATA[com.bokesoft.erp.function.RightsFunction.saveRightsDataPreProcess()]]>
+        </Macro>
+        <Macro Key="Macro_SetRoleEntryModify">
+            <![CDATA[com.bokesoft.erp.authority.AuthorityReportFunction.setRoleEntryModify()]]>
+        </Macro>
+        <Macro Key="Macro_SetRoleFormModify">
+            <![CDATA[com.bokesoft.erp.authority.AuthorityReportFunction.setRoleFormModify()]]>
+        </Macro>
+        <Macro Key="Macro_SetRoleOwnTCodeModify">
+            <![CDATA[com.bokesoft.erp.authority.AuthorityReportFunction.setRoleOwnTCodeModify()]]>
+        </Macro>
+        <Macro Key="Macro_SetRoleAuthorityProfileModify">
+            <![CDATA[com.bokesoft.erp.authority.AuthorityReportFunction.setRoleAuthorityProfileModify()]]>
+        </Macro>
+        <Macro Key="Macro_LoadRoleOperator">
+            <![CDATA[com.bokesoft.erp.function.RightsFunction.loadRoleOperator(GetOID())]]>
+        </Macro>
+        <Macro Key="Macro_GetOperatorStr">
+            <![CDATA[com.bokesoft.erp.function.RightsFunction.getOperatorStr()]]>
+        </Macro>
+        <Macro Key="Macro_SetRoleOperator" Args="SelectOperatorStr">
+            <![CDATA[com.bokesoft.erp.function.RightsFunction.setRoleOperator(GetOID(),SelectOperatorStr)]]>
+        </Macro>
+        <Macro Key="Macro_SaveRoleOperator">
+            <![CDATA[com.bokesoft.erp.function.RightsFunction.saveRoleOperator(GetOID())]]>
+        </Macro>
+        <Macro Key="Macro_RefreshRightsCache">
+            <![CDATA[com.bokesoft.erp.authority.AuthorityCacheFunction.setClearCacheFlag()]]>
+        </Macro>
+        <Macro Key="Macro_GetAuthorityProfileID">
+            <![CDATA[com.bokesoft.erp.function.RightsFunction.getSingleParameterFileID(GetOID())]]>
+        </Macro>
+        <Macro Key="Macro_GetAuthorityDataStatus">
+            <![CDATA[IIF(AuthorityProfileID>0,'A','_')]]>
+        </Macro>
+        <Macro Key="Macro_CanRoleInheritance">
+            <![CDATA[com.bokesoft.erp.function.RightsFunction.CanRoleInheritance()]]>
+        </Macro>
+        <Macro Key="Macro_SetFormTree" Args="FormOID,FormKeyList,RoleOID">
+            <![CDATA[com.bokesoft.erp.function.RightsFunction.SetFormTree(FormOID,FormKeyList,RoleOID)]]>
+        </Macro>
+        <Macro Key="Macro_CopyFormRights">
+            <![CDATA[com.bokesoft.erp.function.RightsFunction.copyFormRights(ParentRoleID,GetOID())]]>
+        </Macro>
+        <Macro Key="Macro_DeriveFormRightsFormula">
+            <![CDATA[Macro_DeriveFormRights();Macro_RefreshRightsCache()]]>
+        </Macro>
+        <Macro Key="Macro_DeriveFormRights">
+            <![CDATA[com.bokesoft.erp.function.RightsFunction.deriveFormRights(GetOID())]]>
+        </Macro>
+        <Macro Key="Macro_AddFormKeys">
+            <![CDATA[com.bokesoft.erp.function.RightsFunction.addFormKeys()]]>
+        </Macro>
+        <Macro Key="Macro_Preview" Args="Type,EntryKey">
+            <![CDATA[com.bokesoft.erp.function.RightsFunction.getPreviewText(Type,EntryKey)]]>
+        </Macro>
+        <Macro Key="Macro_CopyNewRoleAndSave" Args="SourceUseCode,NewUseCode,SourceClientCode">
+            <![CDATA[com.bokesoft.erp.function.RightsFunction.copyNewRoleAndSave(SourceUseCode,NewUseCode,SourceClientCode);]]>
+        </Macro>
+        <Macro Key="Macro_CopyNewRole" Args="SourceUseCode,NewUseCode,SourceClientCode">
+            <![CDATA[var newRoleId=Macro_CopyNewRoleAndSave(SourceUseCode,NewUseCode,SourceClientCode);
+            parent.OpenDict(GetEntryPara('FormKey'),newRoleId,'Container');
+            parent.RefreshDictView('DictView',GetDataObjectKey(),newRoleId,1);
+            parent.ResetEditBill()]]>
+        </Macro>
+        <Macro Key="Macro_CheckRoleChanged">
+            <![CDATA[com.bokesoft.erp.authority.AuthorityTool.checkRoleChanged(GetOID())]]>
+        </Macro>
+        <Macro Key="Macro_SetTitleIcon">
+            <![CDATA[if(GetPara('IOOPERATOR')!=1){
+                if(Macro_CheckRoleChanged()){
+                    SetTitleIcon("DataRightsFlexFlowLayoutPanel","RedPoint.png");
+                }else{
+                    SetTitleIcon("DataRightsFlexFlowLayoutPanel","");
+                }
+            }]]>
+        </Macro>
+        <Macro Key="Macro_CheckEntryChanged">
+            <![CDATA[com.bokesoft.erp.function.RightsFunction.checkEntryChanged(GetOID())]]>
+        </Macro>
+        <Macro Key="Macro_ClearCache">
+            <![CDATA[com.bokesoft.erp.authority.AuthorityCacheFunction.clearCache();com.bokesoft.erp.authority.AuthorityCacheFunction.resetClearCacheFlag()]]>
+        </Macro>
+        <Macro Key="Macro_CheckDict_HasChildren">
+            <![CDATA[com.bokesoft.erp.authority.AuthorityFunction.checkWhileDelete()]]>
+        </Macro>
+        <Macro Key="Macro_UserAuthFilter">
+            <![CDATA[com.bokesoft.erp.function.RightsFunction.getUserGroupAuthFilter()]]>
+        </Macro>
+        <Macro Key="Macro_LoadCompositeRoleEntryRights">
+            <![CDATA[com.bokesoft.erp.function.RightsFunction.loadCompositeRoleEntryRights()]]>
+        </Macro>
+    </MacroCollection>
+</Form>

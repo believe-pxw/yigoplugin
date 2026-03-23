@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Form Key="PM_MaintOrderList_Rpt" Caption="维护订单清单" FormType="Report" InitState="Default" Version="14">
+    <DataSource>
+        <DataObject Key="PM_MaintOrderList_Rpt" Caption="维护订单清单" Version="10">
+            <TableCollection>
+                <Table Key="EPM_MaintOrderList_Rpt" Caption="维护订单清单" TableMode="Detail" SourceType="Query" Persist="false" OrderBy="'CreateTime desc,DocumentNumber Desc'">
+                    <Column Key="OID" Caption="对象标识" DataElementKey="OID"/>
+                    <Column Key="SOID" Caption="主对象标识" DataElementKey="SOID"/>
+                    <Column Key="POID" Caption="父对象标识" DataElementKey="POID"/>
+                    <Column Key="VERID" Caption="对象版本" DataElementKey="VERID"/>
+                    <Column Key="DVERID" Caption="对象明细版本" DataElementKey="DVERID"/>
+                    <Column Key="DocumentNumber" Caption="订单" DataElementKey="DocumentNumber"/>
+                    <Column Key="OrderTypeID" Caption="订单类型" DataElementKey="PM_OrderTypeID"/>
+                    <Column Key="ProfitCenterID" Caption="利润中心" DataElementKey="ProfitCenterID"/>
+                    <Column Key="OrderNotes" Caption="订单描述" DataElementKey="OrderNotes"/>
+                    <Column Key="BasicStartDate" Caption="基本开始日期" DataElementKey="BasicStartDate"/>
+                    <Column Key="BasicEndDate" Caption="基本结束日期" DataElementKey="BasicEndDate"/>
+                    <Column Key="Creator" Caption="输入者" DataElementKey="Creator"/>
+                    <Column Key="CreateTime" Caption="创建时间" DataElementKey="CreateTime"/>
+                    <Column Key="ModifyTime" Caption="修改时间" DataElementKey="ModifyTime"/>
+                    <Column Key="Modifier" Caption="修改人" DataElementKey="Modifier"/>
+                    <Column Key="CompanyCodeID" Caption="公司代码" DataElementKey="CompanyCodeID"/>
+                    <Column Key="BusinessAreaID" Caption="业务范围" DataElementKey="BusinessAreaID"/>
+                    <Column Key="CostCenterID" Caption="成本中心" DataElementKey="CostCenterID"/>
+                    <Column Key="CostingSheetID" Caption="成本核算表" DataElementKey="CostingSheetID"/>
+                    <Column Key="ABCIndicatorID" Caption="ABC标识" DataElementKey="ABCIndicatorID"/>
+                    <Column Key="PriorityTypeID" Caption="优先级类型" DataElementKey="PriorityTypeID"/>
+                    <Column Key="PriorityID" Caption="优先级" DataElementKey="PriorityID"/>
+                    <Column Key="EquipmentSOID" Caption="设备" DataElementKey="EquipmentSOID"/>
+                    <Column Key="PlanningPlantID" Caption="计划员组工厂" DataElementKey="PlanningPlantID"/>
+                    <Column Key="PlannerGroupID" Caption="计划员组" DataElementKey="PlannerGroupID"/>
+                    <Column Key="MainWorkCenterID" Caption="主工作中心" DataElementKey="MainWorkCenterID"/>
+                    <Column Key="MainWorkCenterPlantID" Caption="主工作中心工厂" DataElementKey="MainWorkCenterPlantID"/>
+                    <Column Key="MaintPlantID" Caption="维护工厂" DataElementKey="MaintPlantID"/>
+                    <Column Key="LocationID" Caption="位置" DataElementKey="LocationID"/>
+                    <Column Key="Room" Caption="房间" DataElementKey="Room"/>
+                    <Column Key="PlantSectionID" Caption="工厂区域" DataElementKey="PlantSectionID"/>
+                    <Column Key="FunctionalLocationSOID" Caption="功能位置" DataElementKey="FunctionalLocationSOID"/>
+                    <Column Key="AssetCardSOID" Caption="资产" DataElementKey="AssetCardSOID"/>
+                    <Column Key="MaintenancePlanSOID" Caption="维护计划" DataElementKey="MaintenancePlanSOID"/>
+                    <Column Key="MaintenanceItemSOID" Caption="维护项目" DataElementKey="MaintenanceItemSOID"/>
+                    <Column Key="SystemStatusText" Caption="订单系统状态" DataElementKey="SystemStatusText"/>
+                    <Column Key="UserStatusText" Caption="订单用户状态" DataElementKey="UserStatusText"/>
+                    <Column Key="WorkCenterID" Caption="工作中心" DataElementKey="WorkCenterID"/>
+                    <Column Key="MaintenanceActivityTypeID" Caption="维护作业类型" DataElementKey="MaintenanceActivityTypeID"/>
+                    <Column Key="NotificationSOID" Caption="维护通知" DataElementKey="NotificationSOID"/>
+                    <Column Key="SerialNumber" Caption="序列号" DataElementKey="SerialNumber"/>
+                    <Column Key="LastTaskListType" Caption="任务清单类型" DataElementKey="LastTaskListType"/>
+                    <Column Key="LastRoutingGroup" Caption="任务清单组" DataElementKey="LastRoutingGroup"/>
+                    <Column Key="LastGroupCounter" Caption="组计数器" DataElementKey="LastGroupCounter"/>
+                    <Column Key="LastRoutingID" Caption="任务清单" DataElementKey="LastRoutingID"/>
+                    <Column Key="LastTaskListDescription" Caption="任务清单描述" DataElementKey="LastTaskListDescription"/>
+                    <Column Key="ReleasedDate" Caption="下达日期" DataElementKey="ReleasedDate"/>
+                    <Column Key="ControllingAreaID" Caption="控制范围" DataElementKey="ControllingAreaID"/>
+                    <Column Key="ResponsibleCostCenterID" Caption="负责的成本中心" DataElementKey="ResponsibleCostCenterID"/>
+                    <Column Key="OrgControllingAreaID" Caption="成本控制范围" DataElementKey="OrgControllingAreaID"/>
+                    <Column Key="SortField" Caption="分类字段" DataElementKey="SortField"/>
+                    <Column Key="RefurbMaterialID" Caption="物料" DataElementKey="RefurbMaterialID"/>
+                    <Column Key="PlantID" Caption="工厂" DataElementKey="PlantID"/>
+                    <Column Key="PMWorkCenterID" Caption="工厂" DataElementKey="PMWorkCenterID"/>
+                    <Column Key="MaintProcessingPhase" Caption="维修处理阶段" DataElementKey="MaintProcessingPhase"/>
+                    <Column Key="TotalActualCost" Caption="总的实际成本" DataElementKey="PMOrderTotalActualCost" RefCol="CurrencyID"/>
+                    <Column Key="TotalPlannedCost" Caption="总的计划成本" DataElementKey="PMOrderTotalPlannedCost" RefCol="CurrencyID"/>
+                    <Column Key="TotalEstimatedCost" Caption="总的估算成本" DataElementKey="PMOrderTotalEstimatedCost" RefCol="CurrencyID"/>
+                    <Column Key="CurrencyID" Caption="币种" DataElementKey="CurrencyID"/>
+                    <Column Key="OrgWBSElementID" Caption="WBS元素" DataElementKey="OrgWBSElementID"/>
+                    <Column Key="WBSElementID" Caption="WBS元素" DataElementKey="WBSElementID"/>
+                    <Column Key="RevisionCode" Caption="修正" DefaultValue="" DataElementKey="Code"/>
+                    <Column Key="RevisionID" Caption="修正" CodeColumnKey="RevisionCode" DataElementKey="RevisionID"/>
+                    <Statement Type="Formula">
+                        <![CDATA[Macro_GetSelectFieldsSQL() + Macro_GetWhereCondition();]]>
+                    </Statement>
+                </Table>
+            </TableCollection>
+        </DataObject>
+    </DataSource>
+    <OperationCollection>
+        <Operation Key="Filter" Caption="重新选择" Enable="true">
+            <Action>
+                <![CDATA[ERPShowModal('Cond_PM_MaintOrderListQuery')]]>
+            </Action>
+        </Operation>
+        <Operation Key="BatchRelease" Caption="批量下达">
+            <Action>
+                <![CDATA[Macro_BatchProcess('BatchRelease')]]>
+            </Action>
+        </Operation>
+        <Operation Key="BatchTechComplete" Caption="批量技术性完成">
+            <Action>
+                <![CDATA[SetPara('PMOrderOperation','TECO');if(Macro_IsExistsMaintPlanOrder()){ERPShowModal('PM_BatchOrder4PlanCompleteDialog')}else{ERPShowModal('PM_BatchOrderCompleteDialog')}]]>
+            </Action>
+        </Operation>
+        <Operation Key="BatchCancelTechComplete" Caption="批量撤销技术性完成">
+            <Action>
+                <![CDATA[Macro_BatchProcess('BatchCancelTechComplete')]]>
+            </Action>
+        </Operation>
+        <Operation Key="BatchClose" Caption="批量完成(业务)">
+            <Action>
+                <![CDATA[Macro_BatchClose()]]>
+            </Action>
+        </Operation>
+        <Operation Key="BatchCancelClose" Caption="批量撤销完成(业务)">
+            <Action>
+                <![CDATA[Macro_BatchProcess('BatchCancelClose')]]>
+            </Action>
+        </Operation>
+        <Operation Key="Refresh" Caption="刷新" RefKey="Refresh"/>
+        <OperationCollection Key="NewPrint" Caption="打印" SelfDisable="true">
+            <Operation Key="NewPrintDefault" Caption="默认模板打印" RefKey="NewPrintDefault" Activity="04"/>
+            <Operation Key="NewPrintSelect" Caption="其他模板选择" RefKey="NewPrintSelect" Activity="04"/>
+            <Operation Key="ManagePrint" Caption="打印模板管理" RefKey="ManagePrint" Activity="04"/>
+        </OperationCollection>
+        <OperationCollection Key="NewPrePrint" Caption="打印预览" SelfDisable="true">
+            <Operation Key="NewPrePrintDefault" Caption="默认模板预览" RefKey="NewPrePrintDefault" Activity="Y09"/>
+            <Operation Key="NewPrePrintSelect" Caption="其他模板选择" RefKey="NewPrePrintSelect" Activity="Y09"/>
+        </OperationCollection>
+        <Operation Key="ERPExportExcel" Caption="导出" RefKey="ERPExportExcel" Activity="Y11"/>
+        <Operation Key="UIClose" Caption="关闭" RefKey="UIClose"/>
+    </OperationCollection>
+    <Body>
+        <Block>
+            <FlexFlowLayoutPanel Key="root">
+                <ToolBar Key="ToolBar1" Caption="ToolBar1" Height="pref">
+                    <ToolBarItemCollection/>
+                </ToolBar>
+                <GridLayoutPanel Key="main_container" Height="100%" OverflowY="Auto">
+                    <Grid Key="MaintOrderListQueryResultGrid" Caption="维护订单单据" NewEmptyRow="false" PageLoadType="DB" SerialSeq="true" X="0" Y="0" DisabledOption="insert,delete" Padding="8px">
+                        <GridColumnCollection>
+                            <GridColumn Key="IsSelect" Width="32px"/>
+                            <GridColumn Key="SOID" Caption="工单SOID" Visible="false" Width="80px" Sortable="true"/>
+                            <GridColumn Key="Dtl_OID" Caption="工单OID" Visible="false" Width="80px" Sortable="true"/>
+                            <GridColumn Key="DocumentNumber" Caption="订单" Width="100px"/>
+                            <GridColumn Key="OrderTypeID" Caption="订单类型" Width="80px"/>
+                            <GridColumn Key="OrderNotes" Caption="订单描述" Width="80px"/>
+                            <GridColumn Key="BasicStartDate" Caption="基本开始日期" Width="120px"/>
+                            <GridColumn Key="BasicEndDate" Caption="基本结束日期" Width="120px"/>
+                            <GridColumn Key="ReleasedDate" Caption="实际下达日期" Width="120px"/>
+                            <GridColumn Key="SystemStatusText" Caption="订单系统状态" Width="120px"/>
+                            <GridColumn Key="UserStatusText" Caption="订单用户状态" Width="120px"/>
+                            <GridColumn Key="NotificationSOID" Caption="维护通知" Width="80px"/>
+                            <GridColumn Key="Creator" Caption="输入者" Width="80px"/>
+                            <GridColumn Key="CreateDateOnTime" Caption="创建日期" Width="100px"/>
+                            <GridColumn Key="CreateTime" Caption="创建时间" Width="100px"/>
+                            <GridColumn Key="ModifyDateOnTime" Caption="修改日期" Width="100px"/>
+                            <GridColumn Key="ModifyTime" Caption="修改时间" Width="100px"/>
+                            <GridColumn Key="Modifier" Caption="修改人" Width="80px"/>
+                            <GridColumn Key="RevisionID" Caption="修正" Width="80px"/>
+                            <GridColumn Key="CompanyCodeID" Caption="公司代码" Width="80px"/>
+                            <GridColumn Key="FunctionalLocationSOID" Caption="功能位置" Width="80px"/>
+                            <GridColumn Key="EquipmentSOID" Caption="设备" Width="80px"/>
+                            <GridColumn Key="AssetCardSOID" Caption="资产" Width="80px"/>
+                            <GridColumn Key="SerialNumber" Caption="序列号" Width="80px"/>
+                            <GridColumn Key="MaintenancePlanSOID" Caption="维护计划" Width="80px"/>
+                            <GridColumn Key="MaintenanceItemSOID" Caption="维护项目" Width="80px"/>
+                            <GridColumn Key="MaintPlantID" Caption="维护工厂" Width="80px"/>
+                            <GridColumn Key="PlanningPlantID" Caption="计划员组工厂" Width="120px"/>
+                            <GridColumn Key="PlannerGroupID" Caption="计划员组" Width="80px"/>
+                            <GridColumn Key="LocationID" Caption="位置" Width="80px"/>
+                            <GridColumn Key="Room" Caption="房间" Width="80px"/>
+                            <GridColumn Key="PlantSectionID" Caption="工厂区域" Width="80px"/>
+                            <GridColumn Key="BusinessAreaID" Caption="业务范围" Width="80px"/>
+                            <GridColumn Key="ControllingAreaID" Caption="控制范围" Width="80px"/>
+                            <GridColumn Key="CostCenterID" Caption="成本中心" Width="80px"/>
+                            <GridColumn Key="CostingSheetID" Caption="成本核算表" Width="100px"/>
+                            <GridColumn Key="ABCIndicatorID" Caption="ABC标识" Width="80px"/>
+                            <GridColumn Key="PriorityTypeID" Caption="优先级类型" Width="100px"/>
+                            <GridColumn Key="PriorityID" Caption="优先级" Width="80px"/>
+                            <GridColumn Key="MainWorkCenterID" Caption="主工作中心" Width="100px"/>
+                            <GridColumn Key="MainWorkCenterPlantID" Caption="主工作中心工厂" Width="80px"/>
+                            <GridColumn Key="WorkCenterID" Caption="工作中心" Width="80px"/>
+                            <GridColumn Key="MaintenanceActivityTypeID" Caption="维护作业类型" Width="120px"/>
+                            <GridColumn Key="OrgControllingAreaID" Caption="成本控制范围" Width="120px"/>
+                            <GridColumn Key="ResponsibleCostCenterID" Caption="负责的成本中心" Width="80px"/>
+                            <GridColumn Key="SortField" Caption="分类字段" Width="80px"/>
+                            <GridColumn Key="RefurbMaterialID" Caption="物料" Width="80px"/>
+                            <GridColumn Key="LastTaskListType" Caption="任务清单类型" Width="120px"/>
+                            <GridColumn Key="LastRoutingGroup" Caption="任务清单组" Width="100px"/>
+                            <GridColumn Key="LastGroupCounter" Caption="组计数器" Width="80px"/>
+                            <GridColumn Key="LastTaskListDescription" Caption="任务清单描述" Width="120px"/>
+                            <GridColumn Key="TotalEstimatedCost" Caption="总的估算成本" Width="120px"/>
+                            <GridColumn Key="TotalPlannedCost" Caption="总的计划成本" Width="120px"/>
+                            <GridColumn Key="TotalActualCost" Caption="总的实际成本" Width="120px"/>
+                            <GridColumn Key="CurrencyID" Caption="币种" Width="120px"/>
+                            <GridColumn Key="OrgWBSElementID" Caption="WBS元素" Width="120px"/>
+                            <GridColumn Key="WBSElementID" Caption="WBS元素" Visible="false" Width="120px"/>
+                            <GridColumn Key="DocumentNumber" Caption="单据编号"/>
+                        </GridColumnCollection>
+                        <GridRowCollection>
+                            <GridRow Key="MaintOrderListQueryResultGridRow" TableKey="EPM_MaintOrderList_Rpt">
+                                <GridCell Key="IsSelect" Caption="选择" CellType="CheckBox" Enable="true" IsSelect="true"/>
+                                <GridCell Key="SOID" Caption="工单SOID" CellType="NumberEditor" Scale="0" UseGroupingSeparator="false">
+                                    <DataBinding ColumnKey="SOID"/>
+                                </GridCell>
+                                <GridCell Key="Dtl_OID" Caption="工单OID" CellType="NumberEditor" Scale="0" UseGroupingSeparator="false">
+                                    <DataBinding ColumnKey="OID"/>
+                                </GridCell>
+                                <GridCell Key="DocumentNumber" Caption="订单" CellType="TextEditor">
+                                    <DataBinding ColumnKey="DocumentNumber"/>
+                                </GridCell>
+                                <GridCell Key="OrderTypeID" Caption="订单类型" CellType="Dict" ItemKey="PM_OrderType">
+                                    <DataBinding ColumnKey="OrderTypeID"/>
+                                </GridCell>
+                                <GridCell Key="OrderNotes" Caption="订单描述" CellType="TextEditor">
+                                    <DataBinding ColumnKey="OrderNotes"/>
+                                </GridCell>
+                                <GridCell Key="BasicStartDate" Caption="基本开始日期" CellType="UTCDatePicker">
+                                    <DataBinding ColumnKey="BasicStartDate"/>
+                                </GridCell>
+                                <GridCell Key="BasicEndDate" Caption="基本结束日期" CellType="UTCDatePicker">
+                                    <DataBinding ColumnKey="BasicEndDate"/>
+                                </GridCell>
+                                <GridCell Key="ReleasedDate" Caption="实际下达日期" CellType="UTCDatePicker">
+                                    <DataBinding ColumnKey="ReleasedDate"/>
+                                </GridCell>
+                                <GridCell Key="SystemStatusText" Caption="订单系统状态" CellType="TextEditor">
+                                    <DataBinding ColumnKey="SystemStatusText"/>
+                                </GridCell>
+                                <GridCell Key="UserStatusText" Caption="订单用户状态" CellType="TextEditor">
+                                    <DataBinding ColumnKey="UserStatusText"/>
+                                </GridCell>
+                                <GridCell Key="NotificationSOID" Caption="维护通知" CellType="Dict" ItemKey="PM_Notification__Dic" StateMask="Enable|Disable|Discard">
+                                    <DataBinding ColumnKey="NotificationSOID"/>
+                                </GridCell>
+                                <GridCell Key="Creator" Caption="输入者" CellType="Dict" ItemKey="Operator">
+                                    <DataBinding ColumnKey="Creator"/>
+                                </GridCell>
+                                <GridCell Key="CreateDateOnTime" Caption="创建日期" CellType="DatePicker" Format="yyyy-MM-dd">
+                                    <DataBinding ColumnKey="CreateTime"/>
+                                </GridCell>
+                                <GridCell Key="CreateTime" Caption="创建时间" CellType="DatePicker" Format="HH:mm:ss">
+                                    <DataBinding ColumnKey="CreateTime"/>
+                                </GridCell>
+                                <GridCell Key="ModifyDateOnTime" CellType="DatePicker" Format="yyyy-MM-dd">
+                                    <DataBinding ColumnKey="ModifyTime"/>
+                                </GridCell>
+                                <GridCell Key="ModifyTime" CellType="DatePicker" Format="HH:mm:ss">
+                                    <DataBinding ColumnKey="ModifyTime"/>
+                                </GridCell>
+                                <GridCell Key="Modifier" Caption="修改人" CellType="Dict" ItemKey="Operator">
+                                    <DataBinding ColumnKey="Modifier"/>
+                                </GridCell>
+                                <GridCell Key="RevisionID" Caption="修正" CellType="Dict" ItemKey="PM_Revision">
+                                    <DataBinding ColumnKey="RevisionID"/>
+                                </GridCell>
+                                <GridCell Key="CompanyCodeID" Caption="公司代码" CellType="Dict" ItemKey="CompanyCode">
+                                    <DataBinding ColumnKey="CompanyCodeID"/>
+                                </GridCell>
+                                <GridCell Key="FunctionalLocationSOID" Caption="功能位置" CellType="Dict" ItemKey="PM_FunctionalLocation__Dic" StateMask="Enable|Disable|Discard">
+                                    <DataBinding ColumnKey="FunctionalLocationSOID"/>
+                                </GridCell>
+                                <GridCell Key="EquipmentSOID" Caption="设备" CellType="Dict" ItemKey="PM_Equipment__Dic" StateMask="Enable|Disable|Discard">
+                                    <DataBinding ColumnKey="EquipmentSOID"/>
+                                </GridCell>
+                                <GridCell Key="AssetCardSOID" Caption="资产" CellType="Dict" ItemKey="AM_AssetCard__Dic" StateMask="Enable|Disable|Discard">
+                                    <DataBinding ColumnKey="AssetCardSOID"/>
+                                </GridCell>
+                                <GridCell Key="SerialNumber" Caption="序列号" CellType="TextEditor" MaxLength="100">
+                                    <DataBinding ColumnKey="SerialNumber"/>
+                                </GridCell>
+                                <GridCell Key="MaintenancePlanSOID" Caption="维护计划" CellType="Dict" ItemKey="PM_MaintenancePlan__Dic" StateMask="Enable|Disable|Discard">
+                                    <DataBinding ColumnKey="MaintenancePlanSOID"/>
+                                </GridCell>
+                                <GridCell Key="MaintenanceItemSOID" Caption="维护项目" CellType="Dict" ItemKey="PM_MaintenanceItem__Dic" StateMask="Enable|Disable|Discard">
+                                    <DataBinding ColumnKey="MaintenanceItemSOID"/>
+                                </GridCell>
+                                <GridCell Key="MaintPlantID" Caption="维护工厂" CellType="Dict" ItemKey="Plant">
+                                    <DataBinding ColumnKey="MaintPlantID"/>
+                                </GridCell>
+                                <GridCell Key="PlanningPlantID" Caption="计划员组工厂" CellType="Dict" ItemKey="Plant">
+                                    <DataBinding ColumnKey="PlanningPlantID"/>
+                                </GridCell>
+                                <GridCell Key="PlannerGroupID" Caption="计划员组" CellType="Dict" ItemKey="PM_PlannerGroup">
+                                    <DataBinding ColumnKey="PlannerGroupID"/>
+                                </GridCell>
+                                <GridCell Key="LocationID" Caption="位置" CellType="Dict" ItemKey="Location">
+                                    <DataBinding ColumnKey="LocationID"/>
+                                </GridCell>
+                                <GridCell Key="Room" Caption="房间" CellType="TextEditor" Case="Upper" MaxLength="100">
+                                    <DataBinding ColumnKey="Room"/>
+                                </GridCell>
+                                <GridCell Key="PlantSectionID" Caption="工厂区域" CellType="Dict" ItemKey="PM_PlantSection">
+                                    <DataBinding ColumnKey="PlantSectionID"/>
+                                </GridCell>
+                                <GridCell Key="BusinessAreaID" Caption="业务范围" CellType="Dict" ItemKey="BusinessArea">
+                                    <DataBinding ColumnKey="BusinessAreaID"/>
+                                </GridCell>
+                                <GridCell Key="ControllingAreaID" Caption="控制范围" CellType="Dict" ItemKey="ControllingArea">
+                                    <DataBinding ColumnKey="ControllingAreaID"/>
+                                </GridCell>
+                                <GridCell Key="CostCenterID" Caption="成本中心" CellType="Dict" ItemKey="CostCenter">
+                                    <DataBinding ColumnKey="CostCenterID"/>
+                                </GridCell>
+                                <GridCell Key="CostingSheetID" Caption="成本核算表" CellType="Dict" ItemKey="CO_CostingSheet">
+                                    <DataBinding ColumnKey="CostingSheetID"/>
+                                </GridCell>
+                                <GridCell Key="ABCIndicatorID" Caption="ABC标识" CellType="Dict" ItemKey="PM_ABCIndicator">
+                                    <DataBinding ColumnKey="ABCIndicatorID"/>
+                                    <ItemFilter ItemKey="PM_ABCIndicator">
+                                        <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                            <FilterValue Index="1" ParaValue="' ABCIndicatorType = ' + SqlPara(2)"/>
+                                        </Filter>
+                                    </ItemFilter>
+                                </GridCell>
+                                <GridCell Key="PriorityTypeID" Caption="优先级类型" CellType="Dict" ItemKey="QM_PriorityType">
+                                    <DataBinding ColumnKey="PriorityTypeID"/>
+                                </GridCell>
+                                <GridCell Key="PriorityID" Caption="优先级" CellType="Dict" ItemKey="QM_Priority__Dic" StateMask="Enable|Disable|Discard">
+                                    <DataBinding ColumnKey="PriorityID"/>
+                                </GridCell>
+                                <GridCell Key="MainWorkCenterID" Caption="主工作中心" CellType="Dict" ItemKey="WorkCenter">
+                                    <DataBinding ColumnKey="MainWorkCenterID"/>
+                                </GridCell>
+                                <GridCell Key="MainWorkCenterPlantID" Caption="主工作中心工厂" CellType="Dict" ItemKey="Plant">
+                                    <DataBinding ColumnKey="MainWorkCenterPlantID"/>
+                                </GridCell>
+                                <GridCell Key="WorkCenterID" Caption="工作中心" CellType="Dict" ItemKey="WorkCenter">
+                                    <DataBinding ColumnKey="WorkCenterID"/>
+                                </GridCell>
+                                <GridCell Key="MaintenanceActivityTypeID" Caption="维护作业类型" CellType="Dict" ItemKey="PM_MaintenanceActivityType">
+                                    <DataBinding ColumnKey="MaintenanceActivityTypeID"/>
+                                </GridCell>
+                                <GridCell Key="OrgControllingAreaID" Caption="成本控制范围" CellType="Dict" ItemKey="ControllingArea">
+                                    <DataBinding ColumnKey="OrgControllingAreaID"/>
+                                </GridCell>
+                                <GridCell Key="ResponsibleCostCenterID" Caption="负责的成本中心" CellType="Dict" ItemKey="CostCenter">
+                                    <DataBinding ColumnKey="ResponsibleCostCenterID"/>
+                                </GridCell>
+                                <GridCell Key="SortField" Caption="分类字段" CellType="TextEditor">
+                                    <DataBinding ColumnKey="SortField"/>
+                                </GridCell>
+                                <GridCell Key="RefurbMaterialID" Caption="物料" CellType="Dict" ItemKey="Material">
+                                    <DataBinding ColumnKey="RefurbMaterialID"/>
+                                </GridCell>
+                                <GridCell Key="LastTaskListType" Caption="任务清单类型" CellType="ComboBox" SourceType="ParaGroup" GroupKey="RoutingListType">
+                                    <DataBinding ColumnKey="LastTaskListType"/>
+                                </GridCell>
+                                <GridCell Key="LastRoutingGroup" Caption="任务清单组" CellType="TextEditor">
+                                    <DataBinding ColumnKey="LastRoutingGroup"/>
+                                </GridCell>
+                                <GridCell Key="LastGroupCounter" Caption="组计数器" CellType="NumberEditor" Scale="0" UseGroupingSeparator="false">
+                                    <DataBinding ColumnKey="LastGroupCounter"/>
+                                    <CellFormat HAlign="Right"/>
+                                </GridCell>
+                                <GridCell Key="LastTaskListDescription" Caption="任务清单描述" CellType="TextEditor">
+                                    <DataBinding ColumnKey="LastTaskListDescription"/>
+                                </GridCell>
+                                <GridCell Key="TotalEstimatedCost" Caption="总的估算成本" CellType="NumberEditor">
+                                    <DataBinding ColumnKey="TotalEstimatedCost"/>
+                                    <CellFormat HAlign="Right"/>
+                                </GridCell>
+                                <GridCell Key="TotalPlannedCost" Caption="总的计划成本" CellType="NumberEditor">
+                                    <DataBinding ColumnKey="TotalPlannedCost"/>
+                                    <CellFormat HAlign="Right"/>
+                                </GridCell>
+                                <GridCell Key="TotalActualCost" Caption="总的实际成本" CellType="NumberEditor">
+                                    <DataBinding ColumnKey="TotalActualCost"/>
+                                    <CellFormat HAlign="Right"/>
+                                </GridCell>
+                                <GridCell Key="CurrencyID" Caption="币种" CellType="Dict" ItemKey="Currency">
+                                    <DataBinding ColumnKey="CurrencyID"/>
+                                </GridCell>
+                                <GridCell Key="OrgWBSElementID" Caption="WBS元素" CellType="Dict" ItemKey="PS_WBSElement">
+                                    <DataBinding ColumnKey="OrgWBSElementID"/>
+                                </GridCell>
+                                <GridCell Key="WBSElementID" Caption="WBS元素" CellType="Dict" ItemKey="PS_WBSElement">
+                                    <DataBinding ColumnKey="WBSElementID"/>
+                                </GridCell>
+                                <GridCell Key="DocumentNumber" CellType="TextEditor">
+                                    <TextEditor Key="DocumentNumber_50" MaxLength="50">
+                                        <DataBinding TableKey="EPM_MaintOrderList_Rpt" ColumnKey="DocumentNumber"/>
+                                    </TextEditor>
+                                </GridCell>
+                            </GridRow>
+                        </GridRowCollection>
+                        <RowDblClick>
+                            <![CDATA[IIF(IsInTabContainer(), Macro_SetDictResult(SOID, DocumentNumber) && Close('OK'), Open('PM_MaintenanceOrder', SOID))]]>
+                        </RowDblClick>
+                    </Grid>
+                    <RowDefCollection RowGap="24">
+                        <RowDef Height="100%"/>
+                    </RowDefCollection>
+                    <ColumnDefCollection ColumnGap="16">
+                        <ColumnDef Width="100%"/>
+                    </ColumnDefCollection>
+                </GridLayoutPanel>
+            </FlexFlowLayoutPanel>
+        </Block>
+    </Body>
+    <OnLoad>
+        <![CDATA[PushPara('AdvancedQueryValue',Macro_GetJSONDocAdvancedQueryString());ERPShowModal('Cond_PM_MaintOrderListQuery');PushPara('AdvancedQueryValue','')]]>
+    </OnLoad>
+    <MacroCollection>
+        <Macro Key="Macro_GetWhereCondition">
+            <![CDATA[' where' + GetPara('PM_SqlPara')]]>
+        </Macro>
+        <Macro Key="Macro_GetSelectFieldsSQL">
+            <![CDATA["select distinct head.OID,head.SOID, head.DocumentNumber, head.OrderTypeID, head.OrderText as OrderNotes, head.BasicStartDate, head.BasicEndDate, head.Creator, head.CreateTime,head.ChangedOnDate, head.ModifyTime, head.Modifier, head.CompanyCodeID, head.BusinessAreaID, head.CostCenterID, head.CostingSheetID, head.ABCIndicatorID, head.PriorityTypeID, head.PriorityID, head.EquipmentSOID, head.PlanningPlantID, head.PlannerGroupID, head.MainWorkCenterID, head.MainWorkCenterPlantID, head.MaintPlantID as MaintPlantID, head.LocationID, head.Room, head.PlantSectionID, head.FunctionalLocationSOID, head.AssetCardSOID, head.MaintenancePlanSOID, head.MaintenanceItemSOID, head.SystemStatusText, head.UserStatusText, head.WorkCenterID, head.MaintenanceActivityTypeID, head.NotificationSOID, head.SerialNumber,head.LastTaskListType,head.LastRoutingGroup,head.LastGroupCounter,head.LastRoutingID,T.Name LastTaskListDescription,head.ReleasedDate,head.ControllingAreaID,head.ResponsibleCostCenterID,head.OrgControllingAreaID,head.SortField,head.MaterialID RefurbMaterialID,head.MaintProcessingPhase,head.CurrencyID,head.OrgWBSElementID,head.WBSElementID from EPM_MaintenanceOrderHead head left join EPP_Routing rout on head.LastRoutingID = rout.OID left join EPP_Routing_T T on rout.OID=T.SrcLangOID and T.Lang='"& GetLocale() &"' left join EPM_MaintOrder_Routing routing on head.SOID = routing.SOID left join EPM_MaintenanceOrder_BOM bom on head.SOID = bom.SOID and bom.ParentMaintOrderRoutingOID = routing.OID  "]]>
+        </Macro>
+        <Macro Key="Macro_BatchProcess" Args="optKey">
+            <![CDATA[com.bokesoft.erp.pm.maintorder.MaintOrderBatchProcess.batchProcess(optKey);Macro_LoadObject();]]>
+        </Macro>
+        <Macro Key="Macro_BatchProcess_Callback">
+            <![CDATA[IIF(GetPara('PMOrderOperation') == 'CLOSE',Macro_BatchProcess('BatchClose'),Macro_BatchProcess('BatchTechComplete'))]]>
+        </Macro>
+        <Macro Key="Macro_BatchClose">
+            <![CDATA[SetPara('PMOrderOperation','CLOSE');if(Macro_IsExistsNotTECOOrder()){ if(Macro_IsExistsMaintPlanOrder()){ERPShowModal('PM_BatchOrder4PlanCompleteDialog')}else{ERPShowModal('PM_BatchOrderCompleteDialog')} }else{Macro_BatchProcess('BatchClose');}]]>
+        </Macro>
+        <Macro Key="Macro_IsExistsMaintPlanOrder">
+            <![CDATA[com.bokesoft.erp.pm.maintorder.MaintOrderBatchProcess.isExistsMaintPlanOrder()]]>
+        </Macro>
+        <Macro Key="Macro_IsExistsNotTECOOrder">
+            <![CDATA[com.bokesoft.erp.pm.maintorder.MaintOrderBatchProcess.isExistsNotTECOOrder()]]>
+        </Macro>
+        <Macro Key="Macro_FillOrderCosts">
+            <![CDATA[com.bokesoft.erp.pm.maintorder.MaintOrderBatchProcess.fillOrderCosts()]]>
+        </Macro>
+        <Macro Key="Macro_LoadObject">
+            <![CDATA[com.bokesoft.erp.function.DocumentFunction.loadObject();Macro_FillOrderCosts()]]>
+        </Macro>
+    </MacroCollection>
+</Form>
