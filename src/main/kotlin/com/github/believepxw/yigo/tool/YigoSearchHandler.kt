@@ -208,4 +208,145 @@ class YigoSearchHandler(private val panel: YigoLayoutPanel) {
             }
         }
     }
+
+    inner class OperationsSearchDialog(private val formTag: XmlTag) : JDialog(SwingUtilities.getWindowAncestor(panel), "All Operations in ${formTag.getAttributeValue("Key") ?: "Form"}", Dialog.ModalityType.MODELESS) {
+        private val searchField = SearchTextField()
+        private val resultsList = com.intellij.ui.components.JBList<Pair<XmlTag, String>>()
+        private val resultsScrollPane = JBScrollPane(resultsList)
+        private var allOperations = listOf<Pair<XmlTag, String>>()
+
+        init {
+            layout = BorderLayout()
+            val topPanel = JPanel(BorderLayout())
+            topPanel.border = JBUI.Borders.empty(5)
+            topPanel.add(searchField, BorderLayout.CENTER)
+            add(topPanel, BorderLayout.NORTH)
+
+            resultsScrollPane.preferredSize = Dimension(400, 300)
+            add(resultsScrollPane, BorderLayout.CENTER)
+
+            resultsList.cellRenderer = object : DefaultListCellRenderer() {
+                override fun getListCellRendererComponent(list: JList<*>, value: Any?, index: Int, isSelected: Boolean, cellHasFocus: Boolean): Component {
+                    val comp = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus)
+                    if (value is Pair<*, *>) {
+                        val tag = value.first as? XmlTag
+                        val prefix = value.second as? String ?: ""
+                        if (tag != null) {
+                            val key = tag.getAttributeValue("Key") ?: ""
+                            val caption = tag.getAttributeValue("Caption") ?: ""
+                            text = "$prefix[$key] $caption"
+                            icon = com.intellij.icons.AllIcons.Actions.Search
+                        }
+                    }
+                    return comp
+                }
+            }
+
+            resultsList.addMouseListener(object : MouseAdapter() {
+                override fun mouseClicked(e: MouseEvent) {
+                    if (e.clickCount == 1 || e.clickCount == 2) {
+                        val index = resultsList.locationToIndex(e.point)
+                        if (index >= 0) {
+                            val tag = resultsList.model.getElementAt(index).first
+                            panel.navigateToTag(tag, true)
+                        }
+                    }
+                }
+            })
+
+            searchField.addDocumentListener(object : com.intellij.ui.DocumentAdapter() {
+                override fun textChanged(e: javax.swing.event.DocumentEvent) {
+                    runSearch()
+                }
+            })
+            
+            searchField.addKeyboardListener(object : KeyAdapter() {
+                override fun keyPressed(e: KeyEvent) {
+                    if (e.keyCode == java.awt.event.KeyEvent.VK_ENTER) {
+                        if (resultsList.itemsCount > 0) {
+                            resultsList.selectedIndex = 0
+                            panel.navigateToTag(resultsList.selectedValue.first, true)
+                        }
+                    } else if (e.keyCode == java.awt.event.KeyEvent.VK_DOWN) {
+                        resultsList.requestFocusInWindow()
+                        if (resultsList.itemsCount > 0 && resultsList.selectedIndex < 0) {
+                            resultsList.selectedIndex = 0
+                        }
+                    }
+                }
+            })
+            
+            resultsList.addKeyListener(object : KeyAdapter() {
+                override fun keyPressed(e: KeyEvent) {
+                    if (e.keyCode == java.awt.event.KeyEvent.VK_ENTER) {
+                        val tag = resultsList.selectedValue?.first
+                        if (tag != null) {
+                            panel.navigateToTag(tag, true)
+                        }
+                    }
+                }
+            })
+            
+            rootPane.registerKeyboardAction(
+                { dispose() },
+                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                JComponent.WHEN_IN_FOCUSED_WINDOW
+            )
+
+            ApplicationManager.getApplication().runReadAction {
+                val list = mutableListOf<Pair<XmlTag, String>>()
+                collectOperations(formTag, 0, "", true, list)
+                allOperations = list
+            }
+
+            pack()
+            isAlwaysOnTop = true
+            setLocationRelativeTo(panel)
+        }
+
+        private fun collectOperations(tag: XmlTag, depth: Int, prefix: String, isLast: Boolean, list: MutableList<Pair<XmlTag, String>>) {
+            val validNames = setOf("Operation", "OperationCollection")
+            val children = tag.subTags.filter { it.name in validNames }
+            
+            val isTopLevelCollection = tag.name == "OperationCollection" && tag.parentTag?.name == "Form"
+            
+            if (tag.name in validNames && !isTopLevelCollection) {
+                val currentPrefix = if (depth == 0) "" else prefix + (if (isLast) "└─ " else "├─ ")
+                list.add(Pair(tag, currentPrefix))
+                
+                val nextPrefix = if (depth == 0) "" else prefix + (if (isLast) "   " else "│  ")
+                children.forEachIndexed { index, child ->
+                    collectOperations(child, depth + 1, nextPrefix, index == children.size - 1, list)
+                }
+            } else {
+                val passDepth = if (isTopLevelCollection || tag.name == "Form") 0 else depth
+                children.forEachIndexed { index, child ->
+                    collectOperations(child, passDepth, prefix, index == children.size - 1, list)
+                }
+            }
+        }
+
+        fun showDialog() {
+            runSearch()
+            isVisible = true
+            searchField.requestFocusInWindow()
+        }
+
+        private fun runSearch() {
+            val text = searchField.text.trim().lowercase()
+            val filtered = if (text.isEmpty()) {
+                allOperations
+            } else {
+                allOperations.filter { pair ->
+                    val tag = pair.first
+                    (tag.getAttributeValue("Key")?.lowercase()?.contains(text) == true) ||
+                    (tag.getAttributeValue("Caption")?.lowercase()?.contains(text) == true)
+                }
+            }
+            
+            val model = DefaultListModel<Pair<XmlTag, String>>()
+            filtered.forEach { model.addElement(it) }
+            resultsList.model = model
+        }
+    }
 }

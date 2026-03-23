@@ -1380,6 +1380,18 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         }
         menu.add(itemSearch)
 
+        val itemShowOperations = JMenuItem("Show All Operations...")
+        itemShowOperations.addActionListener {
+            var formTag: XmlTag? = tag
+            while (formTag != null && formTag.name != "Form") {
+                formTag = formTag.parentTag
+            }
+            if (formTag != null) {
+                searchHandler.OperationsSearchDialog(formTag).showDialog()
+            }
+        }
+        menu.add(itemShowOperations)
+
         menu.addSeparator()
         val batchDeleteItem = JMenuItem("Batch Delete...")
         batchDeleteItem.addActionListener {
