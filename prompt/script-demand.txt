@@ -1,0 +1,24 @@
+
+window.YIUI.FormStack.activeForm 获取当前活跃的表单，其中有key属性代表formkey
+window.YIUI.FormStack.activeForm.document.oid 为当前表单的oid
+
+window.YIUI.FormStack.activeForm.formAdapt.gridArray 为表单内所有的表格控件，下面简称为Grid对象
+其中，控件内有key属性，tableKey属性。
+dataModel属性下有allData是一个数组，下面为RowData对象，RowData下有bkmkRow.bookmark ,bookmark的值表示在table中的一个标识值，
+可以通过
+window.YIUI.FormStack.activeForm.document.tbls 数组中获取datatable对象，datatable同样有key属性、cols属性代表ColInfo 里面的key为columnkey，比如OID在里面，通过在数组内的下标可以在allRows[x].vals[ColIndex]获取值
+
+我描述下我的需求，我需要一个油猴脚本，能够在http://localhost:8089/erp/中 提供一个按钮，能够显示我表单内的所有OID，表单oid以及grid中的oid,poid
+
+grid html长这样
+class="vnode ui-ygrid" meta-key="PM_TechObjMeasuringPoint_Overview" meta-type="Grid" 
+meta-key等于Grid控件的key,metaType就不用说了
+下面有 ygrow 节点，
+<tr class="ygrow" id="ygd0" role="row" rowid="#row0" rowtype="Detail" treelevel="0" meta-key="RowInMeasPoint_Overview" meta-type="GridRow" 每一行对于Grid.dataModel下的allData中的行
+
+form节点比较好辨别，有个formkey属性
+<div formkey="PM_Equipment">
+
+我建议表单的oid显示到form节点的右上角，表格行的oid漂浮在行上，注意，我要能够复制这个id,因为我其实就是想拿这个id去查数据库
+
+form的html元素可以查看“html-form元素例子.html”文件，这个文件是我从浏览器中复制出来的，注意，这个比较大，你可以想办法检索出你想要的信息就行
