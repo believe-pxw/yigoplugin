@@ -14,12 +14,11 @@
 
     // Create floating button
     const btn = document.createElement('button');
-    btn.innerHTML = '显示/刷新 OID';
+    btn.innerHTML = '显示OID';
     btn.style.position = 'fixed';
-    btn.style.bottom = '20px';
-    btn.style.right = '20px';
+    btn.style.bottom = '30px';
+    btn.style.right = '30px';
     btn.style.zIndex = '999999';
-    btn.style.padding = '10px';
     btn.style.backgroundColor = '#ff4d4f';
     btn.style.color = '#fff';
     btn.style.border = 'none';
@@ -53,7 +52,15 @@
             return;
         }
 
-        const activeForm = window.YIUI.FormStack.activeForm;
+        let activeForm = window.YIUI.FormStack.activeForm;
+        if (activeForm.formKey.endsWith('DictEdit')) {
+            window.YIUI.FormStack.getFormList().forEach(form => {
+                if (form.getParentForm() == activeForm) {
+                    activeForm = form;
+                    return;
+                }
+            })
+        }
 
         // 1. Show Form OID
         const formOid = activeForm.document && activeForm.document.oid !== undefined ? activeForm.document.oid : '';
@@ -64,12 +71,12 @@
                 const toolbar = formDom.querySelector('.ui-tbr');
                 const attachTarget = toolbar || formDom;
                 const attachTargetStyle = window.getComputedStyle(attachTarget);
-                
+
                 // 不要强行覆盖 fixed 或 absolute 的模态窗定位，否则模态窗会跑到视口外面去导致“消失”的错觉！
                 if (attachTargetStyle.position === 'static') {
                     attachTarget.style.position = 'relative';
                 }
-                
+
                 // 如果是挂在非 form 身上，才谨慎覆盖 overflow，不要破坏弹窗结构
                 if (attachTarget !== formDom && attachTargetStyle.overflow === 'hidden') {
                     attachTarget.style.setProperty('overflow', 'visible', 'important');
@@ -78,11 +85,11 @@
                 const oidMarker = document.createElement('div');
                 oidMarker.className = 'yigo-oid-marker';
                 oidMarker.style.position = 'absolute';
-                
+
                 // 将位置绑定在工具栏最右侧稍微靠里的地方
                 oidMarker.style.top = '10px';
-                oidMarker.style.right = '40px'; 
-                oidMarker.style.backgroundColor = 'rgba(24, 144, 255, 0.9)'; 
+                oidMarker.style.right = '40px';
+                oidMarker.style.backgroundColor = 'rgba(24, 144, 255, 0.9)';
                 oidMarker.style.color = '#fff';
                 oidMarker.style.padding = '2px 4px';
                 oidMarker.style.fontSize = '12px';
@@ -90,7 +97,7 @@
                 oidMarker.style.borderRadius = '2px';
                 oidMarker.style.whiteSpace = 'nowrap';
                 oidMarker.style.boxShadow = '1px 1px 3px rgba(0,0,0,0.3)';
-                
+
                 // 仅针对 ID 文字开启一键全选，防止复制到前缀
                 // 有些弹窗是没有单独 OID 的 (比如明细选取窗)，此时展示个提示
                 const displayOid = formOid || '无(列表窗)';
