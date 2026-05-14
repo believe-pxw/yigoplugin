@@ -7,7 +7,7 @@
 // @match        http://k8stest.erp.bokesoft.com/public/erp_regression-testing/testResult/*
 // @match        http://dev.bokesoft.com:8000/files/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=bokesoft.com
-// @grant        none
+// @grant        unsafeWindow
 // ==/UserScript==
 (function () {
     'use strict';
@@ -24,6 +24,48 @@
         currentLine: null,        // 当前所在行
         isLocking: false,         // UI 锁定状态
         loadingOverlay: null      // 遮罩层 DOM
+    };
+
+    // --- 0. 暴露全局方法供其他脚本读取 ---
+    // 使用 unsafeWindow 突破油猴的沙箱隔离，让网站原有环境和其他脚本都能访问到
+    const globalWin = typeof unsafeWindow !== 'undefined' ? unsafeWindow : window;
+
+    globalWin.readSteps = function (lineNo) {
+        if (!lineNo || lineNo.trim() === '') return [];
+
+        // 1. 命中缓存：直接光速返回（最理想状态）
+        if (CONFIG.stepMapCache[lineNo]) {
+            return CONFIG.stepMapCache[lineNo];
+        }
+
+        // 2. 缓存未命中兜底：触发【同步】网络请求
+        // 这种情况通常发生在用户使用键盘快捷键切换，绕过了我们的点击拦截器时
+        console.warn(`[兜底机制] 缓存未命中，强制同步请求行号: ${lineNo}`);
+        try {
+            const xhr = new XMLHttpRequest();
+            const baseUrl = getDynamicBaseUrl();
+
+            // 注意第三个参数 false，代表这是一个同步请求 (Synchronous)
+            // 它会短暂挂起浏览器，直到数据返回，完美迎合 @Compute 的同步要求
+            xhr.open('GET', `${baseUrl}/${lineNo}`, false);
+            xhr.send(null);
+
+            if (xhr.status === 200) {
+                const regExp = /.*\.png">(.*\.png)<\/a>.*/;
+                const steps = xhr.responseText.split('\n')
+                    .map(s => regExp.test(s) ? regExp.exec(s)[1] : '')
+                    .filter(s => s !== '')
+                    .map(s => s.replace(/\/$/, ''));
+
+                CONFIG.stepMapCache[lineNo] = steps; // 写入缓存供下次使用
+                return steps;
+            }
+        } catch (e) {
+            console.error("同步拉取目录失败", e);
+        }
+
+        // 即使出错也坚决返回空数组，绝不返回 undefined，保护前端框架不崩溃
+        return [];
     };
 
     // --- 1. UI 遮罩层控制 ---
@@ -77,17 +119,6 @@
         if (!lineNo || lineNo.trim() === '') return [];
         if (CONFIG.stepMapCache[lineNo]) return CONFIG.stepMapCache[lineNo];
 
-        // 优先尝试页面原生方法
-        if (typeof window.readSteps === 'function') {
-            try {
-                const res = window.readSteps(lineNo);
-                if (res && res.length > 0) {
-                    CONFIG.stepMapCache[lineNo] = res;
-                    return res;
-                }
-            } catch (e) { }
-        }
-
         // 降级：走原生 Fetch 请求并正则解析
         try {
             const baseUrl = getDynamicBaseUrl();
@@ -139,7 +170,7 @@
         if (centerIndex === -1) return;
 
         CONFIG.queue = [];
-        // 以当前行为中心，向前后辐射 50 行
+        // 以当前行为中心，向前后辐射 radius 行
         for (let offset = 1; offset <= CONFIG.radius; offset++) {
             if (centerIndex + offset < lines.length) {
                 CONFIG.queue.push(lines[centerIndex + offset]);
