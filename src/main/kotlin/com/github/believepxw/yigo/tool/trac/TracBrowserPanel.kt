@@ -7,6 +7,7 @@ import org.jsoup.Connection
 import org.jsoup.Jsoup
 import java.awt.BorderLayout
 import java.awt.GridLayout
+import java.net.Proxy
 import javax.swing.*
 
 class TracBrowserPanel(private val project: Project) {
@@ -45,6 +46,7 @@ class TracBrowserPanel(private val project: Project) {
                     Jsoup.connect("http://dev.bokesoft.com:8000/trac/eri-erp/login")
                         .userAgent(userAgent)
                         .cookies(cachedCookies)
+                        .proxy(Proxy.NO_PROXY)
                         .execute()
                 }
             } catch (ignore: Exception) {}
@@ -177,6 +179,7 @@ class TracBrowserPanel(private val project: Project) {
                                 .header("Authorization", "Basic $encodedAuth")
                                 .userAgent(userAgent)
                                 .cookies(cachedCookies)
+                                .proxy(Proxy.NO_PROXY)
                                 .get()
                             useCache = true
                         } catch (e: Exception) {
@@ -192,6 +195,7 @@ class TracBrowserPanel(private val project: Project) {
                             .method(Connection.Method.GET)
                             .header("Authorization", "Basic $encodedAuth")
                             .userAgent(userAgent)
+                            .proxy(Proxy.NO_PROXY)
                             .execute()
                         
                         var cookies = loginPageResponse.cookies()
@@ -208,6 +212,7 @@ class TracBrowserPanel(private val project: Project) {
                                 .header("Authorization", "Basic $encodedAuth")
                                 .userAgent(userAgent)
                                 .cookies(cookies)
+                                .proxy(Proxy.NO_PROXY)
                                 .data("__FORM_TOKEN", formToken)
                                 .data("user", username)
                                 .data("password", password)
@@ -227,6 +232,7 @@ class TracBrowserPanel(private val project: Project) {
                             .header("Authorization", "Basic $encodedAuth")
                             .userAgent(userAgent)
                             .cookies(cachedCookies)
+                            .proxy(Proxy.NO_PROXY)
                             .get()
                     }
                         

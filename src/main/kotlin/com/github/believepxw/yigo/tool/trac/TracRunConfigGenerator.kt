@@ -16,14 +16,7 @@ object TracRunConfigGenerator {
     fun generate(project: Project, data: TracTicketData) {
         val runManager = RunManager.getInstance(project)
         val configType = ConfigurationTypeUtil.findConfigurationType(SpringBootApplicationConfigurationType::class.java)
-        
-        if (configType == null) {
-            javax.swing.SwingUtilities.invokeLater {
-                Messages.showErrorDialog("Spring Boot plugin is not available.", "Generate Failed")
-            }
-            return
-        }
-        
+
         val factory = configType.configurationFactories.firstOrNull()
         if (factory == null) return
         
