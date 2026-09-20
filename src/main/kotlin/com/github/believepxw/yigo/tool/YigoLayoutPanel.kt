@@ -844,7 +844,255 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         return YigoIcons.getIconForTag(tagName)
     }
 
+    internal fun isTagRequired(tag: XmlTag): Boolean {
+        // 1. Direct check on current tag
+        if (isDirectlyRequired(tag)) return true
+
+        // 2. If it's a GridColumn, check if any corresponding GridCell in the same Grid is required
+        if (tag.name == "GridColumn") {
+            val colKey = tag.getAttributeValue("Key")
+            if (!colKey.isNullOrEmpty()) {
+                val gridTag = tag.parentTag?.parentTag // GridColumn -> GridColumnCollection -> Grid
+                if (gridTag != null && gridTag.name == "Grid") {
+                    val rowCollection = gridTag.findFirstSubTag("GridRowCollection")
+                    val rows = rowCollection?.findSubTags("GridRow") ?: emptyArray()
+                    for (row in rows) {
+                        for (cell in row.findSubTags("GridCell")) {
+                            if (cell.getAttributeValue("Key") == colKey) {
+                                if (isDirectlyRequired(cell)) return true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // 3. If it's a GridCell, check if its corresponding GridColumn has Required="true"
+        if (tag.name == "GridCell") {
+            val cellKey = tag.getAttributeValue("Key")
+            if (!cellKey.isNullOrEmpty()) {
+                val gridTag = tag.parentTag?.parentTag?.parentTag // GridCell -> GridRow -> GridRowCollection -> Grid
+                if (gridTag != null && gridTag.name == "Grid") {
+                    val colCollection = gridTag.findFirstSubTag("GridColumnCollection")
+                    val cols = colCollection?.findSubTags("GridColumn") ?: emptyArray()
+                    for (col in cols) {
+                        if (col.getAttributeValue("Key") == cellKey) {
+                            if (isDirectlyRequired(col)) return true
+                        }
+                    }
+                }
+            }
+        }
+
+        return false
+    }
+
+    private fun isDirectlyRequired(tag: XmlTag): Boolean {
+        if (tag.getAttributeValue("Required")?.equals("true", ignoreCase = true) == true) {
+            return true
+        }
+        val dataBinding = tag.findFirstSubTag("DataBinding")
+        return dataBinding?.getAttributeValue("Required")?.equals("true", ignoreCase = true) == true
+    }
+
+    internal fun hasCheckRule(tag: XmlTag): Boolean {
+        // 1. Direct check on current tag
+        if (isDirectlyHasCheckRule(tag)) return true
+
+        // 2. If it's a GridColumn, check if any corresponding GridCell in the same Grid has CheckRule
+        if (tag.name == "GridColumn") {
+            val colKey = tag.getAttributeValue("Key")
+            if (!colKey.isNullOrEmpty()) {
+                val gridTag = tag.parentTag?.parentTag
+                if (gridTag != null && gridTag.name == "Grid") {
+                    val rowCollection = gridTag.findFirstSubTag("GridRowCollection")
+                    val rows = rowCollection?.findSubTags("GridRow") ?: emptyArray()
+                    for (row in rows) {
+                        for (cell in row.findSubTags("GridCell")) {
+                            if (cell.getAttributeValue("Key") == colKey) {
+                                if (isDirectlyHasCheckRule(cell)) return true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // 3. If it's a GridCell, check if its corresponding GridColumn has CheckRule
+        if (tag.name == "GridCell") {
+            val cellKey = tag.getAttributeValue("Key")
+            if (!cellKey.isNullOrEmpty()) {
+                val gridTag = tag.parentTag?.parentTag?.parentTag
+                if (gridTag != null && gridTag.name == "Grid") {
+                    val colCollection = gridTag.findFirstSubTag("GridColumnCollection")
+                    val cols = colCollection?.findSubTags("GridColumn") ?: emptyArray()
+                    for (col in cols) {
+                        if (col.getAttributeValue("Key") == cellKey) {
+                            if (isDirectlyHasCheckRule(col)) return true
+                        }
+                    }
+                }
+            }
+        }
+
+        return false
+    }
+
+    private fun isDirectlyHasCheckRule(tag: XmlTag): Boolean {
+        val attr = tag.getAttributeValue("CheckRule")
+        if (!attr.isNullOrBlank()) return true
+
+        val childRule = tag.findFirstSubTag("CheckRule")
+        if (childRule != null && childRule.value.trimmedText.isNotEmpty()) return true
+
+        val dataBinding = tag.findFirstSubTag("DataBinding")
+        if (dataBinding != null) {
+            val dbAttr = dataBinding.getAttributeValue("CheckRule")
+            if (!dbAttr.isNullOrBlank()) return true
+            val dbChild = dataBinding.findFirstSubTag("CheckRule")
+            if (dbChild != null && dbChild.value.trimmedText.isNotEmpty()) return true
+        }
+
+        return false
+    }
+
+    internal fun hasValueChanged(tag: XmlTag): Boolean {
+        // 1. Direct check on current tag
+        if (isDirectlyHasValueChanged(tag)) return true
+
+        // 2. If it's a GridColumn, check if any corresponding GridCell in the same Grid has ValueChanged
+        if (tag.name == "GridColumn") {
+            val colKey = tag.getAttributeValue("Key")
+            if (!colKey.isNullOrEmpty()) {
+                val gridTag = tag.parentTag?.parentTag
+                if (gridTag != null && gridTag.name == "Grid") {
+                    val rowCollection = gridTag.findFirstSubTag("GridRowCollection")
+                    val rows = rowCollection?.findSubTags("GridRow") ?: emptyArray()
+                    for (row in rows) {
+                        for (cell in row.findSubTags("GridCell")) {
+                            if (cell.getAttributeValue("Key") == colKey) {
+                                if (isDirectlyHasValueChanged(cell)) return true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // 3. If it's a GridCell, check if its corresponding GridColumn has ValueChanged
+        if (tag.name == "GridCell") {
+            val cellKey = tag.getAttributeValue("Key")
+            if (!cellKey.isNullOrEmpty()) {
+                val gridTag = tag.parentTag?.parentTag?.parentTag
+                if (gridTag != null && gridTag.name == "Grid") {
+                    val colCollection = gridTag.findFirstSubTag("GridColumnCollection")
+                    val cols = colCollection?.findSubTags("GridColumn") ?: emptyArray()
+                    for (col in cols) {
+                        if (col.getAttributeValue("Key") == cellKey) {
+                            if (isDirectlyHasValueChanged(col)) return true
+                        }
+                    }
+                }
+            }
+        }
+
+        return false
+    }
+
+    private fun isDirectlyHasValueChanged(tag: XmlTag): Boolean {
+        val attr = tag.getAttributeValue("ValueChanged")
+        if (!attr.isNullOrBlank()) return true
+
+        val childRule = tag.findFirstSubTag("ValueChanged")
+        if (childRule != null && childRule.value.trimmedText.isNotEmpty()) return true
+
+        val dataBinding = tag.findFirstSubTag("DataBinding")
+        if (dataBinding != null) {
+            val dbAttr = dataBinding.getAttributeValue("ValueChanged")
+            if (!dbAttr.isNullOrBlank()) return true
+            val dbChild = dataBinding.findFirstSubTag("ValueChanged")
+            if (dbChild != null && dbChild.value.trimmedText.isNotEmpty()) return true
+        }
+
+        return false
+    }
+
+    internal fun hasDefaultValue(tag: XmlTag): Boolean {
+        // 1. Direct check on current tag
+        if (isDirectlyHasDefaultValue(tag)) return true
+
+        // 2. If it's a GridColumn, check if any corresponding GridCell in the same Grid has DefaultValue
+        if (tag.name == "GridColumn") {
+            val colKey = tag.getAttributeValue("Key")
+            if (!colKey.isNullOrEmpty()) {
+                val gridTag = tag.parentTag?.parentTag
+                if (gridTag != null && gridTag.name == "Grid") {
+                    val rowCollection = gridTag.findFirstSubTag("GridRowCollection")
+                    val rows = rowCollection?.findSubTags("GridRow") ?: emptyArray()
+                    for (row in rows) {
+                        for (cell in row.findSubTags("GridCell")) {
+                            if (cell.getAttributeValue("Key") == colKey) {
+                                if (isDirectlyHasDefaultValue(cell)) return true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // 3. If it's a GridCell, check if its corresponding GridColumn has DefaultValue
+        if (tag.name == "GridCell") {
+            val cellKey = tag.getAttributeValue("Key")
+            if (!cellKey.isNullOrEmpty()) {
+                val gridTag = tag.parentTag?.parentTag?.parentTag
+                if (gridTag != null && gridTag.name == "Grid") {
+                    val colCollection = gridTag.findFirstSubTag("GridColumnCollection")
+                    val cols = colCollection?.findSubTags("GridColumn") ?: emptyArray()
+                    for (col in cols) {
+                        if (col.getAttributeValue("Key") == cellKey) {
+                            if (isDirectlyHasDefaultValue(col)) return true
+                        }
+                    }
+                }
+            }
+        }
+
+        return false
+    }
+
+    private fun isDirectlyHasDefaultValue(tag: XmlTag): Boolean {
+        // Check attributes on tag
+        if (!tag.getAttributeValue("DefaultFormulaValue").isNullOrBlank()) return true
+        if (!tag.getAttributeValue("DefaultValue").isNullOrBlank()) return true
+
+        // Check child tags
+        val dfTag = tag.findFirstSubTag("DefaultFormulaValue")
+        if (dfTag != null && dfTag.value.trimmedText.isNotEmpty()) return true
+
+        val dvTag = tag.findFirstSubTag("DefaultValue")
+        if (dvTag != null && dvTag.value.trimmedText.isNotEmpty()) return true
+
+        // Check <DataBinding>
+        val dataBinding = tag.findFirstSubTag("DataBinding")
+        if (dataBinding != null) {
+            if (!dataBinding.getAttributeValue("DefaultFormulaValue").isNullOrBlank()) return true
+            if (!dataBinding.getAttributeValue("DefaultValue").isNullOrBlank()) return true
+
+            val dbDfTag = dataBinding.findFirstSubTag("DefaultFormulaValue")
+            if (dbDfTag != null && dbDfTag.value.trimmedText.isNotEmpty()) return true
+
+            val dbDvTag = dataBinding.findFirstSubTag("DefaultValue")
+            if (dbDvTag != null && dbDvTag.value.trimmedText.isNotEmpty()) return true
+        }
+
+        return false
+    }
+
     private fun createLeafComponent(tag: XmlTag): JComponent {
+        val isRequired = isTagRequired(tag)
+        val hasRule = if (!isRequired) hasCheckRule(tag) else false
+        val hasEvent = hasValueChanged(tag)
+        val hasDefault = hasDefaultValue(tag)
         val panel = object : JPanel(BorderLayout()) {
             override fun paintComponent(g: Graphics) {
                 // Rounded background
@@ -852,17 +1100,57 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
                 g2.color = background
                 g2.fillRoundRect(0, 0, width - 1, height - 1, 8, 8)
-                g2.color = JBColor.border()
-                g2.drawRoundRect(0, 0, width - 1, height - 1, 8, 8)
+                if (isRequired) {
+                    // Required border: soft warning red
+                    g2.color = JBColor(Color(239, 154, 154), Color(180, 90, 90))
+                    g2.drawRoundRect(0, 0, width - 1, height - 1, 8, 8)
+                    // Left indicator strip: bold red bar
+                    g2.color = JBColor(Color(229, 57, 53), Color(239, 83, 80))
+                    g2.fillRoundRect(1, 2, 4, (height - 5).coerceAtLeast(1), 3, 3)
+                } else {
+                    g2.color = JBColor.border()
+                    g2.drawRoundRect(0, 0, width - 1, height - 1, 8, 8)
+                    if (hasRule) {
+                        // Subtle Amber/Orange dot in top-right corner indicating CheckRule
+                        g2.color = JBColor(Color(245, 124, 0), Color(255, 179, 0))
+                        g2.fillOval(width - 9, 5, 5, 5)
+                    }
+                }
+                if (hasDefault) {
+                    // Subtle Teal/Green dot in bottom-right corner indicating DefaultValue
+                    g2.color = JBColor(Color(0, 137, 123), Color(77, 182, 172))
+                    g2.fillOval(width - 9, height - 10, 5, 5)
+                }
                 g2.dispose()
                 super.paintComponent(g) // Paint children (label)
             }
         }
         panel.isOpaque = false // For rounded corners
-        panel.background = JBColor(Color(245, 245, 245), Color(60, 63, 65))
-        panel.border = JBUI.Borders.empty(2, 5)
+        panel.background = if (isRequired) {
+            JBColor(Color(255, 246, 246), Color(62, 50, 52))
+        } else {
+            JBColor(Color(245, 245, 245), Color(60, 63, 65))
+        }
+        panel.border = if (isRequired) JBUI.Borders.empty(2, 8, 2, 5) else JBUI.Borders.empty(2, 5)
         
-        val label = JLabel(getTitle(tag))
+        val title = getTitle(tag)
+        val labelText = if (isRequired || hasEvent) {
+            val escapedTitle = title.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+            buildString {
+                append("<html>")
+                append(escapedTitle)
+                if (hasEvent) {
+                    append("&nbsp;<font color='#1E88E5'>⚡</font>")
+                }
+                if (isRequired) {
+                    append("&nbsp;<font color='#E53935'>*</font>")
+                }
+                append("</html>")
+            }
+        } else {
+            title
+        }
+        val label = JLabel(labelText)
         label.icon = getIconForTag(tag)
         label.iconTextGap = 8
         label.horizontalAlignment = SwingConstants.LEFT // Align left to show icon properly
