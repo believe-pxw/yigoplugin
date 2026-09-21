@@ -13,9 +13,6 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 class TracSettingsState : PersistentStateComponent<TracSettingsState> {
     var defaultMainClass: String = "com.bokesoft.erp.all.StartYigoERP"
     var defaultEnvVars: String = "CALCSCOPE_IMMEDIATELY=false;AUTHORITY_ENABLE=true;PASSWORD_DURATION=10000" // key=value;key2=value2 format
-    var tracUsername: String = ""
-    var tracPassword: String = ""
-    var serializedCookies: String = ""
 
     override fun getState(): TracSettingsState = this
     override fun loadState(state: TracSettingsState) {

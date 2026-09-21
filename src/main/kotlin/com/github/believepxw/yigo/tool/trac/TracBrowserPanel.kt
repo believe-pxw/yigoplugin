@@ -15,51 +15,38 @@ class TracBrowserPanel(private val project: Project) {
         // Cache cookies across multiple fetches to avoid slow logins every time
         private var cachedCookies: MutableMap<String, String> = mutableMapOf()
 
-        fun loadCookies(state: TracSettingsState) {
-            if (state.serializedCookies.isNotBlank()) {
-                val parts = state.serializedCookies.split(";")
+        fun loadCookies(globalState: TracGlobalSettingsState) {
+            if (globalState.serializedCookies.isNotBlank()) {
+                val parts = globalState.serializedCookies.split(";")
                 for (p in parts) {
-                    val kv = p.split("=", limit = 2)
+                    val kv = p.trim().split("=", limit = 2)
                     if (kv.size == 2) {
-                        cachedCookies[kv[0]] = kv[1]
+                        cachedCookies[kv[0].trim()] = kv[1].trim()
                     }
                 }
             }
         }
 
-        fun saveCookies(state: TracSettingsState) {
-            state.serializedCookies = cachedCookies.entries.joinToString(";") { "${it.key}=${it.value}" }
+        fun saveCookies(globalState: TracGlobalSettingsState) {
+            globalState.serializedCookies = cachedCookies.entries.joinToString(";") { "${it.key}=${it.value}" }
         }
     }
 
     private val mainPanel: JPanel = JPanel(BorderLayout())
 
     init {
-        val state = TracSettingsState.getInstance(project)
-        loadCookies(state)
-
-        // Async pre-warm: Validate and keep the session alive by touching the base login endpoint
-        Thread {
-            try {
-                if (cachedCookies.isNotEmpty()) {
-                    val userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-                    Jsoup.connect("http://dev.bokesoft.com:8000/trac/eri-erp/login")
-                        .userAgent(userAgent)
-                        .cookies(cachedCookies)
-                        .proxy(Proxy.NO_PROXY)
-                        .execute()
-                }
-            } catch (ignore: Exception) {}
-        }.start()
+        val projectState = TracSettingsState.getInstance(project)
+        val globalState = TracGlobalSettingsState.getInstance()
+        loadCookies(globalState)
 
         val inputPanel = JPanel(GridLayout(7, 2, 5, 5))
         inputPanel.border = BorderFactory.createEmptyBorder(10, 10, 10, 10)
 
         val ticketIDField = JTextField()
-        val usernameField = JTextField(state.tracUsername)
-        val passwordField = JPasswordField(state.tracPassword)
-        val mainClassField = JTextField(state.defaultMainClass)
-        val envVarsField = JTextField(state.defaultEnvVars)
+        val usernameField = JTextField(globalState.tracUsername)
+        val passwordField = JPasswordField(globalState.tracPassword)
+        val mainClassField = JTextField(projectState.defaultMainClass)
+        val envVarsField = JTextField(projectState.defaultEnvVars)
 
         val checkClipboard = {
             try {
@@ -100,10 +87,10 @@ class TracBrowserPanel(private val project: Project) {
         })
 
         val saveAction = {
-            state.tracUsername = usernameField.text
-            state.tracPassword = String(passwordField.password)
-            state.defaultMainClass = mainClassField.text
-            state.defaultEnvVars = envVarsField.text
+            globalState.tracUsername = usernameField.text
+            globalState.tracPassword = String(passwordField.password)
+            projectState.defaultMainClass = mainClassField.text
+            projectState.defaultEnvVars = envVarsField.text
         }
 
         usernameField.document.addDocumentListener(object: javax.swing.event.DocumentListener {
@@ -151,8 +138,8 @@ class TracBrowserPanel(private val project: Project) {
             // support plain ticket numbers like "164384"
             url = "http://dev.bokesoft.com:8000/trac/eri-erp/ticket/$url"
             
-            val username = state.tracUsername
-            val password = state.tracPassword
+            val username = globalState.tracUsername
+            val password = globalState.tracPassword
             
             if (username.isEmpty() || password.isEmpty()) {
                 Messages.showErrorDialog("Username and Password are required for Basic Auth.", "Error")
@@ -171,68 +158,90 @@ class TracBrowserPanel(private val project: Project) {
                     
                     // Attempt to use cached cookies if available
                     var doc: org.jsoup.nodes.Document? = null
-                    var useCache = false
                     
                     if (cachedCookies.isNotEmpty()) {
                         try {
-                            doc = Jsoup.connect(url)
+                            val candidateDoc = Jsoup.connect(url)
                                 .header("Authorization", "Basic $encodedAuth")
                                 .userAgent(userAgent)
                                 .cookies(cachedCookies)
                                 .proxy(Proxy.NO_PROXY)
+                                .timeout(20000)
                                 .get()
-                            useCache = true
+                            
+                            // Check if page actually contains the ticket and is authenticated
+                            if (candidateDoc.selectFirst(".trac-id") != null) {
+                                doc = candidateDoc
+                            } else {
+                                // Missing .trac-id means session expired or redirected to login/forbidden
+                                cachedCookies.clear()
+                            }
+                        } catch (e: org.jsoup.HttpStatusException) {
+                            if (e.statusCode == 401 || e.statusCode == 403) {
+                                // Authentication/authorization failure -> invalidate cache
+                                cachedCookies.clear()
+                            } else {
+                                // 404 Not Found, 500, etc. -> do NOT clear cookies, rethrow!
+                                throw e
+                            }
                         } catch (e: Exception) {
-                            // Cache expired or invalid, clear it and fall through to login
-                            cachedCookies.clear()
-                            useCache = false
+                            // Network timeout or connection error -> do NOT clear cookies, rethrow!
+                            throw e
                         }
                     }
                     
-                    if (!useCache) {
-                        // 1. Visit Login page to get __FORM_TOKEN and init cookies
+                    if (doc == null) {
+                        // 1. Visit Login page with Basic Auth.
+                        // Important: followRedirects(false) so we reliably capture the 302 redirect's Set-Cookie (trac_auth)
                         val loginPageResponse = Jsoup.connect(loginUrl)
                             .method(Connection.Method.GET)
                             .header("Authorization", "Basic $encodedAuth")
                             .userAgent(userAgent)
+                            .followRedirects(false)
                             .proxy(Proxy.NO_PROXY)
+                            .timeout(20000)
                             .execute()
                         
-                        var cookies = loginPageResponse.cookies()
-                        val loginDoc = loginPageResponse.parse()
+                        val newCookies = mutableMapOf<String, String>()
+                        newCookies.putAll(loginPageResponse.cookies())
                         
-                        // Extract __FORM_TOKEN
-                        val formTokenInput = loginDoc.selectFirst("input[name=__FORM_TOKEN]")
-                        val formToken = formTokenInput?.attr("value") ?: ""
-                        
-                        // 2. Post Login credentials (if Form Auth plugin is used)
-                        if (formToken.isNotEmpty()) {
-                            val loginPostResponse = Jsoup.connect(loginUrl)
-                                .method(Connection.Method.POST)
-                                .header("Authorization", "Basic $encodedAuth")
-                                .userAgent(userAgent)
-                                .cookies(cookies)
-                                .proxy(Proxy.NO_PROXY)
-                                .data("__FORM_TOKEN", formToken)
-                                .data("user", username)
-                                .data("password", password)
-                                .data("referer", url) // Redirect back to ticket
-                                .followRedirects(false) // We want to capture the auth cookies manually
-                                .execute()
+                        // 2. If Form Auth plugin is present (HTTP 200 with an actual user input field)
+                        if (loginPageResponse.statusCode() == 200) {
+                            val loginDoc = loginPageResponse.parse()
+                            val formToken = loginDoc.selectFirst("input[name=__FORM_TOKEN]")?.attr("value") ?: ""
+                            val hasUserField = loginDoc.selectFirst("input[name=user]") != null
+                            
+                            if (formToken.isNotEmpty() && hasUserField) {
+                                val loginPostResponse = Jsoup.connect(loginUrl)
+                                    .method(Connection.Method.POST)
+                                    .header("Authorization", "Basic $encodedAuth")
+                                    .userAgent(userAgent)
+                                    .cookies(newCookies)
+                                    .proxy(Proxy.NO_PROXY)
+                                    .data("__FORM_TOKEN", formToken)
+                                    .data("user", username)
+                                    .data("password", password)
+                                    .data("referer", url)
+                                    .followRedirects(false)
+                                    .timeout(20000)
+                                    .execute()
                                 
-                            // Update cookies with auth cookies (trac_auth, etc.)
-                            cookies.putAll(loginPostResponse.cookies())
+                                newCookies.putAll(loginPostResponse.cookies())
+                            }
                         }
                         
-                        cachedCookies.putAll(cookies)
-                        saveCookies(state)
+                        if (newCookies.isNotEmpty()) {
+                            cachedCookies.putAll(newCookies)
+                            saveCookies(globalState)
+                        }
                         
-                        // 3. Fetch the actual ticket page using authenticated cookies
+                        // 3. Fetch the actual ticket page using fresh authenticated cookies
                         doc = Jsoup.connect(url)
                             .header("Authorization", "Basic $encodedAuth")
                             .userAgent(userAgent)
                             .cookies(cachedCookies)
                             .proxy(Proxy.NO_PROXY)
+                            .timeout(20000)
                             .get()
                     }
                         

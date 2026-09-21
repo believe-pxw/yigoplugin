@@ -14,6 +14,7 @@
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
+        <applicationService serviceImplementation="com.github.believepxw.yigo.tool.trac.TracGlobalSettingsState"/>
         <projectService serviceImplementation="com.github.believepxw.yigo.tool.trac.TracSettingsState"/>
         <fileBasedIndex implementation="example.index.MacroNameIndex"/>
         <fileBasedIndex implementation="example.index.FormIndex"/>

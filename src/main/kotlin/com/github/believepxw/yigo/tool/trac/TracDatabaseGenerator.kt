@@ -42,6 +42,7 @@ object TracDatabaseGenerator {
 
         var driverName = ""
         var jdbcUrl = ""
+        var driverClassKey = ""
 
         if (dbType.equals("PostgreSQL", ignoreCase = true)) {
             val dbPort = envDBPort ?: "5432"
@@ -58,11 +59,17 @@ object TracDatabaseGenerator {
         }else if (dbType.equals("dm", ignoreCase = true)) {
             val dbPort = envDBPort ?: "1521"
             driverName = "DmDriver"
+            driverClassKey = "DmDriver"
             jdbcUrl = "jdbc:dm://$dbServer:$dbPort" // Assuming modern service name format
         } else if (dbType.equals("SQLServer", ignoreCase = true) || dbType.equals("SQL Server", ignoreCase = true)) {
             val dbPort = envDBPort ?: "1433"
             driverName = "SQL Server"
             jdbcUrl = "jdbc:sqlserver://$dbServer:$dbPort;databaseName=$dbName"
+        } else if (dbType.equals("Kingbase", ignoreCase = true)) {
+            val dbPort = envDBPort ?: "54321"
+            driverName = "Kingbase"
+            jdbcUrl = "jdbc:kingbase8://$dbServer:$dbPort;databaseName=$dbName"
+            driverClassKey = "kingbase8"
         } else {
             javax.swing.SwingUtilities.invokeLater {
                 Messages.showErrorDialog("Unsupported or unknown DB_TYPE: $dbType", "Database Error")
@@ -107,7 +114,7 @@ object TracDatabaseGenerator {
 
         if (driver == null) {
             // Fallback search by name if explicit ID didn't match
-            driver = driverManager.drivers.find { it.name.contains(driverName, ignoreCase = true)  }
+            driver = driverManager.drivers.find { it.name.contains(driverName, ignoreCase = true) || (driverClassKey.isNotBlank() && it.storedDriverClass?.contains(driverClassKey, ignoreCase = true) == true) }
         }
         if (driver != null) {
             dataSource.databaseDriver = driver
