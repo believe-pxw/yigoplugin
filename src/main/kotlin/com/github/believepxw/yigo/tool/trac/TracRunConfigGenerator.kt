@@ -10,6 +10,7 @@ import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.spring.boot.run.SpringBootApplicationConfigurationType
 import com.intellij.spring.boot.run.SpringBootApplicationRunConfiguration
+import com.intellij.openapi.application.runReadAction
 import kotlin.jvm.java
 
 object TracRunConfigGenerator {
@@ -37,7 +38,7 @@ object TracRunConfigGenerator {
 
         if (settingsState.defaultMainClass.isNotBlank()) {
             config.setMainClassName(settingsState.defaultMainClass)
-            com.intellij.openapi.application.ReadAction.run<Exception> {
+            runReadAction {
                 val javaPsiFacade = JavaPsiFacade.getInstance(project)
                 val searchScope = GlobalSearchScope.projectScope(project)
                 val mainClass = javaPsiFacade.findClass(settingsState.defaultMainClass, searchScope)
