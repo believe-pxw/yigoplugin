@@ -28,6 +28,7 @@ import com.intellij.util.concurrency.AppExecutorUtil
 import com.intellij.util.ui.JBUI
 import example.index.FormIndex
 import java.awt.*
+import java.awt.geom.Path2D
 import java.awt.datatransfer.StringSelection
 import java.awt.dnd.DnDConstants
 import java.awt.dnd.DragGestureEvent
@@ -1090,11 +1091,23 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         return false
     }
 
+    private fun isDirectlyHasAdvancedQuery(tag: XmlTag): Boolean {
+        // Check <Condition> child tags
+        val conditionTags = tag.findSubTags("Condition")
+        for (cond in conditionTags) {
+            if (cond.getAttributeValue("UseAdvancedQuery")?.equals("true", ignoreCase = true) == true) {
+                return true
+            }
+        }
+        return false
+    }
+
     private fun createLeafComponent(tag: XmlTag): JComponent {
         val isRequired = isTagRequired(tag)
         val hasRule = if (!isRequired) hasCheckRule(tag) else false
         val hasEvent = hasValueChanged(tag)
         val hasDefault = hasDefaultValue(tag)
+        val hasAdvanced = isDirectlyHasAdvancedQuery(tag)
         val panel = object : JPanel(BorderLayout()) {
             override fun paintComponent(g: Graphics) {
                 // Rounded background
@@ -1123,6 +1136,32 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
                     g2.color = JBColor(Color(0, 137, 123), Color(77, 182, 172))
                     g2.fillOval(width - 9, height - 10, 5, 5)
                 }
+                if (hasAdvanced) {
+                    // Swallowtail flag / Bookmark outline icon vertically centered on the right
+                    val flagW = 8.0
+                    val flagH = 11.0
+                    val notch = 2.5
+                    val flagX = if (hasRule || hasDefault) (width - 18.0) else (width - 15.0)
+                    val flagY = (height - flagH) / 2.0
+                    val path = Path2D.Double()
+                    path.moveTo(flagX, flagY)
+                    path.lineTo(flagX + flagW, flagY)
+                    path.lineTo(flagX + flagW, flagY + flagH)
+                    path.lineTo(flagX + flagW / 2.0, flagY + flagH - notch)
+                    path.lineTo(flagX, flagY + flagH)
+                    path.closePath()
+
+                    // Faint subtle tint
+                    g2.color = JBColor(Color(120, 130, 140, 20), Color(180, 190, 200, 25))
+                    g2.fill(path)
+
+                    // Outline stroke
+                    g2.color = JBColor(Color(115, 125, 135), Color(160, 168, 178))
+                    val oldStroke = g2.stroke
+                    g2.stroke = BasicStroke(1.2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND)
+                    g2.draw(path)
+                    g2.stroke = oldStroke
+                }
                 g2.dispose()
                 super.paintComponent(g) // Paint children (label)
             }
@@ -1133,7 +1172,9 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         } else {
             JBColor(Color(245, 245, 245), Color(60, 63, 65))
         }
-        panel.border = if (isRequired) JBUI.Borders.empty(2, 8, 2, 5) else JBUI.Borders.empty(2, 5)
+        val leftPad = if (isRequired) 8 else 5
+        val rightPad = if (hasAdvanced) (if (hasRule || hasDefault) 22 else 18) else 5
+        panel.border = JBUI.Borders.empty(2, leftPad, 2, rightPad)
         
         val title = getTitle(tag)
         val labelText = if (isRequired || hasEvent) {

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Form Key="OperatorAuthorityObject_Rpt" Caption="权限对象查询" FormType="Report" Version="161" InitState="Default">
+    <DataSource>
+        <DataObject Key="OperatorAuthorityObject_Rpt" Caption="用户权限对象查询" PrimaryTableKey="EAU_OperatorAuthorityObject_Rpt">
+            <TableCollection>
+                <Table Key="EAU_OperatorAuthorityObject_Rpt" Caption="用户权限对象查询" TableMode="Detail" SourceType="Custom" Persist="false" Formula="com.bokesoft.erp.basis.authority.AuthorityReportFunction.getOperatorAuthorityObject()">
+                    <Column Key="OID" Caption="对象标识" DataElementKey="OID"/>
+                    <Column Key="SOID" Caption="主对象标识" DataElementKey="SOID"/>
+                    <Column Key="POID" Caption="父对象标识" DataElementKey="POID"/>
+                    <Column Key="VERID" Caption="对象版本" DataElementKey="VERID"/>
+                    <Column Key="DVERID" Caption="对象明细版本" DataElementKey="DVERID"/>
+                    <Column Key="OperatorID" Caption="用户" DataElementKey="OperatorID" IsPrimary="true"/>
+                    <Column Key="EmployeeName" Caption="姓名" IsPrimary="true" DataElementKey="EmployeeName"/>
+                    <Column Key="CompanyCodeID" Caption="公司代码" DataElementKey="CompanyCodeID" IsPrimary="true"/>
+                    <Column Key="OrganizationID" Caption="部门" DataElementKey="OrganizationID" IsPrimary="true"/>
+                    <Column Key="RoleID" Caption="角色" DataElementKey="RoleID" IsPrimary="true"/>
+                    <Column Key="TCodeID" Caption="事务码" DataElementKey="TCodeID" IsPrimary="true"/>
+                    <Column Key="FormKey" Caption="单据" DataElementKey="FormKey_ComboBox" IsPrimary="true"/>
+                    <Column Key="AuthoritySingleProfileID" Caption="权限参数文件" DataElementKey="AuthoritySingleProfileID" IsPrimary="true"/>
+                    <Column Key="AuthorityObjectID" Caption="权限对象" DataElementKey="AuthorityObjectID" IsPrimary="true"/>
+                    <Column Key="AuthorityInstance" Caption="权限" IsPrimary="true" DataElementKey="AuthorityInstance"/>
+                    <Column Key="AuthorityFieldID" Caption="权限字段" Expand="true" DataElementKey="AuthorityFieldID"/>
+                    <Column Key="AuthorityFieldValue" Caption="权限字段值" DataElementKey="TextEditor_255"/>
+                </Table>
+                <Table Key="EAU_OperatorAuthorityObject_Rpt_Head" Caption="权限对象查询的非持久化主表" SourceType="" Persist="false">
+                    <Column Key="OID" Caption="对象标识" DataElementKey="OID"/>
+                    <Column Key="SOID" Caption="主对象标识" DataElementKey="SOID"/>
+                    <Column Key="POID" Caption="父对象标识" DataElementKey="POID"/>
+                    <Column Key="Head_FormKey_NODB4Other" Caption="单据" Persist="false" DataElementKey="FormKey_ComboBox" IgnoreQuery="true"/>
+                    <Column Key="Head_OperatorID_NODB4Other" Caption="用户" Persist="false" DataElementKey="OperatorID" IgnoreQuery="true"/>
+                    <Column Key="Head_RoleID_NODB4Other" Caption="角色" Persist="false" DataElementKey="RoleID" IgnoreQuery="true"/>
+                </Table>
+            </TableCollection>
+        </DataObject>
+    </DataSource>
+    <OperationCollection>
+        <Operation Key="Query" Caption="查询">
+            <Action>
+                <![CDATA[GetOperatorAuthorityObject_Rpt();]]>
+            </Action>
+        </Operation>
+        <OperationCollection Key="NewPrint" Caption="打印" SelfDisable="true">
+            <Operation Key="NewPrintDefault" Caption="默认模板打印" RefKey="NewPrintDefault"/>
+            <Operation Key="NewPrintSelect" Caption="其他模板选择" RefKey="NewPrintSelect"/>
+            <Operation Key="ManagePrint" Caption="打印模板管理" RefKey="ManagePrint"/>
+        </OperationCollection>
+        <OperationCollection Key="NewPrePrint" Caption="打印预览" SelfDisable="true">
+            <Operation Key="NewPrePrintDefault" Caption="默认模板预览" RefKey="NewPrePrintDefault"/>
+            <Operation Key="NewPrePrintSelect" Caption="其他模板选择" RefKey="NewPrePrintSelect"/>
+        </OperationCollection>
+        <Operation Key="ERPExportExcel" Caption="导出" RefKey="ERPExportExcel"/>
+        <Operation Key="UIClose" Caption="关闭" RefKey="UIClose"/>
+    </OperationCollection>
+    <Body>
+        <Block>
+            <FlexFlowLayoutPanel Key="main" Caption="根面板" Height="pref">
+                <ToolBar Key="main_toolbar" Caption="main_toolbar" Height="pref">
+                    <ToolBarItemCollection/>
+                </ToolBar>
+                <GridLayoutPanel Key="first_head" Caption="基本信息" Height="pref" Padding="8px" TopPadding="24px">
+                    <Dict Key="Head_OperatorID_NODB4Other" Caption="用户" LabelType="M" X="0" Y="0" Enable="true" ItemKey="Operator" QueryMatchType="" OneTimeCompute="true">
+                        <DataBinding TableKey="EAU_OperatorAuthorityObject_Rpt_Head" ColumnKey="Head_OperatorID_NODB4Other" DefaultFormulaValue="GetOperator();" Required="true"/>
+                        <Condition ColumnKey="OperatorID" TableKey="EAU_OperatorAuthorityObject_Rpt" CondSign="=" UseAdvancedQuery="true"/>
+                    </Dict>
+                    <Dict Key="Head_RoleID_NODB4Other" Caption="角色" LabelType="M" X="1" Y="0" Enable="true" ItemKey="Role" OneTimeCompute="true">
+                        <DataBinding TableKey="EAU_OperatorAuthorityObject_Rpt_Head" ColumnKey="Head_RoleID_NODB4Other"/>
+                        <Condition ColumnKey="RoleID" TableKey="EAU_OperatorAuthorityObject_Rpt" CondSign="="/>
+                    </Dict>
+                    <ComboBox Key="Head_FormKey_NODB4Other" Caption="单据" X="2" Y="0" Enable="true" SourceType="Formula" OneTimeCompute="true">
+                        <DataBinding TableKey="EAU_OperatorAuthorityObject_Rpt_Head" ColumnKey="Head_FormKey_NODB4Other"/>
+                        <FormulaItems>
+                            <![CDATA[Macro_GetAllForms();]]>
+                        </FormulaItems>
+                    </ComboBox>
+                    <Dict Key="Head_TCodeID_NODB4Other" Caption="事务码" X="0" Y="1" Enable="true" ItemKey="TCode" OneTimeCompute="true">
+                        <Condition ColumnKey="TCodeID" TableKey="EAU_OperatorAuthorityObject_Rpt" CondSign="="/>
+                    </Dict>
+                    <Dict Key="Head_AuthorityObjectID_NODB4Other" Caption="权限对象" X="1" Y="1" Enable="true" ItemKey="AuthorityObject" OneTimeCompute="true">
+                        <Condition ColumnKey="AuthorityObjectID" TableKey="EAU_OperatorAuthorityObject_Rpt" CondSign="="/>
+                    </Dict>
+                    <RowDefCollection RowHeight="30" RowGap="24">
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                    </RowDefCollection>
+                    <ColumnDefCollection ColumnGap="16">
+                        <ColumnDef Width="33%"/>
+                        <ColumnDef Width="33%"/>
+                        <ColumnDef Width="34%"/>
+                    </ColumnDefCollection>
+                </GridLayoutPanel>
+                <Grid Key="Grid_OperatorAuthorityObject_Rpt" Caption="用户权限对象查询" Height="100%" DefaultFitWidth="true" DisabledOption="sum,groupSum" Padding="8px">
+                    <GridColumnCollection>
+                        <GridColumn Key="OperatorID" Caption="用户" LabelType="H" Width="80px"/>
+                        <GridColumn Key="EmployeeName" Caption="姓名" LabelType="H" Width="80px"/>
+                        <GridColumn Key="CompanyCodeID" Caption="公司代码" LabelType="M" Width="80px"/>
+                        <GridColumn Key="OrganizationID" Caption="部门" LabelType="H" Width="80px"/>
+                        <GridColumn Key="RoleID" Caption="角色" LabelType="H" Width="80px"/>
+                        <GridColumn Key="TCodeID" Caption="事务代码" Width="80px"/>
+                        <GridColumn Key="FormKey" Caption="单据" Width="80px"/>
+                        <GridColumn Key="AuthoritySingleProfileID" Caption="权限参数文件" LabelType="H" Width="80px"/>
+                        <GridColumn Key="AuthorityObjectID" Caption="权限对象" LabelType="H" Width="80px"/>
+                        <GridColumn Key="AuthorityInstance" Caption="权限" LabelType="M" Width="80px"/>
+                        <GridColumn Key="AuthorityFieldValue" Caption="权限字段" Width="80px">
+                            <ColumnExpand TableKey="EAU_OperatorAuthorityObject_Rpt" ExpandType="Title">
+                                <![CDATA[]]>
+                            </ColumnExpand>
+                            <GridColumnCollection>
+                                <GridColumn Key="AuthorityFieldID" Caption="权限字段" ColumnType="Detail" Width="80px">
+                                    <ColumnExpand TableKey="EAU_OperatorAuthorityObject_Rpt" ColumnKey="AuthorityFieldID">
+                                        <![CDATA[GetOperatorAuthorityFieldDropItem();]]>
+                                    </ColumnExpand>
+                                </GridColumn>
+                            </GridColumnCollection>
+                        </GridColumn>
+                    </GridColumnCollection>
+                    <GridRowCollection>
+                        <GridRow Key="row1" TableKey="EAU_OperatorAuthorityObject_Rpt">
+                            <GridCell Key="OperatorID" Caption="用户" CellType="Dict" QueryMatchType="" ItemKey="Operator">
+                                <DataBinding ColumnKey="OperatorID"/>
+                            </GridCell>
+                            <GridCell Key="EmployeeName" Caption="姓名" CellType="TextEditor">
+                                <DataBinding ColumnKey="EmployeeName"/>
+                            </GridCell>
+                            <GridCell Key="CompanyCodeID" Caption="公司代码" CellType="Dict" QueryMatchType="" ItemKey="CompanyCode">
+                                <DataBinding ColumnKey="CompanyCodeID"/>
+                            </GridCell>
+                            <GridCell Key="OrganizationID" Caption="部门" CellType="Dict" ItemKey="HR_Organization" QueryMatchType="">
+                                <DataBinding ColumnKey="OrganizationID"/>
+                            </GridCell>
+                            <GridCell Key="RoleID" Caption="角色" CellType="Dict" ItemKey="Role" QueryMatchType="">
+                                <DataBinding ColumnKey="RoleID"/>
+                            </GridCell>
+                            <GridCell Key="TCodeID" Caption="事务代码" CellType="Dict" ItemKey="TCode" QueryMatchType="">
+                                <DataBinding ColumnKey="TCodeID"/>
+                            </GridCell>
+                            <GridCell Key="FormKey" Caption="单据" CellType="ComboBox" SourceType="Formula">
+                                <DataBinding ColumnKey="FormKey"/>
+                                <FormulaItems>
+                                    <![CDATA[Macro_GetAllForms();]]>
+                                </FormulaItems>
+                            </GridCell>
+                            <GridCell Key="AuthoritySingleProfileID" Caption="权限参数文件" CellType="Dict" ItemKey="AuthoritySingleProfile" QueryMatchType="">
+                                <DataBinding ColumnKey="AuthoritySingleProfileID"/>
+                            </GridCell>
+                            <GridCell Key="AuthorityObjectID" Caption="权限对象" CellType="Dict" ItemKey="AuthorityObject" QueryMatchType="">
+                                <DataBinding ColumnKey="AuthorityObjectID"/>
+                            </GridCell>
+                            <GridCell Key="AuthorityInstance" Caption="权限" CellType="TextEditor">
+                                <DataBinding ColumnKey="AuthorityInstance"/>
+                            </GridCell>
+                            <GridCell Key="AuthorityFieldValue" Caption="权限字段" CellType="TextEditor">
+                                <DataBinding ColumnKey="AuthorityFieldValue"/>
+                            </GridCell>
+                        </GridRow>
+                    </GridRowCollection>
+                </Grid>
+            </FlexFlowLayoutPanel>
+        </Block>
+    </Body>
+    <MacroCollection>
+        <Macro Key="GetOperatorAuthorityObject_Rpt">
+            <![CDATA[UICheck();IIF(Head_RoleID_NODB4Other==0&&Length(Head_FormKey_NODB4Other)==0&&Head_TCodeID_NODB4Other==0, RaiseErrMsg('AUTH108','请指定查询条件【角色】或者【单据】或者【事务码】！'),true);LoadData();]]>
+        </Macro>
+        <Macro Key="GetOperatorAuthorityFieldDropItem">
+            <![CDATA[com.bokesoft.erp.basis.authority.AuthorityReportFunction.getOperatorAuthorityFieldDropItem();]]>
+        </Macro>
+        <Macro Key="Macro_GetAllForms">
+            <![CDATA[com.bokesoft.erp.basis.authority.AuthorityCacheFunction.getAllFormKeys()]]>
+        </Macro>
+    </MacroCollection>
+</Form>
