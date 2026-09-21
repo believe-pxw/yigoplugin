@@ -419,49 +419,51 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         var highlightColToSet = -1
         var targetGridTag: XmlTag? = null
         
-        val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(editor.document) ?: return
-        val element = psiFile.findElementAt(offset)
-        var tag = PsiTreeUtil.getParentOfType(element, XmlTag::class.java, false)
-        
-        // --- Highlighting Logic for RowDef / ColumnDef ---
-        // Check if we are inside a RowDef or ColumnDef
-        var current = tag
-        while (current != null) {
-            if (current.name == "RowDef") {
-                // Find index
-                var index = 0
-                var sibling = current.prevSibling
-                while (sibling != null) {
-                    if (sibling is XmlTag && sibling.name == "RowDef") index++
-                    sibling = sibling.prevSibling
+        ApplicationManager.getApplication().runReadAction {
+            val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(editor.document) ?: return@runReadAction
+            val element = psiFile.findElementAt(offset)
+            var tag = PsiTreeUtil.getParentOfType(element, XmlTag::class.java, false)
+            
+            // --- Highlighting Logic for RowDef / ColumnDef ---
+            // Check if we are inside a RowDef or ColumnDef
+            var current = tag
+            while (current != null) {
+                if (current.name == "RowDef") {
+                    // Find index
+                    var index = 0
+                    var sibling = current.prevSibling
+                    while (sibling != null) {
+                        if (sibling is XmlTag && sibling.name == "RowDef") index++
+                        sibling = sibling.prevSibling
+                    }
+                    highlightRowToSet = index
+                    // Find parent GridLayoutPanel (RowDef -> RowDefCollection -> GridLayoutPanel)
+                    targetGridTag = current.parentTag?.parentTag
+                    break
+                } else if (current.name == "ColumnDef") {
+                     // Find index
+                    var index = 0
+                    var sibling = current.prevSibling
+                    while (sibling != null) {
+                        if (sibling is XmlTag && sibling.name == "ColumnDef") index++
+                        sibling = sibling.prevSibling
+                    }
+                    highlightColToSet = index
+                    targetGridTag = current.parentTag?.parentTag
+                    break
                 }
-                highlightRowToSet = index
-                // Find parent GridLayoutPanel (RowDef -> RowDefCollection -> GridLayoutPanel)
-                targetGridTag = current.parentTag?.parentTag
-                break
-            } else if (current.name == "ColumnDef") {
-                 // Find index
-                var index = 0
-                var sibling = current.prevSibling
-                while (sibling != null) {
-                    if (sibling is XmlTag && sibling.name == "ColumnDef") index++
-                    sibling = sibling.prevSibling
-                }
-                highlightColToSet = index
-                targetGridTag = current.parentTag?.parentTag
-                break
+                // Stop if we hit Form/Body or a mapped component to avoid walking too far
+                if (tagToComponent.containsKey(current) || current.name == "Form") break
+                current = current.parentTag
             }
-            // Stop if we hit Form/Body or a mapped component to avoid walking too far
-            if (tagToComponent.containsKey(current) || current.name == "Form") break
-            current = current.parentTag
-        }
-        // -----------------------------------------------
+            // -----------------------------------------------
 
-        while (tag != null && !tagToComponent.containsKey(tag)) {
-            tag = tag.parentTag
-            if (tag?.name == "Form" || tag?.name == "Body") break 
+            while (tag != null && !tagToComponent.containsKey(tag)) {
+                tag = tag.parentTag
+                if (tag?.name == "Form" || tag?.name == "Body") break 
+            }
+            targetTag = tag
         }
-        targetTag = tag
         
         // Update UI
         val finalGridTag = targetGridTag
