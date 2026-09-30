@@ -16,6 +16,7 @@
 
 <h4>核心功能 (Key Features)</h4>
 <ul>
+  <li><b>文件业务结构与快速检索 (File Structure)</b>：按业务语义深度定制 <code>Ctrl + F12</code> / <code>Alt + 7</code> 结构大纲，支持数据源、操作集合、界面控件、嵌入表单及嵌入数据表全量跨文件展开与快速搜索跳转。</li>
   <li><b>公式与表达式语言支持</b>：支持 Yigo 自定义语法的高亮显示、智能代码补全（含上下文感知提示）、括号匹配、代码格式化与常用代码模板（Live Templates）。</li>
   <li><b>XML 模型导航与引用跳转</b>：内置 Yigo XML Schema 校验，支持表单 (Form)、数据对象 (DataObject)、宏 (Macro)、实体域 (Domain) 的跨文件 <code>Ctrl + Click</code> 快速跳转、查找引用 (Find Usages) 及安全重命名重构。</li>
   <li><b>可视化表单布局预览 (Yigo Layout)</b>：内置可视化设计面板（快捷键 <code>Alt + Y</code>），支持实时解析并预览 Form XML 布局结构，提供拖拽与控件快速检索定位。</li>
@@ -26,6 +27,7 @@
 <h4>快速上手 (Getting Started)</h4>
 <ol>
   <li>在编辑器中打开任意 Yigo XML 表单或公式文件即可获得语法高亮与智能提示。</li>
+  <li>按下 <code>Ctrl + F12</code> 即可呼出业务大纲弹窗，输入字段或控件名称秒级过滤并回车跳转。</li>
   <li>按住 <code>Ctrl</code> 点击 XML 中的字段绑定、数据对象引用，即可一键穿透跳转。</li>
   <li>按下 <code>Alt + Y</code> 或点击右侧边栏 <b>Yigo Layout</b> 选项卡即可打开可视化布局面板。</li>
 </ol>
