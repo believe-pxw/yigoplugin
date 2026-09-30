@@ -19,8 +19,10 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.psi.*
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlFile
 import com.intellij.psi.xml.XmlTag
+import com.github.believepxw.yigo.util.YigoUtils
 import com.intellij.ui.JBColor
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.components.JBTabbedPane
@@ -90,10 +92,19 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
     internal var isDeletingControls = false
     var isBatchUpdating = false
 
+    // Top Bar Panel for OperationCollection
+    private val topBarPanel = JPanel(BorderLayout()).apply {
+        border = JBUI.Borders.customLine(JBColor.border(), 0, 0, 1, 0)
+        isOpaque = true
+        background = JBColor(Color(248, 249, 250), Color(43, 45, 48))
+    }
+    private val tableHideOverrides = mutableMapOf<String, Boolean>()
+
     init {
         rootPanel.layout = BoxLayout(rootPanel, BoxLayout.Y_AXIS)
         rootPanel.border = JBUI.Borders.empty(10)
         
+        add(topBarPanel, BorderLayout.NORTH)
         add(scrollPane, BorderLayout.CENTER)
         
         // Register Search Shortcut (Ctrl+F / Cmd+F)
@@ -285,11 +296,21 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
     }
     
     internal fun restoreBorder(component: JComponent) {
+        if (component.getClientProperty("SKIP_COMPOUND_BORDER") == true) {
+            component.putClientProperty("HIGHLIGHT_COLOR", null)
+            component.repaint()
+            return
+        }
         val original = component.getClientProperty(KEY_ORIGINAL_BORDER) as? Border
         component.border = original ?: BorderFactory.createEmptyBorder()
     }
     
     internal fun setHighlightBorder(component: JComponent, color: Color, thickness: Int) {
+        if (component.getClientProperty("SKIP_COMPOUND_BORDER") == true) {
+            component.putClientProperty("HIGHLIGHT_COLOR", color)
+            component.repaint()
+            return
+        }
         val original = component.getClientProperty(KEY_ORIGINAL_BORDER) as? Border
         val highlight = BorderFactory.createLineBorder(color, thickness)
         
@@ -337,6 +358,381 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         return null
     }
 
+    internal fun isColumnHidden(colTag: XmlTag, gridTag: XmlTag): Boolean {
+        val colVis = colTag.getAttributeValue("Visible")
+        if (colVis?.equals("false", ignoreCase = true) == true || colVis?.equals("Macro_DebugMode()", ignoreCase = true) == true) return true
+        return false
+    }
+
+    internal fun shouldHideInvisibleColumns(gridTag: XmlTag): Boolean {
+        val key = gridTag.getAttributeValue("Key") ?: gridTag.textOffset.toString()
+        return tableHideOverrides[key] ?: false
+    }
+
+    internal fun setTableHideInvisible(gridTag: XmlTag, hide: Boolean) {
+        val key = gridTag.getAttributeValue("Key") ?: gridTag.textOffset.toString()
+        tableHideOverrides[key] = hide
+        refreshComponent(gridTag)
+    }
+
+    private fun updateTopBar(opCollectionTag: XmlTag?, rootTag: XmlTag) {
+        topBarPanel.removeAll()
+
+        if (opCollectionTag != null) {
+            renderOperationCollection(opCollectionTag, topBarPanel)
+            topBarPanel.isVisible = true
+        } else {
+            topBarPanel.isVisible = false
+        }
+    }
+
+    private class ToolbarOverflowLayout(
+        private val gap: Int,
+        private val moreBtn: JComponent,
+        private val onOverflowChanged: (List<JComponent>) -> Unit
+    ) : LayoutManager {
+        override fun addLayoutComponent(name: String?, comp: Component?) {}
+        override fun removeLayoutComponent(comp: Component?) {}
+
+        override fun preferredLayoutSize(parent: Container): Dimension {
+            var totalW = 0
+            var maxH = 0
+            var count = 0
+            for (comp in parent.components) {
+                if (comp === moreBtn) continue
+                val pref = comp.preferredSize
+                totalW += pref.width
+                maxH = maxOf(maxH, pref.height)
+                count++
+            }
+            if (count > 0) totalW += (count - 1) * gap
+            val insets = parent.insets
+            return Dimension(totalW + insets.left + insets.right, maxH + insets.top + insets.bottom)
+        }
+
+        override fun minimumLayoutSize(parent: Container): Dimension {
+            val morePref = moreBtn.preferredSize
+            val insets = parent.insets
+            return Dimension(morePref.width + insets.left + insets.right, morePref.height + insets.top + insets.bottom)
+        }
+
+        override fun layoutContainer(parent: Container) {
+            val insets = parent.insets
+            val availW = parent.width - insets.left - insets.right
+            val availH = parent.height - insets.top - insets.bottom
+            if (availW <= 0) return
+
+            val children = parent.components.filterIsInstance<JComponent>().filter { it !== moreBtn }
+            val moreW = moreBtn.preferredSize.width
+
+            var totalNeeded = 0
+            for (i in children.indices) {
+                totalNeeded += children[i].preferredSize.width
+                if (i > 0) totalNeeded += gap
+            }
+
+            val overflowList = mutableListOf<JComponent>()
+
+            if (totalNeeded <= availW) {
+                var curX = insets.left
+                for (comp in children) {
+                    val pref = comp.preferredSize
+                    val y = insets.top + (availH - pref.height).coerceAtLeast(0) / 2
+                    comp.setBounds(curX, y, pref.width, pref.height)
+                    comp.isVisible = true
+                    curX += pref.width + gap
+                }
+                moreBtn.isVisible = false
+            } else {
+                val budget = availW - moreW - gap
+                var curX = insets.left
+                var showingCount = 0
+                var canFitMore = budget > 0
+
+                for (i in children.indices) {
+                    val comp = children[i]
+                    val pref = comp.preferredSize
+                    val neededWithThis = if (showingCount == 0) pref.width else pref.width + gap
+                    if (canFitMore && (curX + neededWithThis <= insets.left + budget)) {
+                        val y = insets.top + (availH - pref.height).coerceAtLeast(0) / 2
+                        comp.setBounds(curX, y, pref.width, pref.height)
+                        comp.isVisible = true
+                        curX += pref.width + gap
+                        showingCount++
+                    } else {
+                        canFitMore = false
+                        comp.isVisible = false
+                        overflowList.add(comp)
+                    }
+                }
+
+                val moreH = moreBtn.preferredSize.height
+                val moreY = insets.top + (availH - moreH).coerceAtLeast(0) / 2
+                moreBtn.setBounds(curX, moreY, moreW, moreH)
+                moreBtn.isVisible = true
+            }
+
+            onOverflowChanged(overflowList)
+        }
+    }
+
+    private fun renderOperationCollection(opTag: XmlTag, container: JComponent) {
+        val opToolbar = JPanel().apply {
+            isOpaque = false
+            border = JBUI.Borders.empty(4, 8)
+        }
+
+        var currentOverflowList = listOf<JComponent>()
+        val moreBtn = createMoreButton { triggerComp ->
+            if (currentOverflowList.isNotEmpty()) {
+                val popup = JPopupMenu()
+                for (comp in currentOverflowList) {
+                    val tag = comp.getClientProperty("YIGO_TAG") as? XmlTag ?: continue
+                    val isGroup = comp.getClientProperty("YIGO_IS_GROUP") as? Boolean ?: false
+                    val caption = comp.getClientProperty("YIGO_CAPTION") as? String ?: "Op"
+
+                    if (isGroup) {
+                        val groupMenu = JMenu(caption)
+                        val subOps = tag.findSubTags("Operation")
+                        for (subOp in subOps) {
+                            val subCap = subOp.getAttributeValue("Caption") ?: subOp.getAttributeValue("Key") ?: "Op"
+                            val item = JMenuItem(subCap).apply {
+                                addActionListener {
+                                    val targetComp = tagToComponent[subOp] ?: comp
+                                    selectComponent(targetComp)
+                                    navigateToTag(subOp)
+                                }
+                            }
+                            groupMenu.add(item)
+                        }
+                        popup.add(groupMenu)
+                    } else {
+                        val item = JMenuItem(caption).apply {
+                            addActionListener {
+                                selectComponent(comp)
+                                navigateToTag(tag)
+                            }
+                        }
+                        popup.add(item)
+                    }
+                }
+                popup.show(triggerComp, 0, triggerComp.height)
+            }
+        }
+
+        opToolbar.layout = ToolbarOverflowLayout(
+            gap = JBUI.scale(6),
+            moreBtn = moreBtn,
+            onOverflowChanged = { overflow ->
+                currentOverflowList = overflow
+            }
+        )
+
+        val subTags = opTag.subTags
+        for (sub in subTags) {
+            when (sub.name) {
+                "Operation" -> {
+                    val btn = createOperationButton(sub)
+                    registerComponent(sub, btn)
+                    opToolbar.add(btn)
+                }
+                "OperationCollection" -> {
+                    val groupBtn = createOperationGroupButton(sub)
+                    registerComponent(sub, groupBtn)
+                    opToolbar.add(groupBtn)
+                }
+            }
+        }
+        opToolbar.add(moreBtn)
+
+        container.add(opToolbar, BorderLayout.CENTER)
+    }
+
+    private fun createMoreButton(onClick: (JComponent) -> Unit): JComponent {
+        val btn = object : JPanel(BorderLayout()) {
+            override fun paintComponent(g: Graphics) {
+                val g2 = g.create() as Graphics2D
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
+                val arc = JBUI.scale(8)
+                g2.color = background
+                g2.fillRoundRect(0, 0, width - 1, height - 1, arc, arc)
+                g2.color = JBColor(Color(218, 222, 229), Color(75, 78, 82))
+                g2.stroke = BasicStroke(1f)
+                g2.drawRoundRect(0, 0, width - 1, height - 1, arc, arc)
+                g2.dispose()
+                super.paintComponent(g)
+            }
+        }.apply {
+            isOpaque = false
+            background = JBColor(Color(248, 250, 254), Color(50, 54, 60))
+            border = JBUI.Borders.empty(3, 10)
+            cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
+            putClientProperty("SKIP_COMPOUND_BORDER", true)
+
+            val label = JLabel("更多 ▾").apply {
+                font = JBUI.Fonts.label()
+                foreground = JBColor(Color(33, 115, 220), Color(95, 160, 240))
+                horizontalAlignment = SwingConstants.CENTER
+            }
+            add(label, BorderLayout.CENTER)
+            preferredSize = Dimension(label.preferredSize.width + JBUI.scale(22), JBUI.scale(28))
+
+            addMouseListener(object : MouseAdapter() {
+                override fun mouseEntered(e: MouseEvent) {
+                    background = JBColor(Color(235, 242, 252), Color(58, 66, 76))
+                    repaint()
+                }
+                override fun mouseExited(e: MouseEvent) {
+                    background = JBColor(Color(248, 250, 254), Color(50, 54, 60))
+                    repaint()
+                }
+                override fun mouseClicked(e: MouseEvent) {
+                    onClick(this@apply)
+                }
+            })
+        }
+        return btn
+    }
+
+    private fun createOperationButton(tag: XmlTag): JComponent {
+        val caption = tag.getAttributeValue("Caption") ?: tag.getAttributeValue("Key") ?: "Op"
+        val btn = object : JPanel(BorderLayout()) {
+            override fun paintComponent(g: Graphics) {
+                val g2 = g.create() as Graphics2D
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
+                val arc = JBUI.scale(8)
+                val highlightColor = getClientProperty("HIGHLIGHT_COLOR") as? Color
+                val isHighlighted = highlightColor != null || lastSelectedComponent === this
+
+                g2.color = if (isHighlighted) {
+                    JBColor(Color(238, 245, 255), Color(42, 58, 80))
+                } else {
+                    background
+                }
+                g2.fillRoundRect(0, 0, width - 1, height - 1, arc, arc)
+
+                if (isHighlighted) {
+                    g2.color = highlightColor ?: JBColor(Color(59, 130, 246), Color(68, 138, 255))
+                    g2.stroke = BasicStroke(2f)
+                    g2.drawRoundRect(1, 1, width - 3, height - 3, arc, arc)
+                } else {
+                    g2.color = JBColor(Color(218, 222, 229), Color(75, 78, 82))
+                    g2.stroke = BasicStroke(1f)
+                    g2.drawRoundRect(0, 0, width - 1, height - 1, arc, arc)
+                }
+                g2.dispose()
+                super.paintComponent(g)
+            }
+        }
+        btn.isOpaque = false
+        btn.background = JBColor(Color(255, 255, 255), Color(60, 63, 65))
+        btn.border = JBUI.Borders.empty(3, 12)
+        btn.cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
+        btn.putClientProperty("SKIP_COMPOUND_BORDER", true)
+        btn.putClientProperty("YIGO_TAG", tag)
+        btn.putClientProperty("YIGO_CAPTION", caption)
+        btn.putClientProperty("YIGO_IS_GROUP", false)
+
+        val label = JLabel(caption).apply {
+            font = JBUI.Fonts.label()
+            foreground = JBColor.foreground()
+            horizontalAlignment = SwingConstants.CENTER
+        }
+        btn.add(label, BorderLayout.CENTER)
+        btn.preferredSize = Dimension(label.preferredSize.width + JBUI.scale(26), JBUI.scale(28))
+
+        btn.addMouseListener(object : MouseAdapter() {
+            override fun mouseEntered(e: MouseEvent) {
+                btn.background = JBColor(Color(240, 243, 248), Color(70, 74, 80))
+                btn.repaint()
+            }
+            override fun mouseExited(e: MouseEvent) {
+                btn.background = JBColor(Color(255, 255, 255), Color(60, 63, 65))
+                btn.repaint()
+            }
+        })
+
+        return btn
+    }
+
+    private fun createOperationGroupButton(tag: XmlTag): JComponent {
+        val caption = tag.getAttributeValue("Caption") ?: tag.getAttributeValue("Key") ?: "组"
+        val btn = object : JPanel(BorderLayout()) {
+            override fun paintComponent(g: Graphics) {
+                val g2 = g.create() as Graphics2D
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
+                val arc = JBUI.scale(8)
+                val highlightColor = getClientProperty("HIGHLIGHT_COLOR") as? Color
+                val isHighlighted = highlightColor != null || lastSelectedComponent === this
+
+                g2.color = if (isHighlighted) {
+                    JBColor(Color(235, 243, 255), Color(38, 55, 78))
+                } else {
+                    background
+                }
+                g2.fillRoundRect(0, 0, width - 1, height - 1, arc, arc)
+
+                if (isHighlighted) {
+                    g2.color = highlightColor ?: JBColor(Color(59, 130, 246), Color(68, 138, 255))
+                    g2.stroke = BasicStroke(2f)
+                    g2.drawRoundRect(1, 1, width - 3, height - 3, arc, arc)
+                } else {
+                    g2.color = JBColor(Color(205, 220, 240), Color(65, 78, 92))
+                    g2.stroke = BasicStroke(1f)
+                    g2.drawRoundRect(0, 0, width - 1, height - 1, arc, arc)
+                }
+                g2.dispose()
+                super.paintComponent(g)
+            }
+        }
+        btn.isOpaque = false
+        btn.background = JBColor(Color(248, 250, 254), Color(50, 54, 60))
+        btn.border = JBUI.Borders.empty(3, 12)
+        btn.cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
+        btn.putClientProperty("SKIP_COMPOUND_BORDER", true)
+        btn.putClientProperty("YIGO_TAG", tag)
+        btn.putClientProperty("YIGO_CAPTION", caption)
+        btn.putClientProperty("YIGO_IS_GROUP", true)
+
+        val label = JLabel("$caption ▾").apply {
+            font = JBUI.Fonts.label()
+            foreground = JBColor(Color(33, 115, 220), Color(95, 160, 240))
+            horizontalAlignment = SwingConstants.CENTER
+        }
+        btn.add(label, BorderLayout.CENTER)
+        btn.preferredSize = Dimension(label.preferredSize.width + JBUI.scale(26), JBUI.scale(28))
+
+        btn.addMouseListener(object : MouseAdapter() {
+            override fun mouseEntered(e: MouseEvent) {
+                btn.background = JBColor(Color(235, 242, 252), Color(58, 66, 76))
+                btn.repaint()
+            }
+            override fun mouseExited(e: MouseEvent) {
+                btn.background = JBColor(Color(248, 250, 254), Color(50, 54, 60))
+                btn.repaint()
+            }
+            override fun mouseClicked(e: MouseEvent) {
+                val subOps = tag.findSubTags("Operation")
+                if (subOps.isNotEmpty()) {
+                    val popup = JPopupMenu()
+                    for (subOp in subOps) {
+                        val subCap = subOp.getAttributeValue("Caption") ?: subOp.getAttributeValue("Key") ?: "Op"
+                        val item = JMenuItem(subCap)
+                        item.addActionListener {
+                            val targetComp = tagToComponent[subOp] ?: btn
+                            selectComponent(targetComp)
+                            navigateToTag(subOp)
+                        }
+                        popup.add(item)
+                    }
+                    popup.show(btn, 0, btn.height)
+                }
+            }
+        })
+
+        return btn
+    }
+
     private fun updateUIFromXml(preserveScroll: Boolean = false) {
         val vScroll = scrollPane.verticalScrollBar.value
         val hScroll = scrollPane.horizontalScrollBar.value
@@ -356,9 +752,11 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
             restoreBorder(lastSearchHighlight!!)
             lastSearchHighlight = null
         }
+        lastSelectedComponent = null
         
         val editor = FileEditorManager.getInstance(project).selectedTextEditor
         if (editor == null) {
+            topBarPanel.isVisible = false
             rootPanel.add(JLabel("No active editor"))
             rootPanel.revalidate()
             rootPanel.repaint()
@@ -367,6 +765,7 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
 
         val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(editor.document)
         if (psiFile !is XmlFile) {
+            topBarPanel.isVisible = false
             rootPanel.add(JLabel("Not an XML file"))
             rootPanel.revalidate()
             rootPanel.repaint()
@@ -375,6 +774,7 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
 
         val rootTag = psiFile.rootTag
         if (rootTag == null || rootTag.name != "Form") {
+             topBarPanel.isVisible = false
              rootPanel.add(JLabel("Not a Yigo Form"))
              rootPanel.revalidate()
              rootPanel.repaint()
@@ -384,6 +784,9 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         val key = rootTag.getAttributeValue("Key") ?: ""
         val initialVisited = if (key.isNotEmpty()) setOf(key) else emptySet()
 
+        val opCollectionTag = rootTag.findFirstSubTag("OperationCollection")
+        updateTopBar(opCollectionTag, rootTag)
+
         val bodyTag = rootTag.findFirstSubTag("Body")
         if (bodyTag != null) {
             renderTag(bodyTag, rootPanel, initialVisited)
@@ -391,6 +794,8 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
              rootPanel.add(JLabel("No Body tag found"))
         }
 
+        topBarPanel.revalidate()
+        topBarPanel.repaint()
         rootPanel.revalidate()
         rootPanel.repaint()
         
@@ -422,7 +827,14 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         
         ApplicationManager.getApplication().runReadAction {
             val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(editor.document) ?: return@runReadAction
-            val element = psiFile.findElementAt(offset)
+            var element = psiFile.findElementAt(offset)
+            // If offset is on whitespace (e.g. indentation before tag), peek at the next token
+            if (element is PsiWhiteSpace && offset < psiFile.textLength - 1) {
+                val nextElement = psiFile.findElementAt(offset + 1)
+                if (nextElement != null && nextElement !is PsiWhiteSpace) {
+                    element = nextElement
+                }
+            }
             var tag = PsiTreeUtil.getParentOfType(element, XmlTag::class.java, false)
             
             // --- Highlighting Logic for RowDef / ColumnDef ---
@@ -499,23 +911,29 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
             // 2. Handle Normal Component Highlighting
             if (targetTag != null) {
                 val component = tagToComponent[targetTag]
-                if (component != null && component != lastSelectedComponent) {
-                    if (lastSelectedComponent != null && lastSelectedComponent != lastSearchHighlight) {
-                        restoreBorder(lastSelectedComponent!!)
-                    }
-                    
-                    if (component != lastSearchHighlight) {
-                         setHighlightBorder(component, Color.BLUE, 2)
-                    }
-                    
-                    ensureComponentVisible(component, shouldSuppressScroll)
-                    lastSelectedComponent = component
+                if (component != null) {
+                    selectComponent(component, shouldSuppressScroll)
                 }
             }
         }
     }
+
+    internal fun selectComponent(component: JComponent, suppressScroll: Boolean = false) {
+        if (project.isDisposed) return
+        if (lastSelectedComponent != null && lastSelectedComponent != component && lastSelectedComponent != lastSearchHighlight) {
+            restoreBorder(lastSelectedComponent!!)
+        }
+
+        if (component != lastSearchHighlight) {
+            setHighlightBorder(component, Color.BLUE, 2)
+        }
+
+        ensureComponentVisible(component, suppressScroll)
+        lastSelectedComponent = component
+        component.repaint()
+    }
     
-        internal fun ensureComponentVisible(component: JComponent, suppressScroll: Boolean = false) {
+    internal fun ensureComponentVisible(component: JComponent, suppressScroll: Boolean = false) {
         // 1. Walk up hierarchy to find JTabbedPane and switch tabs
         var current: Container? = component
         while (current != null) {
@@ -580,17 +998,43 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         }
     }
 
+    internal fun navigateToTableDefinition(gridTag: XmlTag, tableKey: String) {
+        if (project.isDisposed) return
+        var targetTableTag: XmlTag? = null
+        ApplicationManager.getApplication().runReadAction {
+            if (!gridTag.isValid) return@runReadAction
+            targetTableTag = YigoUtils.findTable(gridTag, tableKey)
+            if (targetTableTag == null) {
+                val rowCollection = gridTag.findFirstSubTag("GridRowCollection")
+                val firstRow = rowCollection?.findSubTags("GridRow")?.firstOrNull()
+                val resolved = firstRow?.getAttribute("TableKey")?.valueElement?.references?.firstOrNull()?.resolve()
+                if (resolved is XmlTag) {
+                    targetTableTag = resolved
+                } else if (resolved is XmlAttribute) {
+                    targetTableTag = resolved.parent as? XmlTag
+                } else if (resolved?.parent is XmlAttribute) {
+                    targetTableTag = (resolved.parent as XmlAttribute).parent as? XmlTag
+                }
+            }
+        }
+        if (targetTableTag != null && targetTableTag!!.isValid) {
+            navigateToTag(targetTableTag!!)
+        }
+    }
+
     private fun attachNavigationListener(component: JComponent, tag: XmlTag) {
-        // Remove existing listener if any
         val old = component.getClientProperty(KEY_NAV_LISTENER) as? MouseListener
         if (old != null) component.removeMouseListener(old)
 
         val listener = object : MouseAdapter() {
             override fun mouseClicked(e: MouseEvent) {
+                if (e.isPopupTrigger || !SwingUtilities.isLeftMouseButton(e)) return
                 if (component is JTabbedPane) {
                      val tabIndex = component.indexAtLocation(e.x, e.y)
                      if (tabIndex != -1) return
                 }
+                // 立即在当前组件上高亮，不依赖编辑器光标反查
+                selectComponent(component)
                 navigateToTag(tag)
             }
         }
@@ -1122,6 +1566,13 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
                     // Left indicator strip: bold red bar
                     g2.color = JBColor(Color(229, 57, 53), Color(239, 83, 80))
                     g2.fillRoundRect(1, 2, 4, (height - 5).coerceAtLeast(1), 3, 3)
+                } else if (getClientProperty("IS_GHOST_COLUMN") == true) {
+                    // Ghost column border: subtle dashed outline (international standard for hidden elements)
+                    g2.color = JBColor(Color(195, 200, 208), Color(75, 80, 88))
+                    val oldStroke = g2.stroke
+                    g2.stroke = BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, floatArrayOf(3.0f, 3.0f), 0.0f)
+                    g2.drawRoundRect(0, 0, width - 1, height - 1, 8, 8)
+                    g2.stroke = oldStroke
                 } else {
                     g2.color = JBColor.border()
                     g2.drawRoundRect(0, 0, width - 1, height - 1, 8, 8)
@@ -1255,12 +1706,14 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
     }
 
     private fun createWrappedGridTable(tag: XmlTag): JComponent {
-        val mainPanel = JPanel(GridBagLayout())
-        val rowCollection = tag.findFirstSubTag("GridRowCollection")
-        val rows = rowCollection?.findSubTags("GridRow") ?: emptyArray()
-        val firstRow = rows.firstOrNull()
-        val tableKey = firstRow?.getAttributeValue("TableKey")
-        mainPanel.border = BorderFactory.createTitledBorder("Table ${getTitle(tag)} [$tableKey]")
+        val mainPanel = object : JPanel(BorderLayout()) {
+            override fun getMaximumSize(): Dimension {
+                return Dimension(Int.MAX_VALUE, preferredSize.height)
+            }
+        }.apply {
+            isOpaque = false
+            border = JBUI.Borders.customLine(JBColor.border(), 1)
+        }
         mainPanel.transferHandler = TableDropHandler(tag, project)
         addContainerContextMenu(mainPanel, tag)
         populateWrappedGridTable(tag, mainPanel)
@@ -1268,16 +1721,165 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
     }
     
     private fun populateWrappedGridTable(tag: XmlTag, mainPanel: JPanel) {
+        mainPanel.removeAll()
+        mainPanel.layout = BorderLayout()
+
         val colCollection = tag.findFirstSubTag("GridColumnCollection")
-        val columns = colCollection?.findSubTags("GridColumn") ?: emptyArray()
+        val allColumns = colCollection?.findSubTags("GridColumn") ?: emptyArray()
+        val hiddenColCount = allColumns.count { isColumnHidden(it, tag) }
+        val isHiding = shouldHideInvisibleColumns(tag)
+        val columns = if (isHiding) allColumns.filter { !isColumnHidden(it, tag) }.toTypedArray() else allColumns
         
         val rowCollection = tag.findFirstSubTag("GridRowCollection")
         val rows = rowCollection?.findSubTags("GridRow") ?: emptyArray()
-        
+        val firstRow = rows.firstOrNull()
+        val tableKey = firstRow?.getAttributeValue("TableKey")
+
+        // 1. Header Bar: Title on WEST, Actions (TableKey Button + Micro Chip) on EAST
+        val headerBar = JPanel(BorderLayout()).apply {
+            isOpaque = true
+            background = JBColor(Color(246, 247, 249), Color(46, 48, 51))
+            border = JBUI.Borders.compound(
+                JBUI.Borders.customLine(JBColor.border(), 0, 0, 1, 0),
+                JBUI.Borders.empty(2, 8, 2, 8)
+            )
+        }
+        val titleLabel = JLabel("Table ${getTitle(tag)}").apply {
+            font = JBUI.Fonts.label().asBold()
+            foreground = JBColor.foreground()
+        }
+        headerBar.add(titleLabel, BorderLayout.WEST)
+
+        // Allow clicking titleLabel or headerBar to select and focus the Table <Grid>
+        val navToGrid: (MouseEvent) -> Unit = { e ->
+            if (SwingUtilities.isLeftMouseButton(e) && !e.isPopupTrigger) {
+                selectComponent(mainPanel)
+                navigateToTag(tag)
+            }
+        }
+        headerBar.cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
+        headerBar.addMouseListener(object : MouseAdapter() {
+            override fun mouseClicked(e: MouseEvent) = navToGrid(e)
+        })
+        titleLabel.cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
+        titleLabel.addMouseListener(object : MouseAdapter() {
+            override fun mouseClicked(e: MouseEvent) = navToGrid(e)
+        })
+
+        val actionsPanel = JPanel(FlowLayout(FlowLayout.RIGHT, JBUI.scale(6), 0)).apply {
+            isOpaque = false
+        }
+
+        // TableKey jump button on the right
+        if (!tableKey.isNullOrEmpty()) {
+            val tableKeyBtn = object : JPanel(BorderLayout()) {
+                override fun paintComponent(g: Graphics) {
+                    val g2 = g.create() as Graphics2D
+                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
+                    g2.color = background
+                    g2.fillRoundRect(0, 0, width - 1, height - 1, JBUI.scale(10), JBUI.scale(10))
+                    g2.color = JBColor(Color(200, 215, 235), Color(65, 75, 88))
+                    g2.drawRoundRect(0, 0, width - 1, height - 1, JBUI.scale(10), JBUI.scale(10))
+                    g2.dispose()
+                    super.paintComponent(g)
+                }
+            }.apply {
+                isOpaque = false
+                background = JBColor(Color(240, 244, 250), Color(48, 52, 58))
+                border = JBUI.Borders.empty(1, 8)
+                cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
+
+                val label = JLabel(tableKey).apply {
+                    font = JBUI.Fonts.smallFont()
+                    foreground = JBColor(Color(25, 110, 220), Color(125, 185, 255))
+                    horizontalAlignment = SwingConstants.CENTER
+                }
+                add(label, BorderLayout.CENTER)
+                preferredSize = Dimension(label.preferredSize.width + JBUI.scale(18), JBUI.scale(20))
+                maximumSize = Dimension(label.preferredSize.width + JBUI.scale(18), JBUI.scale(20))
+
+                addMouseListener(object : MouseAdapter() {
+                    override fun mouseEntered(e: MouseEvent) {
+                        background = JBColor(Color(228, 236, 248), Color(58, 64, 72))
+                        repaint()
+                    }
+                    override fun mouseExited(e: MouseEvent) {
+                        background = JBColor(Color(240, 244, 250), Color(48, 52, 58))
+                        repaint()
+                    }
+                    override fun mouseClicked(e: MouseEvent) {
+                        if (SwingUtilities.isLeftMouseButton(e) && !e.isPopupTrigger) {
+                            navigateToTableDefinition(tag, tableKey)
+                        }
+                    }
+                })
+            }
+            actionsPanel.add(tableKeyBtn)
+        }
+
+        // Invisible columns toggle chip on the right
+        if (hiddenColCount > 0) {
+            val chipText = if (isHiding) "已折叠 $hiddenColCount 列 · 展开" else "收起 $hiddenColCount 个隐藏列"
+            val toggleChip = object : JPanel(BorderLayout()) {
+                override fun paintComponent(g: Graphics) {
+                    val g2 = g.create() as Graphics2D
+                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
+                    g2.color = background
+                    g2.fillRoundRect(0, 0, width - 1, height - 1, JBUI.scale(10), JBUI.scale(10))
+                    g2.color = if (isHiding) JBColor(Color(190, 210, 235), Color(55, 75, 98)) else JBColor.border()
+                    g2.drawRoundRect(0, 0, width - 1, height - 1, JBUI.scale(10), JBUI.scale(10))
+                    g2.dispose()
+                    super.paintComponent(g)
+                }
+            }.apply {
+                isOpaque = false
+                background = if (isHiding) JBColor(Color(235, 243, 255), Color(38, 48, 60)) else JBColor(Color(246, 247, 249), Color(48, 50, 54))
+                border = JBUI.Borders.empty(1, 8)
+                cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
+
+                val label = JLabel(chipText).apply {
+                    font = JBUI.Fonts.smallFont()
+                    foreground = if (isHiding) JBColor(Color(25, 105, 210), Color(115, 175, 250)) else JBColor(Color(120, 125, 135), Color(135, 140, 148))
+                    horizontalAlignment = SwingConstants.CENTER
+                }
+                add(label, BorderLayout.CENTER)
+                preferredSize = Dimension(label.preferredSize.width + JBUI.scale(18), JBUI.scale(20))
+                maximumSize = Dimension(label.preferredSize.width + JBUI.scale(18), JBUI.scale(20))
+
+                addMouseListener(object : MouseAdapter() {
+                    override fun mouseEntered(e: MouseEvent) {
+                        background = if (isHiding) JBColor(Color(220, 235, 252), Color(46, 58, 72)) else JBColor(Color(236, 238, 242), Color(56, 60, 65))
+                        repaint()
+                    }
+                    override fun mouseExited(e: MouseEvent) {
+                        background = if (isHiding) JBColor(Color(235, 243, 255), Color(38, 48, 60)) else JBColor(Color(246, 247, 249), Color(48, 50, 54))
+                        repaint()
+                    }
+                    override fun mouseClicked(e: MouseEvent) {
+                        setTableHideInvisible(tag, !isHiding)
+                    }
+                })
+            }
+            actionsPanel.add(toggleChip)
+        }
+        headerBar.add(actionsPanel, BorderLayout.EAST)
+        mainPanel.add(headerBar, BorderLayout.NORTH)
+        addContainerContextMenu(headerBar, tag)
+
+        // 2. Content Grid (GridBagLayout) - top padding set to 0 so distance equals normal row spacing
+        val contentGrid = JPanel(GridBagLayout()).apply {
+            isOpaque = false
+            border = JBUI.Borders.empty(0, 4, 4, 4)
+        }
+        addContainerContextMenu(contentGrid, tag)
+        contentGrid.addMouseListener(object : MouseAdapter() {
+            override fun mouseClicked(e: MouseEvent) = navToGrid(e)
+        })
+
         val maxColsPerRow = 8
-        val chunks = columns.toList().chunked(maxColsPerRow)
-        
         var gridYCounter = 0
+        
+        val chunks = columns.toList().chunked(maxColsPerRow)
         
         chunks.forEachIndexed { chunkIndex, chunkCols ->
              chunkCols.forEachIndexed { colInChunk, colTag ->
@@ -1286,13 +1888,25 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
                  c.gridy = gridYCounter
                  c.fill = GridBagConstraints.HORIZONTAL
                  c.weightx = 1.0
+                 c.weighty = 0.0
+                 c.anchor = GridBagConstraints.NORTH
                  c.insets = JBUI.insets(2)
                  
+                 val isHidden = isColumnHidden(colTag, tag)
                  val header = createLeafComponent(colTag)
-                 header.background = JBColor(Color(225, 230, 240), Color(60, 70, 80))
-                 (header.getComponent(0) as? JLabel)?.font = JBUI.Fonts.label().asBold() 
+                 if (isHidden) {
+                     header.putClientProperty("IS_GHOST_COLUMN", true)
+                     header.background = JBColor(Color(246, 247, 249), Color(44, 46, 49))
+                     (header.getComponent(0) as? JLabel)?.apply {
+                         font = JBUI.Fonts.label()
+                         foreground = JBColor(Color(135, 140, 150), Color(130, 135, 145))
+                     }
+                 } else {
+                     header.background = JBColor(Color(225, 230, 240), Color(60, 70, 80))
+                     (header.getComponent(0) as? JLabel)?.font = JBUI.Fonts.label().asBold() 
+                 }
                  registerComponent(colTag, header)
-                 mainPanel.add(header, c)
+                 contentGrid.add(header, c)
              }
              gridYCounter++
         }
@@ -1302,8 +1916,9 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
         sepC.gridx = 0
         sepC.gridy = gridYCounter
         sepC.gridwidth = maxColsPerRow
+        sepC.weighty = 0.0
         sepC.fill = GridBagConstraints.HORIZONTAL
-        mainPanel.add(sep, sepC)
+        contentGrid.add(sep, sepC)
         gridYCounter++
         
         rows.forEachIndexed { rIndex, rowTag ->
@@ -1321,11 +1936,18 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
                           c.gridy = gridYCounter
                           c.fill = GridBagConstraints.HORIZONTAL
                           c.weightx = 1.0
+                          c.weighty = 0.0
+                          c.anchor = GridBagConstraints.NORTH
                           c.insets = JBUI.insets(1)
                           
                           val cell = createLeafComponent(cellTag)
+                          if (isColumnHidden(colTag, tag)) {
+                              cell.putClientProperty("IS_GHOST_COLUMN", true)
+                              cell.background = JBColor(Color(250, 250, 252), Color(40, 42, 44))
+                              (cell.getComponent(0) as? JLabel)?.foreground = JBColor(Color(140, 145, 155), Color(125, 130, 138))
+                          }
                           registerComponent(cellTag, cell)
-                          mainPanel.add(cell, c)
+                          contentGrid.add(cell, c)
                       } else {
                           val placeholder = createPlaceholder(colInChunk, gridYCounter, tag) 
                           val c = GridBagConstraints()
@@ -1333,9 +1955,11 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
                           c.gridy = gridYCounter
                           c.fill = GridBagConstraints.HORIZONTAL
                           c.weightx = 1.0
+                          c.weighty = 0.0
+                          c.anchor = GridBagConstraints.NORTH
                           c.insets = JBUI.insets(1)
                           
-                          mainPanel.add(placeholder, c)
+                          contentGrid.add(placeholder, c)
                       }
                  }
                  gridYCounter++
@@ -1347,12 +1971,15 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
                  rc.gridx = 0
                  rc.gridy = gridYCounter
                  rc.gridwidth = maxColsPerRow
+                 rc.weighty = 0.0
                  rc.fill = GridBagConstraints.HORIZONTAL
                  rc.insets = JBUI.insets(5, 0, 5, 0)
-                 mainPanel.add(rowSep, rc)
+                 contentGrid.add(rowSep, rc)
                  gridYCounter++
              }
         }
+        
+        mainPanel.add(contentGrid, BorderLayout.CENTER)
     }
 
     private fun createComponentForGridCell(tag: XmlTag): JComponent {
@@ -1702,6 +2329,18 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
                 YigoControlBuilder(project).showAddByDEDialog(addByDEItem, tag, containerComponent = component, afterColumnKey = afterColumnKey)
             }
             menu.add(addByDEItem)
+            
+            val colCollection = tag.findFirstSubTag("GridColumnCollection")
+            val allColumns = colCollection?.findSubTags("GridColumn") ?: emptyArray()
+            val hiddenCount = allColumns.count { isColumnHidden(it, tag) }
+            if (hiddenCount > 0) {
+                val isHiding = shouldHideInvisibleColumns(tag)
+                val toggleHideItem = JMenuItem(if (isHiding) "展开全部列 (含 $hiddenCount 列隐藏)" else "收起隐藏列 ($hiddenCount 列)")
+                toggleHideItem.addActionListener {
+                    setTableHideInvisible(tag, !isHiding)
+                }
+                menu.add(toggleHideItem)
+            }
             menu.addSeparator()
         }
 
