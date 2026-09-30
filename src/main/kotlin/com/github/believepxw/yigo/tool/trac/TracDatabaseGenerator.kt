@@ -68,7 +68,7 @@ object TracDatabaseGenerator {
         } else if (dbType.equals("Kingbase", ignoreCase = true)) {
             val dbPort = envDBPort ?: "54321"
             driverName = "Kingbase"
-            jdbcUrl = "jdbc:kingbase8://$dbServer:$dbPort;databaseName=$dbName"
+            jdbcUrl = "jdbc:kingbase8://$dbServer:$dbPort;/$dbName"
             driverClassKey = "kingbase8"
         } else {
             javax.swing.SwingUtilities.invokeLater {
