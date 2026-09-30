@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Form Key="PM_OrganizationData_Impl" Caption="PM组织结构视图" FormType="Template" InitState="Default" Version="31">
+    <DataSource RefObjectKey="MM_SNNumber"/>
+    <Body>
+        <Block>
+            <FlexFlowLayoutPanel Key="PM_OrganizationData_ImplRoot" Caption="PM组织结构视图">
+                <GridLayoutPanel Key="PM_OrganizationData_Implmain_containerEmbed" Height="100%" Padding="8px" OverflowY="Auto">
+                    <Label Key="AccountAssignment" Caption="账户分配" X="0" Y="0" Visible="true" Enable="false" Class="erp-group-title" XSpan="2"/>
+                    <Dict Key="Organization_AssetCardSOID" Caption="资产" LabelType="M" X="0" Y="3" Visible="true" ItemKey="AM_AssetCard__Dic" StateMask="Enable|Disable|Discard" XSpan="2">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="AssetCardSOID"/>
+                    </Dict>
+                    <Label Key="Responsibilities" Caption="责任范围" X="2" Y="0" Visible="true" Enable="false" Class="erp-group-title" XSpan="2"/>
+                    <Dict Key="Organization_PlanningPlantID" Caption="计划工厂" LabelType="M" X="2" Y="1" Visible="true" ItemKey="Plant" XSpan="2">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="PlanningPlantID">
+                            <ValueChanged>
+                                <![CDATA[if(!Macro_IsInheriting()){Macro_SetIndividualIndicator('PlanningPlantID')}]]>
+                            </ValueChanged>
+                            <CheckRule>
+                                <![CDATA[Macro_CheckControllingArea(Organization_PlanningPlantID,MaintPlantID,true)]]>
+                            </CheckRule>
+                            <DefaultFormulaValue>
+                                <![CDATA[IIF(Organization_PlanningPlantID>0,Organization_PlanningPlantID,com.bokesoft.erp.pm.masterdata.EquipAndFunc.validMaintPlantID(MaintPlantID))]]>
+                            </DefaultFormulaValue>
+                        </DataBinding>
+                        <ItemFilter>
+                            <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                <FilterValue Index="1" ParaValue="'oid in (select MaintPlanningPlantID from EPM_MaintPlanningPlant)'"/>
+                            </Filter>
+                        </ItemFilter>
+                    </Dict>
+                    <Dict Key="Organization_BusinessAreaID" Caption="业务范围" LabelType="M" X="0" Y="2" Visible="true" ItemKey="BusinessArea" XSpan="2">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="BusinessAreaID">
+                            <ValueChanged>
+                                <![CDATA[if(!Macro_IsInheriting()){Macro_SetIndividualIndicator('BusinessAreaID')}]]>
+                            </ValueChanged>
+                        </DataBinding>
+                    </Dict>
+                    <Dict Key="Organization_CostCenterID" Caption="成本中心" LabelType="M" X="0" Y="5" Visible="true" ItemKey="CostCenter">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="CostCenterID">
+                            <ValueChanged>
+                                <![CDATA[if(!Macro_IsInheriting()){Macro_SetIndividualIndicator('CostCenterID')}]]>
+                            </ValueChanged>
+                        </DataBinding>
+                        <ItemFilter>
+                            <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                <FilterValue Index="1" ParaValue="IIF(Organization_OrgCompanyCodeID&gt;0, ' CompanyCodeID='&amp;SqlPara(Organization_OrgCompanyCodeID), '1=2')"/>
+                            </Filter>
+                        </ItemFilter>
+                    </Dict>
+                    <Dict Key="Organization_ControllingAreaID" Caption="控制范围" LabelType="M" X="1" Y="5" Visible="true" Enable="false" ItemKey="ControllingArea">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="ControllingAreaID">
+                            <ValueChanged>
+                                <![CDATA[if(!Macro_IsInheriting()){Macro_SetIndividualIndicator('ControllingAreaID')}]]>
+                            </ValueChanged>
+                            <DefaultFormulaValue>
+                                <![CDATA[com.bokesoft.erp.pm.function.EquipmentFormula.getControllingAreaByCompanyID(Organization_OrgCompanyCodeID)]]>
+                            </DefaultFormulaValue>
+                        </DataBinding>
+                    </Dict>
+                    <Dict Key="Organization_WBSElementID" Caption="WBS元素" LabelType="M" X="0" Y="6" Visible="true" ItemKey="PS_WBSElement" XSpan="2">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="WBSElementID">
+                            <ValueChanged>
+                                <![CDATA[if(!Macro_IsInheriting()){Macro_SetIndividualIndicator('WBSElementID')}]]>
+                            </ValueChanged>
+                        </DataBinding>
+                        	<ItemFilter ItemKey="PS_WBSElement">
+                                    <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                        <FilterValue Index="1" ParaValue="IIF(Organization_ControllingAreaID&gt;0, ' ControllingAreaID = '&amp;SqlPara(Organization_ControllingAreaID), '')"/>
+                                    </Filter>
+                            </ItemFilter>
+                    </Dict>
+                    <Dict Key="Organization_PlannerGroupID" Caption="计划人员组" LabelType="M" X="2" Y="2" Visible="true" ItemKey="PM_PlannerGroup" XSpan="2">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="PlannerGroupID">
+                            <ValueChanged>
+                                <![CDATA[if(!Macro_IsInheriting()){Macro_SetIndividualIndicator('PlannerGroupID')}]]>
+                            </ValueChanged>
+                        </DataBinding>
+                        <ItemFilter>
+                            <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                <FilterValue Index="1" ParaValue="IIF(Organization_PlanningPlantID&gt;0,'PLANTID='&amp;SqlPara(Organization_PlanningPlantID),'1=2')"/>
+                            </Filter>
+                        </ItemFilter>
+                    </Dict>
+                    <Dict Key="Organization_MainWorkPlantID" Caption="主工作中心工厂" LabelType="M" X="3" Y="3" Visible="true" ItemKey="Plant">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="MainWorkPlantID">
+                            <CheckRule>
+                                <![CDATA[Macro_CheckControllingArea(Organization_PlanningPlantID,Organization_MainWorkPlantID,false)]]>
+                            </CheckRule>
+                            <DefaultFormulaValue>
+                                <![CDATA[GetDictValue('WorkCenter', Organization_MainWorkCenterID, 'PlantID')]]>
+                            </DefaultFormulaValue>
+                        </DataBinding>
+                    </Dict>
+                    <Dict Key="Organization_MainWorkCenterID" Caption="主工作中心" LabelType="M" X="2" Y="3" Visible="true" ItemKey="WorkCenter">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="MainWorkCenterID">
+                            <ValueChanged>
+                                <![CDATA[if(!Macro_IsInheriting()){Macro_SetIndividualIndicator('MainWorkCenterID')}]]>
+                            </ValueChanged>
+                            <CheckRule>
+                                <![CDATA[Macro_CheckWorkCenter(Organization_MainWorkCenterID,Organization_MainWorkPlantID)]]>
+                            </CheckRule>
+                        </DataBinding>
+                        <ItemFilter>
+                            <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                <FilterValue Index="1" ParaValue="IIF(Organization_MainWorkPlantID&gt;0,' BK_WorkCenter.PlantID='&amp;SqlPara(Organization_MainWorkPlantID),'1=1')"/>
+                            </Filter>
+                        </ItemFilter>
+                    </Dict>
+                    <Dict Key="Organization_CatalogProfileID" Caption="类别参数文件" LabelType="M" X="2" Y="4" Visible="true" ItemKey="QM_CatalogProfile" XSpan="2">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="CatalogProfileID">
+                            <ValueChanged>
+                                <![CDATA[if(!Macro_IsInheriting()){Macro_SetIndividualIndicator('CatalogProfileID')}]]>
+                            </ValueChanged>
+                        </DataBinding>
+                    </Dict>
+                    <Dict Key="Organization_OrgCompanyCodeID" Caption="公司代码" LabelType="M" X="0" Y="1" Visible="true" Enable="!ReadOnly()&amp;&amp;MaintPlantID&lt;=0" ItemKey="CompanyCode" XSpan="2">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="OrgCompanyCodeID">
+                            <ValueChanged>
+                                <![CDATA[if(!Macro_IsInheriting()){Macro_OrgCompanyCodeID_ValueChanged()}]]>
+                            </ValueChanged>
+                            <CheckRule>
+                                <![CDATA[IIF(MaintPlantID>0&&Organization_OrgCompanyCodeID>0&&GetDictValue('Plant', MaintPlantID, 'CompanyCodeID')!=Organization_OrgCompanyCodeID,MessageFacade('I0200', '不在公司代码 {1} 派生于维护工厂 {2}', '', GetDictValue('CompanyCode', Organization_OrgCompanyCodeID, 'Code'), GetDictValue('Plant', MaintPlantID, 'Code')),true)]]>
+                            </CheckRule>
+                        </DataBinding>
+                    </Dict>
+                    <Dict Key="Organization_AssetClassID" Caption="资产分类" LabelType="M" X="0" Y="4" Visible="GetFormKey()!='PM_Equipment'" ItemKey="AM_AssetClass" XSpan="2">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="AssetClassID">
+                            <DefaultFormulaValue>
+                                <![CDATA[com.bokesoft.erp.pm.function.EquipmentFormula.getAssetsClassID(TechnicalObjectID)]]>
+                            </DefaultFormulaValue>
+                        </DataBinding>
+                        <ItemFilter ItemKey="AM_AssetClass">
+                            <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                <FilterValue Index="1" ParaValue="'soid in ('&amp;com.bokesoft.erp.pm.function.EquipmentFormula.getAssetsClassIDFilter(TechnicalObjectID)&amp;')'"/>
+                            </Filter>
+                        </ItemFilter>
+                    </Dict>
+                    <Dict Key="Organization_CustomerID" Caption="客户" LabelType="M" X="0" Y="7" ItemKey="Customer" XSpan="2">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="OrganizationCustomerID"/>
+                    </Dict>
+                    <RowDefCollection RowGap="24">
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                    </RowDefCollection>
+                    <ColumnDefCollection ColumnGap="16">
+                        <ColumnDef Width="12%"/>
+                        <ColumnDef Width="13%"/>
+                        <ColumnDef Width="12%"/>
+                        <ColumnDef Width="13%"/>
+                        <ColumnDef Width="25%"/>
+                        <ColumnDef Width="25%"/>
+                    </ColumnDefCollection>
+                </GridLayoutPanel>
+            </FlexFlowLayoutPanel>
+        </Block>
+    </Body>
+    <MacroCollection>
+        <Macro Key="Macro_CheckWorkCenter" Args="WorkCenterID,WorkCenterPlantID">
+            <![CDATA[if(GetDictValue('WorkCenter', WorkCenterID, 'PlantID') != WorkCenterPlantID){
+                return MessageFacade('IW051','工作中心 {1} 在工厂 {2} 中不存在',GetDictValue('WorkCenter', WorkCenterID, 'UseCode'),GetDictValue('Plant', WorkCenterPlantID, 'Code'))
+            } else { return true; }]]>
+        </Macro>
+        <Macro Key="Macro_OrgCompanyCodeID_ValueChanged">
+            <![CDATA[Macro_SetIndividualIndicator('OrgCompanyCodeID');IIFS(Organization_AssetCardSOID>0,SetValue('Organization_AssetCardSOID',0));SetPara("IsCompanyCodeIDChanged", true)]]>
+        </Macro>
+    </MacroCollection>
+</Form>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Form Key="PM_LocationData_Impl" Caption="PM位置数据视图" FormType="Template" InitState="Default" Version="19">
+    <DataSource RefObjectKey="MM_SNNumber"/>
+    <Body>
+        <Block>
+            <FlexFlowLayoutPanel Key="PM_LocationData_ImplRoot" Caption="PM位置数据视图">
+                <GridLayoutPanel Key="PM_LocationData_Implmain_containerEmbed" Height="100%" Padding="8px" OverflowY="Auto">
+                    <Label Key="LocationData" Caption="位置数据" X="0" Y="0" Visible="true" Enable="false" Class="erp-group-title"/>
+                    <Dict Key="LocationID" Caption="位置" LabelType="M" X="0" Y="2" Visible="true" ItemKey="Location">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="LocationID">
+                            <ValueChanged>
+                                <![CDATA[if(!Macro_IsInheriting()){Macro_SetIndividualIndicator('LocationID')}]]>
+                            </ValueChanged>
+                        </DataBinding>
+                        <ItemFilter>
+                            <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                <FilterValue Index="1" ParaValue="'PlantID = '&amp;SqlPara(MaintPlantID)"/>
+                            </Filter>
+                        </ItemFilter>
+                    </Dict>
+                    <TextEditor Key="Room" Caption="房间" LabelType="M" X="0" Y="3" Visible="true" MaxLength="100" Trim="true" Case="Upper">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="Room" DefaultFormulaValue="''" ValueDependency="LocationID,MaintPlantID">
+                            <ValueChanged>
+                                <![CDATA[if(!Macro_IsInheriting()){Macro_SetIndividualIndicator('Room')}]]>
+                            </ValueChanged>
+                        </DataBinding>
+                    </TextEditor>
+                    <Dict Key="PlantSectionID" Caption="工厂区域" LabelType="M" X="0" Y="4" Visible="true" ItemKey="PM_PlantSection">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="PlantSectionID">
+                            <ValueChanged>
+                                <![CDATA[if(!Macro_IsInheriting()){Macro_SetIndividualIndicator('PlantSectionID')}]]>
+                            </ValueChanged>
+                        </DataBinding>
+                        <ItemFilter>
+                            <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                <FilterValue Index="1" ParaValue="'PlantID = '&amp;SqlPara(MaintPlantID)"/>
+                            </Filter>
+                        </ItemFilter>
+                    </Dict>
+                    <Dict Key="WorkCenterID" Caption="工作中心" LabelType="M" X="0" Y="5" Visible="true" ItemKey="WorkCenter">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="WorkCenterID">
+                            <ValueChanged>
+                                <![CDATA[if(!Macro_IsInheriting()){Macro_SetIndividualIndicator('WorkCenterID')}]]>
+                            </ValueChanged>
+                        </DataBinding>
+                        <ItemFilter>
+                            <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                <FilterValue Index="1" ParaValue="' BK_WorkCenter.PlantID='&amp;SqlPara(MaintPlantID)"/>
+                            </Filter>
+                        </ItemFilter>
+                    </Dict>
+                    <Dict Key="ABCIndicatorID" Caption="ABC标识" LabelType="M" X="0" Y="6" Visible="true" ItemKey="PM_ABCIndicator">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="ABCIndicatorID">
+                            <ValueChanged>
+                                <![CDATA[if(!Macro_IsInheriting()){Macro_SetIndividualIndicator('ABCIndicatorID')}]]>
+                            </ValueChanged>
+                        </DataBinding>
+                        <ItemFilter ItemKey="PM_ABCIndicator">
+                            <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                <FilterValue Index="1" ParaValue="' ABCIndicatorType = ' + SqlPara(2)"/>
+                            </Filter>
+                        </ItemFilter>
+                    </Dict>
+                    <Dict Key="MaintPlantID" Caption="维护工厂" LabelType="M" X="0" Y="1" Visible="true" Enable="!ReadOnly() &amp;&amp; Structure_SupEquipmentSOID&lt;=0 &amp;&amp; Structure_FunctionalLocationSOID&lt;=0" ItemKey="Plant">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="MaintPlantID">
+                            <ValueChanged>
+                                <![CDATA[if(!Macro_IsInheriting()){Macro_MaintPlantID_ValueChanged()}]]>
+                            </ValueChanged>
+                            <ValueChangeAction>
+                                <![CDATA[if(GetDictValue('Plant', MaintPlantID, 'CompanyCodeID')!=Organization_OrgCompanyCodeID){RefreshControl('Organization_OrgCompanyCodeID');}]]>
+                            </ValueChangeAction>
+                        </DataBinding>
+                    </Dict>
+                    <TextEditor Key="SortField" Caption="分类字段" LabelType="M" X="0" Y="7">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="SortField">
+                            <ValueChanged>
+                                <![CDATA[if(!Macro_IsInheriting()){Macro_SetIndividualIndicator('SortField')}]]>
+                            </ValueChanged>
+                        </DataBinding>
+                    </TextEditor>
+                    <RowDefCollection RowGap="24">
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                    </RowDefCollection>
+                    <ColumnDefCollection ColumnGap="16">
+                        <ColumnDef Width="25%"/>
+                        <ColumnDef Width="25%"/>
+                        <ColumnDef Width="25%"/>
+                        <ColumnDef Width="25%"/>
+                    </ColumnDefCollection>
+                </GridLayoutPanel>
+            </FlexFlowLayoutPanel>
+        </Block>
+    </Body>
+    <MacroCollection>
+        <Macro Key="Macro_MaintPlantID_ValueChanged">
+            <![CDATA[Macro_SetIndividualIndicator('MaintPlantID');if(GetDictValue('Plant', MaintPlantID, 'CompanyCodeID')!=Organization_OrgCompanyCodeID){SetValue('Organization_OrgCompanyCodeID',GetDictValue('Plant', MaintPlantID, 'CompanyCodeID'));Macro_OrgCompanyCodeID_ValueChanged();}]]>
+        </Macro>
+    </MacroCollection>
+</Form>

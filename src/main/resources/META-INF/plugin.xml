@@ -56,6 +56,7 @@
         <lang.parserDefinition language="MyLanguage" implementationClass="example.MyLanguageParserDefinition"/>
         <lang.syntaxHighlighterFactory language="MyLanguage" implementationClass="example.MyLanguageSyntaxHighlighterFactory"/>
         <psi.referenceContributor language="XML" implementation="com.github.believepxw.yigo.MyLanguageReferenceContributor"/>
+        <lang.psiStructureViewFactory language="XML" implementationClass="com.github.believepxw.yigo.structure.YigoStructureViewFactory" order="first"/>
         <lang.documentationProvider language="XML" implementationClass="example.doc.ParaTableDocumentationProvider"/>
         <lang.documentationProvider language="MyLanguage" implementationClass="example.doc.MyLanguageDocumentationProvider"/>
         <lang.findUsagesProvider language="MyLanguage" implementationClass="example.findusages.MyLanguageFindUsagesProvider"/>

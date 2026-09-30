@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Form Key="PM_GeneralData_Impl" Caption="PM一般的数据视图" FormType="Template" InitState="Default" Version="46">
+    <DataSource RefObjectKey="MM_SNNumber"/>
+    <Body>
+        <Block>
+            <FlexFlowLayoutPanel Key="PM_GeneralData_ImplRoot" Caption="PM一般的数据视图">
+                <GridLayoutPanel Key="PM_GeneralData_Implmain_containerEmbed" Height="100%" Padding="8px" OverflowY="Auto">
+                    <Label Key="GeneralData" Caption="常规数据" X="0" Y="0" Visible="true" Enable="false" Class="erp-group-title" XSpan="4"/>
+                    <Dict Key="ClassificationID" Caption="类别" X="0" Y="1" Visible="true" Enable="false" ItemKey="Classification">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="ClassificationID" ValueDependency="CF_ClassificationID,ObjectClassificationID">
+                            <DefaultFormulaValue>
+                                <![CDATA[IIFS(GetFormKey()=='PM_Equipment', IIFS(GetRowCount('ObjectImpl_ClassificationAssignGrid')>0, GetCellValue('ObjectImpl_ClassificationAssignGrid',0,'CF_ClassificationID'),true,0));]]>
+                            </DefaultFormulaValue>
+                        </DataBinding>
+                    </Dict>
+                    <Dict Key="AuthorizationGroupID" Caption="权限组" LabelType="M" X="1" Y="1" ItemKey="AuthorizationGroup">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="AuthorizationGroupID"/>
+                        <ItemFilter>
+                            <Filter Key="Filter" Impl="com.bokesoft.yes.erp.condition.Filter" Type="Custom">
+                                <FilterValue Index="1" ParaValue="&quot;ApplicationArea=&quot;&amp;SqlPara('Equipment')"/>
+                            </Filter>
+                        </ItemFilter>
+                    </Dict>
+                    <Dict Key="TechnicalObjectID" Caption="技术对象类型" LabelType="L" X="2" Y="1" Visible="true" ItemKey="PM_TechnicalObject">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="TechnicalObjectID"/>
+                    </Dict>
+                    <UTCDatePicker Key="StartDate" Caption="开始日期" LabelType="M" X="3" Y="1">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="StartDate"/>
+                    </UTCDatePicker>
+                    <NumberEditor Key="Weight" Caption="重量" LabelType="M" X="0" Y="2" Scale="3">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="Weight"/>
+                        <Format HAlign="Right"/>
+                    </NumberEditor>
+                    <Dict Key="WeightUnitID" Caption="单位" LabelType="M" X="1" Y="2" ItemKey="Unit">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="WeightUnitID"/>
+                    </Dict>
+                    <TextEditor Key="EquipmentSize" Caption="大小/尺寸" LabelType="M" X="2" Y="2" MaxLength="100">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="EquipmentSize"/>
+                    </TextEditor>
+                    <TextEditor Key="InventoryNumber" Caption="库存号" LabelType="M" X="3" Y="2" MaxLength="100">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="InventoryNumber"/>
+                    </TextEditor>
+                    <Label Key="ReferenceData" Caption="参考数据" X="0" Y="3" Visible="true" Enable="false" Class="erp-group-title" XSpan="4"/>
+                    <NumberEditor Key="AcquistnValue" Caption="购置价值" LabelType="M" X="0" Y="4" Visible="true">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="AcquistnMoney"/>
+                    </NumberEditor>
+                    <Dict Key="ValueCurrencyID" Caption="价值币种" X="1" Y="4" Visible="true" ItemKey="Currency">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="ValueCurrencyID"/>
+                    </Dict>
+                    <UTCDatePicker Key="AcquistionDate" Caption="购置日期" LabelType="M" X="2" Y="4" Visible="true" Format="yyyy-MM-dd">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="AcquistionDate"/>
+                    </UTCDatePicker>
+                    <Label Key="ManufacturerData" Caption="制造商数据" X="0" Y="5" Visible="true" Enable="false" Class="erp-group-title" XSpan="4"/>
+                    <TextEditor Key="Manufacturer" Caption="制造商" LabelType="M" X="0" Y="6" Visible="true" MaxLength="100" Trim="true">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="Manufacturer"/>
+                    </TextEditor>
+                    <Dict Key="ManufCountryID" Caption="制造商国家" LabelType="M" X="1" Y="6" Visible="true" ItemKey="Country">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="ManufCountryID"/>
+                    </Dict>
+                    <NumberEditor Key="ConstYear" Caption="制造年" LabelType="M" X="2" Y="6" Visible="true" IntegerValue="true" UseGroupingSeparator="false" Precision="9" Scale="0">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="ConstYear" CheckRule="ConstYear&gt;=0&amp;&amp;ConstYear&lt;=9999"/>
+                    </NumberEditor>
+                    <NumberEditor Key="ConstMon" Caption="制造月" LabelType="M" X="3" Y="6" Visible="false" IntegerValue="true" UseGroupingSeparator="false" Precision="9" Scale="0">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="ConstMon"/>
+                    </NumberEditor>
+                    <TextEditor Key="TextConstMon" Caption="制造月" X="3" Y="6" MaxLength="2">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="TextConstMon" DefaultFormulaValue="IIF(ConstMon==0, '', ConstMon)">
+                            <ValueChanged>
+                                <![CDATA[IIF(com.bokesoft.erp.pm.function.EquipmentFormula.checkTextConstMon(TextConstMon), SetValue('ConstMon', ToInt(TextConstMon)), true);]]>
+                            </ValueChanged>
+                            <CheckRule>
+                                <![CDATA[IIF(com.bokesoft.erp.pm.function.EquipmentFormula.checkTextConstMon(TextConstMon), true, MessageFacade('00002','请输入有效值'))]]>
+                            </CheckRule>
+                        </DataBinding>
+                    </TextEditor>
+                    <TextEditor Key="ManufacturerSerialNumber" Caption="制造商序列号" LabelType="M" X="0" Y="7" MaxLength="100">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="ManufacturerSerialNumber"/>
+                    </TextEditor>
+                    <TextEditor Key="ModelNumber" Caption="型号" LabelType="M" X="1" Y="7" Visible="true" MaxLength="50" Trim="true">
+                        <DataBinding TableKey="EMM_SNNumberHead" ColumnKey="ModelNumber"/>
+                    </TextEditor>
+                    <RowDefCollection RowGap="24">
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                        <RowDef Height="32px"/>
+                    </RowDefCollection>
+                    <ColumnDefCollection ColumnGap="16">
+                        <ColumnDef Width="25%"/>
+                        <ColumnDef Width="25%"/>
+                        <ColumnDef Width="25%"/>
+                        <ColumnDef Width="25%"/>
+                    </ColumnDefCollection>
+                </GridLayoutPanel>
+            </FlexFlowLayoutPanel>
+        </Block>
+    </Body>
+</Form>
