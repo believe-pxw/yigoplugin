@@ -4,6 +4,21 @@
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-10-13
+
+### Changed
+
+- **Yigo Layout 布局设计器弱视觉指示器统一优化**：
+  - 将 `ValueChanged`、`CheckRule`、`DefaultFormulaValue` 三个规则/事件指示器统一为右侧垂直排列（上、中、下固定槽位）的圆点弱视觉方案，必填项仅保留红色背景高亮，极大节省单元格横向空间。
+
+### Fixed
+
+- **Java 方法引用跨 Jar 包检索 (`JavaMethodReference`)**：
+  - 扩展 `JavaMethodReference#resolve` 的检索范围，支持优先在项目源码 (`projectScope`) 中查找，未命中时自动回退至全局依赖及外部 Jar 包 (`allScope`)，并修复简写函数在 `ShortNameFunction` 未找到时跳过 `OnlyInUIFunction` 的问题。
+- **`Ctrl + F12` 文件结构树展开与去重修复 (`YigoStructureViewFactory`)**：
+  - 引入唯一树路径包装值 (`ScopedTreeValue`) 与 `ExpandInfoProvider`，解决 `Ctrl + F12` (`FilteringTreeStructure`) 因相同 `PsiElement` 节点去重剪枝导致「嵌入表单 (Embedded Forms)」无法展开的问题。
+  - 修复 `<Grid>` 控件下 `<GridColumnCollection>` 与 `<GridRowCollection>` 的递归解析，完整展开所有 `GridColumn` 和 `GridCell` 节点并支持直接模糊检索。
+
 ## [1.2.0] - 2026-09-30
 
 ### Added
@@ -39,6 +54,7 @@
 
 - Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
 
-[Unreleased]: https://github.com/believe-pxw/yigo/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/believe-pxw/yigo/compare/v1.2.1...HEAD
+[1.2.1]: https://github.com/believe-pxw/yigo/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/believe-pxw/yigo/compare/v1.0.2...v1.2.0
 [1.0.2]: https://github.com/believe-pxw/yigo/commits/v1.0.2

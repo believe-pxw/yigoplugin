@@ -10,31 +10,33 @@ class JavaMethodReference(
     private val fullMethod: String
 ) : PsiReferenceBase<PsiElement>(element, range) {
 
-    override fun resolve(): PsiElement?{
+    override fun resolve(): PsiElement? {
         val project = myElement.project
         val javaPsiFacade = JavaPsiFacade.getInstance(project)
-        val searchScope = GlobalSearchScope.projectScope(project)
+        val projectScope = GlobalSearchScope.projectScope(project)
+        val allScope = GlobalSearchScope.allScope(project)
+
+        fun findPsiClass(fqn: String): PsiClass? {
+            return javaPsiFacade.findClass(fqn, projectScope)
+                ?: javaPsiFacade.findClass(fqn, allScope)
+        }
+
         if (!fullMethod.contains(".")) {
-            val shortNameClass = javaPsiFacade.findClass("com.bokesoft.erp.ShortNameFunction", searchScope)
-                ?: return null
-            var methods = shortNameClass.findMethodsByName(fullMethod, true)
+            val shortNameClass = findPsiClass("com.bokesoft.erp.ShortNameFunction")
+            var methods = shortNameClass?.findMethodsByName(fullMethod, true) ?: emptyArray()
             if (methods.isEmpty()) {
-                val onlyUIClass = javaPsiFacade.findClass("com.bokesoft.erp.OnlyInUIFunction", searchScope)
-                    ?: return null
-                methods = onlyUIClass.findMethodsByName(fullMethod, true)
+                val onlyUIClass = findPsiClass("com.bokesoft.erp.OnlyInUIFunction")
+                if (onlyUIClass != null) {
+                    methods = onlyUIClass.findMethodsByName(fullMethod, true)
+                }
             }
-            if (methods.isEmpty()) {
-                return null
-            }
-            return methods.first()
+            return methods.firstOrNull()
         } else {
-            val (className, methodName) = fullMethod.substringBeforeLast('.') to fullMethod.substringAfterLast('.')
-            val psiClass = javaPsiFacade.findClass(className, searchScope) ?: return null
+            val className = fullMethod.substringBeforeLast('.')
+            val methodName = fullMethod.substringAfterLast('.')
+            val psiClass = findPsiClass(className) ?: return null
             val methods = psiClass.findMethodsByName(methodName, true)
-            if (methods.isEmpty()) {
-                return null
-            }
-            return methods.first()
+            return methods.firstOrNull()
         }
     }
 
