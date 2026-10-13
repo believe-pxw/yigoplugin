@@ -1548,10 +1548,12 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
 
     private fun createLeafComponent(tag: XmlTag): JComponent {
         val isRequired = isTagRequired(tag)
-        val hasRule = if (!isRequired) hasCheckRule(tag) else false
+        val hasRule = hasCheckRule(tag)
         val hasEvent = hasValueChanged(tag)
         val hasDefault = hasDefaultValue(tag)
         val hasAdvanced = isDirectlyHasAdvancedQuery(tag)
+        val hasAnyDot = hasRule || hasEvent || hasDefault
+
         val panel = object : JPanel(BorderLayout()) {
             override fun paintComponent(g: Graphics) {
                 // Rounded background
@@ -1576,23 +1578,33 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
                 } else {
                     g2.color = JBColor.border()
                     g2.drawRoundRect(0, 0, width - 1, height - 1, 8, 8)
-                    if (hasRule) {
-                        // Subtle Amber/Orange dot in top-right corner indicating CheckRule
-                        g2.color = JBColor(Color(245, 124, 0), Color(255, 179, 0))
-                        g2.fillOval(width - 9, 5, 5, 5)
-                    }
+                }
+
+                // 右侧固定竖列状态指示点（4x4 精致微点，位置固定永远不漂移：上=事件蓝点，中=规则橙点，下=默认值绿点）
+                val dotX = width - 8
+                val dotSize = 4
+                if (hasEvent) {
+                    // 上：值改变事件 ValueChanged（科技蓝）
+                    g2.color = JBColor(Color(30, 136, 229), Color(66, 165, 245))
+                    g2.fillOval(dotX, 6, dotSize, dotSize)
+                }
+                if (hasRule) {
+                    // 中：校验规则 CheckRule（琥珀橙）
+                    g2.color = JBColor(Color(245, 124, 0), Color(255, 179, 0))
+                    g2.fillOval(dotX, 14, dotSize, dotSize)
                 }
                 if (hasDefault) {
-                    // Subtle Teal/Green dot in bottom-right corner indicating DefaultValue
+                    // 下：默认值公式/默认值 DefaultFormulaValue / DefaultValue（青绿）
                     g2.color = JBColor(Color(0, 137, 123), Color(77, 182, 172))
-                    g2.fillOval(width - 9, height - 10, 5, 5)
+                    g2.fillOval(dotX, 22, dotSize, dotSize)
                 }
+
                 if (hasAdvanced) {
                     // Swallowtail flag / Bookmark outline icon vertically centered on the right
                     val flagW = 8.0
                     val flagH = 11.0
                     val notch = 2.5
-                    val flagX = if (hasRule || hasDefault) (width - 18.0) else (width - 15.0)
+                    val flagX = if (hasAnyDot) (width - 20.0) else (width - 15.0)
                     val flagY = (height - flagH) / 2.0
                     val path = Path2D.Double()
                     path.moveTo(flagX, flagY)
@@ -1624,26 +1636,15 @@ class YigoLayoutPanel(val project: Project, private val toolWindow: ToolWindow) 
             JBColor(Color(245, 245, 245), Color(60, 63, 65))
         }
         val leftPad = if (isRequired) 8 else 5
-        val rightPad = if (hasAdvanced) (if (hasRule || hasDefault) 22 else 18) else 5
+        val rightPad = when {
+            hasAdvanced -> 24
+            hasAnyDot -> 13
+            else -> 5
+        }
         panel.border = JBUI.Borders.empty(2, leftPad, 2, rightPad)
         
-        val title = getTitle(tag)
-        val labelText = if (isRequired || hasEvent) {
-            val escapedTitle = title.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-            buildString {
-                append("<html>")
-                append(escapedTitle)
-                if (hasEvent) {
-                    append("&nbsp;<font color='#1E88E5'>⚡</font>")
-                }
-                if (isRequired) {
-                    append("&nbsp;<font color='#E53935'>*</font>")
-                }
-                append("</html>")
-            }
-        } else {
-            title
-        }
+        // 标题完全采用纯净文本，彻底不占用任何多余字符空间
+        val labelText = getTitle(tag)
         val label = JLabel(labelText)
         label.icon = getIconForTag(tag)
         label.iconTextGap = 8
